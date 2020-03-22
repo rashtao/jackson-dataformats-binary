@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformats-binary</artifactId>
+    <version>2.10.4-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>jackson-dataformat-velocypack</artifactId>
+  <name>Jackson dataformat: Velocypack</name>
+  <packaging>bundle</packaging>
+
+  <description>
+    Support for reading and writing Velocypack encoded data using Jackson abstractions (streaming API, data binding,
+    tree model)
+  </description>
+
+  <url>http://github.com/FasterXML/jackson-dataformats-binary</url>
+
+  <properties>
+    <packageVersion.dir>com/fasterxml/jackson/dataformat/velocypack</packageVersion.dir>
+    <packageVersion.package>${project.groupId}.velocypack</packageVersion.package>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.arangodb</groupId>
+      <artifactId>velocypack</artifactId>
+      <version>3.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- Inherited from oss-base. Generate PackageVersion.java.-->
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <executions>
+          <execution>
+            <id>process-packageVersion</id>
+            <phase>generate-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- 19-Mar-2019, tatu: Add rudimentary JDK9+ module info. To build with JDK 8
+             will have to use `moduleInfoFile` as anything else requires JDK 9+
+        -->
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
