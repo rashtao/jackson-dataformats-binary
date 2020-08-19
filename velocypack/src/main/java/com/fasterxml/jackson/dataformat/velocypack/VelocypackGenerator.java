@@ -1,7 +1,9 @@
 package com.fasterxml.jackson.dataformat.velocypack;
 
 import com.arangodb.velocypack.VPackBuilder;
+import com.arangodb.velocypack.VPackSlice;
 import com.arangodb.velocypack.ValueType;
+import com.arangodb.velocypack.exception.VPackBuilderException;
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.core.SerializableString;
@@ -16,70 +18,53 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
+ * @author Mark Vollmary
  * @author Michele Rastelli
+ * <p>
+ * TODO: allocate buffers inside VPackBuilder using ioCtxt
  */
 public class VelocypackGenerator extends GeneratorBase {
 
-    private VPackBuilder builder = new VPackBuilder();
-
-    /*
-    /**********************************************************************
-    /* Configuration
-    /**********************************************************************
-     */
-
-    final protected IOContext _ioContext;
-
-    final protected OutputStream _out;
-
-    /*
-    /**********************************************************
-    /* Output buffering
-    /**********************************************************************
-     */
-
-    /**
-     * Intermediate buffer in which contents are buffered before
-     * being written using {@link #_out}.
-     */
-    protected byte[] _outputBuffer;
-
-    /**
-     * Pointer to the next available byte in {@link #_outputBuffer}
-     */
-    protected int _outputTail = 0;
-
-    /**
-     * Offset to index after the last valid index in {@link #_outputBuffer}.
-     * Typically same as length of the buffer.
-     */
-    protected final int _outputEnd;
-
-    /**
-     * Let's keep track of how many bytes have been output, may prove useful
-     * when debugging. This does <b>not</b> include bytes buffered in
-     * the output buffer, just bytes that have been written using underlying
-     * stream writer.
-     */
-    protected int _bytesWritten;
+    protected final VPackBuilder builder;
+    protected String attribute;
+    protected final IOContext ioContext;
+    protected final OutputStream out;
 
     public VelocypackGenerator(IOContext ioCtxt, int streamWriteFeatures, ObjectCodec codec, OutputStream out) {
         super(streamWriteFeatures, codec);
-        _ioContext = ioCtxt;
-        _out = out;
-        _outputBuffer = ioCtxt.allocWriteEncodingBuffer();
-        _outputEnd = _outputBuffer.length;
-
+        ioContext = ioCtxt;
+        this.out = out;
+        builder = new VPackBuilder();
+        attribute = null;
     }
 
     @Override
     public void writeStartObject(Object o) throws IOException {
-        builder.add(ValueType.OBJECT);
+        try {
+            builder.add(attribute, ValueType.OBJECT);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
+    }
+
+    @Override
+    public void writeStartObject() throws IOException {
+        try {
+            builder.add(attribute, ValueType.OBJECT);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeEndObject() throws IOException {
-        builder.close();
+        try {
+            builder.close();
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
@@ -89,32 +74,52 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public void writeFieldName(SerializableString serializableString) throws IOException {
-        builder.add(serializableString.getValue());
+        attribute = serializableString.getValue();
     }
 
     @Override
     public void flush() throws IOException {
-
+        out.flush();
     }
 
     @Override
     public void writeString(String s) throws IOException {
-        builder.add(s);
+        try {
+            builder.add(attribute, s);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeString(char[] chars, int i, int i1) throws IOException {
-
+        try {
+            builder.add(attribute, new String(chars, i, i1));
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeRawUTF8String(byte[] bytes, int i, int i1) throws IOException {
-
+        try {
+            builder.add(attribute, new String(bytes, i, i1));
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeUTF8String(byte[] bytes, int i, int i1) throws IOException {
-
+        try {
+            builder.add(attribute, new String(bytes, i, i1));
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
@@ -134,42 +139,91 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public void writeRaw(char c) throws IOException {
-
+        try {
+            builder.add(attribute, c);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeBinary(Base64Variant base64Variant, byte[] bytes, int i, int i1) throws IOException {
+        try {
+            builder.add(attribute, base64Variant.encode(bytes, false));
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
+    }
 
+    public void writeVPack(final VPackSlice vpack) throws IOException {
+        try {
+            builder.add(attribute, vpack);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNumber(int i) throws IOException {
-
+        try {
+            builder.add(attribute, i);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNumber(long l) throws IOException {
-
+        try {
+            builder.add(attribute, l);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNumber(BigInteger bigInteger) throws IOException {
-
+        try {
+            builder.add(attribute, bigInteger);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNumber(double v) throws IOException {
-
+        try {
+            builder.add(attribute, v);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNumber(float v) throws IOException {
-
+        try {
+            builder.add(attribute, v);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNumber(BigDecimal bigDecimal) throws IOException {
-
+        try {
+            builder.add(attribute, bigDecimal);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
@@ -179,18 +233,47 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public void writeBoolean(boolean b) throws IOException {
-
+        try {
+            builder.add(attribute, b);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
     @Override
     public void writeNull() throws IOException {
-
+        try {
+            builder.add(attribute, ValueType.NULL);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
     }
 
+    @Override
+    public void writeStartArray() throws IOException {
+        try {
+            builder.add(attribute, ValueType.ARRAY);
+            attribute = null;
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
+    }
+
+    @Override
+    public void writeEndArray() throws IOException {
+        try {
+            builder.close();
+        } catch (final VPackBuilderException e) {
+            throw new IOException(e);
+        }
+    }
 
     @Override
     public void close() throws IOException {
-        _out.write(builder.slice().getBuffer());
+        out.write(builder.slice().getBuffer());
+        super.close();
     }
 
     @Override
@@ -225,21 +308,6 @@ public class VelocypackGenerator extends GeneratorBase {
         return true;
     }
 
-    @Override
-    public void writeStartArray() throws IOException {
-
-    }
-
-    @Override
-    public void writeEndArray() throws IOException {
-
-    }
-
-    @Override
-    public void writeStartObject() throws IOException {
-
-    }
-
     /*
     /**********************************************************
     /* Overridden methods, configuration
@@ -248,7 +316,7 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public Object getOutputTarget() {
-        return _out;
+        return out;
     }
 
 }
