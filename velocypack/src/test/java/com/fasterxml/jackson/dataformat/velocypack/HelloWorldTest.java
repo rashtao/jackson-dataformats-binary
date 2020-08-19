@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -31,7 +32,7 @@ public class HelloWorldTest {
     }
 
     @Test
-    public void test() throws JsonProcessingException {
+    public void testSerialize() throws JsonProcessingException {
         Person p = new Person("mike");
 
         ObjectMapper mapper = new ObjectMapper(new VelocypackFactory());
@@ -44,6 +45,17 @@ public class HelloWorldTest {
         assertThat(e.getKey(), is("Vorname"));
         assertThat(e.getValue().isString(), is(true));
         assertThat(e.getValue().getAsString(), is("mike"));
+    }
+
+    @Test
+    public void testDeserialize() throws IOException {
+        Person p = new Person("mike");
+
+        ObjectMapper mapper = new ObjectMapper(new VelocypackFactory());
+        final ObjectWriter writer = mapper.writer();
+        byte[] bytes = writer.writeValueAsBytes(p);
+        Person readPerson = mapper.reader().<Person>readValue(bytes);
+        System.out.println(readPerson);
     }
 
 }
