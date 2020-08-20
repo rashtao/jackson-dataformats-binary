@@ -6,10 +6,8 @@ import com.fasterxml.jackson.core.format.MatchStrength;
 import com.fasterxml.jackson.core.io.IOContext;
 import com.fasterxml.jackson.core.json.PackageVersion;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
+import java.net.URL;
 
 public class VelocypackFactory extends JsonFactory {
     private static final long serialVersionUID = 1;
@@ -24,7 +22,7 @@ public class VelocypackFactory extends JsonFactory {
      * Name used to identify Velocypack format.
      * (and returned by {@link #getFormatName()}
      */
-    public final static String FORMAT_NAME_VELOCYPACK = "Velocypack";
+    public static final String FORMAT_NAME_VELOCYPACK = "Velocypack";
 
     /*
     /**********************************************************
@@ -82,17 +80,17 @@ public class VelocypackFactory extends JsonFactory {
         return new VelocypackFactory(this, _objectCodec);
     }
 
-    /*                                                                                       
-    /**********************************************************                              
-    /* Versioned                                                                             
-    /**********************************************************                              
+    /*
+    /**********************************************************
+    /* Versioned
+    /**********************************************************
      */
 
     @Override
     public Version version() {
         return PackageVersion.VERSION;
     }
-    
+
     /*
     /**********************************************************
     /* Format detection functionality
@@ -108,7 +106,7 @@ public class VelocypackFactory extends JsonFactory {
      * Sub-classes need to override this method
      */
     @Override
-    public MatchStrength hasFormat(InputAccessor acc) throws IOException {
+    public MatchStrength hasFormat(InputAccessor acc) {
         // TODO, if possible... probably isn't?
         return MatchStrength.INCONCLUSIVE;
     }
@@ -118,6 +116,11 @@ public class VelocypackFactory extends JsonFactory {
     /* Capability introspection
     /**********************************************************
      */
+
+    @Override
+    public boolean requiresPropertyOrdering() {
+        return false;
+    }
 
     @Override
     public boolean canHandleBinaryNatively() {
@@ -135,44 +138,42 @@ public class VelocypackFactory extends JsonFactory {
     /**********************************************************
      */
 
-    // TODO
+    @SuppressWarnings("resource")
+    @Override
+    public VelocypackParser createParser(File f) throws IOException {
+        final IOContext ctxt = _createContext(f, true);
+        return _createParser(_decorate(new FileInputStream(f), ctxt), ctxt);
+    }
 
-//    @SuppressWarnings("resource")
-//    @Override
-//    public VelocypackParser createParser(File f) throws IOException {
-//        final IOContext ctxt = _createContext(f, true);
-//        return _createParser(_decorate(new FileInputStream(f), ctxt), ctxt);
-//    }
-//
-//    @Override
-//    public VelocypackParser createParser(URL url) throws IOException {
-//        final IOContext ctxt = _createContext(url, true);
-//        return _createParser(_decorate(_optimizedStreamFromURL(url), ctxt), ctxt);
-//    }
-//
-//    @Override
-//    public VelocypackParser createParser(InputStream in) throws IOException {
-//        final IOContext ctxt = _createContext(in, false);
-//        return _createParser(_decorate(in, ctxt), ctxt);
-//    }
-//
-//    @Override
-//    public VelocypackParser createParser(byte[] data) throws IOException {
-//        return _createParser(data, 0, data.length, _createContext(data, true));
-//    }
-//
-//    @SuppressWarnings("resource")
-//    @Override
-//    public VelocypackParser createParser(byte[] data, int offset, int len) throws IOException {
-//        IOContext ctxt = _createContext(data, true);
-//        if (_inputDecorator != null) {
-//            InputStream in = _inputDecorator.decorate(ctxt, data, 0, data.length);
-//            if (in != null) {
-//                return _createParser(in, ctxt);
-//            }
-//        }
-//        return _createParser(data, offset, len, ctxt);
-//    }
+    @Override
+    public VelocypackParser createParser(URL url) throws IOException {
+        final IOContext ctxt = _createContext(url, true);
+        return _createParser(_decorate(_optimizedStreamFromURL(url), ctxt), ctxt);
+    }
+
+    @Override
+    public VelocypackParser createParser(InputStream in) throws IOException {
+        final IOContext ctxt = _createContext(in, false);
+        return _createParser(_decorate(in, ctxt), ctxt);
+    }
+
+    @Override
+    public VelocypackParser createParser(byte[] data) {
+        return _createParser(data, 0, data.length, _createContext(data, true));
+    }
+
+    @SuppressWarnings("resource")
+    @Override
+    public VelocypackParser createParser(byte[] data, int offset, int len) throws IOException {
+        IOContext ctxt = _createContext(data, true);
+        if (_inputDecorator != null) {
+            InputStream in = _inputDecorator.decorate(ctxt, data, 0, data.length);
+            if (in != null) {
+                return _createParser(in, ctxt);
+            }
+        }
+        return _createParser(data, offset, len, ctxt);
+    }
 
     /*
     /**********************************************************
@@ -184,7 +185,7 @@ public class VelocypackFactory extends JsonFactory {
     public VelocypackGenerator createGenerator(OutputStream out, JsonEncoding enc) throws IOException {
         IOContext ctxt = _createContext(out, false);
         ctxt.setEncoding(enc);
-        return _createVelocypackGenerator(ctxt, _generatorFeatures, _objectCodec, _decorate(out, ctxt));
+        return createVelocypackGenerator(ctxt, _generatorFeatures, _objectCodec, _decorate(out, ctxt));
     }
 
     /**
@@ -197,7 +198,7 @@ public class VelocypackFactory extends JsonFactory {
     @Override
     public VelocypackGenerator createGenerator(OutputStream out) throws IOException {
         IOContext ctxt = _createContext(out, false);
-        return _createVelocypackGenerator(ctxt, _generatorFeatures, _objectCodec, _decorate(out, ctxt));
+        return createVelocypackGenerator(ctxt, _generatorFeatures, _objectCodec, _decorate(out, ctxt));
     }
 
     /*
@@ -207,61 +208,52 @@ public class VelocypackFactory extends JsonFactory {
      */
 
     @Override
-    protected IOContext _createContext(Object srcRef, boolean resourceManaged) {
-        return super._createContext(srcRef, resourceManaged);
+    protected VelocypackParser _createParser(InputStream in, IOContext ctxt) {
+        throw new UnsupportedOperationException("Stream decoding is not supported!");
     }
 
-    // TODO
-//    @Override
-//    protected VelocypackParser _createParser(InputStream in, IOContext ctxt) throws IOException {
-//        byte[] buf = ctxt.allocReadIOBuffer();
-//        return new VelocypackParser(ctxt, _parserFeatures,
-//                _objectCodec, in, buf, 0, 0, true);
-//    }
-
     @Override
-    protected JsonParser _createParser(Reader r, IOContext ctxt) throws IOException {
-        return _nonByteSource();
+    protected JsonParser _createParser(Reader r, IOContext ctxt) {
+        return nonByteSource();
     }
 
     @Override
     protected JsonParser _createParser(char[] data, int offset, int len, IOContext ctxt,
-                                       boolean recyclable) throws IOException {
-        return _nonByteSource();
-    }
-
-    // TODO
-//    @Override
-//    protected VelocypackParser _createParser(byte[] data, int offset, int len, IOContext ctxt) throws IOException {
-//        return new VelocypackParser(ctxt, _parserFeatures,
-//                _objectCodec, null, data, offset, len, false);
-//    }
-
-    @Override
-    protected VelocypackGenerator _createGenerator(Writer out, IOContext ctxt) throws IOException {
-        return _nonByteTarget();
+                                       boolean recyclable) {
+        return nonByteSource();
     }
 
     @Override
-    protected VelocypackGenerator _createUTF8Generator(OutputStream out, IOContext ctxt) throws IOException {
-        return _createVelocypackGenerator(ctxt, _generatorFeatures, _objectCodec, out);
+    protected VelocypackParser _createParser(byte[] data, int offset, int len, IOContext ctxt) {
+        return new VelocypackParser(ctxt, _parserFeatures,
+                _objectCodec, data, offset, false);
     }
 
     @Override
-    protected Writer _createWriter(OutputStream out, JsonEncoding enc, IOContext ctxt) throws IOException {
-        return _nonByteTarget();
+    protected VelocypackGenerator _createGenerator(Writer out, IOContext ctxt) {
+        return nonByteTarget();
     }
 
-    private final VelocypackGenerator _createVelocypackGenerator(IOContext ctxt,
-                                                                 int stdFeat, ObjectCodec codec, OutputStream out) throws IOException {
-        return new VelocypackGenerator(ctxt, stdFeat, _objectCodec, out);
+    @Override
+    protected VelocypackGenerator _createUTF8Generator(OutputStream out, IOContext ctxt) {
+        return createVelocypackGenerator(ctxt, _generatorFeatures, _objectCodec, out);
     }
 
-    protected <T> T _nonByteSource() {
+    @Override
+    protected Writer _createWriter(OutputStream out, JsonEncoding enc, IOContext ctxt) {
+        return nonByteTarget();
+    }
+
+    private final VelocypackGenerator createVelocypackGenerator(IOContext ctxt,
+                                                                int stdFeat, ObjectCodec codec, OutputStream out) {
+        return new VelocypackGenerator(ctxt, stdFeat, codec, out);
+    }
+
+    protected <T> T nonByteSource() {
         throw new UnsupportedOperationException("Can not create parser for non-byte-based source");
     }
 
-    protected <T> T _nonByteTarget() {
+    protected <T> T nonByteTarget() {
         throw new UnsupportedOperationException("Can not create generator for non-byte-based target");
     }
 }

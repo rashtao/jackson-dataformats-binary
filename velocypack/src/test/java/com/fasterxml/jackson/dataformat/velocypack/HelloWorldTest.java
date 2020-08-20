@@ -1,14 +1,13 @@
 package com.fasterxml.jackson.dataformat.velocypack;
 
 import com.arangodb.velocypack.VPackSlice;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -18,18 +17,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * @author Michele Rastelli
  */
 public class HelloWorldTest {
-
-    static class Person {
-
-        @JsonProperty("Vorname")
-        private final String name;
-
-        @JsonCreator
-        public Person(String name) {
-            this.name = name;
-        }
-
-    }
 
     @Test
     public void testSerialize() throws JsonProcessingException {
@@ -54,8 +41,20 @@ public class HelloWorldTest {
         ObjectMapper mapper = new ObjectMapper(new VelocypackFactory());
         final ObjectWriter writer = mapper.writer();
         byte[] bytes = writer.writeValueAsBytes(p);
-        Person readPerson = mapper.reader().<Person>readValue(bytes);
-        System.out.println(readPerson);
+        Person readPerson = mapper.readerFor(Person.class).readValue(bytes);
+        assertThat(readPerson.getName(), is(p.getName()));
+    }
+
+    @Test
+    public void testJsonDeserialize() throws IOException {
+        Person p = new Person("mike");
+
+        ObjectMapper mapper = new ObjectMapper();
+        final ObjectWriter writer = mapper.writer();
+        byte[] bytes = writer.writeValueAsBytes(p);
+        System.out.println(new String(bytes, StandardCharsets.UTF_8));
+        Person readPerson = mapper.readerFor(Person.class).readValue(bytes);
+        assertThat(readPerson.getName(), is(p.getName()));
     }
 
 }
