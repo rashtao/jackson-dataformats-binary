@@ -57,4 +57,19 @@ public class HelloWorldTest {
         assertThat(readPerson.getName(), is(p.getName()));
     }
 
+    @Test
+    public void testDbEntity() throws IOException {
+
+        DbEntity e = new DbEntity();
+        e.setKey("key");
+
+        ObjectMapper mapper = new ObjectMapper(new VelocypackFactory());
+        final ObjectWriter writer = mapper.writer();
+        byte[] bytes = writer.writeValueAsBytes(e);
+        System.out.println(new VPackSlice(bytes));
+        DbEntity readEntity = mapper.readerFor(DbEntity.class).readValue(bytes);
+        assertThat(readEntity.getKey(), is(e.getKey()));
+    }
+
+
 }
