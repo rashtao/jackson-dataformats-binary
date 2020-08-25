@@ -79,7 +79,7 @@ public class TestOverloaded
     /************************************************************
     */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     /**
      * Unit test related to [JACKSON-189]
@@ -90,7 +90,7 @@ public class TestOverloaded
     {
         OverloadBean bean;
         try {
-            bean = new ObjectMapper().readValue("{ \"a\" : 13 }", OverloadBean.class);
+            bean = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue("{ \"a\" : 13 }", OverloadBean.class);
         } catch (JsonMappingException e) {
             fail("Did not expect an exception, got: "+e.getMessage());
             return;

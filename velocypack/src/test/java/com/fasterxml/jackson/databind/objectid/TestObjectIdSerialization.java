@@ -221,7 +221,7 @@ public class TestObjectIdSerialization extends BaseMapTest
     // [databind#370]
     public void testEmptyObjectWithId() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = mapper.writeValueAsString(new EmptyObject());
         assertEquals(aposToQuotes("{'@id':1}"), json);
     }    

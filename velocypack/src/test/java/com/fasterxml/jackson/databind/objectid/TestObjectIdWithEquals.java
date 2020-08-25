@@ -80,7 +80,7 @@ public class TestObjectIdWithEquals extends BaseMapTest
 
     public void testSimpleEquals() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // Verify default state too
         assertFalse(mapper.isEnabled(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID));
         mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID);
@@ -123,7 +123,7 @@ public class TestObjectIdWithEquals extends BaseMapTest
 //        Element[] input = new Element[] { element, element2 };
         List<Element> input = Arrays.asList(element, element2);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID);
 
 //        String json = mapper.writeValueAsString(input);

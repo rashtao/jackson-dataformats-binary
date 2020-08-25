@@ -16,7 +16,7 @@ public class TestExternalizable extends BaseMapTest
      * static context (alternatively could use ThreadLocal).
      */
     static class MapperHolder {
-        private final ObjectMapper mapper = new ObjectMapper();
+        private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         private final static MapperHolder instance = new MapperHolder();
         public static ObjectMapper mapper() { return instance.mapper; }
     }

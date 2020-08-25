@@ -228,7 +228,7 @@ public class ExistingPropertyTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     /**
      * Fruits - serialization tests for simple property on sub-classes

@@ -377,7 +377,7 @@ public class TestCustomValueInstDefaults extends BaseTest
     // When all values are in the source, no defaults should be used.
     public void testAllPresent() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new BucketModule());
 
         Bucket allPresent = mapper.readValue(
@@ -393,7 +393,7 @@ public class TestCustomValueInstDefaults extends BaseTest
     // When no values are in the source, all defaults should be used.
     public void testAllAbsent() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new BucketModule());
 
         Bucket allAbsent = mapper.readValue(
@@ -410,7 +410,7 @@ public class TestCustomValueInstDefaults extends BaseTest
     // be used for the missing values.
     public void testMixedPresentAndAbsent() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new BucketModule());
 
         Bucket aAbsent = mapper.readValue(
@@ -453,7 +453,7 @@ public class TestCustomValueInstDefaults extends BaseTest
     // Ensure that 0 is not mistaken for a missing int value.
     public void testPresentZeroPrimitive() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new BucketModule());
 
         Bucket aZeroRestAbsent = mapper.readValue(
@@ -469,7 +469,7 @@ public class TestCustomValueInstDefaults extends BaseTest
     // Ensure that null is not mistaken for a missing String value.
     public void testPresentNullReference() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new BucketModule());
 
         Bucket cNullRestAbsent = mapper.readValue(
@@ -487,7 +487,7 @@ public class TestCustomValueInstDefaults extends BaseTest
     // has seen.  Ensure that nothing breaks in that case.
     public void testMoreThan32CreatorParams() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new BucketModule());
 
         BigBucket big = mapper.readValue(
@@ -542,7 +542,7 @@ public class TestCustomValueInstDefaults extends BaseTest
         }
         sb.append("\n}\n");
         String json = sb.toString();
-        ObjectMapper mapper = new ObjectMapper()
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(new ClassWith32Module());
         ClassWith32Props result = mapper.readValue(json, ClassWith32Props.class);
         // let's assume couple of first, last ones suffice

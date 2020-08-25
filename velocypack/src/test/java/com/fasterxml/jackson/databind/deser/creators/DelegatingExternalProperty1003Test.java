@@ -44,7 +44,7 @@ public class DelegatingExternalProperty1003Test extends BaseMapTest
 
     public void testExtrnalPropertyDelegatingCreator() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         final String json = mapper.writeValueAsString(new HeroBattle(new Superman()));
 

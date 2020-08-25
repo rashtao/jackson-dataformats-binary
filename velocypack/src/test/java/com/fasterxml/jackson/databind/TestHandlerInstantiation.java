@@ -233,7 +233,7 @@ public class TestHandlerInstantiation extends BaseMapTest
 
     public void testDeserializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setHandlerInstantiator(new MyInstantiator("abc:"));
         MyBean result = mapper.readValue(quote("123"), MyBean.class);
         assertEquals("abc:123", result.value);
@@ -241,7 +241,7 @@ public class TestHandlerInstantiation extends BaseMapTest
 
     public void testKeyDeserializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setHandlerInstantiator(new MyInstantiator("abc:"));
         MyMap map = mapper.readValue("{\"a\":\"b\"}", MyMap.class);
         // easiest to test by just serializing...
@@ -250,14 +250,14 @@ public class TestHandlerInstantiation extends BaseMapTest
     
     public void testSerializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setHandlerInstantiator(new MyInstantiator("xyz:"));
         assertEquals(quote("xyz:456"), mapper.writeValueAsString(new MyBean("456")));
     }
 
     public void testTypeIdResolver() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setHandlerInstantiator(new MyInstantiator("foobar"));
         String json = mapper.writeValueAsString(new TypeIdBeanWrapper(new TypeIdBean(123)));
         // should now use our custom id scheme:

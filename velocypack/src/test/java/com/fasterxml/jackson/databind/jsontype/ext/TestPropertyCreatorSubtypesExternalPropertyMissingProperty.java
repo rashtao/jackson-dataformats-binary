@@ -135,7 +135,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     private final ObjectReader BOX_READER_FAIL;
 
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         BOX_READER_PASS = mapper.readerFor(Box.class)
             .without(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY);
         BOX_READER_FAIL = mapper.readerFor(Box.class)

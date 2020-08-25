@@ -21,7 +21,7 @@ public class BackReference1878Test extends BaseMapTest
         public Child a;
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testChildDeserialization() throws Exception {
         Child child = MAPPER.readValue("{\"b\": {}}", Child.class);

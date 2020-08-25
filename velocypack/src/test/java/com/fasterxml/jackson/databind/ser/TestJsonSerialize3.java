@@ -35,7 +35,7 @@ public class TestJsonSerialize3 extends BaseMapTest
     
     public void testCustomContentSerializer() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MyObject object = new MyObject();
         object.list = Arrays.asList("foo");
         String json = m.writeValueAsString(object);

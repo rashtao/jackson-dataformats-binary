@@ -83,7 +83,7 @@ public class VisibilityForSerializationTest
     public void testGlobalAutoDetection() throws IOException
     {
         // First: auto-detection enabled (default):
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new GetterClass());
         assertEquals(2, result.size());
         assertEquals(Integer.valueOf(-2), result.get("x"));
@@ -102,7 +102,7 @@ public class VisibilityForSerializationTest
     public void testPerClassAutoDetection() throws IOException
     {
         // First: class-level auto-detection disabling
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new DisabledGetterClass());
         assertEquals(1, result.size());
         assertTrue(result.containsKey("x"));
@@ -132,7 +132,7 @@ public class VisibilityForSerializationTest
     // Simple test verifying that chainable methods work ok...
     public void testConfigChainability()
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertTrue(m.isEnabled(MapperFeature.AUTO_DETECT_SETTERS));
         assertTrue(m.isEnabled(MapperFeature.AUTO_DETECT_GETTERS));
         m = jsonMapperBuilder()

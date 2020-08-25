@@ -42,7 +42,7 @@ public class ExceptionSerializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testSimple() throws Exception
     {
@@ -96,7 +96,7 @@ public class ExceptionSerializationTest
         assertNotNull(result.get("bogus2"));
 
         // and then also remova second property with config overrides
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(ExceptionWithIgnoral.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("bogus2"));
         String json2 = mapper

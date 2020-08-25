@@ -46,7 +46,7 @@ public class TestTypeModifierNameResolution extends BaseMapTest
 	// Expect that the TypeModifier kicks in when the type id is written.
 	public void testTypeModiferNameResolution() throws Exception
 	{
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 		mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new CustomTypeModifier()));
 		mapper.addMixIn(MyType.class, Mixin.class);
 

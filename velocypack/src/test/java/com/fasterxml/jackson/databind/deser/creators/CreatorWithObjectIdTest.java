@@ -42,7 +42,7 @@ public class CreatorWithObjectIdTest
     {
         A a = new A("123", "A");
 
-        ObjectMapper om = new ObjectMapper();
+        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = om.writeValueAsString(a);
         A deser = om.readValue(json, A.class);
         assertEquals(a.name, deser.name);

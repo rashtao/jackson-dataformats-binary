@@ -22,7 +22,7 @@ public class FormatFeatureOrderedMapTest extends BaseMapTest
         }
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#1232]: allow forcing sorting on Map keys
     public void testOrderedMaps() throws Exception {

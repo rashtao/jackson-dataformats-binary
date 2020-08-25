@@ -49,7 +49,7 @@ public class TestExceptionsDuringWriting
     public void testCatchAndRethrow()
         throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test-exceptions", Version.unknownVersion());
         module.addSerializer(Bean.class, new SerializerWithErrors());
         mapper.registerModule(module);
@@ -83,7 +83,7 @@ public class TestExceptionsDuringWriting
     public void testExceptionWithSimpleMapper()
         throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         try {
             BrokenStringWriter sw = new BrokenStringWriter("TEST");
             mapper.writeValue(sw, createLongObject());
@@ -97,7 +97,7 @@ public class TestExceptionsDuringWriting
     public void testExceptionWithMapperAndGenerator()
         throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonFactory f = new MappingJsonFactory();
         BrokenStringWriter sw = new BrokenStringWriter("TEST");
         JsonGenerator jg = f.createGenerator(sw);

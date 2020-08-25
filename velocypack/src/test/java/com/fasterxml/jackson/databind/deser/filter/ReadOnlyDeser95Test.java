@@ -18,7 +18,7 @@ public class ReadOnlyDeser95Test extends BaseMapTest
     
     public void testReadOnlyProp() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = m.writeValueAsString(new ReadOnlyBean());
         if (json.indexOf("computed") < 0) {
             fail("Should have property 'computed', didn't: "+json);

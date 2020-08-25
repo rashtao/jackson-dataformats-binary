@@ -162,7 +162,7 @@ public class TestAnnotations
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleGetter() throws Exception
     {
@@ -236,7 +236,7 @@ public class TestAnnotations
 
     public void testGettersWithoutSetters() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         GettersWithoutSetters bean = new GettersWithoutSetters(123);
         assertFalse(m.isEnabled(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS));
     

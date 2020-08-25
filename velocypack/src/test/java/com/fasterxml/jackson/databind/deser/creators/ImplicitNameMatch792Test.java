@@ -93,7 +93,7 @@ public class ImplicitNameMatch792Test extends BaseMapTest
     
     public void testBindingOfImplicitCreatorNames() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setAnnotationIntrospector(new ConstructorNameAI());
         String json = m.writeValueAsString(new Issue792Bean("a", "b"));
         assertEquals(aposToQuotes("{'first':'a','other':3}"), json);

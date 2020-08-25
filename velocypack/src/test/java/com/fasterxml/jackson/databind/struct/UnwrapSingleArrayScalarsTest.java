@@ -20,7 +20,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         void setV(boolean v) { _v = v; }
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     private final ObjectReader NO_UNWRAPPING_READER = MAPPER.reader();
     private final ObjectReader UNWRAPPING_READER = MAPPER.reader()
@@ -35,7 +35,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
     public void testBooleanPrimitiveArrayUnwrap() throws Exception
     {
         // [databind#381]
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         BooleanBean result = mapper.readValue(new StringReader("{\"v\":[true]}"), BooleanBean.class);
         assertTrue(result._v);
@@ -72,7 +72,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         final byte byteTest = (byte) 43;
         final char charTest = 'c';
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
 
         final int intValue = mapper.readValue(asArray(intTest), Integer.TYPE);
@@ -121,7 +121,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
     }
 
     public void testSingleElementArrayDisabled() throws Exception {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         try {
             mapper.readValue("[42]", Integer.class);
@@ -248,7 +248,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
     
     public void testSingleStringWrapped() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         String value = "FOO!";

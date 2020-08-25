@@ -31,7 +31,7 @@ public class TestDuplicateRegistration extends BaseMapTest
     public void testDuplicateRegistration() throws Exception
     {
         // by default, duplicate registration should be prevented
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertTrue(mapper.isEnabled(MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS));
         MyModule module = new MyModule();
         mapper.registerModule(module);

@@ -75,7 +75,7 @@ public class TestConcurrency extends BaseMapTest
         final String JSON = "{\"value\":42}";
         
         for (int i = 0; i < 5; ++i) {
-            final ObjectMapper mapper = new ObjectMapper();
+            final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
             Runnable r = new Runnable() {
                 @Override
                 public void run() {

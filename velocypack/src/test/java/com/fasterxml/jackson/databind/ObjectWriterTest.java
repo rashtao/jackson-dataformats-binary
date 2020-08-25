@@ -14,6 +14,8 @@ import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import static com.fasterxml.jackson.VPackUtils.toJson;
+
 /**
  * Unit tests for checking features added to {@link ObjectWriter}, such
  * as adding of explicit pretty printer.
@@ -33,7 +35,7 @@ public class ObjectWriterTest
         }
     }
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
     static class PolyBase {
@@ -59,27 +61,6 @@ public class ObjectWriterTest
     /**********************************************************
      */
 
-    public void testPrettyPrinter() throws Exception
-    {
-        ObjectWriter writer = MAPPER.writer();
-        HashMap<String, Integer> data = new HashMap<String,Integer>();
-        data.put("a", 1);
-        
-        // default: no indentation
-        assertEquals("{\"a\":1}", writer.writeValueAsString(data));
-
-        // and then with standard
-        writer = writer.withDefaultPrettyPrinter();
-
-        // pretty printer uses system-specific line feeds, so we do that as well.
-        String lf = System.getProperty("line.separator");
-        assertEquals("{" + lf + "  \"a\" : 1" + lf + "}", writer.writeValueAsString(data));
-
-        // and finally, again without indentation
-        writer = writer.with((PrettyPrinter) null);
-        assertEquals("{\"a\":1}", writer.writeValueAsString(data));
-    }
-
     public void testPrefetch() throws Exception
     {
         ObjectWriter writer = MAPPER.writer();
@@ -88,24 +69,12 @@ public class ObjectWriterTest
         assertTrue(writer.hasPrefetchedSerializer());
     }
 
-    public void testObjectWriterFeatures() throws Exception
-    {
-        ObjectWriter writer = MAPPER.writer()
-                .without(JsonWriteFeature.QUOTE_FIELD_NAMES);                
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        map.put("a", 1);
-        assertEquals("{a:1}", writer.writeValueAsString(map));
-        // but can also reconfigure
-        assertEquals("{\"a\":1}", writer.with(JsonWriteFeature.QUOTE_FIELD_NAMES)
-                .writeValueAsString(map));
-    }
-
     public void testObjectWriterWithNode() throws Exception
     {
         ObjectNode stuff = MAPPER.createObjectNode();
         stuff.put("a", 5);
         ObjectWriter writer = MAPPER.writerFor(JsonNode.class);
-        String json = writer.writeValueAsString(stuff);
+        String json = toJson(writer.writeValueAsBytes(stuff));
         assertEquals("{\"a\":5}", json);
     }
 
@@ -114,9 +83,9 @@ public class ObjectWriterTest
         ObjectWriter writer = MAPPER.writerFor(PolyBase.class);
         String json;
 
-        json = writer.writeValueAsString(new ImplA(3));
+        json = toJson(writer.writeValueAsBytes(new ImplA(3)));
         assertEquals(aposToQuotes("{'type':'A','value':3}"), json);
-        json = writer.writeValueAsString(new ImplB(-5));
+        json = toJson(writer.writeValueAsBytes(new ImplB(-5)));
         assertEquals(aposToQuotes("{'type':'B','b':-5}"), json);
     }
 
@@ -133,29 +102,8 @@ public class ObjectWriterTest
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         w.writeValue(out, Integer.valueOf(3));
         out.close();
-        assertEquals("3", out.toString("UTF-8"));
-    }
 
-    public void testWithCloseCloseable() throws Exception
-    {
-        ObjectWriter w = MAPPER.writer()
-                .with(SerializationFeature.CLOSE_CLOSEABLE);
-        assertTrue(w.isEnabled(SerializationFeature.CLOSE_CLOSEABLE));
-        CloseableValue input = new CloseableValue();
-        assertFalse(input.closed);
-        byte[] json = w.writeValueAsBytes(input);
-        assertNotNull(json);
-        assertTrue(input.closed);
-        input.close();
-
-        // and via explicitly passed generator
-        JsonGenerator g = MAPPER.getFactory().createGenerator(new StringWriter());
-        input = new CloseableValue();
-        assertFalse(input.closed);
-        w.writeValue(g, input);
-        assertTrue(input.closed);
-        g.close();
-        input.close();
+        assertEquals('3', (char) out.toByteArray()[0]);
     }
 
     public void testViewSettings() throws Exception

@@ -79,7 +79,7 @@ public class TestTypedSerialization
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     /**
      * First things first, let's ensure we can serialize using
@@ -101,7 +101,7 @@ public class TestTypedSerialization
      */
     public void testTypeAsWrapper() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(Animal.class, TypeWithWrapper.class);
         Map<String,Object> result = writeAndMap(m, new Cat("Venla", "black"));
         // should get a wrapper; keyed by minimal class name ("Cat" here)
@@ -119,7 +119,7 @@ public class TestTypedSerialization
      */
     public void testTypeAsArray() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(Animal.class, TypeWithArray.class);
         // hmmh. Not good idea to rely on exact output, order may change. But...
         Map<String,Object> result = writeAndMap(m, new AnimalWrapper(new Dog("Amadeus", 7)));
@@ -149,7 +149,7 @@ public class TestTypedSerialization
     public void testInArray() throws Exception
     {
         // ensure we'll use mapper with default configs
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // ... so this should NOT be needed...
         m.deactivateDefaultTyping();
         
@@ -181,7 +181,7 @@ public class TestTypedSerialization
      */
     public void testEmptyBean() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         assertEquals("{\"@type\":\"empty\"}", m.writeValueAsString(new Empty()));
     }
@@ -191,7 +191,7 @@ public class TestTypedSerialization
      */
     public void testTypedMaps() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         Map<Long, Collection<Super>> map = new HashMap<Long, Collection<Super>>();
         List<Super> list = new ArrayList<Super>();

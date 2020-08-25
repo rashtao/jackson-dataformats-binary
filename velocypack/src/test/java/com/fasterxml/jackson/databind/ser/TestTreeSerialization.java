@@ -25,7 +25,7 @@ public class TestTreeSerialization
 	public void testSimpleViaObjectMapper()
         throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // also need tree mapper to construct tree to serialize
         ObjectNode n = mapper.getNodeFactory().objectNode();
         n.put("number", 15);
@@ -56,7 +56,7 @@ public class TestTreeSerialization
 	public void testPOJOString()
         throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // also need tree mapper to construct tree to serialize
         ObjectNode n = mapper.getNodeFactory().objectNode();
         n.set("pojo", mapper.getNodeFactory().pojoNode("abc"));
@@ -73,7 +73,7 @@ public class TestTreeSerialization
     public void testPOJOIntArray()
         throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ObjectNode n = mapper.getNodeFactory().objectNode();
         n.set("pojo", mapper.getNodeFactory().pojoNode(new int[] { 1, 2, 3 }));
         StringWriter sw = new StringWriter();
@@ -96,7 +96,7 @@ public class TestTreeSerialization
     public void testPOJOBean()
         throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // also need tree mapper to construct tree to serialize
         ObjectNode n = mapper.getNodeFactory().objectNode();
         n.set("pojo", mapper.getNodeFactory().pojoNode(new Bean()));

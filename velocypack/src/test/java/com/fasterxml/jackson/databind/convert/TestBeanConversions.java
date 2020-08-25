@@ -118,7 +118,7 @@ public class TestBeanConversions
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testBeanConvert()
     {
@@ -163,7 +163,7 @@ public class TestBeanConversions
     // should work regardless of wrapping...
     public void testWrapping() throws Exception
     {
-        ObjectMapper wrappingMapper = new ObjectMapper();
+        ObjectMapper wrappingMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         wrappingMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         wrappingMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
 
@@ -172,12 +172,12 @@ public class TestBeanConversions
 
         // also: ok to have mismatched settings, since as per [JACKSON-710], should
         // not actually use wrapping internally in these cases
-        wrappingMapper = new ObjectMapper();
+        wrappingMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         wrappingMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         wrappingMapper.disable(SerializationFeature.WRAP_ROOT_VALUE);
         _convertAndVerifyPoint(wrappingMapper);
 
-        wrappingMapper = new ObjectMapper();
+        wrappingMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         wrappingMapper.disable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         wrappingMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         _convertAndVerifyPoint(wrappingMapper);
@@ -248,7 +248,7 @@ public class TestBeanConversions
             verifyException(e, "no properties discovered");
         }
         
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         try {
             assertEquals("{}", mapper.writeValueAsString(plaino));

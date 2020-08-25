@@ -29,7 +29,7 @@ public class JsonIncludeCollectionTest extends BaseMapTest
     /**********************************************************
      */
 
-    final private ObjectMapper MAPPER = new ObjectMapper();
+    final private ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testEnumSet() throws Exception
     {

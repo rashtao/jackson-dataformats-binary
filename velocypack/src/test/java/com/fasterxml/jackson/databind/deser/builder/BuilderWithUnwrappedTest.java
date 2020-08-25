@@ -164,7 +164,7 @@ public class BuilderWithUnwrappedTest extends BaseMapTest
     public void testWithUnwrappedAndCreatorSingleParameterAtBeginning() throws Exception {
         final String json = aposToQuotes("{'person_id':1234,'first_name':'John','last_name':'Doe','years_old':30,'living':true}");
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Person person = mapper.readValue(json, Person.class);
         assertEquals(1234, person.getId());
         assertNotNull(person.getName());
@@ -177,7 +177,7 @@ public class BuilderWithUnwrappedTest extends BaseMapTest
     public void testWithUnwrappedAndCreatorSingleParameterInMiddle() throws Exception {
         final String json = aposToQuotes("{'first_name':'John','last_name':'Doe','person_id':1234,'years_old':30,'living':true}");
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Person person = mapper.readValue(json, Person.class);
         assertEquals(1234, person.getId());
         assertNotNull(person.getName());
@@ -190,7 +190,7 @@ public class BuilderWithUnwrappedTest extends BaseMapTest
     public void testWithUnwrappedAndCreatorSingleParameterAtEnd() throws Exception {
         final String json = aposToQuotes("{'first_name':'John','last_name':'Doe','years_old':30,'living':true,'person_id':1234}");
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Person person = mapper.readValue(json, Person.class);
         assertEquals(1234, person.getId());
         assertNotNull(person.getName());
@@ -203,7 +203,7 @@ public class BuilderWithUnwrappedTest extends BaseMapTest
     public void testWithUnwrappedAndCreatorMultipleParametersAtBeginning() throws Exception {
         final String json = aposToQuotes("{'animal_id':1234,'living':true,'first_name':'John','last_name':'Doe','years_old':30}");
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Animal animal = mapper.readValue(json, Animal.class);
         assertEquals(1234, animal.getId());
         assertNotNull(animal.getName());
@@ -216,7 +216,7 @@ public class BuilderWithUnwrappedTest extends BaseMapTest
     public void testWithUnwrappedAndCreatorMultipleParametersInMiddle() throws Exception {
         final String json = aposToQuotes("{'first_name':'John','animal_id':1234,'last_name':'Doe','living':true,'years_old':30}");
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Animal animal = mapper.readValue(json, Animal.class);
         assertEquals(1234, animal.getId());
         assertNotNull(animal.getName());
@@ -229,7 +229,7 @@ public class BuilderWithUnwrappedTest extends BaseMapTest
     public void testWithUnwrappedAndCreatorMultipleParametersAtEnd() throws Exception {
         final String json = aposToQuotes("{'first_name':'John','last_name':'Doe','years_old':30,'living':true,'animal_id':1234}");
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Animal animal = mapper.readValue(json, Animal.class);
         assertEquals(1234, animal.getId());
         assertNotNull(animal.getName());

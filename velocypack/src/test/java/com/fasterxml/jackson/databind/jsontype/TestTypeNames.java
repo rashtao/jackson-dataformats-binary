@@ -43,7 +43,7 @@ public class TestTypeNames extends BaseMapTest
 
     public void testBaseTypeId1616() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Collection<NamedType> subtypes = new StdSubtypeResolver().collectAndResolveSubtypesByTypeId(
                 mapper.getDeserializationConfig(),
                 // note: `null` is fine here as `AnnotatedMember`:

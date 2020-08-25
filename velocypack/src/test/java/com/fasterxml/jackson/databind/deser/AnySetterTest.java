@@ -221,7 +221,7 @@ public class AnySetterTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleMapImitation() throws Exception
     {
@@ -273,14 +273,14 @@ public class AnySetterTest
 
     public void testIgnored() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         _testIgnorals(mapper);
     }
 
     public void testIgnoredPart2() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         _testIgnorals(mapper);
     }
@@ -335,7 +335,7 @@ public class AnySetterTest
     // [databind#1035]
     public void testGenericAnySetter() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         Map<String, Integer> stringGenericMap = new HashMap<String, Integer>();
         stringGenericMap.put("testStringKey", 5);

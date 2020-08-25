@@ -118,7 +118,7 @@ public class JDKScalarsTest
         public Void value;
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     /*
     /**********************************************************
@@ -282,7 +282,7 @@ public class JDKScalarsTest
         assertEquals(0, array[0]);
         
         // [databind#381]
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         try {
             mapper.readValue("{\"v\":[3]}", IntBean.class);
@@ -345,7 +345,7 @@ public class JDKScalarsTest
         assertEquals(0, array[0]);
         
         // [databind#381]
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         try {
             mapper.readValue("{\"v\":[3]}", LongBean.class);
@@ -466,7 +466,7 @@ public class JDKScalarsTest
 
     public void testDoubleAsArray() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         final double value = 0.016;
         try {

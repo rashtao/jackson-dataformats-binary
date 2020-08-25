@@ -137,7 +137,7 @@ public class AnyGetterTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleAnyBean() throws Exception
     {
@@ -153,13 +153,13 @@ public class AnyGetterTest extends BaseMapTest
         ObjectMapper m;
 
         // First, with normal fail settings:
-        m = new ObjectMapper();
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
         String json = serializeAsString(m, new AnyOnlyBean());
         assertEquals("{\"a\":3}", json);
 
         // then without fail
-        m = new ObjectMapper();
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         json = serializeAsString(m, new AnyOnlyBean());
         assertEquals("{\"a\":3}", json);
@@ -190,7 +190,7 @@ public class AnyGetterTest extends BaseMapTest
     // [databind#1124]
     public void testAnyGetterWithValueSerializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Bean1124 input = new Bean1124();
         input.addAdditionalProperty("key", "value");
         String json = mapper.writeValueAsString(input);

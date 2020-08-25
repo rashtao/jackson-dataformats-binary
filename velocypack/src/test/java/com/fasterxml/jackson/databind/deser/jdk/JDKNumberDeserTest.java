@@ -59,7 +59,7 @@ public class JDKNumberDeserTest extends BaseMapTest
     /**********************************************************************
      */
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testNaN() throws Exception
     {

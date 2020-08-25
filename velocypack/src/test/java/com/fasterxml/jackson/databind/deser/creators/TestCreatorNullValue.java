@@ -95,7 +95,7 @@ public class TestCreatorNullValue extends BaseMapTest
      */
 
     public void testUsesDeserializersNullValue() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new TestModule());
         Container container = mapper.readValue("{}", Container.class);
         assertEquals(NULL_CONTAINED, container.contained);
@@ -103,7 +103,7 @@ public class TestCreatorNullValue extends BaseMapTest
 
     // [databind#597]: ensure that a useful exception is thrown
     public void testCreatorReturningNull() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = "{ \"type\" : \"     \", \"id\" : \"000c0ffb-a0d6-4d2e-a379-4aeaaf283599\" }";
         try {
             objectMapper.readValue(json, JsonEntity.class);

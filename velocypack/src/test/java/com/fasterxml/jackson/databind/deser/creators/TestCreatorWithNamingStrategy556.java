@@ -57,7 +57,7 @@ public class TestCreatorWithNamingStrategy556
         }
     }
     
-    private final ObjectMapper MAPPER = new ObjectMapper()
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
             ;
     {

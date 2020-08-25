@@ -47,7 +47,7 @@ public class TestTreeDeserialization
     public void testReadFromString() throws Exception
     {
         String json = "{\"field\":\"{\\\"name\\\":\\\"John Smith\\\"}\"}";
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonNode jNode = mapper.readValue(json, JsonNode.class);
 
         String generated = mapper.writeValueAsString( jNode);  //back slashes are gone

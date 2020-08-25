@@ -52,7 +52,7 @@ public class TestCreatorWithPolymorphic113 extends BaseMapTest
 
     public void testSubtypes() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String id = "nice dogy";
         String json = mapper.writeValueAsString(new AnimalWrapper(new Dog(id)));
 //System.err.println("JSON = "+json);

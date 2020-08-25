@@ -58,7 +58,7 @@ public class IgnoredCreatorProperty1572Test extends BaseMapTest
     // [databind#1572]
     public void testIgnoredCtorParam() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new ImplicitNames());
         String JSON = aposToQuotes("{'innerTest': {\n"
                 +"'str':'str',\n"

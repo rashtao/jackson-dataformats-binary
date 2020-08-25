@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class TestDeepCopy extends BaseMapTest
 {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testWithObjectSimple()
     {

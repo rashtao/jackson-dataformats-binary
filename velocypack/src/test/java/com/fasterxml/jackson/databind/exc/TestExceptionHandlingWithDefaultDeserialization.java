@@ -40,7 +40,7 @@ public class TestExceptionHandlingWithDefaultDeserialization extends BaseMapTest
 
     public void testShouldThrowJsonMappingExceptionWithPathReference() throws IOException {
         // given
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String input = "{\"bar\":{\"baz\":{qux:\"quxValue\"))}";
         final String THIS = getClass().getName();
 

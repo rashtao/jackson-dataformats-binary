@@ -287,11 +287,11 @@ public class ExternalTypeIdTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleSerialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
         // This may look odd, but one implementation nastiness is the fact
         // that we cannot properly serialize type id before the object,
@@ -306,7 +306,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     // If trying to use with Class, should just become "PROPERTY" instead:
     public void testImproperExternalIdSerialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertEquals("{\"extType\":\"funk\",\"i\":3}",
                 mapper.writeValueAsString(new FunkyExternalBean()));
     }
@@ -314,7 +314,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     // for [databind#942]
     public void testExternalTypeIdWithNull() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
         ExternalBean b;
         b = mapper.readValue(aposToQuotes("{'bean':null,'extType':'vbean'}"),
@@ -333,7 +333,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     
     public void testSimpleDeserialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
         ExternalBean result = mapper.readValue("{\"bean\":{\"value\":11},\"extType\":\"vbean\"}", ExternalBean.class);
         assertNotNull(result);
@@ -353,7 +353,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     // externally typed things, mixed with other stuff...
     public void testMultipleTypeIdsDeserialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
         String json = mapper.writeValueAsString(new ExternalBean3(3));
         ExternalBean3 result = mapper.readValue(json, ExternalBean3.class);
@@ -370,7 +370,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     // Also, it should be ok to use @JsonCreator as well...
     public void testExternalTypeWithCreator() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
         String json = mapper.writeValueAsString(new ExternalBeanWithCreator(7));
         ExternalBeanWithCreator result = mapper.readValue(json, ExternalBeanWithCreator.class);
@@ -486,7 +486,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     // for [databind#222]
     public void testExternalTypeWithProp222() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Issue222Bean input = new Issue222Bean(13);
         String json = mapper.writeValueAsString(input);
         assertEquals("{\"value\":{\"x\":13},\"type\":\"foo\"}", json);
@@ -497,7 +497,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     {
         final String CLASS = Payload928.class.getName();
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         final String successCase = "{\"payload\":{\"something\":\"test\"},\"class\":\""+CLASS+"\"}";
         Envelope928 envelope1 = mapper.readValue(successCase, Envelope928.class);

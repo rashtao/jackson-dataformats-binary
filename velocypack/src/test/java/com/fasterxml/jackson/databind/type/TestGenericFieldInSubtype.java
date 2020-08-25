@@ -7,7 +7,7 @@ public class TestGenericFieldInSubtype extends BaseMapTest
     // [JACKSON-677]
     public void test677() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // and bit more checking as per later comments
         JavaType t677 = mapper.constructType(Result677.Success677.class);
         assertNotNull(t677);
@@ -19,7 +19,7 @@ public class TestGenericFieldInSubtype extends BaseMapTest
  // [JACKSON-887]
     public void testInnerType() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         BaseType.SubType<?> r = mapper.readValue("{}", BaseType.SubType.class);
         assertNotNull(r);
     }

@@ -88,14 +88,14 @@ public class NullSerializationTest
     {
         DefaultSerializerProvider sp = new DefaultSerializerProvider.Impl();
         sp.setNullValueSerializer(new NullSerializer());
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setSerializerProvider(sp);
         assertEquals("\"foobar\"", m.writeValueAsString(null));
     }
 
     public void testCustomNulls() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setSerializerProvider(new MyNullProvider());
         assertEquals("{\"name\":\"foobar\"}", m.writeValueAsString(new Bean1()));
         assertEquals("{\"type\":null}", m.writeValueAsString(new Bean2()));
@@ -113,7 +113,7 @@ public class NullSerializationTest
         // but then we can customize it:
         DefaultSerializerProvider prov = new MyNullProvider();
         prov.setNullValueSerializer(new NullSerializer());
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setSerializerProvider(prov);
         assertEquals("{\"a\":\"foobar\"}", m.writeValueAsString(root));
     }

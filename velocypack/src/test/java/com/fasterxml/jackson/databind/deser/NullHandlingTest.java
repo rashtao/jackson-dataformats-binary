@@ -94,7 +94,7 @@ public class NullHandlingTest extends BaseMapTest
     }  
     
     public void testAnySetterNulls() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);
@@ -120,7 +120,7 @@ public class NullHandlingTest extends BaseMapTest
 
     public void testCustomRootNulls() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);
@@ -140,7 +140,7 @@ public class NullHandlingTest extends BaseMapTest
     // [databind#407]
     public void testListOfNulls() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);
@@ -165,7 +165,7 @@ public class NullHandlingTest extends BaseMapTest
     // Test for [#407]
     public void testMapOfNulls() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);

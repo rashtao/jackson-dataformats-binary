@@ -98,7 +98,7 @@ public class TestAbstractTypeNames  extends BaseMapTest
 
     public void testEmptyCollection() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         List<User>friends = new ArrayList<User>();
         friends.add(new DefaultUser("Joe Hildebrandt", null));
@@ -110,7 +110,7 @@ public class TestAbstractTypeNames  extends BaseMapTest
         /* 24-Feb-2011, tatu: For now let's simply require registration of
          *   concrete subtypes; can't think of a way to avoid that for now
          */
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(DefaultEmployee.class);
         mapper.registerSubtypes(DefaultUser.class);
         

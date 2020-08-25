@@ -239,14 +239,14 @@ public class TestMapFiltering extends BaseMapTest
     @SuppressWarnings("deprecation")
     public void testMapNullSerialization() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,String> map = new HashMap<String,String>();
         map.put("a", null);
         // by default, should output null-valued entries:
         assertEquals("{\"a\":null}", m.writeValueAsString(map));
         // but not if explicitly asked not to (note: config value is dynamic here)
 
-        m = new ObjectMapper();        
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();        
         m.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
         assertEquals("{}", m.writeValueAsString(map));
     }
@@ -271,7 +271,7 @@ public class TestMapFiltering extends BaseMapTest
     public void testMapViaGlobalNonEmpty() throws Exception
     {
         // basic Map<String,String> subclass:
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDefaultPropertyInclusion(JsonInclude.Value.empty()
                 .withContentInclusion(JsonInclude.Include.NON_EMPTY));
         assertEquals(aposToQuotes("{'a':'b'}"), mapper.writeValueAsString(
@@ -284,7 +284,7 @@ public class TestMapFiltering extends BaseMapTest
     public void testMapViaTypeOverride() throws Exception
     {
         // basic Map<String,String> subclass:
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Map.class)
             .setInclude(JsonInclude.Value.empty()
                 .withContentInclusion(JsonInclude.Include.NON_EMPTY));

@@ -28,7 +28,7 @@ public class TestStatics
 
     public void testSimpleIgnore() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // should not care about static setter...
         Bean result = m.readValue("{ \"x\":3}", Bean.class);
         assertEquals(3, result._x);

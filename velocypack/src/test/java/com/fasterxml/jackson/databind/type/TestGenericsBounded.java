@@ -107,7 +107,7 @@ public class TestGenericsBounded
     /*******************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testLowerBound() throws Exception
     {

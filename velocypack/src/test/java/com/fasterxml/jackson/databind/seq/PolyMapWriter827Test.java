@@ -33,7 +33,7 @@ public class PolyMapWriter827Test extends BaseMapTest
 
     public void testPolyCustomKeySerializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL);
 

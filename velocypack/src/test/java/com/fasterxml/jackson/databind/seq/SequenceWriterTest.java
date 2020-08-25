@@ -88,7 +88,7 @@ public class SequenceWriterTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     private final ObjectWriter WRITER = MAPPER.writer()
             .withRootValueSeparator("\n");
 

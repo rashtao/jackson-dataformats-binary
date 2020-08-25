@@ -83,7 +83,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleField() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = mapper.writeValueAsString(new FieldWrapperBean(new StringWrapper("foo")));
 //System.out.println("JSON/field+object == "+json);
         FieldWrapperBean bean = mapper.readValue(json, FieldWrapperBean.class);
@@ -94,7 +94,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleMethod() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = mapper.writeValueAsString(new FieldWrapperBean(new IntWrapper(37)));
 //System.out.println("JSON/method+object == "+json);
         FieldWrapperBean bean = mapper.readValue(json, FieldWrapperBean.class);
@@ -105,7 +105,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleListField() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         FieldWrapperBeanList list = new FieldWrapperBeanList();
         list.add(new FieldWrapperBean(new OtherBean()));
         String json = mapper.writeValueAsString(list);
@@ -121,7 +121,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleListMethod() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MethodWrapperBeanList list = new MethodWrapperBeanList();
         list.add(new MethodWrapperBean(new BooleanValue(true)));
         list.add(new MethodWrapperBean(new StringWrapper("x")));
@@ -142,7 +142,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleArrayField() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         FieldWrapperBeanArray array = new FieldWrapperBeanArray(new
                 FieldWrapperBean[] { new FieldWrapperBean(new BooleanValue(true)) });
         String json = mapper.writeValueAsString(array);
@@ -157,7 +157,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleArrayMethod() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MethodWrapperBeanArray array = new MethodWrapperBeanArray(new
                 MethodWrapperBean[] { new MethodWrapperBean(new StringWrapper("A")) });
         String json = mapper.writeValueAsString(array);
@@ -172,7 +172,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
     
     public void testSimpleMapField() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         FieldWrapperBeanMap map = new FieldWrapperBeanMap();
         map.put("foop", new FieldWrapperBean(new IntWrapper(13)));
         String json = mapper.writeValueAsString(map);
@@ -188,7 +188,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleMapMethod() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MethodWrapperBeanMap map = new MethodWrapperBeanMap();
         map.put("xyz", new MethodWrapperBean(new BooleanValue(true)));
         String json = mapper.writeValueAsString(map);

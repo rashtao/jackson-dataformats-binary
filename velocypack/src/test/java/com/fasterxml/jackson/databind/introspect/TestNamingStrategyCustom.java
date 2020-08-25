@@ -173,14 +173,14 @@ public class TestNamingStrategyCustom extends BaseMapTest
     
     public void testSimpleGetters() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new PrefixStrategy());
         assertEquals("{\"Get-key\":123}", mapper.writeValueAsString(new GetterBean()));
     }
 
     public void testSimpleSetters() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new PrefixStrategy());
         SetterBean bean = mapper.readValue("{\"Set-key\":13}", SetterBean.class);
         assertEquals(13, bean.value);
@@ -189,7 +189,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
     public void testSimpleFields() throws Exception
     {
         // First serialize
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new PrefixStrategy());
         String json = mapper.writeValueAsString(new FieldBean(999));
         assertEquals("{\"Field-key\":999}", json);
@@ -202,7 +202,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
     public void testCStyleNaming() throws Exception
     {
         // First serialize
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new CStyleStrategy());
         String json = mapper.writeValueAsString(new PersonBean("Joe", "Sixpack", 42));
         assertEquals("{\"first_name\":\"Joe\",\"last_name\":\"Sixpack\",\"age\":42}", json);
@@ -216,7 +216,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
 
     public void testWithGetterAsSetter() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new CStyleStrategy());
         SetterlessWithValue input = new SetterlessWithValue().add(3);
         String json = mapper.writeValueAsString(input);
@@ -230,7 +230,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
 
     public void testLowerCase() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new LcStrategy());
 //        mapper.disable(DeserializationConfig.DeserializationFeature.USE_GETTERS_AS_SETTERS);
         RenamedCollectionBean result = mapper.readValue("{\"thevalues\":[\"a\"]}",
@@ -243,7 +243,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
     // @JsonNaming / [databind#45]
     public void testPerClassAnnotation() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new LcStrategy());
         BeanWithPrefixNames input = new BeanWithPrefixNames();
         String json = mapper.writeValueAsString(input);

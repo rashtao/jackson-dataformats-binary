@@ -157,7 +157,7 @@ public class TestJacksonAnnotationIntrospector
      */
     public void testSerializeDeserializeWithJaxbAnnotations() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         JacksonExample ex = new JacksonExample();
         QName qname = new QName("urn:hi", "hello");
@@ -183,7 +183,7 @@ public class TestJacksonAnnotationIntrospector
 
     public void testJsonTypeResolver() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JacksonAnnotationIntrospector ai = new JacksonAnnotationIntrospector();
         AnnotatedClass ac = AnnotatedClassResolver.resolveWithoutSuperTypes(mapper.getSerializationConfig(),
                 TypeResolverBean.class);
@@ -195,7 +195,7 @@ public class TestJacksonAnnotationIntrospector
 
     public void testEnumHandling() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new LcEnumIntrospector());
         assertEquals("\"value1\"", mapper.writeValueAsString(EnumExample.VALUE1));
         EnumExample result = mapper.readValue(quote("value1"), EnumExample.class);

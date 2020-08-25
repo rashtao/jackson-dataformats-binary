@@ -86,7 +86,7 @@ public class TestAbstractTypes extends BaseMapTest
 
     public void testCollectionDefaulting() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         // let's ensure we get hierarchic mapping
         mod.addAbstractTypeMapping(Collection.class, List.class);
@@ -98,7 +98,7 @@ public class TestAbstractTypes extends BaseMapTest
 
     public void testMapDefaultingBasic() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         // default is HashMap, so:
         mod.addAbstractTypeMapping(Map.class, TreeMap.class);
@@ -110,7 +110,7 @@ public class TestAbstractTypes extends BaseMapTest
     // [databind#700]
     public void testDefaultingRecursive() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
 
         // defaults: LinkedHashMap, ArrayList
@@ -138,7 +138,7 @@ public class TestAbstractTypes extends BaseMapTest
 
     public void testInterfaceDefaulting() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         // let's ensure we get hierarchic mapping
         mod.addAbstractTypeMapping(CharSequence.class, MyString.class);
@@ -150,7 +150,7 @@ public class TestAbstractTypes extends BaseMapTest
         // and ditto for POJOs
         mod = new SimpleModule();
         mod.addAbstractTypeMapping(Abstract.class, AbstractImpl.class);
-        mapper = new ObjectMapper()
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(mod);
         Abstract a = mapper.readValue("{}", Abstract.class);
         assertNotNull(a);

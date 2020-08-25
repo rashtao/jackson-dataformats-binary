@@ -68,7 +68,7 @@ public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
     // Baseline test to show how things should work
     public void testWithoutNamedParameters() throws Exception
     {
-        ObjectMapper sut = new ObjectMapper();
+        ObjectMapper sut = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         D d = D.make("abc:def");
 
@@ -82,7 +82,7 @@ public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
     // And then case that fails with [databind#1001]
     public void testWithNamedParameters() throws Exception
     {
-        ObjectMapper sut = new ObjectMapper()
+        ObjectMapper sut = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .setAnnotationIntrospector(new CreatorNameIntrospector());
 
         D d = D.make("abc:def");

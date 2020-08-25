@@ -115,7 +115,7 @@ public class TestAnnotationBundles extends com.fasterxml.jackson.databind.BaseMa
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testKeepAnnotationBundle() throws Exception
     {

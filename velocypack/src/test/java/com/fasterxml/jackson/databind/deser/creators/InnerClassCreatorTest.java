@@ -52,7 +52,7 @@ public class InnerClassCreatorTest extends BaseMapTest
         }
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     {
         MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }

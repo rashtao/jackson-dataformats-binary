@@ -178,7 +178,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void setUp() throws Exception
     {
         super.setUp();
-        _lcWithUndescoreMapper = new ObjectMapper();
+        _lcWithUndescoreMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         _lcWithUndescoreMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
     
@@ -282,7 +282,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     // [databind#428]
     public void testIssue428PascalWithOverrides() throws Exception
     {
-        String json = new ObjectMapper()
+        String json = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
                 .writeValueAsString(new Bean428());
         if (!json.contains(quote("fooBar"))) {
@@ -329,7 +329,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testSimpleKebabCase() throws Exception
     {
         final FirstNameBean input = new FirstNameBean("Bob");
-        ObjectMapper m = new ObjectMapper()
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
         assertEquals(aposToQuotes("{'first-name':'Bob'}"), m.writeValueAsString(input));
@@ -383,7 +383,7 @@ public class TestNamingStrategyStd extends BaseMapTest
      */
     public void testNamingWithObjectNode() throws Exception
     {
-        ObjectMapper m = new ObjectMapper()
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE);
         ClassWithObjectNodeField result =
             m.readValue(

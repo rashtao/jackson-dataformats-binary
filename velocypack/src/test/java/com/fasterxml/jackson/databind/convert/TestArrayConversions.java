@@ -17,7 +17,7 @@ public class TestArrayConversions
     final static String OVERFLOW_MSG_INT = "out of range of int";
     final static String OVERFLOW_MSG_LONG = "out of range of long";
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testNullXform() throws Exception
     {

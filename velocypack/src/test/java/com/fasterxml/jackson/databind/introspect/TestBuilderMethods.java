@@ -25,7 +25,7 @@ public class TestBuilderMethods extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimple()
     {

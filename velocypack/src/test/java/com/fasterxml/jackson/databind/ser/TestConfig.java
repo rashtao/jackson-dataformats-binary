@@ -48,7 +48,7 @@ public class TestConfig
     /**********************************************************
      */
 
-    final static ObjectMapper MAPPER = new ObjectMapper();
+    final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     /* Test to verify that we don't overflow number of features; if we
      * hit the limit, need to change implementation -- this test just
@@ -101,7 +101,7 @@ public class TestConfig
 
     public void testMisc()
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setDateFormat(null); // just to execute the code path
         assertNotNull(m.getSerializationConfig().toString()); // ditto
     }
@@ -136,7 +136,7 @@ public class TestConfig
      */
     public void testProviderConfig() throws Exception   
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         DefaultSerializerProvider prov = (DefaultSerializerProvider) mapper.getSerializerProvider();
         assertEquals(0, prov.cachedSerializersCount());
         // and then should get one constructed for:
@@ -178,7 +178,7 @@ public class TestConfig
 
         // and also with ObjectMapper itself
         sw = new StringWriter();
-        ObjectMapper m2 = new ObjectMapper();
+        ObjectMapper m2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m2.enable(SerializationFeature.INDENT_OUTPUT);
         jgen = m2.getFactory().createGenerator(sw);
         m2.writeValue(jgen, input);
@@ -196,7 +196,7 @@ public class TestConfig
 
     public void testDateFormatConfig() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         TimeZone tz1 = TimeZone.getTimeZone("America/Los_Angeles");
         TimeZone tz2 = TimeZone.getTimeZone("Central Standard Time");
 

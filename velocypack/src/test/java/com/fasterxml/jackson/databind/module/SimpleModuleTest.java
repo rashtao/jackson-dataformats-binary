@@ -202,7 +202,7 @@ public class SimpleModuleTest extends BaseMapTest
      */
     public void testWithoutModule()
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // first: serialization failure:
         try {
             mapper.writeValueAsString(new CustomBean("foo", 3));
@@ -229,7 +229,7 @@ public class SimpleModuleTest extends BaseMapTest
 
     public void testSimpleBeanSerializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addSerializer(new CustomBeanSerializer());
         mapper.registerModule(mod);
@@ -238,7 +238,7 @@ public class SimpleModuleTest extends BaseMapTest
 
     public void testSimpleEnumSerializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addSerializer(new SimpleEnumSerializer());
         // for fun, call "multi-module" registration
@@ -248,7 +248,7 @@ public class SimpleModuleTest extends BaseMapTest
 
     public void testSimpleInterfaceSerializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addSerializer(new BaseSerializer());
         // and another variant here too
@@ -266,7 +266,7 @@ public class SimpleModuleTest extends BaseMapTest
     
     public void testSimpleBeanDeserializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addDeserializer(CustomBean.class, new CustomBeanDeserializer());
         mapper.registerModule(mod);
@@ -277,7 +277,7 @@ public class SimpleModuleTest extends BaseMapTest
 
     public void testSimpleEnumDeserializer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addDeserializer(SimpleEnum.class, new SimpleEnumDeserializer());
         mapper.registerModule(mod);
@@ -297,7 +297,7 @@ public class SimpleModuleTest extends BaseMapTest
         mod2.setDeserializers(new SimpleDeserializers(desers));
         mod2.addSerializer(CustomBean.class, new CustomBeanSerializer());
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(mod1);
         mapper.registerModule(mod2);
         assertEquals(quote("b"), mapper.writeValueAsString(SimpleEnum.B));
@@ -305,7 +305,7 @@ public class SimpleModuleTest extends BaseMapTest
         assertSame(SimpleEnum.A, result);
 
         // also let's try it with different order of registration, just in case
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(mod2);
         mapper.registerModule(mod1);
         assertEquals(quote("b"), mapper.writeValueAsString(SimpleEnum.B));
@@ -318,7 +318,7 @@ public class SimpleModuleTest extends BaseMapTest
         MySimpleModule mod1 = new MySimpleModule("test1", Version.unknownVersion());
         AnotherSimpleModule mod2 = new AnotherSimpleModule("test2", Version.unknownVersion());
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         mapper.registerModule(mod1);
         mapper.registerModule(mod2);
@@ -329,7 +329,7 @@ public class SimpleModuleTest extends BaseMapTest
         assertTrue(registeredModuleIds.contains(mod2.getTypeId()));
 
         // 01-Jul-2019, [databind#2374]: verify empty list is fine
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertEquals(0, mapper.getRegisteredModuleIds().size());
     }
 
@@ -343,7 +343,7 @@ public class SimpleModuleTest extends BaseMapTest
     {
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.setMixInAnnotation(MixableBean.class, MixInForOrder.class);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(module);
         Map<String,Object> props = this.writeAndMap(mapper, new MixableBean());
         assertEquals(3, props.size());
@@ -355,14 +355,14 @@ public class SimpleModuleTest extends BaseMapTest
     public void testAccessToMapper() throws Exception
     {
         ContextVerifierModule module = new ContextVerifierModule();        
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(module);
     }
 
     // [databind#626]
     public void testMixIns626() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // no real annotations, but nominally add ones from 'String' to 'Object', just for testing
         mapper.registerModule(new TestModule626(Object.class, String.class));
         Class<?> found = mapper.findMixInClassFor(Object.class);

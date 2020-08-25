@@ -217,7 +217,7 @@ public class TestTypeModifiers extends BaseMapTest
      */
     public void testMapLikeTypeConstruction() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
 
         JavaType type = mapper.constructType(MyMapLikeType.class);
@@ -235,7 +235,7 @@ public class TestTypeModifiers extends BaseMapTest
     // NOTE: oddly enough, seems to ONLY fail 
     public void testTypeResolutionForRecursive() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule() {
             @Override
             public void setupModule(SetupContext context) {
@@ -247,7 +247,7 @@ public class TestTypeModifiers extends BaseMapTest
 
     public void testCollectionLikeTypeConstruction() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
 
         JavaType type = mapper.constructType(MyCollectionLikeType.class);
@@ -259,7 +259,7 @@ public class TestTypeModifiers extends BaseMapTest
 
     public void testCollectionLikeSerialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
         mapper.registerModule(new ModifierModule());
         assertEquals("[19]", mapper.writeValueAsString(new MyCollectionLikeType(19)));
@@ -267,7 +267,7 @@ public class TestTypeModifiers extends BaseMapTest
 
     public void testMapLikeSerialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
         mapper.registerModule(new ModifierModule());
         // Due to custom serializer, should get:
@@ -277,7 +277,7 @@ public class TestTypeModifiers extends BaseMapTest
 
     public void testCollectionLikeDeserialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
         mapper.registerModule(new ModifierModule());
         // !!! TBI
@@ -288,7 +288,7 @@ public class TestTypeModifiers extends BaseMapTest
 
     public void testMapLikeDeserialization() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
         mapper.registerModule(new ModifierModule());
         // !!! TBI

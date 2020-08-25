@@ -23,7 +23,7 @@ public class TypeCoercion1592Test extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testTypeCoercion1592() throws Exception
     {

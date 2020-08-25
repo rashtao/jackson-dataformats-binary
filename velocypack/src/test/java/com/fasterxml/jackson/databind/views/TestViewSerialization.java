@@ -181,7 +181,7 @@ public class TestViewSerialization
     // [JACKSON-868]
     public void test868() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         String json = mapper.writerWithView(OtherView.class).writeValueAsString(new Foo());
         assertEquals(json, "{}");

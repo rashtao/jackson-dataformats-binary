@@ -158,7 +158,7 @@ public class TestConversions extends BaseMapTest
     public void testTreeToValue() throws Exception
     {
         String JSON = "{\"leaf\":{\"value\":13}}";
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(Leaf.class, LeafMixIn.class);
         JsonNode root = mapper.readTree(JSON);
         // Ok, try converting to bean using two mechanisms
@@ -256,7 +256,7 @@ public class TestConversions extends BaseMapTest
     // [databind#232]
     public void testBigDecimalAsPlainStringTreeConversion() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
         Map<String, Object> map = new HashMap<String, Object>();
         String PI_STR = "3.00000000";

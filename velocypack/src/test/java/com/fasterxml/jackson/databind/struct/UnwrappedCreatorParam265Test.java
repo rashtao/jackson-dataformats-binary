@@ -69,7 +69,7 @@ public class UnwrappedCreatorParam265Test extends BaseMapTest
     public void testUnwrappedWithUnnamedCreatorParam() throws Exception
     {
         JPersonWithoutName person = new JPersonWithoutName("MyName", new JAddress("main street", "springfield", "WA"));
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // serialization should be fine as far as that goes
         String json = mapper.writeValueAsString(person);
 
@@ -87,7 +87,7 @@ public class UnwrappedCreatorParam265Test extends BaseMapTest
     public void testUnwrappedWithNamedCreatorParam() throws Exception
     {
         JPersonWithName person = new JPersonWithName("MyName", new JAddress("main street", "springfield", "WA"));
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // serialization should be fine as far as that goes
         String json = mapper.writeValueAsString(person);
         try {

@@ -189,7 +189,7 @@ public class MapKeySerializationTest extends BaseMapTest
     public void testBoth() throws IOException
     {
         // Let's NOT use shared one, to ensure caching starts from clean slate
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         final String value1 = mapper.writeValueAsString(new NotKarlBean());
         assertEquals("{\"map\":{\"Not Karl\":1}}", value1);
         final String value2 = mapper.writeValueAsString(new KarlBean());
@@ -200,7 +200,7 @@ public class MapKeySerializationTest extends BaseMapTest
     public void testCustomForEnum() throws IOException
     {
         // cannot use shared mapper as we are registering a module
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test");
         mod.addKeySerializer(ABC.class, new ABCKeySerializer());
         mapper.registerModule(mod);
@@ -211,7 +211,7 @@ public class MapKeySerializationTest extends BaseMapTest
 
     public void testCustomNullSerializers() throws IOException
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.getSerializerProvider().setNullKeySerializer(new NullKeySerializer("NULL-KEY"));
         mapper.getSerializerProvider().setNullValueSerializer(new NullValueSerializer("NULL"));
         Map<String,Integer> input = new HashMap<>();
@@ -229,7 +229,7 @@ public class MapKeySerializationTest extends BaseMapTest
         innerMap.put("one", "1");
         map.put(ABC.A, innerMap);
         outerMap.put(Outer.inner, map);
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test");
         mod.setMixInAnnotation(ABC.class, ABCMixin.class);
         mod.addKeySerializer(ABC.class, new ABCKeySerializer());
@@ -244,7 +244,7 @@ public class MapKeySerializationTest extends BaseMapTest
 
     public void testDefaultKeySerializer() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.getSerializerProvider().setDefaultKeySerializer(new DefaultKeySerializer());
         Map<String,String> map = new HashMap<String,String>();
         map.put("a", "b");
@@ -275,7 +275,7 @@ public class MapKeySerializationTest extends BaseMapTest
     public void testUnWrappedMapWithKeySerializer() throws Exception{
         SimpleModule mod = new SimpleModule("test");
         mod.addKeySerializer(ABC.class, new ABCKeySerializer());
-        final ObjectMapper mapper = new ObjectMapper()
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .registerModule(mod)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
@@ -292,7 +292,7 @@ public class MapKeySerializationTest extends BaseMapTest
 
     // [databind#838]
     public void testUnWrappedMapWithDefaultType() throws Exception{
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test");
         mod.addKeySerializer(ABC.class, new ABCKeySerializer());
         mapper.registerModule(mod);

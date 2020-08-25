@@ -20,7 +20,7 @@ public class ArrayDelegatorCreatorForCollectionTest extends BaseMapTest
 
     public void testUnmodifiable() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Class<?> unmodSetType = Collections.unmodifiableSet(Collections.<String>emptySet()).getClass();
         mapper.addMixIn(unmodSetType, UnmodifiableSetMixin.class);
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,

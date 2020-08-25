@@ -33,7 +33,7 @@ public class TypeAliasesTest
     public void testAliasResolutionIssue743() throws Exception
     {
         String s3 = "{\"dataObj\" : [ \"one\", \"two\", \"three\" ] }";
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
    
         Child.ChildData d = m.readValue(s3, Child.ChildData.class);
         assertNotNull(d.dataObj);

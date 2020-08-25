@@ -17,7 +17,7 @@ public class TestSerializerProvider
     
     public void testFindExplicit() throws JsonMappingException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SerializationConfig config = mapper.getSerializationConfig();
         SerializerFactory f = new BeanSerializerFactory(null);
         DefaultSerializerProvider prov = new DefaultSerializerProvider.Impl().createInstance(config, f);

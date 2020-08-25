@@ -83,7 +83,7 @@ public class ExternalTypeIdWithCreatorTest extends BaseMapTest
     /********************************************************************** 
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#1198]
     public void testFails() throws Exception {

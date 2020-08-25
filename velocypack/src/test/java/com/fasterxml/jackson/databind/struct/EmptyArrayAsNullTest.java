@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.*;
  */
 public class EmptyArrayAsNullTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     private final ObjectReader DEFAULT_READER = MAPPER.reader();
     private final ObjectReader READER_WITH_ARRAYS = DEFAULT_READER
             .with(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);

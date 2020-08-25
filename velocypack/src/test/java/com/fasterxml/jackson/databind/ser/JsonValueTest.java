@@ -199,7 +199,7 @@ public class JsonValueTest
     /*********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleMethodJsonValue() throws Exception
     {
@@ -289,7 +289,7 @@ public class JsonValueTest
         assertEquals(quote("value"), MAPPER.writeValueAsString(INPUT));
 
         // but custom serializer should override it
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule()
             .addSerializer(Bean838.class, new Bean838Serializer())
             );

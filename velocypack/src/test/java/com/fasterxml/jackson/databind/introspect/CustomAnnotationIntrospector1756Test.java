@@ -108,7 +108,7 @@ public class CustomAnnotationIntrospector1756Test extends BaseMapTest
     {
         Issue1756Module m = new Issue1756Module();
         m.addAbstractTypeMapping(Foobar.class, FoobarImpl.class);
-        final ObjectMapper mapper = new ObjectMapper()
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .registerModule(m);
 
         final Foobar foobar = mapper.readValue(aposToQuotes("{'bar':'bar', 'foo':'foo'}"),

@@ -53,7 +53,7 @@ public class TestRootName extends BaseMapTest
 
     public void testReconfiguringOfWrapping() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // default: no wrapping
         final Bean input = new Bean();
         String jsonUnwrapped = mapper.writeValueAsString(input);
@@ -82,7 +82,7 @@ public class TestRootName extends BaseMapTest
     // [JACKSON-764]
     public void testRootUsingExplicitConfig() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ObjectWriter writer = mapper.writer().withRootName("wrapper");
         String json = writer.writeValueAsString(new Bean());
         assertEquals("{\"wrapper\":{\"a\":3}}", json);
@@ -124,7 +124,7 @@ public class TestRootName extends BaseMapTest
     
     private ObjectMapper rootMapper()
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
         mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
         return mapper;

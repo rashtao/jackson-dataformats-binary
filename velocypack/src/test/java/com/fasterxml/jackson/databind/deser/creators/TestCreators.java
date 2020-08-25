@@ -297,7 +297,7 @@ public class TestCreators
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleConstructor() throws Exception
     {
@@ -436,7 +436,7 @@ public class TestCreators
 
     public void testFactoryCreatorWithMixin() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(CreatorBean.class, MixIn.class);
         CreatorBean bean = m.readValue
             ("{ \"a\" : \"xyz\", \"x\" : 12 }", CreatorBean.class);
@@ -446,7 +446,7 @@ public class TestCreators
 
     public void testFactoryCreatorWithRenamingMixin() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(FactoryBean.class, FactoryBeanMixIn.class);
         // override changes property name from "f" to "mixed"
         FactoryBean bean = m.readValue("{ \"mixed\" :  20.5 }", FactoryBean.class);

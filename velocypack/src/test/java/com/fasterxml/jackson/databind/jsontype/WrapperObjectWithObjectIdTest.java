@@ -73,7 +73,7 @@ public class WrapperObjectWithObjectIdTest extends BaseMapTest
         comp.addComputer(new DesktopComputer("computer-2", "Pattaya"));
         comp.addComputer(new LaptopComputer("computer-3", "Apple"));
 
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         String json = mapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsString(comp);

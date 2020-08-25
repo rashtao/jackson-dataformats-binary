@@ -17,7 +17,7 @@ public class UnknownSubClassTest extends BaseMapTest
     
     public void testUnknownClassAsSubtype() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
         BaseWrapper w = mapper.readValue(aposToQuotes
                 ("{'value':{'clazz':'com.foobar.Nothing'}}'"),

@@ -69,7 +69,7 @@ public class RecursiveTypeTest extends BaseMapTest
         public String type;
     }
     
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#938]
     public void testRecursivePair() throws Exception

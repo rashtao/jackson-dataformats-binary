@@ -44,7 +44,7 @@ public class ObjectIdReordering1388Test extends BaseMapTest
 
     public void testDeserializationFinalClassJSOG() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         final UUID id = UUID.fromString("a59aa02c-fe3c-43f8-9b5a-5fe01878a818");
         final NamedThing thing = new NamedThing(id, "Hello");
 

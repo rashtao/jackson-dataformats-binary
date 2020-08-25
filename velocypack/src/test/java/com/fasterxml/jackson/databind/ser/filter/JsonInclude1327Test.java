@@ -33,7 +33,7 @@ public class JsonInclude1327Test
 
     // for [databind#1327]
     public void testClassDefaultsForEmpty() throws Exception {
-        ObjectMapper om = new ObjectMapper();
+        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         final String jsonString = om.writeValueAsString(new Issue1327BeanEmpty());
@@ -44,7 +44,7 @@ public class JsonInclude1327Test
     }
 
     public void testClassDefaultsForAlways() throws Exception {
-        ObjectMapper om = new ObjectMapper();
+        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         final String jsonString = om.writeValueAsString(new Issue1327BeanAlways());

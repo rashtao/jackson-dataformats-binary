@@ -20,7 +20,7 @@ public class TestUnwrappedRecursive383 extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testRecursiveUsage() throws Exception
     {

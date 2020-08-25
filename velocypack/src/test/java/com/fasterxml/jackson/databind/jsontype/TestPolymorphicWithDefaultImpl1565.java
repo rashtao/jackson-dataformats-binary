@@ -73,7 +73,7 @@ public class TestPolymorphicWithDefaultImpl1565 extends BaseMapTest
     /**********************************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#1565]
     public void testIncompatibleDefaultImpl1565() throws Exception

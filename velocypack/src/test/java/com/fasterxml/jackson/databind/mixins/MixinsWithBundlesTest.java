@@ -36,7 +36,7 @@ public class MixinsWithBundlesTest extends BaseMapTest
     }    
     public void testMixinWithBundles() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper().addMixIn(Foo.class, FooMixin.class);
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().addMixIn(Foo.class, FooMixin.class);
         String result = mapper.writeValueAsString(new Foo("result"));
         assertEquals("{\"bar\":\"result\"}", result);
     }

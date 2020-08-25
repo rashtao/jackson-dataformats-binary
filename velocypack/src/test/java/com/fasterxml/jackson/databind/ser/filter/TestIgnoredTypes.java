@@ -82,7 +82,7 @@ public class TestIgnoredTypes extends BaseMapTest
     public void testSingleWithMixins() throws Exception {
         SimpleModule module = new SimpleModule();
         module.setMixInAnnotation(Person.class, PersonMixin.class);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(module);
         PersonWrapper input = new PersonWrapper();
         String json = mapper.writeValueAsString(input);
@@ -92,7 +92,7 @@ public class TestIgnoredTypes extends BaseMapTest
     public void testListWithMixins() throws Exception {
         SimpleModule module = new SimpleModule();
         module.setMixInAnnotation(Person.class, PersonMixin.class);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(module);
         List<Person> persons = new ArrayList<Person>();
         persons.add(new Person("Bob"));

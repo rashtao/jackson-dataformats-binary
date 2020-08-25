@@ -123,7 +123,7 @@ public class TestBasicAnnotations
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testSimpleSetter() throws Exception
     {
@@ -205,7 +205,7 @@ public class TestBasicAnnotations
 
     public void testEnumsWhenDisabled() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertEquals(Alpha.B, m.readValue(quote("B"), Alpha.class));
 
         m = jsonMapperBuilder()

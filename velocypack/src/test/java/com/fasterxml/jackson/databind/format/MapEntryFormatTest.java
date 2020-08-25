@@ -169,7 +169,7 @@ public class MapEntryFormatTest extends BaseMapTest
     // [databind#1895]
     public void testDefaultShapeOverride() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Map.Entry.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.OBJECT));
         Map.Entry<String,String> input = new BeanWithMapEntry("foo", "bar").entry;

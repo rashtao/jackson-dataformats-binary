@@ -264,7 +264,7 @@ public class ProblemHandlerTest extends BaseMapTest
         assertEquals(SingleValuedEnum.A, result);
 
         // also, write [databind#1629] try this
-        mapper = new ObjectMapper()
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .addHandler(new WeirdStringHandler(null));
         UUID result2 = mapper.readValue(quote("not a uuid!"), UUID.class);
         assertNull(result2);

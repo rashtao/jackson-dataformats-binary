@@ -70,7 +70,7 @@ public class TestRootType
     /**********************************************************
      */
 
-    final ObjectMapper WRAP_ROOT_MAPPER = new ObjectMapper();
+    final ObjectMapper WRAP_ROOT_MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     {
         WRAP_ROOT_MAPPER.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
     }

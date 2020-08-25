@@ -21,7 +21,7 @@ public class TestBlocking
      */
     public void testEagerAdvance() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonParser jp = createParserUsingReader("[ 1  ");
         assertToken(JsonToken.START_ARRAY, jp.nextToken());
         assertToken(JsonToken.VALUE_NUMBER_INT, jp.nextToken());

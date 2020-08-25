@@ -44,7 +44,7 @@ public class TestAutoDetect
 
     public void testDefaults() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // by default, only public fields and getters are detected
         assertEquals("{\"p1\":\"public\"}",
                      m.writeValueAsString(new FieldBean()));
@@ -54,7 +54,7 @@ public class TestAutoDetect
 
     public void testProtectedViaAnnotations() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         Map<String,Object> result = writeAndMap(m, new ProtFieldBean());
         assertEquals(2, result.size());
@@ -71,7 +71,7 @@ public class TestAutoDetect
 
     public void testPrivateUsingGlobals() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         VisibilityChecker<?> vc = m.getVisibilityChecker();
         vc = vc.withFieldVisibility(JsonAutoDetect.Visibility.ANY);
         m.setVisibility(vc);
@@ -82,7 +82,7 @@ public class TestAutoDetect
         assertEquals("protected", result.get("p2"));
         assertEquals("private", result.get("p3"));
 
-        m = new ObjectMapper();
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         vc = m.getVisibilityChecker();
         vc = vc.withGetterVisibility(JsonAutoDetect.Visibility.ANY);
         m.setVisibility(vc);
@@ -96,7 +96,7 @@ public class TestAutoDetect
     // [JACKSON-621]
     public void testBasicSetup() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         VisibilityChecker<?> vc = m.getVisibilityChecker();
         vc = vc.with(JsonAutoDetect.Visibility.ANY);
         m.setVisibility(vc);
@@ -111,7 +111,7 @@ public class TestAutoDetect
     // [JACKSON-595]
     public void testMapperShortcutMethods() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
         Map<String,Object> result = writeAndMap(m, new FieldBean());

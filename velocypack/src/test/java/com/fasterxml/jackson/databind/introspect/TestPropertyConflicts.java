@@ -125,7 +125,7 @@ public class TestPropertyConflicts extends BaseMapTest
     
     public void testInferredNameConflictsWithSetters() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new InferingIntrospector());
         Infernal inf = mapper.readValue(aposToQuotes("{'stuff':'Bob'}"), Infernal.class);
         assertNotNull(inf);

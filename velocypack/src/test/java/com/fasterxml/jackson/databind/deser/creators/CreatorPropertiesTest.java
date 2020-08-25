@@ -64,7 +64,7 @@ public class CreatorPropertiesTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#905]
     public void testCreatorPropertiesAnnotation() throws Exception

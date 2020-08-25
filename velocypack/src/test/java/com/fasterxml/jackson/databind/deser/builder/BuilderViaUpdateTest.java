@@ -48,7 +48,7 @@ public class BuilderViaUpdateTest extends BaseMapTest
     /*****************************************************
      */
 
-    private final static ObjectMapper MAPPER = new ObjectMapper();
+    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // Tests where result value is passed as thing to update
     public void testBuilderUpdateWithValue() throws Exception

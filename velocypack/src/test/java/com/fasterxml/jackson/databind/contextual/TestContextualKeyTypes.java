@@ -90,7 +90,7 @@ public class TestContextualKeyTypes extends BaseMapTest
 
     public void testSimpleKeySer() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addKeySerializer(String.class, new ContextualKeySerializer("prefix"));
         mapper.registerModule(module);
@@ -109,7 +109,7 @@ public class TestContextualKeyTypes extends BaseMapTest
 
     public void testSimpleKeyDeser() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addKeyDeserializer(String.class, new ContextualDeser("???"));
         mapper.registerModule(module);

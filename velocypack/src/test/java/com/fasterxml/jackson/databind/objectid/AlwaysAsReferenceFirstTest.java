@@ -60,7 +60,7 @@ public class AlwaysAsReferenceFirstTest extends BaseMapTest
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#1255]
     public void testIssue1255() throws Exception

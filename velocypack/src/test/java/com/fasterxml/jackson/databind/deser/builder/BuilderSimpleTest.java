@@ -275,7 +275,7 @@ public class BuilderSimpleTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testSimple() throws Exception
     {
@@ -305,7 +305,7 @@ public class BuilderSimpleTest extends BaseMapTest
         }
 
         // but with config overrides should pass
-        ObjectMapper ignorantMapper = new ObjectMapper();
+        ObjectMapper ignorantMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ignorantMapper.configOverride(SimpleBuilderXY.class)
                 .setIgnorals(JsonIgnoreProperties.Value.forIgnoreUnknown(true));
         o = ignorantMapper.readValue(json, ValueClassXY.class);

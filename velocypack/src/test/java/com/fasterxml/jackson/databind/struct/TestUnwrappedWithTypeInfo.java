@@ -57,7 +57,7 @@ public class TestUnwrappedWithTypeInfo extends BaseMapTest
 	    inner.setP2("202");
 	    outer.setInner(inner);
 
-	    ObjectMapper mapper = new ObjectMapper();
+	    ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
 	    try {
 	        mapper.writeValueAsString(outer);
@@ -76,7 +76,7 @@ public class TestUnwrappedWithTypeInfo extends BaseMapTest
 		inner.setP2("202");
 		outer.setInner(inner);
 
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 		mapper = mapper.disable(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS);
 
 		String json = mapper.writeValueAsString(outer);

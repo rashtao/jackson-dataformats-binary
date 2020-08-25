@@ -43,7 +43,7 @@ public class SerializationFeaturesTest
     @SuppressWarnings("resource")
     public void testCloseCloseable() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // default should be disabled:
         CloseableBean bean = new CloseableBean();
         m.writeValueAsString(bean);
@@ -65,7 +65,7 @@ public class SerializationFeaturesTest
     public void testCharArrays() throws IOException
     {
         char[] chars = new char[] { 'a','b','c' };
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // default: serialize as Strings
         assertEquals(quote("abc"), m.writeValueAsString(chars));
         
@@ -77,7 +77,7 @@ public class SerializationFeaturesTest
     // Test for [JACKSON-401]
     public void testFlushingAutomatic() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertTrue(mapper.getSerializationConfig().isEnabled(SerializationFeature.FLUSH_AFTER_WRITE_VALUE));
         // default is to flush after writeValue()
         StringWriter sw = new StringWriter();
@@ -98,7 +98,7 @@ public class SerializationFeaturesTest
     public void testFlushingNotAutomatic() throws IOException
     {
         // but should not occur if configured otherwise
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, false);
         StringWriter sw = new StringWriter();
         JsonGenerator g = mapper.getFactory().createGenerator(sw);

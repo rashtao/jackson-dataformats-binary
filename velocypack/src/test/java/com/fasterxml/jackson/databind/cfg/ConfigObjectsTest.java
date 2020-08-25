@@ -12,7 +12,7 @@ public class ConfigObjectsTest extends BaseMapTest
 
     public void testSubtypeResolver() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SubtypeResolver res = mapper.getSubtypeResolver();
         assertTrue(res instanceof StdSubtypeResolver);
 

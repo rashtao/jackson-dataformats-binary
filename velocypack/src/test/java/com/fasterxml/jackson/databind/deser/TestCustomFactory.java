@@ -99,7 +99,7 @@ public class TestCustomFactory
     public void testCustomBeanDeserializer() throws Exception
     {
 
-        final ObjectMapper map = new ObjectMapper();
+        final ObjectMapper map = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = "{\"beans\":[{\"c\":{\"a\":10,\"b\":20},\"d\":\"hello, tatu\"}]}";
         TestBeans beans = map.readValue(json, TestBeans.class);
 

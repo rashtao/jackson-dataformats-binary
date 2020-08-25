@@ -128,7 +128,7 @@ public class TestDefaultForScalars
         mapData.put("longAsField", data);
 
         // Configure Jackson to preserve types
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         StdTypeResolverBuilder resolver = new StdTypeResolverBuilder();
         resolver.init(JsonTypeInfo.Id.CLASS, null);
         resolver.inclusion(JsonTypeInfo.As.PROPERTY);

@@ -121,7 +121,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testBeanUpdate() throws Exception
     {
@@ -220,7 +220,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     // [databind#744]
     public void testIssue744() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(DataA.class, new DataADeserializer());
         mapper.registerModule(module);

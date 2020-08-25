@@ -12,7 +12,7 @@ public class KeySerializers1679Test extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#1679]
     public void testRecursion1679() throws Exception

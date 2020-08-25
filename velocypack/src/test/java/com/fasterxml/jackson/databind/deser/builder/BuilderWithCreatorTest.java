@@ -138,7 +138,7 @@ public class BuilderWithCreatorTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testWithPropertiesCreator() throws Exception
     {

@@ -50,7 +50,7 @@ public class TestReadJsonSchema
      */
     public void testDeserializeSimple() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonSchema schema = mapper.generateJsonSchema(Schemable.class);
         assertNotNull(schema);
 

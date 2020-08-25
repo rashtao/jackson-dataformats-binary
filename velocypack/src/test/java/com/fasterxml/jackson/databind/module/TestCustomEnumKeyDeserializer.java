@@ -168,10 +168,10 @@ public class TestCustomEnumKeyDeserializer extends BaseMapTest
     
     // Test passing with the fix
     public void testWithEnumKeys() throws Exception {
-        ObjectMapper plainObjectMapper = new ObjectMapper();
+        ObjectMapper plainObjectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonNode tree = plainObjectMapper.readTree(aposToQuotes("{'red' : [ 'a', 'b']}"));
 
-        ObjectMapper fancyObjectMapper = new ObjectMapper().registerModule(new TestEnumModule());
+        ObjectMapper fancyObjectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().registerModule(new TestEnumModule());
 
         // this line is might throw with Jackson 2.6.2.
         Map<TestEnum, Set<String>> map = fancyObjectMapper.convertValue(tree,
@@ -184,7 +184,7 @@ public class TestCustomEnumKeyDeserializer extends BaseMapTest
 //    public void testWithTree749() throws Exception
     public void withTree749() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper().registerModule(new TestEnumModule());
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().registerModule(new TestEnumModule());
 
         Map<KeyEnum, Object> inputMap = new LinkedHashMap<KeyEnum, Object>();
         Map<TestEnum, Map<String, String>> replacements = new LinkedHashMap<TestEnum, Map<String, String>>();
@@ -213,7 +213,7 @@ public class TestCustomEnumKeyDeserializer extends BaseMapTest
                 return SuperTypeEnum.valueOf(p.getText());
             }
         });
-        ObjectMapper mapper = new ObjectMapper()
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(simpleModule);
 
         SuperType superType = mapper.readValue("{\"someMap\": {\"FOO\": \"bar\"}}",
@@ -260,7 +260,7 @@ public class TestCustomEnumKeyDeserializer extends BaseMapTest
                 };
             }
         });
-        ObjectMapper mapper = new ObjectMapper()
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(module);
 
         // First, enum value as is

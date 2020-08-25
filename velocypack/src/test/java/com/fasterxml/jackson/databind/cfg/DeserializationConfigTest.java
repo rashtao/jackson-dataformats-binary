@@ -9,11 +9,11 @@ import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
 
 public class DeserializationConfigTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testFeatureDefaults()
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         DeserializationConfig cfg = m.getDeserializationConfig();
 
         // Expected defaults:
@@ -97,7 +97,7 @@ public class DeserializationConfigTest extends BaseMapTest
 
     public void testOverrideIntrospectors()
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         DeserializationConfig cfg = m.getDeserializationConfig();
         // and finally, ensure we could override introspectors
         cfg = cfg.with((ClassIntrospector) null); // no way to verify tho

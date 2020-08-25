@@ -46,7 +46,7 @@ public class TestCyclicTypes
     {
         Bean last = new Bean(null, "last");
         Bean first = new Bean(last, "first");
-        Map<String,Object> map = writeAndMap(new ObjectMapper(), first);
+        Map<String,Object> map = writeAndMap(new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper(), first);
 
         assertEquals(2, map.size());
         assertEquals("first", map.get("name"));
@@ -67,7 +67,7 @@ public class TestCyclicTypes
         Bean selfRef = new Bean(null, "self-refs");
         Bean first = new Bean(selfRef, "first");
         selfRef.assignNext(selfRef);
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Bean[] wrapper = new Bean[] { first };
         try {
             writeAndMap(m, wrapper);

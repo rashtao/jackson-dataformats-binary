@@ -37,7 +37,7 @@ public class TypeResolverTest extends BaseMapTest
 
     public static void testSubtypeResolution() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleAbstractTypeResolver resolver = new SimpleAbstractTypeResolver();
         resolver.addMapping(Map.class, MyMap.class);
 

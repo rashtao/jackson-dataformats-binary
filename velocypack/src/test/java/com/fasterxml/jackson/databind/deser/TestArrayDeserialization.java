@@ -140,7 +140,7 @@ public class TestArrayDeserialization
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testUntypedArray() throws Exception
     {
@@ -188,7 +188,7 @@ public class TestArrayDeserialization
     // [JACKSON-620]: allow "" to mean 'null' for Arrays, List and Maps
     public void testFromEmptyString() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         assertNull(m.readValue(quote(""), Object[].class));
         assertNull( m.readValue(quote(""), String[].class));
@@ -198,7 +198,7 @@ public class TestArrayDeserialization
     // [JACKSON-620]: allow "" to mean 'null' for Arrays, List and Maps
     public void testFromEmptyString2() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         m.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         Product p = m.readValue("{\"thelist\":\"\"}", Product.class);
@@ -575,7 +575,7 @@ public class TestArrayDeserialization
 
     public void testCustomDeserializers() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule testModule = new SimpleModule("test", Version.unknownVersion());
         testModule.addDeserializer(NonDeserializable[].class, new CustomNonDeserArrayDeserializer());
         mapper.registerModule(testModule);

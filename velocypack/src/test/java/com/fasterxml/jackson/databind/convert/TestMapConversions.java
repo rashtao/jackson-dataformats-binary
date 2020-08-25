@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.util.StdConverter;
 public class TestMapConversions
     extends com.fasterxml.jackson.databind.BaseMapTest
 {
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     enum AB { A, B; }
 
@@ -92,7 +92,7 @@ public class TestMapConversions
     public void testIssue287() throws Exception
     {
         // use local instance to ensure no caching affects it:
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         final Request request = new Request();
         final String retString = mapper.writeValueAsString(request);
         assertEquals("{\"hello\":{\"value\":1}}",retString);

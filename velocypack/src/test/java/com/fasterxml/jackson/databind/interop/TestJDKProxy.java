@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.*;
 // mostly for [Issue#57]
 public class TestJDKProxy extends BaseMapTest
 {
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public interface IPlanet {
         String getName();

@@ -138,7 +138,7 @@ public class TestDefaultForObject
     public void testAbstractBean() throws Exception
     {
         // First, let's verify that we'd fail without enabling default type info
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AbstractBean[] input = new AbstractBean[] { new StringBean("xyz") };
         String serial = m.writeValueAsString(input);
         try {
@@ -412,7 +412,7 @@ public class TestDefaultForObject
         // "[["org.codehaus.jackson.map.jsontype.TestDefaultForObject$StringBean",{"name":"abc"}]]")
 
         // note: must have default mapper, default typer NOT enabled (to get 'plain' map)
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         List<Object> list = m.readValue(str, List.class);
         assertEquals(1, list.size()); // no type for main List, just single entry
         Object entryOb = list.get(0);

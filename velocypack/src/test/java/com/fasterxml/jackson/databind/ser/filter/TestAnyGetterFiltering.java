@@ -85,7 +85,7 @@ public class TestAnyGetterFiltering extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testAnyGetterFiltering() throws Exception
     {

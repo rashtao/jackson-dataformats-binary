@@ -40,7 +40,7 @@ public class EnumAltIdTest extends BaseMapTest
     /**********************************************************
      */
 
-    protected final ObjectMapper MAPPER = new ObjectMapper();
+    protected final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     protected final ObjectMapper MAPPER_IGNORE_CASE = jsonMapperBuilder()
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
             .build();

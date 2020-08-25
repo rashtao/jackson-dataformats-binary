@@ -36,7 +36,7 @@ public class TestTypeFactoryWithClassLoader {
   
   @Before
   public void before() {
-      mapper = new ObjectMapper();
+      mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
   }
 
   @After

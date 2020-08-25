@@ -19,7 +19,7 @@ public class ExceptionSerializableTest1195 extends BaseMapTest
         public List<ClassToRead> classesToRead;
     }
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testExceptionSerializabilitySimple() throws Exception
     {

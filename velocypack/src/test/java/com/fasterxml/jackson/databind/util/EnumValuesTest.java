@@ -22,7 +22,7 @@ public class EnumValuesTest extends BaseMapTest
         public String toString() { return desc; }
     }
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     @SuppressWarnings("unchecked")
     public void testConstructFromName() {

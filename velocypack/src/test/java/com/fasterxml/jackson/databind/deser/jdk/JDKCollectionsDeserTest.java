@@ -27,7 +27,7 @@ public class JDKCollectionsDeserTest extends BaseMapTest
     /**********************************************************************
      */
 
-    private final static ObjectMapper MAPPER = new ObjectMapper();
+    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     // And then a round-trip test for singleton collections
     public void testSingletonCollections() throws Exception

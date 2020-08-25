@@ -199,7 +199,7 @@ public class JSOGDeserialize622Test extends BaseMapTest
     /**********************************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     // Basic for [databind#622]
     public void testStructJSOGRef() throws Exception

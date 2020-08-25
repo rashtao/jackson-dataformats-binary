@@ -30,7 +30,7 @@ public class TestStringConversions
         public StringWrapperWithConvert(String v) { value = v; }
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testSimple()
     {

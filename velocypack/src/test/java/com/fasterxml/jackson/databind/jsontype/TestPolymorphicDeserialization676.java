@@ -76,7 +76,7 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
      * deserialization will fail at complex type.
      */
     public void testDeSerFail() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         MapContainer deserMapBad = createDeSerMapContainer(originMap, mapper);
         assertEquals(originMap, deserMapBad);
@@ -85,7 +85,7 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
     }
 
     public void testDeSerCorrect() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("1", 1);

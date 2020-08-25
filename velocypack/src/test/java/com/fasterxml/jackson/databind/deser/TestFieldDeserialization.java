@@ -93,7 +93,7 @@ public class TestFieldDeserialization
 
     public void testSimpleAutoDetect() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleFieldBean result = m.readValue("{ \"x\" : -13 }",
                                            SimpleFieldBean.class);
         assertEquals(-13, result.x);
@@ -102,7 +102,7 @@ public class TestFieldDeserialization
 
     public void testSimpleAnnotation() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleFieldBean2 bean = m.readValue("{ \"values\" : [ \"x\", \"y\" ] }",
                 SimpleFieldBean2.class);
         String[] values = bean.values;
@@ -114,7 +114,7 @@ public class TestFieldDeserialization
 
     public void testNoAutoDetect() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         NoAutoDetectBean bean = m.readValue("{ \"z\" : 7 }",
                                             NoAutoDetectBean.class);
         assertEquals(7, bean._z);
@@ -122,7 +122,7 @@ public class TestFieldDeserialization
 
     public void testTypeAnnotation() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AbstractWrapper w = m.readValue("{ \"value\" : \"abc\" }",
                                         AbstractWrapper.class);
         Abstract bean = w.value;
@@ -134,7 +134,7 @@ public class TestFieldDeserialization
     public void testFailureDueToDups() throws Exception
     {
         try {
-            writeAndMap(new ObjectMapper(), new DupFieldBean());
+            writeAndMap(new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper(), new DupFieldBean());
         } catch (JsonMappingException e) {
             verifyException(e, "Multiple fields representing property");
         }
@@ -143,7 +143,7 @@ public class TestFieldDeserialization
     public void testFailureDueToDups2() throws Exception
     {
         try {
-            writeAndMap(new ObjectMapper(), new DupFieldBean2());
+            writeAndMap(new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper(), new DupFieldBean2());
         } catch (JsonMappingException e) {
             verifyException(e, "Multiple fields representing property");
         }
@@ -152,7 +152,7 @@ public class TestFieldDeserialization
     // For [JACKSON-226], acceptable field overrides
     public void testOkFieldOverride() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         OkDupFieldBean result = m.readValue("{ \"x\" : 1, \"y\" : 2 }",
                 OkDupFieldBean.class);
         assertEquals(1, result.myX);

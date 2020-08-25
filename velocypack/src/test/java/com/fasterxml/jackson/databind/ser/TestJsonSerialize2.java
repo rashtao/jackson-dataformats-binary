@@ -117,7 +117,7 @@ public class TestJsonSerialize2
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     // test value annotation applied to List value class
     public void testSerializedAsListWithClassAnnotations() throws IOException
@@ -138,7 +138,7 @@ public class TestJsonSerialize2
     // test Serialization annotation with List
     public void testSerializedAsListWithClassSerializer() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleValueListWithSerializer list = new SimpleValueListWithSerializer();
         list.add(new ActualValue("foo"));
         assertEquals("[\"value foo\"]", m.writeValueAsString(list));
@@ -179,7 +179,7 @@ public class TestJsonSerialize2
     public void testEmptyInclusionContainers() throws IOException
     {
         ObjectMapper defMapper = MAPPER;
-        ObjectMapper inclMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        ObjectMapper inclMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         ListWrapper<String> list = new ListWrapper<String>();
         assertEquals("{\"list\":[]}", defMapper.writeValueAsString(list));

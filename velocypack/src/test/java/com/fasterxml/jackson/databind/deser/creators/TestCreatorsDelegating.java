@@ -131,7 +131,7 @@ public class TestCreatorsDelegating extends BaseMapTest
     // As per [JACKSON-711]: should also work with delegate model (single non-annotated arg)
     public void testWithCtorAndDelegate() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setInjectableValues(new InjectableValues.Std()
             .addValue(String.class, "Pooka")
             );
@@ -147,7 +147,7 @@ public class TestCreatorsDelegating extends BaseMapTest
 
     public void testWithFactoryAndDelegate() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setInjectableValues(new InjectableValues.Std()
             .addValue(String.class, "Fygar")
             );

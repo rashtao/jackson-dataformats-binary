@@ -341,7 +341,7 @@ public class NumberNodesTest extends NodeTestBase
         n = BigIntegerNode.valueOf(maxLong);
         assertEquals(Long.MAX_VALUE, n.longValue());
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonNode n2 = mapper.readTree(maxLong.toString());
         assertEquals(Long.MAX_VALUE, n2.longValue());
 
@@ -363,7 +363,7 @@ public class NumberNodesTest extends NodeTestBase
 
     public void testBigDecimalAsPlain() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper()
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
                 .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
         final String INPUT = "{\"x\":1e2}";

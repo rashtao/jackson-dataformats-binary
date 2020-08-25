@@ -15,7 +15,7 @@ public class TestVersions extends BaseMapTest
 {
     public void testMapperVersions()
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertVersion(mapper);
         assertVersion(mapper.reader());
         assertVersion(mapper.writer());

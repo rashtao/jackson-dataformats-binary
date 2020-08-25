@@ -84,7 +84,7 @@ public class ProblemHandlerUnknownTypeId2221Test extends BaseMapTest
 );
 
     public void testWithDeserializationProblemHandler() throws Exception {
-        final ObjectMapper mapper = new ObjectMapper()
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance);
         mapper.addHandler(new DeserializationProblemHandler() {
             @Override
@@ -99,7 +99,7 @@ public class ProblemHandlerUnknownTypeId2221Test extends BaseMapTest
     }
 
     public void testWithDisabledFAIL_ON_INVALID_SUBTYPE() throws Exception {
-        final ObjectMapper mapper = new ObjectMapper()
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE)
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
         ;

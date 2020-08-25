@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class TestSimpleTypes
     extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testBoolean() throws Exception
     {

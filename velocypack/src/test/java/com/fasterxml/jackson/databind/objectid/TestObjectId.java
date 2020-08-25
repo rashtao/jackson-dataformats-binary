@@ -124,7 +124,7 @@ public class TestObjectId extends BaseMapTest
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testColumnMetadata() throws Exception
     {
@@ -167,7 +167,7 @@ public class TestObjectId extends BaseMapTest
 
     public void testObjectAndTypeId() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         Bar inputRoot = new Bar();
         Foo inputChild = new Foo();

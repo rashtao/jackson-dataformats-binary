@@ -70,7 +70,7 @@ public class TestTypedArraySerialization
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testListWithPolymorphic() throws Exception
     {
@@ -126,7 +126,7 @@ public class TestTypedArraySerialization
 
     public void testIntArray() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(int[].class, WrapperMixIn.class);
         int[] input = new int[] { 1, 2, 3 };
         String clsName = int[].class.getName();

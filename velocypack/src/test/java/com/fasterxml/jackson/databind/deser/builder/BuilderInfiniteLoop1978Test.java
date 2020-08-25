@@ -88,7 +88,7 @@ public class BuilderInfiniteLoop1978Test extends BaseMapTest
     public void testInfiniteLoop1978() throws Exception
     {
         String json = "{\"sub.el1\":34,\"sub.el2\":\"some text\"}";
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Bean bean = mapper.readValue( json, Bean.class );
         assertNotNull(bean);
     }

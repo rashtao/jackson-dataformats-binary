@@ -90,7 +90,7 @@ public class TestPolymorphicCreators
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     /**
      * Simple test to verify that it is possible to implement polymorphic

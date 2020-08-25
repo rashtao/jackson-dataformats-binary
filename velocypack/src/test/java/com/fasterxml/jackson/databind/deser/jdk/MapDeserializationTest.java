@@ -88,7 +88,7 @@ public class MapDeserializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testBigUntypedMap() throws Exception
     {
@@ -189,7 +189,7 @@ public class MapDeserializationTest
     // [JACKSON-620]: allow "" to mean 'null' for Maps
     public void testFromEmptyString() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         Map<?,?> result = m.readValue(quote(""), Map.class);
         assertNull(result);
@@ -334,7 +334,7 @@ public class MapDeserializationTest
 
     public void testEnumPolymorphicSerializationTest() throws Exception 
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         List<ITestType> testTypesList = new ArrayList<ITestType>();
         testTypesList.add(ConcreteType.ONE);
         testTypesList.add(ConcreteType.TWO);

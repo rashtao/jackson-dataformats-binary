@@ -57,7 +57,7 @@ public class TestJsonFilter extends BaseMapTest
         FilterProvider prov = new SimpleFilterProvider().addFilter("checkSiblingContextFilter",
                 new CheckSiblingContextFilter());
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setFilterProvider(prov);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.valueToTree(new CheckSiblingContextBean());
@@ -110,7 +110,7 @@ public class TestJsonFilter extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testSimpleInclusionFilter() throws Exception
     {
@@ -119,7 +119,7 @@ public class TestJsonFilter extends BaseMapTest
         assertEquals("{\"a\":\"a\"}", MAPPER.writer(prov).writeValueAsString(new Bean()));
 
         // [JACKSON-504]: also verify it works via mapper
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setFilterProvider(prov);
         assertEquals("{\"a\":\"a\"}", mapper.writeValueAsString(new Bean()));
     }
@@ -151,7 +151,7 @@ public class TestJsonFilter extends BaseMapTest
         
         // but when changing behavior, should work difference
         SimpleFilterProvider fp = new SimpleFilterProvider().setFailOnUnknownId(false);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setFilterProvider(fp);
         String json = mapper.writeValueAsString(new Bean());
         assertEquals("{\"a\":\"a\",\"b\":\"b\"}", json);
@@ -167,7 +167,7 @@ public class TestJsonFilter extends BaseMapTest
     // [Issue#89] combining @JsonIgnore, @JsonProperty
     public void testIssue89() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Pod pod = new Pod();
         pod.username = "Bob";
         pod.userPassword = "s3cr3t!";

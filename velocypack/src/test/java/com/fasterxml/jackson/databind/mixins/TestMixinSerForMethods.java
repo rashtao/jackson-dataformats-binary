@@ -100,7 +100,7 @@ public class TestMixinSerForMethods
      */
     public void testLeafMixin() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result;
         BaseClass bean = new BaseClass("a1", "b2");
 
@@ -110,7 +110,7 @@ public class TestMixinSerForMethods
         assertEquals("b2", result.get("b"));
 
         // then with leaf-level mix-in
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(BaseClass.class, MixIn.class);
         result = writeAndMap(mapper, bean);
         assertEquals(2, result.size());
@@ -125,7 +125,7 @@ public class TestMixinSerForMethods
      */
     public void testIntermediateMixin() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result;
         LeafClass bean = new LeafClass("XXX", "b2");
 
@@ -141,7 +141,7 @@ public class TestMixinSerForMethods
      */
     public void testIntermediateMixin2() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(EmptyBean.class, MixInForSimple.class);
         Map<String,Object> result = writeAndMap(mapper, new SimpleBean());
         assertEquals(1, result.size());
@@ -158,7 +158,7 @@ public class TestMixinSerForMethods
     // [databind#688]
     public void testCustomResolver() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MixInResolver res = new ClassIntrospector.MixInResolver() {
             @Override
             public Class<?> findMixInClassFor(Class<?> target) {

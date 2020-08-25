@@ -480,7 +480,7 @@ public class TestTypeFactory
      */
     public void testSneakyBeanProperties() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         StringLongMapBean bean = mapper.readValue("{\"value\":{\"a\":123}}", StringLongMapBean.class);
         assertNotNull(bean);
         Map<String,Long> map = bean.value;
@@ -497,7 +497,7 @@ public class TestTypeFactory
 
     public void testSneakySelfRefs() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = mapper.writeValueAsString(new SneakyBean2());
         assertEquals("{\"foobar\":null}", json);
     }

@@ -80,7 +80,7 @@ public class ExternalTypeIdWithEnum1328Test extends BaseMapTest
     }
 
     public void testExample() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         
         String json = mapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsString(Arrays.asList(new AnimalAndType(AnimalType.Dog, new Dog())));

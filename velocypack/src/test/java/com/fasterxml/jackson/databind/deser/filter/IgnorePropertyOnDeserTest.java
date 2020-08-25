@@ -67,7 +67,7 @@ public class IgnorePropertyOnDeserTest extends BaseMapTest
 
     public void testIgnoreViaConfigOverride1217() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Point.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("y"));
         Point p = mapper.readValue(aposToQuotes("{'x':1,'y':2}"), Point.class);
@@ -79,7 +79,7 @@ public class IgnorePropertyOnDeserTest extends BaseMapTest
     // [databind#1595]
     public void testIgnoreGetterNotSetter1595() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Simple1595 config = new Simple1595();
         config.setId(123);
         config.setName("jack");

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.testutil.MediaItem;
 
 public class RoundtripTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testMedaItemRoundtrip() throws Exception
     {

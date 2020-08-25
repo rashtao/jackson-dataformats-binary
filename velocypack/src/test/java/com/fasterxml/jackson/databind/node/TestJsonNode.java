@@ -177,7 +177,7 @@ public class TestJsonNode extends NodeTestBase
     // [databind#793]
     public void testArrayWithDefaultTyping() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper()
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .activateDefaultTyping(NoCheckSubTypeValidator.instance);
 
         JsonNode array = mapper.readTree("[ 1, 2 ]");

@@ -130,7 +130,7 @@ public class NumberSerTest extends BaseMapTest
 
     public void testConfigOverridesForNumbers() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Integer.TYPE) // for `int`
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
         mapper.configOverride(Double.TYPE) // for `double`

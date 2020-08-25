@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.*;
 
 public class ScalarConversionTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     // [databind#1433]
     public void testConvertValueNullPrimitive() throws Exception

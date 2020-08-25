@@ -17,7 +17,7 @@ public class TestJacksonTypes
     {
         File f = new File("/tmp/test.json");
         JsonLocation loc = new JsonLocation(f, -1, 100, 13);
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result = writeAndMap(mapper, loc);
         assertEquals(5, result.size());
         assertEquals(f.getAbsolutePath(), result.get("sourceRef"));

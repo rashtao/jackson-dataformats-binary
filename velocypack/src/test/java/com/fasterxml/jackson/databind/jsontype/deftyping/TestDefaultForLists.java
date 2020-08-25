@@ -118,7 +118,7 @@ public class TestDefaultForLists
     
     public void testJackson628() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance, DefaultTyping.NON_FINAL);
         ArrayList<Foo> data = new ArrayList<Foo>();
         String json = mapper.writeValueAsString(data);
@@ -128,7 +128,7 @@ public class TestDefaultForLists
 
     public void testJackson667() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);

@@ -33,7 +33,7 @@ public class MapDeserializerCachingTest extends BaseMapTest
      */
 
     public void testCachedSerialize() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json = aposToQuotes("{'data':{'1st':'onedata','2nd':'twodata'}}");
 
         // Do deserialization with non-annotated map property
@@ -41,7 +41,7 @@ public class MapDeserializerCachingTest extends BaseMapTest
         assertTrue(ignored.data.containsKey("1st"));
         assertTrue(ignored.data.containsKey("2nd"));
 
-//mapper = new ObjectMapper();
+//mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         
         MapHolder model2 = mapper.readValue(json, MapHolder.class);
         if (!model2.data.containsKey("1st (CUSTOM)")

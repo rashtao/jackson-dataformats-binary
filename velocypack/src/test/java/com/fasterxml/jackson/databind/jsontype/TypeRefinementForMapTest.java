@@ -105,7 +105,7 @@ public class TypeRefinementForMapTest extends BaseMapTest
         String json = aposToQuotes(
 "{'id':'"+ID1+"','items':[{'id':'"+ID2+"','property':'value'}]}");
 
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Data data = m.readValue(json, Data.class);
 
         assertEquals(ID1, data.id);

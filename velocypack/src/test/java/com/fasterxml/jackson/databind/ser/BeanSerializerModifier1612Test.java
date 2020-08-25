@@ -53,7 +53,7 @@ public class BeanSerializerModifier1612Test extends BaseMapTest
     {
         SimpleModule mod = new SimpleModule();
         mod.setSerializerModifier(new Modifier1612());
-        ObjectMapper objectMapper = new ObjectMapper()
+        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(mod);
         try {
             objectMapper.writeValueAsString(new Bean1612(0, 1, 2d));

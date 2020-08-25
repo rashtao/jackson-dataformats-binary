@@ -72,7 +72,7 @@ public class ReadOrWriteOnlyTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     // [databind#935]
     public void testReadOnlyAndWriteOnly() throws Exception

@@ -54,7 +54,7 @@ public class TestGenerics
 
     public void testSimpleNumberBean() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         NumberBean result = mapper.readValue("{\"number\":17}", NumberBean.class);
         assertEquals(17, result._number);
     }
@@ -64,7 +64,7 @@ public class TestGenerics
      */
     public void testGenericWrapper() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Wrapper<SimpleBean> result = mapper.readValue
             ("{\"value\": { \"x\" : 13 } }",
              new TypeReference<Wrapper<SimpleBean>>() { });
@@ -79,7 +79,7 @@ public class TestGenerics
     
     public void testGenericWrapperWithSingleElementArray() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         Wrapper<SimpleBean> result = mapper.readValue
@@ -101,7 +101,7 @@ public class TestGenerics
      */
     public void testMultipleWrappers() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         // First, numeric wrapper
         Wrapper<Boolean> result = mapper.readValue
@@ -122,7 +122,7 @@ public class TestGenerics
     //[Issue#381]
     public void testMultipleWrappersSingleValueArray() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
 
         // First, numeric wrapper
@@ -146,7 +146,7 @@ public class TestGenerics
      */
     public void testArrayOfGenericWrappers() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Wrapper<SimpleBean>[] result = mapper.readValue
             ("[ {\"value\": { \"x\" : 9 } } ]",
              new TypeReference<Wrapper<SimpleBean>[]>() { });
@@ -164,7 +164,7 @@ public class TestGenerics
     // [Issue#381]
     public void testArrayOfGenericWrappersSingleValueArray() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         Wrapper<SimpleBean>[] result = mapper.readValue

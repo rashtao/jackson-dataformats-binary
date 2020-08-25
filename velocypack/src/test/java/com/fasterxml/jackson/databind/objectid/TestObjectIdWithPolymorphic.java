@@ -106,7 +106,7 @@ public class TestObjectIdWithPolymorphic extends BaseMapTest
     /*****************************************************
      */
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testPolymorphicRoundtrip() throws Exception
     {
@@ -132,7 +132,7 @@ public class TestObjectIdWithPolymorphic extends BaseMapTest
 
     public void testIssue811() throws Exception
     {
-        ObjectMapper om = new ObjectMapper();
+        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         om.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
         om.enable(SerializationFeature.INDENT_OUTPUT);
         om.activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,

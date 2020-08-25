@@ -64,7 +64,7 @@ public class JsonValueExtTypeIdTest extends BaseMapTest
         }
     }
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testDoubleMetadata() throws IOException {
         DoubleMetadata doub = new DoubleMetadata();

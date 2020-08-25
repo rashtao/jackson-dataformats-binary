@@ -22,7 +22,7 @@ public class LocalTypeTest extends BaseMapTest
 
     // [databind#609]
     public void testLocalPartialType609() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         
         EntityContainer input = new EntityContainer(); 
         input.entity = new RuleForm(12);

@@ -111,7 +111,7 @@ public class TestMixinDeserForCreators
 
     public void testForConstructor() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(BaseClassWithPrivateCtor.class, MixInForPrivate.class);
         BaseClassWithPrivateCtor result = m.readValue("\"?\"", BaseClassWithPrivateCtor.class);
         assertEquals("?...", result._a);
@@ -119,7 +119,7 @@ public class TestMixinDeserForCreators
 
     public void testForFactoryAndCtor() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         BaseClass result;
 
         // First: test default behavior: should use constructor
@@ -127,7 +127,7 @@ public class TestMixinDeserForCreators
         assertEquals("string...", result._a);
 
         // Then with simple mix-in: should change to use the factory method
-        m = new ObjectMapper();
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(BaseClass.class, MixIn.class);
         result = m.readValue("\"string\"", BaseClass.class);
         assertEquals("stringX", result._a);
@@ -135,7 +135,7 @@ public class TestMixinDeserForCreators
 
     public void testFactoryDelegateMixIn() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(StringWrapper.class, StringWrapperMixIn.class);
         StringWrapper result = m.readValue("\"a\"", StringWrapper.class);
         assertEquals("a", result._value);
@@ -144,7 +144,7 @@ public class TestMixinDeserForCreators
     // [databind#2020]
     public void testFactoryPropertyMixin() throws Exception
     {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         objectMapper.addMixIn(Pair2020.class, MyPairMixIn8.class);
 
         String doc = aposToQuotes( "{'value0' : 456, 'value1' : 789}");

@@ -39,7 +39,7 @@ public class TestCreatorsWithIdentity extends BaseMapTest
 	    }
 	}
 
-	private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+	private static final ObjectMapper JSON_MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
 	public void testSimple() throws IOException
 	{

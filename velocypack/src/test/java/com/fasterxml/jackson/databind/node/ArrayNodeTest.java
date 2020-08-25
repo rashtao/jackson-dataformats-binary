@@ -245,7 +245,7 @@ public class ArrayNodeTest
 
     public void testNullChecking2()
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ArrayNode src = mapper.createArrayNode();
         ArrayNode dest = mapper.createArrayNode();
         src.add("element");

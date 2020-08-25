@@ -69,7 +69,7 @@ public class TestMixinSerForClass
 
     public void testClassMixInsTopLevel() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result;
 
         // first: with no mix-ins:
@@ -78,7 +78,7 @@ public class TestMixinSerForClass
         assertEquals("abc", result.get("a"));
 
         // then with top-level override
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(LeafClass.class, MixIn.class);
         result = writeAndMap(mapper, new LeafClass("abc"));
         assertEquals(2, result.size());
@@ -86,7 +86,7 @@ public class TestMixinSerForClass
         assertEquals("c", result.get("c"));
 
         // mid-level override; should not have any effect
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(BaseClass.class, MixIn.class);
         result = writeAndMap(mapper, new LeafClass("abc"));
         assertEquals(1, result.size());
@@ -95,7 +95,7 @@ public class TestMixinSerForClass
 
     public void testClassMixInsMidLevel() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result;
         LeafClass bean = new LeafClass("xyz");
         bean._c = "c2";
@@ -107,14 +107,14 @@ public class TestMixinSerForClass
         assertEquals("c2", result.get("c"));
 
         // then with working mid-level override, which effectively suppresses 'a'
-        mapper = new ObjectMapper();
+        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(BaseClass.class, MixInAutoDetect.class);
         result = writeAndMap(mapper, bean);
         assertEquals(1, result.size());
         assertEquals("c2", result.get("c"));
 
         // and related to [databind#245], apply mix-ins to a copy of ObjectMapper
-        ObjectMapper mapper2 = new ObjectMapper();
+        ObjectMapper mapper2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         result = writeAndMap(mapper2, bean);
         assertEquals(2, result.size());
         ObjectMapper mapper3 = mapper2.copy();

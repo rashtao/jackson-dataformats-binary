@@ -186,7 +186,7 @@ public class TestCreators2 extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testExceptionFromConstructor() throws Exception
     {
@@ -304,7 +304,7 @@ public class TestCreators2 extends BaseMapTest
 
     // [databind#1476]
     public void testConstructorChoice() throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MultiPropCreator1476 pojo = mapper.readValue("{ \"intField\": 1, \"stringField\": \"foo\" }",
                 MultiPropCreator1476.class);
         assertEquals(1, pojo.getIntField());

@@ -86,7 +86,7 @@ public class CollectionSerializationTest
     /**********************************************************
      */
 
-    private final static ObjectMapper MAPPER = new ObjectMapper();
+    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testCollections() throws IOException
     {
@@ -260,7 +260,7 @@ public class CollectionSerializationTest
         assertEquals("{\"empty\":[]}", MAPPER.writeValueAsString(array));
 
         // note: value of setting may be cached when constructing serializer, need a new instance
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
         assertEquals("{}", m.writeValueAsString(list));
         assertEquals("{}", m.writeValueAsString(array));

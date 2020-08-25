@@ -54,7 +54,7 @@ public class TestEmptyClass
     /**********************************************************
      */
 
-    protected final ObjectMapper mapper = new ObjectMapper();
+    protected final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     /**
      * Test to check that [JACKSON-201] works if there is a recognized
@@ -73,7 +73,7 @@ public class TestEmptyClass
         assertEquals("{}", serializeAsString(mapper, new EmptyWithAnno()));
 
         // Including class annotation through mix-ins
-        ObjectMapper m2 = new ObjectMapper();
+        ObjectMapper m2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m2.addMixIn(Empty.class, EmptyWithAnno.class);
         assertEquals("{}", m2.writeValueAsString(new Empty()));
     }

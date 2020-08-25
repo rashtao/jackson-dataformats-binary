@@ -64,7 +64,7 @@ public class SingleValueAsArrayTest extends BaseMapTest
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     {
         MAPPER.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     }

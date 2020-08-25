@@ -205,7 +205,7 @@ public class TestBackRefsWithPolymorphic extends BaseMapTest
             +"\"p2name\":{\"@class\":\""+CLASS_NAME+"$StringPropertyImpl\",\"id\":0,"
             +"\"name\":\"p2name\",\"value\":\"p2value\"}}}";
     
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testDeserialize() throws IOException
     {

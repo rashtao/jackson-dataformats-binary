@@ -1,9 +1,5 @@
 package com.fasterxml.jackson.databind;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import java.io.*;
-import java.util.*;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -11,11 +7,24 @@ import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
-
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.node.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.velocypack.VelocypackFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
+import static com.fasterxml.jackson.VPackUtils.toBytes;
+import static com.fasterxml.jackson.VPackUtils.toJson;
 
 public class ObjectMapperTest extends BaseMapTest
 {
@@ -51,7 +60,7 @@ public class ObjectMapperTest extends BaseMapTest
     @SuppressWarnings("serial")
     static class NoCopyMapper extends ObjectMapper { }
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     /*
     /**********************************************************
@@ -83,7 +92,7 @@ public class ObjectMapperTest extends BaseMapTest
     public void testParserFeatures()
     {
         // and also for mapper
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         assertTrue(mapper.isEnabled(JsonParser.Feature.AUTO_CLOSE_SOURCE));
         assertTrue(mapper.isEnabled(StreamReadFeature.AUTO_CLOSE_SOURCE));
@@ -104,7 +113,7 @@ public class ObjectMapperTest extends BaseMapTest
     // [databind#28]: ObjectMapper.copy()
     public void testCopy() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertTrue(m.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
         m.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         assertFalse(m.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
@@ -155,7 +164,7 @@ public class ObjectMapperTest extends BaseMapTest
     // [databind#1580]
     public void testCopyOfConfigOverrides() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SerializationConfig config = m.getSerializationConfig();
         assertEquals(JsonInclude.Value.empty(), config.getDefaultPropertyInclusion());
         assertEquals(JsonSetter.Value.empty(), config.getDefaultSetterInfo());
@@ -196,7 +205,7 @@ public class ObjectMapperTest extends BaseMapTest
 
     public void testAnnotationIntrospectorCopyin() 
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setAnnotationIntrospector(new MyAnnotationIntrospector());
         assertEquals(MyAnnotationIntrospector.class,
                 m.getDeserializationConfig().getAnnotationIntrospector().getClass());
@@ -216,7 +225,7 @@ public class ObjectMapperTest extends BaseMapTest
 
     public void testProps()
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // should have default factory
         assertNotNull(m.getNodeFactory());
         JsonNodeFactory nf = new JsonNodeFactory(true);
@@ -228,7 +237,7 @@ public class ObjectMapperTest extends BaseMapTest
     // Test to ensure that we can check property ordering defaults...
     public void testConfigForPropertySorting() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         
         // sort-alphabetically is disabled by default:
         assertFalse(m.isEnabled(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY));
@@ -252,26 +261,25 @@ public class ObjectMapperTest extends BaseMapTest
     }
 
 
-    public void testJsonFactoryLinkage()
-    {
+    public void testJsonFactoryLinkage() {
         // first, implicit factory, giving implicit linkage
         assertSame(MAPPER, MAPPER.getFactory().getCodec());
 
         // and then explicit factory, which should also be implicitly linked
-        JsonFactory f = new JsonFactory();
-        ObjectMapper m = new ObjectMapper(f);
+        VelocypackFactory f = new VelocypackFactory();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper(f);
         assertSame(f, m.getFactory());
         assertSame(m, f.getCodec());
     }
 
     public void testProviderConfig() throws Exception   
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         final String JSON = "{ \"x\" : 3 }";
 
         assertEquals(0, m._deserializationContext._cache.cachedDeserializersCount());
         // and then should get one constructed for:
-        Bean bean = m.readValue(JSON, Bean.class);
+        Bean bean = m.readValue(toBytes(JSON), Bean.class);
         assertNotNull(bean);
         // Since 2.6, serializer for int also cached:
         assertEquals(2, m._deserializationContext._cache.cachedDeserializersCount());
@@ -279,8 +287,8 @@ public class ObjectMapperTest extends BaseMapTest
         assertEquals(0, m._deserializationContext._cache.cachedDeserializersCount());
 
         // 07-Nov-2014, tatu: As per [databind#604] verify that Maps also get cached
-        m = new ObjectMapper();
-        List<?> stuff = m.readValue("[ ]", List.class);
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        List<?> stuff = m.readValue(toBytes("[ ]"), List.class);
         assertNotNull(stuff);
         // may look odd, but due to "Untyped" deserializer thing, we actually have
         // 4 deserializers (int, List<?>, Map<?,?>, Object)
@@ -288,41 +296,24 @@ public class ObjectMapperTest extends BaseMapTest
     }
 
     // For [databind#689]
-    public void testCustomDefaultPrettyPrinter() throws Exception
-    {
-        final ObjectMapper m = new ObjectMapper();
-        final int[] input = new int[] { 1, 2 };
+    public void testCustomDefaultPrettyPrinter() throws Exception {
+        final ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final int[] input = new int[]{1, 2};
 
         // without anything else, compact:
-        assertEquals("[1,2]", m.writeValueAsString(input));
-
-        // or with default, get... defaults:
-        m.enable(SerializationFeature.INDENT_OUTPUT);
-        assertEquals("[ 1, 2 ]", m.writeValueAsString(input));
-        assertEquals("[ 1, 2 ]", m.writerWithDefaultPrettyPrinter().writeValueAsString(input));
-        assertEquals("[ 1, 2 ]", m.writer().withDefaultPrettyPrinter().writeValueAsString(input));
-
-        // but then with our custom thingy...
-        m.setDefaultPrettyPrinter(new FooPrettyPrinter());
-        assertEquals("[1 , 2]", m.writeValueAsString(input));
-        assertEquals("[1 , 2]", m.writerWithDefaultPrettyPrinter().writeValueAsString(input));
-        assertEquals("[1 , 2]", m.writer().withDefaultPrettyPrinter().writeValueAsString(input));
-
-        // and yet, can disable too
-        assertEquals("[1,2]", m.writer().without(SerializationFeature.INDENT_OUTPUT)
-                .writeValueAsString(input));
+        assertEquals("[1,2]", toJson(m.writeValueAsBytes(input)));
     }
     
     // For [databind#703], [databind#978]
     public void testNonSerializabilityOfObject()
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertFalse(m.canSerialize(Object.class));
         // but this used to pass, incorrectly, second time around
         assertFalse(m.canSerialize(Object.class));
 
         // [databind#978]: Different answer if empty Beans ARE allowed
-        m = new ObjectMapper();
+        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         assertTrue(m.canSerialize(Object.class));
         assertTrue(MAPPER.writer().without(SerializationFeature.FAIL_ON_EMPTY_BEANS)
@@ -346,7 +337,7 @@ public class ObjectMapperTest extends BaseMapTest
     public void testSerializerProviderAccess() throws Exception
     {
         // ensure we have "fresh" instance, just in case
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonSerializer<?> ser = mapper.getSerializerProviderInstance()
                 .findValueSerializer(Bean.class);
         assertNotNull(ser);
@@ -357,7 +348,7 @@ public class ObjectMapperTest extends BaseMapTest
     public void testCopyOfParserFeatures() throws Exception
     {
         // ensure we have "fresh" instance to start with
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertFalse(mapper.isEnabled(JsonParser.Feature.IGNORE_UNDEFINED));
         mapper.configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
         assertTrue(mapper.isEnabled(JsonParser.Feature.IGNORE_UNDEFINED));
@@ -381,35 +372,14 @@ public class ObjectMapperTest extends BaseMapTest
         try (DataOutputStream data = new DataOutputStream(bytes)) {
             MAPPER.writeValue((DataOutput) data, input);
         }
-        assertEquals(exp, bytes.toString("UTF-8"));
+        assertEquals(exp, toJson(bytes.toByteArray()));
 
         // and also via ObjectWriter...
         bytes.reset();
         try (DataOutputStream data = new DataOutputStream(bytes)) {
             MAPPER.writer().writeValue((DataOutput) data, input);
         }
-        assertEquals(exp, bytes.toString("UTF-8"));
-    }
-
-    // since 2.8
-    @SuppressWarnings("unchecked")
-    public void testDataInputViaMapper() throws Exception
-    {
-        byte[] src = "{\"a\":1}".getBytes("UTF-8");
-        DataInput input = new DataInputStream(new ByteArrayInputStream(src));
-        Map<String,Object> map = (Map<String,Object>) MAPPER.readValue(input, Map.class);
-        assertEquals(Integer.valueOf(1), map.get("a"));
-
-        input = new DataInputStream(new ByteArrayInputStream(src));
-        // and via ObjectReader
-        map = MAPPER.readerFor(Map.class)
-                .readValue(input);
-        assertEquals(Integer.valueOf(1), map.get("a"));
-
-        input = new DataInputStream(new ByteArrayInputStream(src));
-        JsonNode n = MAPPER.readerFor(Map.class)
-                .readTree(input);
-        assertNotNull(n);
+        assertEquals(exp, toJson(bytes.toByteArray()));
     }
 
     @SuppressWarnings("serial")

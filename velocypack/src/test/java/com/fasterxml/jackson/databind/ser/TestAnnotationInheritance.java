@@ -74,7 +74,7 @@ public class TestAnnotationInheritance
 
     public void testSimpleGetterInheritance() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new PojoSubclass());
         assertEquals(2, result.size());
         assertEquals(Integer.valueOf(7), result.get("length"));
@@ -83,7 +83,7 @@ public class TestAnnotationInheritance
 
     public void testSimpleGetterInterfaceImpl() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new PojoImpl());
         // should get 2 from interface, and one more from impl itself
         assertEquals(3, result.size());

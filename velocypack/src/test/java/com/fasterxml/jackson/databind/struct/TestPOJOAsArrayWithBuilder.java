@@ -102,7 +102,7 @@ public class TestPOJOAsArrayWithBuilder extends BaseMapTest
     /*****************************************************
      */
 
-    private final static ObjectMapper MAPPER = new ObjectMapper();
+    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testSimpleBuilder() throws Exception
     {

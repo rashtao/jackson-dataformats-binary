@@ -50,7 +50,7 @@ public class TestSetterlessProperties
     public void testSimpleSetterlessCollectionOk()
         throws Exception
     {
-        CollectionBean result = new ObjectMapper().readValue
+        CollectionBean result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue
             ("{\"values\":[ \"abc\", \"def\" ]}", CollectionBean.class);
         List<String> l = result._values;
         assertEquals(2, l.size());
@@ -65,7 +65,7 @@ public class TestSetterlessProperties
     public void testSimpleSetterlessCollectionFailure()
         throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // by default, it should be enabled
         assertTrue(m.isEnabled(MapperFeature.USE_GETTERS_AS_SETTERS));
         m = jsonMapperBuilder()
@@ -89,7 +89,7 @@ public class TestSetterlessProperties
     public void testSimpleSetterlessMapOk()
         throws Exception
     {
-        MapBean result = new ObjectMapper().readValue
+        MapBean result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue
             ("{\"values\":{ \"a\": 15, \"b\" : -3 }}", MapBean.class);
         Map<String,Integer> m = result._values;
         assertEquals(2, m.size());

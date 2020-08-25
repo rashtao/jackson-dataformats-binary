@@ -84,7 +84,7 @@ public class CollectionDeserTest
     /**********************************************************
      */
 
-    private final static ObjectMapper MAPPER = new ObjectMapper();
+    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testUntypedList() throws Exception
     {
@@ -148,7 +148,7 @@ public class CollectionDeserTest
     public void testImplicitArrays() throws Exception
     {
         // can't share mapper, custom configs (could create ObjectWriter tho)
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         // first with simple scalar types (numbers), with collections
@@ -271,7 +271,7 @@ public class CollectionDeserTest
     // for [databind#828]
     public void testWrapExceptions() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.WRAP_EXCEPTIONS);
 
         try {
@@ -282,7 +282,7 @@ public class CollectionDeserTest
             fail("The RuntimeException should have been wrapped with a JsonMappingException.");
         }
 
-        ObjectMapper mapperNoWrap = new ObjectMapper();
+        ObjectMapper mapperNoWrap = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapperNoWrap.disable(DeserializationFeature.WRAP_EXCEPTIONS);
 
         try {

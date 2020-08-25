@@ -11,7 +11,7 @@ public class TestJava7Types extends BaseMapTest
 {
     public void testPathRoundtrip() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
         Path input = Paths.get("/tmp", "foo.txt");
 

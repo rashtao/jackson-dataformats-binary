@@ -68,7 +68,7 @@ public class TestContextualWithAnnDeserializer extends BaseMapTest
     // ensure that direct associations also work
     public void testAnnotatedContextual() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AnnotatedContextualClassBean bean = mapper.readValue(
                 "{\"value\":\"a\"}",
               AnnotatedContextualClassBean.class);

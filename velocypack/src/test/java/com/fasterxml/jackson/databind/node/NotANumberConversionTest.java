@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.*;
 
 public class NotANumberConversionTest extends BaseMapTest
 {
-    private final ObjectMapper m = new ObjectMapper();
+    private final ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     {
         m.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
     }

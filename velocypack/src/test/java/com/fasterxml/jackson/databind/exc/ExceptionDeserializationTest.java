@@ -51,7 +51,7 @@ public class ExceptionDeserializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     
     public void testIOException() throws IOException
     {
@@ -75,7 +75,7 @@ public class ExceptionDeserializationTest
 
     public void testWithNullMessage() throws IOException
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         String json = mapper.writeValueAsString(new IOException((String) null));
         IOException result = mapper.readValue(json, IOException.class);
@@ -98,7 +98,7 @@ public class ExceptionDeserializationTest
     
     // [databind#381]
     public void testSingleValueArrayDeserialization() throws Exception {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         final IOException exp;
         try {
@@ -142,7 +142,7 @@ public class ExceptionDeserializationTest
     }
 
     public void testSingleValueArrayDeserializationException() throws Exception {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         final IOException exp;

@@ -200,7 +200,7 @@ public class JsonIncludeTest
     /**********************************************************
      */
 
-    final private ObjectMapper MAPPER = new ObjectMapper();
+    final private ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testGlobal() throws IOException
     {
@@ -281,7 +281,7 @@ public class JsonIncludeTest
     public void testEmptyInclusionScalars() throws IOException
     {
         ObjectMapper defMapper = MAPPER;
-        ObjectMapper inclMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        ObjectMapper inclMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         // First, Strings
         StringWrapper str = new StringWrapper("");
@@ -309,7 +309,7 @@ public class JsonIncludeTest
     // [databind#1351], [databind#1417]
     public void testIssue1351() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         assertEquals(aposToQuotes("{}"),
                 mapper.writeValueAsString(new Issue1351Bean(null, (double) 0)));

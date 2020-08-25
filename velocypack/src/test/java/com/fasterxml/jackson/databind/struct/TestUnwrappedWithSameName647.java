@@ -18,7 +18,7 @@ public class TestUnwrappedWithSameName647 extends BaseMapTest
         public String mail;
     }
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testUnwrappedWithSamePropertyName() throws Exception {
         final String JSON = "{'mail': {'mail': 'the mail text'}}";

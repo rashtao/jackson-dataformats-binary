@@ -143,7 +143,7 @@ public class IgnorePropsForSerTest
 
     public void testIgnoreViaConfigOverride() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Point.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("x"));
         assertEquals("{\"y\":3}", mapper.writeValueAsString(new Point(2, 3)));

@@ -101,7 +101,7 @@ public class DateSerializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testDateNumeric() throws IOException
     {
@@ -114,7 +114,7 @@ public class DateSerializationTest
 
     public void testDateISO8601() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         serialize(mapper, judate(1970, 1, 1,  02, 00, 00, 0, "GMT+2"), "1970-01-01T00:00:00.000+0000");
@@ -156,7 +156,7 @@ public class DateSerializationTest
      */
     public void testDateISO8601_customTZ() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.setTimeZone(TimeZone.getTimeZone("GMT+2"));
 
@@ -176,7 +176,7 @@ public class DateSerializationTest
         dateFormat = dateFormat.withColonInTimeZone(true);
         assertTrue(dateFormat.isColonIncludedInTimeZone());
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.setDateFormat(dateFormat);
         
@@ -186,7 +186,7 @@ public class DateSerializationTest
 
     public void testDateOther() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss");
         mapper.setDateFormat(df);
         mapper.setTimeZone(TimeZone.getTimeZone("PST"));
@@ -227,7 +227,7 @@ public class DateSerializationTest
 
     public void testDatesAsMapKeys() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<Date,Integer> map = new HashMap<Date,Integer>();
         assertFalse(mapper.isEnabled(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS));
         map.put(new Date(0L), Integer.valueOf(1));
@@ -241,7 +241,7 @@ public class DateSerializationTest
 
     public void testDateWithJsonFormat() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String json;
 
         // first: test overriding writing as timestamp
@@ -273,7 +273,7 @@ public class DateSerializationTest
      */
     public void testWithTimeZoneOverride() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd/HH:mm z"));
         mapper.setTimeZone(TimeZone.getTimeZone("PST"));
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -298,7 +298,7 @@ public class DateSerializationTest
      */
     public void testDateDefaultShape() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // No @JsonFormat => default to user config
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String json = mapper.writeValueAsString(new DateAsDefaultBean(0L));
@@ -343,7 +343,7 @@ public class DateSerializationTest
     // [databind#1648]: contextual default format should be used
     public void testFormatWithoutPattern() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss"));
         String json = mapper.writeValueAsString(new DateAsDefaultBeanWithTimezone(0L));
         assertEquals(aposToQuotes("{'date':'1970-01-01X01:00:00'}"), json);

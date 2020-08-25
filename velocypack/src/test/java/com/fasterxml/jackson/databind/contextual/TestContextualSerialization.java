@@ -224,7 +224,7 @@ public class TestContextualSerialization extends BaseMapTest
     // (method, field) annotations.
     public void testMethodAnnotations() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
@@ -235,7 +235,7 @@ public class TestContextualSerialization extends BaseMapTest
     // for enclosing class.
     public void testClassAnnotations() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
@@ -244,7 +244,7 @@ public class TestContextualSerialization extends BaseMapTest
 
     public void testWrappedBean() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
@@ -254,7 +254,7 @@ public class TestContextualSerialization extends BaseMapTest
     // Serializer should get passed property context even if contained in an array.
     public void testMethodAnnotationInArray() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
@@ -265,7 +265,7 @@ public class TestContextualSerialization extends BaseMapTest
     // Serializer should get passed property context even if contained in a Collection.
     public void testMethodAnnotationInList() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
@@ -276,7 +276,7 @@ public class TestContextualSerialization extends BaseMapTest
     // Serializer should get passed property context even if contained in a Collection.
     public void testMethodAnnotationInMap() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
@@ -287,7 +287,7 @@ public class TestContextualSerialization extends BaseMapTest
 
     public void testContextualViaAnnotation() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AnnotatedContextualBean bean = new AnnotatedContextualBean("abc");
         assertEquals("{\"value\":\"prefix->abc\"}", mapper.writeValueAsString(bean));
     }

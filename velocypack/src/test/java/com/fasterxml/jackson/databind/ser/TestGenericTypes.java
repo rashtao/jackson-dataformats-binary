@@ -106,7 +106,7 @@ public class TestGenericTypes extends BaseMapTest
     /**********************************************************
      */
 
-    final ObjectMapper MAPPER = new ObjectMapper();
+    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     @SuppressWarnings("unchecked")
     public void testIssue468a() throws Exception

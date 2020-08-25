@@ -50,7 +50,7 @@ public class TestMixinInheritance
     
     public void testMixinFieldInheritance() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(Beano.class, BeanoMixinSub.class);
         Map<String,Object> result;
         result = writeAndMap(mapper, new Beano());
@@ -63,7 +63,7 @@ public class TestMixinInheritance
 
     public void testMixinMethodInheritance() throws IOException
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(Beano2.class, BeanoMixinSub2.class);
         Map<String,Object> result;
         result = writeAndMap(mapper, new Beano2());

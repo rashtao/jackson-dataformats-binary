@@ -190,7 +190,7 @@ public class TestContextualDeserialization extends BaseMapTest
     
     public void testSimple() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(StringValue.class, new MyContextualDeserializer());
         mapper.registerModule(module);
@@ -290,7 +290,7 @@ public class TestContextualDeserialization extends BaseMapTest
 
     // for [databind#165]
     public void testContextualType() throws Exception {
-        GenericBean bean = new ObjectMapper().readValue(aposToQuotes("{'stuff':{'1':'b'}}"),
+        GenericBean bean = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(aposToQuotes("{'stuff':{'1':'b'}}"),
                 GenericBean.class);
         assertNotNull(bean.stuff);
         assertEquals(1, bean.stuff.size());

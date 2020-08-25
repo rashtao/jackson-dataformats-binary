@@ -156,7 +156,7 @@ public class SingleArgCreatorTest extends BaseMapTest
 
     public void testSingleStringArgWithImplicitName() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector("value"));
         StringyBean bean = mapper.readValue(quote("foobar"), StringyBean.class);
         assertEquals("foobar", bean.getValue());
@@ -165,7 +165,7 @@ public class SingleArgCreatorTest extends BaseMapTest
     // [databind#714]
     public void testSingleImplicitlyNamedNotDelegating() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector("value"));
         StringyBeanWithProps bean = mapper.readValue("{\"value\":\"x\"}", StringyBeanWithProps.class);
         assertEquals("x", bean.getValue());
@@ -198,7 +198,7 @@ public class SingleArgCreatorTest extends BaseMapTest
     // [databind#1383]
     public void testSingleImplicitDelegating() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector("value"));
         SingleArgWithImplicit bean = mapper.readValue(aposToQuotes("{'x':1,'y':2}"),
                 SingleArgWithImplicit.class);

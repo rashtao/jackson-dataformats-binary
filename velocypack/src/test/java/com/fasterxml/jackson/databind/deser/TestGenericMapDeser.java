@@ -83,7 +83,7 @@ public class TestGenericMapDeser
      */
     public void testMapSubClass() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MapSubClass result = mapper.readValue
             ("{\"a\":true }", MapSubClass.class);
         assertEquals(1, result.size());
@@ -95,7 +95,7 @@ public class TestGenericMapDeser
 
     public void testMapWrapper() throws Exception
     {
-        StringMap value = new ObjectMapper().readValue
+        StringMap value = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue
             ("{\"entries\":{\"a\":9} }", StringMap.class);
         assertNotNull(value.getEntries());
         assertEquals(1, value.getEntries().size());
@@ -104,7 +104,7 @@ public class TestGenericMapDeser
 
     public void testIntermediateTypes() throws Exception
     {
-        StringStringWrapperMap result = new ObjectMapper().readValue
+        StringStringWrapperMap result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue
             ("{\"a\":\"b\"}", StringStringWrapperMap.class);
         assertEquals(1, result.size());
         Object value = result.get("a");
@@ -124,7 +124,7 @@ public class TestGenericMapDeser
      */
     public void testAnnotatedMap() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AnnotatedMap result = mapper.readValue
             ("{\"a\":true }", AnnotatedMap.class);
         assertEquals(1, result.size());
@@ -143,7 +143,7 @@ public class TestGenericMapDeser
 
     public void testKeyViaCtor() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<KeyTypeCtor,Integer> map = mapper.readValue("{\"a\":123}",
                 TypeFactory.defaultInstance().constructMapType(HashMap.class, KeyTypeCtor.class, Integer.class));
         assertEquals(1, map.size());
@@ -156,7 +156,7 @@ public class TestGenericMapDeser
 
     public void testKeyViaFactory() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Map<KeyTypeCtor,Integer> map = mapper.readValue("{\"a\":123}",
                 TypeFactory.defaultInstance().constructMapType(HashMap.class, KeyTypeFactory.class, Integer.class));
         assertEquals(1, map.size());

@@ -35,7 +35,7 @@ public class ProblemHandler1767Test extends BaseMapTest
     }
 
     public void testPrimitivePropertyWithHandler() throws Exception {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addHandler(new IntHandler());
         TestBean result = mapper.readValue(aposToQuotes("{'a': 'not-a-number'}"), TestBean.class);
         assertNotNull(result);

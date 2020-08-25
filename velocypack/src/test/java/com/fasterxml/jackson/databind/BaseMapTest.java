@@ -234,7 +234,7 @@ public abstract class BaseMapTest
 
     // @since 2.10
     protected static ObjectMapper newJsonMapper() {
-        return new ObjectMapper();
+        return new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
     }
 
     // @since 2.10

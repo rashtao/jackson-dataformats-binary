@@ -31,7 +31,7 @@ public class TestKeyDeserializers extends BaseMapTest
 
     public void testKeyDeserializers() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addKeyDeserializer(Foo.class, new FooKeyDeserializer());
         mapper.registerModule(mod);

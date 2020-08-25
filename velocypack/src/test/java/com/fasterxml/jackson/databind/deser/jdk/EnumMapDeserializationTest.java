@@ -100,7 +100,7 @@ public class EnumMapDeserializationTest extends BaseMapTest
     /**********************************************************
      */
 
-    protected final ObjectMapper MAPPER = new ObjectMapper();
+    protected final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testEnumMaps() throws Exception
     {
@@ -183,7 +183,7 @@ public class EnumMapDeserializationTest extends BaseMapTest
 
         // 05-Mar-2018, tatu: Original issue had this; should not make difference:
          /*
-        TypeResolverBuilder<?> mapTyperAsPropertyType = new ObjectMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL);
+        TypeResolverBuilder<?> mapTyperAsPropertyType = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL);
         mapTyperAsPropertyType.init(JsonTypeInfo.Id.CLASS, null);
         mapTyperAsPropertyType.inclusion(JsonTypeInfo.As.PROPERTY);
         mapper.setDefaultTyping(mapTyperAsPropertyType);

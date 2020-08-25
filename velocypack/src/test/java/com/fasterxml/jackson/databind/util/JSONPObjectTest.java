@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JSONPObjectTest extends BaseMapTest {
 
   private final String CALLBACK = "callback";
-  private final ObjectMapper MAPPER = new ObjectMapper();
+  private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
   /**
    * Unit tests for checking that JSONP breaking characters U+2028 and U+2029 are escaped when creating a {@link JSONPObject}.

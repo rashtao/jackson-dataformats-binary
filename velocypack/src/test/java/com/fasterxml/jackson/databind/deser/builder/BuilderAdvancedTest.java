@@ -50,7 +50,7 @@ public class BuilderAdvancedTest extends BaseMapTest
     
     public void testWithInjectable() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setInjectableValues(new InjectableValues.Std()
             .addValue(String.class, "stuffValue")
             );

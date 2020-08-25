@@ -146,7 +146,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testDeserializationWithObject() throws Exception
     {
@@ -198,7 +198,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     // [databind#148]
     public void testBadTypeAsNull() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
         Object ob = mapper.readValue("{}", MysteryPolymorphic.class);
         assertNull(ob);
@@ -249,7 +249,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
 
     public void testUnknownClassAsSubtype() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
         BaseWrapper w = mapper.readValue(aposToQuotes
                 ("{'value':{'clazz':'com.foobar.Nothing'}}'"),

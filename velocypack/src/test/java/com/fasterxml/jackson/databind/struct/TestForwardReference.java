@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  */
 public class TestForwardReference extends BaseMapTest {
 
-	private final ObjectMapper MAPPER = new ObjectMapper()
+	private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.enable(SerializationFeature.INDENT_OUTPUT)
 			.setSerializationInclusion(JsonInclude.Include.NON_NULL);

@@ -35,7 +35,7 @@ public class TestInnerClass extends BaseMapTest
     public void testSimpleNonStaticInner() throws Exception
     {
         // Let's actually verify by first serializing, then deserializing back
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Dog input = new Dog("Smurf", true);
         String json = mapper.writeValueAsString(input);
         Dog output = mapper.readValue(json, Dog.class);

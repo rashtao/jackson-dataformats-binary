@@ -19,7 +19,7 @@ public class BeanNamingTest extends BaseMapTest
     
     public void testSimple() throws Exception
     {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertFalse(mapper.isEnabled(MapperFeature.USE_STD_BEAN_NAMING));
         assertEquals(aposToQuotes("{'url':'http://foo'}"),
                 mapper.writeValueAsString(new URLBean()));

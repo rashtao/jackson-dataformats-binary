@@ -241,7 +241,7 @@ public class TestJsonSerialize
 
     public void testWithIsGetter() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setVisibility(PropertyAccessor.GETTER, Visibility.NONE)
         .setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
         .setVisibility(PropertyAccessor.CREATOR, Visibility.NONE)

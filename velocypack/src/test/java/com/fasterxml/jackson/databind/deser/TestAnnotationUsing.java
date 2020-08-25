@@ -128,7 +128,7 @@ public class TestAnnotationUsing
     // when applied to a class
     public void testClassDeserializer() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ValueClass result = m.readValue("  123  ", ValueClass.class);
         assertEquals(123, result._a);
     }
@@ -137,7 +137,7 @@ public class TestAnnotationUsing
     // when applied to a Method
     public void testMethodDeserializer() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // note: since it's part of method, must parse from Object struct
         MethodBean result = m.readValue(" { \"ints\" : 3 } ", MethodBean.class);
         assertNotNull(result);
@@ -155,7 +155,7 @@ public class TestAnnotationUsing
 
     public void testArrayContentUsing() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ArrayBean result = m.readValue(" { \"values\" : [ 1, 2, 3 ] } ", ArrayBean.class);
         assertNotNull(result);
         Object[] obs = result.values;
@@ -171,7 +171,7 @@ public class TestAnnotationUsing
 
     public void testListContentUsing() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ListBean result = m.readValue(" { \"values\" : [ 1, 2, 3 ] } ", ListBean.class);
         assertNotNull(result);
         List<Object> obs = result.values;
@@ -187,7 +187,7 @@ public class TestAnnotationUsing
 
     public void testMapContentUsing() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MapBean result = m.readValue(" { \"values\" : { \"a\": 1, \"b\":2 } } ", MapBean.class);
         assertNotNull(result);
         Map<String,Object> map = result.values;
@@ -201,7 +201,7 @@ public class TestAnnotationUsing
 
     public void testMapKeyUsing() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MapKeyBean result = m.readValue(" { \"values\" : { \"a\": true } } ", MapKeyBean.class);
         assertNotNull(result);
         Map<Object,Object> map = result.values;
@@ -215,7 +215,7 @@ public class TestAnnotationUsing
     // @since 1.8
     public void testRootValueWithCustomKey() throws Exception
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MapKeyMap result = m.readValue(" { \"a\": 13 } ", MapKeyMap.class);
         assertNotNull(result);
         assertNotNull(result);

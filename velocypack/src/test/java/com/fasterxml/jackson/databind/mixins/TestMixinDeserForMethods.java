@@ -44,7 +44,7 @@ public class TestMixinDeserForMethods
      */
     public void testWithAnySetter() throws IOException
     {
-        ObjectMapper m = new ObjectMapper();
+        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(BaseClass.class, MixIn.class);
         BaseClass result = m.readValue("{ \"a\" : 3, \"b\" : true }", BaseClass.class);
         assertNotNull(result);

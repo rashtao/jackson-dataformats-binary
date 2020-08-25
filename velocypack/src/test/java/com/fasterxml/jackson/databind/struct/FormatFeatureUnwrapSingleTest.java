@@ -124,7 +124,7 @@ public class FormatFeatureUnwrapSingleTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testWithArrayTypes() throws Exception
     {
@@ -143,7 +143,7 @@ public class FormatFeatureUnwrapSingleTest extends BaseMapTest
                 .writeValueAsString(new WrapWriteWithArrays()));
 
         // And then without SerializationFeature but with config override:
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(String[].class).setFormat(JsonFormat.Value.empty()
                 .withFeature(JsonFormat.Feature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED));
         assertEquals(aposToQuotes("{'values':'a'}"),

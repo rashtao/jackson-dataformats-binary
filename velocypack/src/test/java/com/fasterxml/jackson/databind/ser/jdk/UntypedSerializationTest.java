@@ -26,7 +26,7 @@ public class UntypedSerializationTest
         doc.add(struct);
         doc.add(Boolean.FALSE);
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonFactory f =  new JsonFactory();
 
         // loop more than once, just to ensure caching works ok (during second round)
@@ -74,7 +74,7 @@ public class UntypedSerializationTest
         doc.put("int", Integer.valueOf(137));
         doc.put("foo bar", Long.valueOf(1234567890L));
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         for (int i = 0; i < 3; ++i) {
             String str = mapper.writeValueAsString(doc);
             JsonParser jp = f.createParser(str);

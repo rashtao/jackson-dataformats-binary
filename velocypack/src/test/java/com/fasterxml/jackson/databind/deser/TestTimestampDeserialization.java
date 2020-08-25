@@ -18,17 +18,17 @@ public class TestTimestampDeserialization
         java.sql.Timestamp value = new java.sql.Timestamp(now);
 
         // First from long
-        assertEquals(value, new ObjectMapper().readValue(""+now, java.sql.Timestamp.class));
+        assertEquals(value, new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(""+now, java.sql.Timestamp.class));
 
         String dateStr = serializeTimestampAsString(value);
-        java.sql.Timestamp result = new ObjectMapper().readValue("\""+dateStr+"\"", java.sql.Timestamp.class);
+        java.sql.Timestamp result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue("\""+dateStr+"\"", java.sql.Timestamp.class);
 
         assertEquals("Date: expect "+value+" ("+value.getTime()+"), got "+result+" ("+result.getTime()+")", value.getTime(), result.getTime());
     }
     
     public void testTimestampUtilSingleElementArray() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         long now = System.currentTimeMillis();

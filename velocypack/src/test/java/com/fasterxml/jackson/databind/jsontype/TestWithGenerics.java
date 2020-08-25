@@ -166,7 +166,7 @@ public class TestWithGenerics extends BaseMapTest
     
     public void testJackson387() throws Exception
     {
-        ObjectMapper om = new ObjectMapper();
+        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         om.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.PROPERTY );
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL );
@@ -202,7 +202,7 @@ public class TestWithGenerics extends BaseMapTest
 
     public void testJackson430() throws Exception
     {
-        ObjectMapper om = new ObjectMapper();
+        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 //        om.getSerializationConfig().setSerializationInclusion( Inclusion.NON_NULL );
         om.setSerializerFactory( new CustomJsonSerializerFactory() );
         MyClass mc = new MyClass();

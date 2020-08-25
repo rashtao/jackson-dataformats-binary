@@ -14,7 +14,7 @@ public class TestJava6Types extends com.fasterxml.jackson.databind.BaseMapTest
     // for [databind#216]
     public void test16Types() throws Exception
     {
-        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Deque<?> dq = mapper.readValue("[1]", Deque.class);
         assertNotNull(dq);
         assertEquals(1, dq.size());

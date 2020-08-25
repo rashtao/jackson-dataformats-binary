@@ -22,7 +22,7 @@ public class DeprecatedConstructType1456Test extends BaseMapTest
 
     public static class ImplEntity extends BaseEntity {}
 
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     @SuppressWarnings("deprecation")
     public void testGenericResolutionUsingDeprecated() throws Exception
