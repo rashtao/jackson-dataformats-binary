@@ -20,7 +20,6 @@ import java.math.BigInteger;
 /**
  * @author Mark Vollmary
  * @author Michele Rastelli
- * <p>
  * TODO: allocate buffers inside VPackBuilder using ioCtxt
  */
 public class VelocypackGenerator extends GeneratorBase {
@@ -36,16 +35,6 @@ public class VelocypackGenerator extends GeneratorBase {
         this.out = out;
         builder = new VPackBuilder();
         attribute = null;
-    }
-
-    @Override
-    public void writeStartObject(Object o) throws IOException {
-        try {
-            builder.add(attribute, ValueType.OBJECT);
-            attribute = null;
-        } catch (final VPackBuilderException e) {
-            throw new IOException(e);
-        }
     }
 
     @Override
@@ -69,7 +58,7 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public void writeFieldName(String s) throws IOException {
-
+        attribute = s;
     }
 
     @Override
@@ -306,17 +295,6 @@ public class VelocypackGenerator extends GeneratorBase {
     @Override
     public boolean canWriteBinaryNatively() {
         return true;
-    }
-
-    /*
-    /**********************************************************
-    /* Overridden methods, configuration
-    /**********************************************************
-     */
-
-    @Override
-    public Object getOutputTarget() {
-        return out;
     }
 
 }
