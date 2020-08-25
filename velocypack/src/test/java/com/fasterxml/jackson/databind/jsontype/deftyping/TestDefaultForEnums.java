@@ -44,7 +44,7 @@ public class TestDefaultForEnums
         assertEquals(TimeUnit.SECONDS, result.timeUnit);
         
         // then with type info
-        m = JsonMapper.builder()
+        m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean));
@@ -55,7 +55,7 @@ public class TestDefaultForEnums
     
     public void testSimpleEnumsInObjectArray() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         // Typing is needed for enums
@@ -70,7 +70,7 @@ public class TestDefaultForEnums
 
     public void testSimpleEnumsAsField() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new EnumHolder(TestEnum.B)));

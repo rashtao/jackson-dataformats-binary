@@ -17,10 +17,11 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
 public class ObjectReaderTest extends BaseMapTest
 {
-    final JsonMapper MAPPER = JsonMapper.builder().build();
+    final VelocypackMapper MAPPER = VelocypackMapper.builder().build();
 
     static class POJO {
         public Map<String, Object> name;
@@ -93,8 +94,8 @@ public class ObjectReaderTest extends BaseMapTest
         assertEquals(1, result.size());
 
         // and new mapper should work
-        ObjectMapper mapper2 = JsonMapper.builder()
-                .enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS)
+        ObjectMapper mapper2 = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+//                .enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS)
                 .build();
         result = mapper2.readerFor(Map.class)
                 .readValue(JSON);
@@ -395,7 +396,7 @@ public class ObjectReaderTest extends BaseMapTest
     // For [databind#2297]
     public void testUnknownFields() throws Exception
     {
-        ObjectMapper mapper = JsonMapper.builder().addHandler(new DeserializationProblemHandler(){
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder().addHandler(new DeserializationProblemHandler(){
             @Override
             public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser p, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException {
                 p.readValueAsTree();

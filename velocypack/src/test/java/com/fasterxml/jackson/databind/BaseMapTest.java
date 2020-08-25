@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
 public abstract class BaseMapTest
     extends BaseTest
@@ -238,8 +239,8 @@ public abstract class BaseMapTest
     }
 
     // @since 2.10
-    protected static JsonMapper.Builder jsonMapperBuilder() {
-        return JsonMapper.builder();
+    protected static VelocypackMapper.Builder jsonMapperBuilder() {
+        return VelocypackMapper.builder();
     }
 
     // @since 2.7

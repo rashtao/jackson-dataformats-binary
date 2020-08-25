@@ -24,7 +24,7 @@ public class DefaultWithBaseType1093Test extends BaseMapTest
     // [databind#1093]
     public void testWithDefaultTyping() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT)
                 .build();

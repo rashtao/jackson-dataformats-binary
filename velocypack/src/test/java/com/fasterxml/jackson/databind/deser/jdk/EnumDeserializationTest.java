@@ -455,7 +455,7 @@ public class EnumDeserializationTest
 
         // [databind#1690]: unless prevented
         try {
-            en = JsonMapper.builder()
+            en = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                     .configure(MapperFeature.ALLOW_COERCION_OF_SCALARS, false)
                     .build()
                     .readerFor(TestEnum.class)

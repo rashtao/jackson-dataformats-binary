@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackFactory;
+import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutput;
@@ -76,17 +77,17 @@ public class ObjectMapperTest extends BaseMapTest
     public void testGeneratorFeatures()
     {
         // and also for mapper
-        JsonMapper mapper = new JsonMapper();
+        VelocypackMapper mapper = new VelocypackMapper();
         assertTrue(mapper.isEnabled(JsonGenerator.Feature.AUTO_CLOSE_TARGET));
         assertTrue(mapper.isEnabled(StreamWriteFeature.AUTO_CLOSE_TARGET));
-        assertFalse(mapper.isEnabled(JsonWriteFeature.ESCAPE_NON_ASCII));
-        assertTrue(mapper.isEnabled(JsonWriteFeature.WRITE_NAN_AS_STRINGS));
-        mapper = JsonMapper.builder()
+//        assertFalse(mapper.isEnabled(JsonWriteFeature.ESCAPE_NON_ASCII));
+//        assertTrue(mapper.isEnabled(JsonWriteFeature.WRITE_NAN_AS_STRINGS));
+        mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .disable(StreamWriteFeature.FLUSH_PASSED_TO_STREAM)
-                .disable(JsonWriteFeature.WRITE_NAN_AS_STRINGS)
+//                .disable(JsonWriteFeature.WRITE_NAN_AS_STRINGS)
                 .build();
         assertFalse(mapper.isEnabled(StreamWriteFeature.FLUSH_PASSED_TO_STREAM));
-        assertFalse(mapper.isEnabled(JsonWriteFeature.WRITE_NAN_AS_STRINGS));
+//        assertFalse(mapper.isEnabled(JsonWriteFeature.WRITE_NAN_AS_STRINGS));
     }
 
     public void testParserFeatures()

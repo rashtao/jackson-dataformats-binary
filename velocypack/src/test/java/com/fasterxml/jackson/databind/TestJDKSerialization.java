@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.LRUMap;
 
+import static com.fasterxml.jackson.VPackUtils.toBytes;
+
 /**
  * Tests to verify that most core Jackson components can be serialized
  * using default JDK serialization: this feature is useful for some
@@ -93,10 +95,10 @@ public class TestJDKSerialization extends BaseMapTest
     {
         ObjectMapper mapper = newJsonMapper();
         // ensure we have serializers and/or deserializers, first
-        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(EnumPOJO.class)
-                .writeValueAsBytes(new EnumPOJO()));
+        byte[] vpackBytes = mapper.writerFor(EnumPOJO.class)
+                .writeValueAsBytes(new EnumPOJO());
         EnumPOJO result = mapper.readerFor(EnumPOJO.class)
-                .readValue(json);
+                .readValue(vpackBytes);
         assertNotNull(result);
 
         // and then use JDK serialization to freeze/thaw objects
@@ -116,9 +118,9 @@ public class TestJDKSerialization extends BaseMapTest
         assertNotNull(w);
 
         // plus, ensure objects are usable:
-        String json2 = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(new EnumPOJO()));
-        assertEquals(json, json2);
-        EnumPOJO result2 = r.readValue(json2);
+        byte[] vpackBytes2 = w.writeValueAsBytes(new EnumPOJO());
+        assertEquals(vpackBytes, vpackBytes2);
+        EnumPOJO result2 = r.readValue(vpackBytes2);
         assertNotNull(result2);
     }
 
@@ -139,21 +141,21 @@ public class TestJDKSerialization extends BaseMapTest
     public void testObjectReader() throws IOException
     {
         ObjectReader origReader = MAPPER.readerFor(MyPojo.class);
-        String JSON = "{\"x\":1,\"y\":2}";
-        MyPojo p1 = origReader.readValue(JSON);
+        byte[] bytes = toBytes("{\"x\":1,\"y\":2}");
+        MyPojo p1 = origReader.readValue(bytes);
         assertEquals(2, p1.y);
         ObjectReader anyReader = MAPPER.readerFor(AnyBean.class);
-        AnyBean any = anyReader.readValue(JSON);
-        assertEquals(Integer.valueOf(2), any.properties().get("y"));
+        AnyBean any = anyReader.readValue(bytes);
+        assertEquals(Long.valueOf(2), any.properties().get("y"));
         
         byte[] readerBytes = jdkSerialize(origReader);
         ObjectReader reader2 = jdkDeserialize(readerBytes);
-        MyPojo p2 = reader2.readValue(JSON);
+        MyPojo p2 = reader2.readValue(bytes);
         assertEquals(2, p2.y);
 
         ObjectReader anyReader2 = jdkDeserialize(jdkSerialize(anyReader));
-        AnyBean any2 = anyReader2.readValue(JSON);
-        assertEquals(Integer.valueOf(2), any2.properties().get("y"));
+        AnyBean any2 = anyReader2.readValue(bytes);
+        assertEquals(Long.valueOf(2), any2.properties().get("y"));
     }
 
     public void testObjectMapper() throws IOException
@@ -167,7 +169,7 @@ public class TestJDKSerialization extends BaseMapTest
         byte[] bytes = jdkSerialize(MAPPER);
         ObjectMapper mapper2 = jdkDeserialize(bytes);
         assertEquals(EXP_JSON, com.fasterxml.jackson.VPackUtils.toJson( mapper2.writeValueAsBytes(p)));
-        MyPojo p2 = mapper2.readValue(EXP_JSON, MyPojo.class);
+        MyPojo p2 = mapper2.readValue(toBytes(EXP_JSON), MyPojo.class);
         assertEquals(p.x, p2.x);
         assertEquals(p.y, p2.y);
 

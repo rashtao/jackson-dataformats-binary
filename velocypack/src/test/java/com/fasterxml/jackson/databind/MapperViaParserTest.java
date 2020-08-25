@@ -143,11 +143,4 @@ public class MapperViaParserTest  extends BaseMapTest
         }
     }
 
-    public void testEscapingUsingMapper() throws Exception
-    {
-        ObjectMapper mapper = JsonMapper.builder()
-               .configure(JsonWriteFeature.ESCAPE_NON_ASCII, true)
-               .build(); com.fasterxml.jackson.VPackUtils.toJson(
-        mapper.writeValueAsBytes(String.valueOf((char) 257)));
-    }
 }

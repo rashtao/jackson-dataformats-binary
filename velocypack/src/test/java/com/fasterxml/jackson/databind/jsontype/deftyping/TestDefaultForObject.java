@@ -96,7 +96,7 @@ public class TestDefaultForObject
      */
     public void testBeanAsObject() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         // note: need to wrap, to get declared as Object
@@ -116,7 +116,7 @@ public class TestDefaultForObject
     // with 2.5, another test to check that "as-property" is valid option
     public void testBeanAsObjectUsingAsProperty() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL,
                         ".hype")
@@ -149,7 +149,7 @@ public class TestDefaultForObject
             verifyException(e, "cannot construct");
         }
         // and then that we will succeed with default type info
-        m = JsonMapper.builder()
+        m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE)
                 .build();
@@ -166,7 +166,7 @@ public class TestDefaultForObject
      */
     public void testNonFinalBean() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 // first: use "object or abstract" typing: should produce no type info:
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE)
@@ -174,7 +174,7 @@ public class TestDefaultForObject
         StringBean bean = new StringBean("x");
         assertEquals("{\"name\":\"x\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean)));
         // then non-final, and voila:
-        m = JsonMapper.builder()
+        m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
@@ -184,7 +184,7 @@ public class TestDefaultForObject
 
     public void testNullValue() throws Exception
     {
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
@@ -206,7 +206,7 @@ public class TestDefaultForObject
         assertEquals("[\"MAYBE\"]", serializeAsString(input2));
 
         // and then with it
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
 
@@ -231,7 +231,7 @@ public class TestDefaultForObject
     {
         EnumSet<Choice> set = EnumSet.of(Choice.NO);
         Object[] input = new Object[] { set };
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
@@ -251,7 +251,7 @@ public class TestDefaultForObject
         EnumMap<Choice,String> map = new EnumMap<Choice,String>(Choice.class);
         map.put(Choice.NO, "maybe");
         Object[] input = new Object[] { map };
-        ObjectMapper m = JsonMapper.builder()
+        ObjectMapper m = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
@@ -267,7 +267,7 @@ public class TestDefaultForObject
 
     public void testJackson311() throws Exception
     {
-        ObjectMapper mapper = JsonMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
@@ -280,7 +280,7 @@ public class TestDefaultForObject
     // Also, let's ensure TokenBuffer gets properly handled
     public void testTokenBuffer() throws Exception
     {
-        ObjectMapper mapper = JsonMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
@@ -337,7 +337,7 @@ public class TestDefaultForObject
 
     public void testIssue352() throws Exception
     {
-        ObjectMapper mapper = JsonMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, JsonTypeInfo.As.PROPERTY)
                 .build();
@@ -357,7 +357,7 @@ public class TestDefaultForObject
     // Test to ensure we can also use "As.PROPERTY" inclusion and custom property name
     public void testFeature432() throws Exception
     {
-        ObjectMapper mapper = JsonMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "*CLASS*")
                 .build();
@@ -368,7 +368,7 @@ public class TestDefaultForObject
     public void testNoGoWithExternalProperty() throws Exception
     {
         try {
-            /*ObjectMapper mapper =*/ JsonMapper.builder()
+            /*ObjectMapper mapper =*/ com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                     .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT,
                         JsonTypeInfo.As.EXTERNAL_PROPERTY)
@@ -383,14 +383,14 @@ public class TestDefaultForObject
     public void testWithFinalClass() throws Exception
     {
         // First: type info NOT included
-        ObjectMapper mapper = JsonMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
         assertEquals(aposToQuotes("{'name':'abc'}"), com.fasterxml.jackson.VPackUtils.toJson(
                 mapper.writeValueAsBytes(new FinalStringBean("abc"))));
 
-        mapper = JsonMapper.builder()
+        mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.EVERYTHING)
                 .build();

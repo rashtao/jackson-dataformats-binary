@@ -182,7 +182,7 @@ public class TestContextualDeserialization extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper ANNOTATED_CTXT_MAPPER = JsonMapper.builder()
+    private final ObjectMapper ANNOTATED_CTXT_MAPPER = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
             .addModule(new SimpleModule("test", Version.unknownVersion())
                     .addDeserializer(StringValue.class, new AnnotatedContextualDeserializer()
             ))

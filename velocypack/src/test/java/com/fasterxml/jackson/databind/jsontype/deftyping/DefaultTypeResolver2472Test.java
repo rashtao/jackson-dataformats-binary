@@ -20,7 +20,7 @@ public class DefaultTypeResolver2472Test extends BaseMapTest
         legacyTyper.init(JsonTypeInfo.Id.CLASS, null);
         legacyTyper.inclusion(JsonTypeInfo.As.PROPERTY);
 
-        final ObjectMapper mapper = JsonMapper.builder().build();
+        final ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder().build();
         mapper.setDefaultTyping(legacyTyper);
 
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(Arrays.asList("foo")));
