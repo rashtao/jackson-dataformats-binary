@@ -29,9 +29,9 @@ public class StackTraceElementTest extends BaseMapTest
         ObjectMapper mapper = newJsonMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-        String json = mapper
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper
                 .writerWithDefaultPrettyPrinter()
-                .writeValueAsString(new ErrorObject(new Exception("exception message")));
+                .writeValueAsBytes(new ErrorObject(new Exception("exception message"))));
 
         ErrorObject result = mapper.readValue(json, ErrorObject.class);
         assertNotNull(result);

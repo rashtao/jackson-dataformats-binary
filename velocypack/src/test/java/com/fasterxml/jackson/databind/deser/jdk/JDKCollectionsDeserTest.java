@@ -34,13 +34,13 @@ public class JDKCollectionsDeserTest extends BaseMapTest
     {
         final TypeReference<List<XBean>> xbeanListType = new TypeReference<List<XBean>>() { };
 
-        String json = MAPPER.writeValueAsString(Collections.singleton(new XBean(3)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Collections.singleton(new XBean(3))));
         Collection<XBean> result = MAPPER.readValue(json, xbeanListType);
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals(3, result.iterator().next().x);
 
-        json = MAPPER.writeValueAsString(Collections.singletonList(new XBean(28)));
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Collections.singletonList(new XBean(28))));
         result = MAPPER.readValue(json, xbeanListType);
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -56,7 +56,7 @@ public class JDKCollectionsDeserTest extends BaseMapTest
                 .build();
 
         Set<String> theSet = Collections.unmodifiableSet(Collections.singleton("a"));
-        String json = mapper.writeValueAsString(theSet);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(theSet));
 
         assertEquals("[\"java.util.Collections$UnmodifiableSet\",[\"a\"]]", json);
 

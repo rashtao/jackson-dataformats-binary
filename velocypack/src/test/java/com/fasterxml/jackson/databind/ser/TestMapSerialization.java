@@ -105,13 +105,13 @@ public class TestMapSerialization extends BaseMapTest
         ObjectWriter w = MAPPER.writerFor(Object.class);
         Map<String,Object> map = new LinkedHashMap<String,Object>();
         map.put("a", 1);
-        String json = w.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(map));
         assertEquals(aposToQuotes("{'a':1}"), json);
     }
 
     public void testMapSerializer() throws IOException
     {
-        assertEquals("\"{a=b, c=d}\"", MAPPER.writeValueAsString(new PseudoMap("a", "b", "c", "d")));
+        assertEquals("\"{a=b, c=d}\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PseudoMap("a", "b", "c", "d"))));
     }
 
     // problems with map entries, values
@@ -119,20 +119,20 @@ public class TestMapSerialization extends BaseMapTest
     {
         Map<String,String> map = new HashMap<String,String>();
         map.put("a", "b");
-        assertEquals("[\"a\"]", MAPPER.writeValueAsString(map.keySet()));
-        assertEquals("[\"b\"]", MAPPER.writeValueAsString(map.values()));
+        assertEquals("[\"a\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map.keySet())));
+        assertEquals("[\"b\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map.values())));
 
         // TreeMap has similar inner class(es):
         map = new TreeMap<String,String>();
         map.put("c", "d");
-        assertEquals("[\"c\"]", MAPPER.writeValueAsString(map.keySet()));
-        assertEquals("[\"d\"]", MAPPER.writeValueAsString(map.values()));
+        assertEquals("[\"c\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map.keySet())));
+        assertEquals("[\"d\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map.values())));
 
         // and for [JACKSON-533], same for concurrent maps
         map = new ConcurrentHashMap<String,String>();
         map.put("e", "f");
-        assertEquals("[\"e\"]", MAPPER.writeValueAsString(map.keySet()));
-        assertEquals("[\"f\"]", MAPPER.writeValueAsString(map.values()));
+        assertEquals("[\"e\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map.keySet())));
+        assertEquals("[\"f\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map.values())));
     }
 
     // sort Map entries by key
@@ -144,10 +144,10 @@ public class TestMapSerialization extends BaseMapTest
         map.put("b", 3);
         map.put("a", 6);
         // by default, no (re)ordering:
-        assertEquals("{\"b\":3,\"a\":6}", m.writeValueAsString(map));
+        assertEquals("{\"b\":3,\"a\":6}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map)));
         // but can be changed
         ObjectWriter sortingW =  m.writer(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-        assertEquals("{\"a\":6,\"b\":3}", sortingW.writeValueAsString(map));
+        assertEquals("{\"a\":6,\"b\":3}", com.fasterxml.jackson.VPackUtils.toJson( sortingW.writeValueAsBytes(map)));
     }
 
     // related to [databind#1411]
@@ -160,7 +160,7 @@ public class TestMapSerialization extends BaseMapTest
         mapWithNullKey.put("b", 2);
         // 16-Oct-2016, tatu: By default, null keys are not accepted...
         try {
-            /*String json =*/ sortingW.writeValueAsString(mapWithNullKey);
+            /*String json =*/ com.fasterxml.jackson.VPackUtils.toJson( sortingW.writeValueAsBytes(mapWithNullKey));
             //assertEquals(aposToQuotes("{'':1,'b':2}"), json);
         } catch (JsonMappingException e) {
             verifyException(e, "Null key for a Map not allowed");
@@ -171,7 +171,7 @@ public class TestMapSerialization extends BaseMapTest
     public void testOrderByKeyViaProperty() throws IOException
     {
         MapOrderingBean input = new MapOrderingBean("c", "b", "a");
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'map':{'a':3,'b':2,'c':1}}"), json);
     }        
 
@@ -179,17 +179,17 @@ public class TestMapSerialization extends BaseMapTest
     public void testMapEntry() throws IOException
     {
         StringIntMapEntry input = new StringIntMapEntry("answer", 42);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'answer':42}"), json);
 
         StringIntMapEntry[] array = new StringIntMapEntry[] { input };
-        json = MAPPER.writeValueAsString(array);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(array));
         assertEquals(aposToQuotes("[{'answer':42}]"), json);
 
         // and maybe with bit of extra typing?
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 DefaultTyping.NON_FINAL);
-        json = mapper.writeValueAsString(input);
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals(aposToQuotes("['"+StringIntMapEntry.class.getName()+"',{'answer':42}]"),
                 json);
     }        
@@ -197,7 +197,7 @@ public class TestMapSerialization extends BaseMapTest
     public void testMapEntryWrapper() throws IOException
     {
         StringIntMapEntryWrapper input = new StringIntMapEntryWrapper("answer", 42);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'value':{'answer':42}}"), json);
     }
 
@@ -208,7 +208,7 @@ public class TestMapSerialization extends BaseMapTest
         input.put("id", "Test");
         input.put("NULL", null);
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         assertEquals(aposToQuotes("{'@type':'mymap','id':'Test','NULL':null}"),
                 json);
@@ -221,7 +221,7 @@ public class TestMapSerialization extends BaseMapTest
     
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.addMixIn(Object.class, Mixin691.class);
-        String json = mapper.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
         assertEquals("{\"@class\":\"java.util.HashMap\",\"NULL\":null}", json);
     }
 
@@ -233,20 +233,20 @@ public class TestMapSerialization extends BaseMapTest
         Map<String,String> input = new ConcurrentSkipListMap<String,String>();
         input.put("x", "y");
         input.put("a", "b");
-        String json = w.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'a':'b','x':'y'}"), json);
 
         input = new ConcurrentHashMap<String,String>();
         input.put("x", "y");
         input.put("a", "b");
-        json = w.writeValueAsString(input);
+        json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'a':'b','x':'y'}"), json);
 
         // One more: while not technically concurrent map at all, exhibits same issue
         input = new Hashtable<String,String>();
         input.put("x", "y");
         input.put("a", "b");
-        json = w.writeValueAsString(input);
+        json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'a':'b','x':'y'}"), json);
     }
 }

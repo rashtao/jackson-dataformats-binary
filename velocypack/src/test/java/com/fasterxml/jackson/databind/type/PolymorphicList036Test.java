@@ -98,7 +98,7 @@ public class PolymorphicList036Test extends BaseMapTest
         list.add("value 1");
         list.add("value 2");
         
-        String serialized = MAPPER.writeValueAsString(list);
+        String serialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list));
 //        System.out.println(serialized);
         
         StringyList<String> deserialized = MAPPER.readValue(serialized, type);

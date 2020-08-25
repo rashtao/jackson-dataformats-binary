@@ -101,13 +101,13 @@ public class ValidatePolymBaseTypeTest extends BaseMapTest
      */
 
     public void testAnnotedGood() throws Exception {
-        final String json = MAPPER_ANNOTATED.writeValueAsString(new AnnotatedGoodWrapper());
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER_ANNOTATED.writeValueAsBytes(new AnnotatedGoodWrapper()));
         // should work ok
         assertNotNull(MAPPER_DEF_TYPING.readValue(json, AnnotatedGoodWrapper.class));
     }
 
     public void testAnnotedBad() throws Exception {
-        final String json = MAPPER_ANNOTATED.writeValueAsString(new AnnotatedBadWrapper());
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER_ANNOTATED.writeValueAsBytes(new AnnotatedBadWrapper()));
         // should fail
         try {
             MAPPER_ANNOTATED.readValue(json, AnnotatedBadWrapper.class);
@@ -126,13 +126,13 @@ public class ValidatePolymBaseTypeTest extends BaseMapTest
      */
 
     public void testDefaultGood() throws Exception {
-        final String json = MAPPER_DEF_TYPING.writeValueAsString(new DefTypeGoodWrapper());
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER_DEF_TYPING.writeValueAsBytes(new DefTypeGoodWrapper()));
         // should work ok
         assertNotNull(MAPPER_DEF_TYPING.readValue(json, DefTypeGoodWrapper.class));
     }
 
     public void testDefaultBad() throws Exception {
-        final String json = MAPPER_DEF_TYPING.writeValueAsString(new DefTypeBadWrapper());
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER_DEF_TYPING.writeValueAsBytes(new DefTypeBadWrapper()));
         // should fail
         try {
             MAPPER_DEF_TYPING.readValue(json, DefTypeBadWrapper.class);

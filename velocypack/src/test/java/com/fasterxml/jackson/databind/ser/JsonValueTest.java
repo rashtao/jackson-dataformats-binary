@@ -203,14 +203,14 @@ public class JsonValueTest
     
     public void testSimpleMethodJsonValue() throws Exception
     {
-        assertEquals("\"abc\"", MAPPER.writeValueAsString(new ValueClass<String>("abc")));
-        assertEquals("null", MAPPER.writeValueAsString(new ValueClass<String>(null)));
+        assertEquals("\"abc\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ValueClass<String>("abc"))));
+        assertEquals("null", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ValueClass<String>(null))));
     }
 
     public void testSimpleFieldJsonValue() throws Exception
     {
-        assertEquals("\"abc\"", MAPPER.writeValueAsString(new FieldValueClass<String>("abc")));
-        assertEquals("null", MAPPER.writeValueAsString(new FieldValueClass<String>(null)));
+        assertEquals("\"abc\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new FieldValueClass<String>("abc"))));
+        assertEquals("null", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new FieldValueClass<String>(null))));
     }
 
     public void testJsonValueWithUseSerializer() throws Exception
@@ -230,43 +230,43 @@ public class JsonValueTest
 
     public void testDisabling() throws Exception
     {
-        assertEquals(aposToQuotes("{'x':1,'y':2}"),
-                MAPPER.writeValueAsString(new DisabledJsonValue()));
+        assertEquals(aposToQuotes("{'x':1,'y':2}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new DisabledJsonValue())));
     }
 
     public void testValueWithStaticType() throws Exception
     {
         // Ok; first, with dynamic type:
-        assertEquals("{\"a\":\"a\",\"b\":\"b\"}", MAPPER.writeValueAsString(new ValueWrapper()));
+        assertEquals("{\"a\":\"a\",\"b\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ValueWrapper())));
 
         // then static
         ObjectMapper staticMapper = jsonMapperBuilder()
                 .configure(MapperFeature.USE_STATIC_TYPING, true)
                 .build();
-        assertEquals("{\"a\":\"a\"}", staticMapper.writeValueAsString(new ValueWrapper()));
+        assertEquals("{\"a\":\"a\"}", com.fasterxml.jackson.VPackUtils.toJson( staticMapper.writeValueAsBytes(new ValueWrapper())));
     }
 
     public void testMapWithJsonValue() throws Exception {
         // First via method
-        assertEquals("{\"a\":\"1\"}", MAPPER.writeValueAsString(new MapBean()));
+        assertEquals("{\"a\":\"1\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MapBean())));
 
         // then field
-        assertEquals("{\"b\":\"2\"}", MAPPER.writeValueAsString(new MapFieldBean()));
+        assertEquals("{\"b\":\"2\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MapFieldBean())));
     }
 
     public void testWithMap() throws Exception {
-        assertEquals("42", MAPPER.writeValueAsString(new MapAsNumber()));
+        assertEquals("42", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MapAsNumber())));
     }
 
     public void testWithList() throws Exception {
-        assertEquals("13", MAPPER.writeValueAsString(new ListAsNumber()));
+        assertEquals("13", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ListAsNumber())));
     }
 
     public void testInList() throws Exception {
         IntExtBean bean = new IntExtBean();
         bean.add(1);
         bean.add(2);
-        String json = MAPPER.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bean));
         assertEquals(json, "{\"values\":[{\"i\":1},{\"i\":2}]}");
     }
 
@@ -276,7 +276,7 @@ public class JsonValueTest
 	    AdditionInterface adder = new AdditionInterfaceImpl(1);
 	
 	    assertEquals(2, adder.add(1));
-	    String json = MAPPER.writeValueAsString(adder);
+	    String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(adder));
 	    assertEquals("{\"boingo\":\"boopsy\",\"toAdd\":1}", json);
 	    assertEquals(2, MAPPER.readValue(json, AdditionInterface.class).add(1));
     }
@@ -286,13 +286,13 @@ public class JsonValueTest
         final Bean838 INPUT = new Bean838();
 
         // by default, @JsonValue should be used
-        assertEquals(quote("value"), MAPPER.writeValueAsString(INPUT));
+        assertEquals(quote("value"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT)));
 
         // but custom serializer should override it
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule()
             .addSerializer(Bean838.class, new Bean838Serializer())
             );
-        assertEquals("42", mapper.writeValueAsString(INPUT));
+        assertEquals("42", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(INPUT)));
     }
 }

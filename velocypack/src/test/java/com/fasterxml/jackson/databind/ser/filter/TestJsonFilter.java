@@ -116,26 +116,26 @@ public class TestJsonFilter extends BaseMapTest
     {
         FilterProvider prov = new SimpleFilterProvider().addFilter("RootFilter",
                 SimpleBeanPropertyFilter.filterOutAllExcept("a"));
-        assertEquals("{\"a\":\"a\"}", MAPPER.writer(prov).writeValueAsString(new Bean()));
+        assertEquals("{\"a\":\"a\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new Bean())));
 
         // [JACKSON-504]: also verify it works via mapper
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setFilterProvider(prov);
-        assertEquals("{\"a\":\"a\"}", mapper.writeValueAsString(new Bean()));
+        assertEquals("{\"a\":\"a\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean())));
     }
 
     public void testIncludeAllFilter() throws Exception
     {
         FilterProvider prov = new SimpleFilterProvider().addFilter("RootFilter",
                 SimpleBeanPropertyFilter.serializeAll());
-        assertEquals("{\"a\":\"a\",\"b\":\"b\"}", MAPPER.writer(prov).writeValueAsString(new Bean()));
+        assertEquals("{\"a\":\"a\",\"b\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new Bean())));
     }
     
     public void testSimpleExclusionFilter() throws Exception
     {
         FilterProvider prov = new SimpleFilterProvider().addFilter("RootFilter",
                 SimpleBeanPropertyFilter.serializeAllExcept("a"));
-        assertEquals("{\"b\":\"b\"}", MAPPER.writer(prov).writeValueAsString(new Bean()));
+        assertEquals("{\"b\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new Bean())));
     }
 
     // should handle missing case gracefully
@@ -143,7 +143,7 @@ public class TestJsonFilter extends BaseMapTest
     {
         // First: default behavior should be to throw an exception
         try {
-            MAPPER.writeValueAsString(new Bean());
+            MAPPER.writeValueAsBytes(new Bean());
             fail("Should have failed without configured filter");
         } catch (JsonMappingException e) { // should be resolved to a MappingException (internally may be something else)
             verifyException(e, "Cannot resolve PropertyFilter with id 'RootFilter'");
@@ -153,7 +153,7 @@ public class TestJsonFilter extends BaseMapTest
         SimpleFilterProvider fp = new SimpleFilterProvider().setFailOnUnknownId(false);
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setFilterProvider(fp);
-        String json = mapper.writeValueAsString(new Bean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean()));
         assertEquals("{\"a\":\"a\",\"b\":\"b\"}", json);
     }
     
@@ -161,7 +161,7 @@ public class TestJsonFilter extends BaseMapTest
     public void testDefaultFilter() throws Exception
     {
         FilterProvider prov = new SimpleFilterProvider().setDefaultFilter(SimpleBeanPropertyFilter.filterOutAllExcept("b"));
-        assertEquals("{\"b\":\"b\"}", MAPPER.writer(prov).writeValueAsString(new Bean()));
+        assertEquals("{\"b\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new Bean())));
     }
     
     // [Issue#89] combining @JsonIgnore, @JsonProperty
@@ -172,7 +172,7 @@ public class TestJsonFilter extends BaseMapTest
         pod.username = "Bob";
         pod.userPassword = "s3cr3t!";
 
-        String json = mapper.writeValueAsString(pod);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(pod));
 
         assertEquals("{\"username\":\"Bob\"}", json);
 
@@ -188,7 +188,7 @@ public class TestJsonFilter extends BaseMapTest
             .addFilter("RootFilter", SimpleBeanPropertyFilter.filterOutAllExcept("a"))
             .addFilter("b", SimpleBeanPropertyFilter.filterOutAllExcept("b"));
 
-        assertEquals("{\"first\":{\"a\":\"a\"},\"second\":{\"b\":\"b\"}}",
-                MAPPER.writer(prov).writeValueAsString(new FilteredProps()));
+        assertEquals("{\"first\":{\"a\":\"a\"},\"second\":{\"b\":\"b\"}}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writer(prov).writeValueAsBytes(new FilteredProps())));
     }
 }

@@ -99,10 +99,10 @@ public class NestedTypes1604Test extends BaseMapTest
         }
         BadOuter badOuter = new BadOuter(Data.of(inners));
 //        GoodOuter goodOuter = new GoodOuter(new DataList<>(inners));
-//        String json = objectMapper.writeValueAsString(goodOuter);
+//        String json = com.fasterxml.jackson.VPackUtils.toJson( objectMapper.writeValueAsBytes(goodOuter));
 
         // 11-Oct-2017, tatu: Fails with exception wrt type specialization
-        String json = objectMapper.writeValueAsString(badOuter);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( objectMapper.writeValueAsBytes(badOuter));
         assertNotNull(json);
    }
 
@@ -113,7 +113,7 @@ public class NestedTypes1604Test extends BaseMapTest
             inners.add(new Inner(i));
         }
         BadOuter badOuter = new BadOuter(Data.ofRefined(inners));
-        String json = objectMapper.writeValueAsString(badOuter);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( objectMapper.writeValueAsBytes(badOuter));
         assertNotNull(json);
    }
 
@@ -124,7 +124,7 @@ public class NestedTypes1604Test extends BaseMapTest
             inners.add(new Inner(i));
         }
         BadOuter badOuter = new BadOuter(Data.ofSneaky(inners));
-        String json = objectMapper.writeValueAsString(badOuter);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( objectMapper.writeValueAsBytes(badOuter));
         assertNotNull(json);
    }
 }

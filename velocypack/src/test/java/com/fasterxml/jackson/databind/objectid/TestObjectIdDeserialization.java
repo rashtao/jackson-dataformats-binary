@@ -222,7 +222,7 @@ public class TestObjectIdDeserialization extends BaseMapTest
         child2.parent = root;
         child1.first = child2;
 
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
 
         // and should come back the same too...
         UUIDNode result = MAPPER.readValue(json, UUIDNode.class);

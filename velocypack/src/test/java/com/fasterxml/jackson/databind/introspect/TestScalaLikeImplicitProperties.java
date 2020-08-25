@@ -136,14 +136,14 @@ public class TestScalaLikeImplicitProperties extends BaseMapTest
     {
         ObjectMapper m = manglingMapper();
 
-        assertEquals("{\"prop\":\"val\"}", m.writeValueAsString(new ValProperty("val")));
+        assertEquals("{\"prop\":\"val\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new ValProperty("val"))));
     }
 
     public void testValWithBeanProperty() throws Exception
     {
         ObjectMapper m = manglingMapper();
 
-        assertEquals("{\"prop\":\"val\"}", m.writeValueAsString(new ValWithBeanProperty("val")));
+        assertEquals("{\"prop\":\"val\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new ValWithBeanProperty("val"))));
     }
 
 
@@ -151,7 +151,7 @@ public class TestScalaLikeImplicitProperties extends BaseMapTest
     {
         ObjectMapper m = manglingMapper();
 
-        assertEquals("{\"prop\":\"var\"}", m.writeValueAsString(new VarProperty("var")));
+        assertEquals("{\"prop\":\"var\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new VarProperty("var"))));
         VarProperty result = m.readValue("{\"prop\":\"read\"}", VarProperty.class);
         assertEquals("read", result.prop());
     }
@@ -161,7 +161,7 @@ public class TestScalaLikeImplicitProperties extends BaseMapTest
     {
         ObjectMapper m = manglingMapper();
 
-        assertEquals("{\"prop\":\"var\"}", m.writeValueAsString(new VarWithBeanProperty("var")));
+        assertEquals("{\"prop\":\"var\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new VarWithBeanProperty("var"))));
         VarWithBeanProperty result = m.readValue("{\"prop\":\"read\"}", VarWithBeanProperty.class);
         assertEquals("read", result.prop());
     }
@@ -171,7 +171,7 @@ public class TestScalaLikeImplicitProperties extends BaseMapTest
     {
         ObjectMapper m = manglingMapper();
 
-        assertEquals("{\"prop\":\"get/set\"}", m.writeValueAsString(new GetterSetterProperty()));
+        assertEquals("{\"prop\":\"get/set\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new GetterSetterProperty())));
         GetterSetterProperty result = m.readValue("{\"prop\":\"read\"}", GetterSetterProperty.class);
         assertEquals("read", result.prop());
     }

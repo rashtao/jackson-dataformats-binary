@@ -115,7 +115,7 @@ public class TestObjectIdWithPolymorphic extends BaseMapTest
         in1.next = new Impl(111, 222);
         in1.next.next = in1;
         
-        String json = mapper.writeValueAsString(in1);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(in1));
         
         // then bring back...
         Base result0 = mapper.readValue(json, Base.class);
@@ -145,7 +145,7 @@ public class TestObjectIdWithPolymorphic extends BaseMapTest
         fh.catchBlocks.add(c);
         s.faultHandlers.add(fh);
         
-        String json = om.writeValueAsString(p);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes(p));
         Process restored = om.readValue(json, Process.class);
         assertNotNull(restored);
 

@@ -262,7 +262,7 @@ public class TestTypeModifiers extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
         mapper.registerModule(new ModifierModule());
-        assertEquals("[19]", mapper.writeValueAsString(new MyCollectionLikeType(19)));
+        assertEquals("[19]", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new MyCollectionLikeType(19))));
     }
 
     public void testMapLikeSerialization() throws Exception
@@ -271,7 +271,7 @@ public class TestTypeModifiers extends BaseMapTest
         mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new MyTypeModifier()));
         mapper.registerModule(new ModifierModule());
         // Due to custom serializer, should get:
-        assertEquals("{\"x\":\"xxx:3\"}", mapper.writeValueAsString(new MyMapLikeType("x", 3)));
+        assertEquals("{\"x\":\"xxx:3\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new MyMapLikeType("x", 3))));
     }
 
 

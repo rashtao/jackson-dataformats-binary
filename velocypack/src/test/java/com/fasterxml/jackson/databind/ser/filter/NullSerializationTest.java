@@ -81,7 +81,7 @@ public class NullSerializationTest
     
     public void testSimple() throws Exception
     {
-        assertEquals("null", MAPPER.writeValueAsString(null));
+        assertEquals("null", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(null)));
     }
 
     public void testOverriddenDefaultNulls() throws Exception
@@ -90,15 +90,15 @@ public class NullSerializationTest
         sp.setNullValueSerializer(new NullSerializer());
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setSerializerProvider(sp);
-        assertEquals("\"foobar\"", m.writeValueAsString(null));
+        assertEquals("\"foobar\"", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(null)));
     }
 
     public void testCustomNulls() throws Exception
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setSerializerProvider(new MyNullProvider());
-        assertEquals("{\"name\":\"foobar\"}", m.writeValueAsString(new Bean1()));
-        assertEquals("{\"type\":null}", m.writeValueAsString(new Bean2()));
+        assertEquals("{\"name\":\"foobar\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Bean1())));
+        assertEquals("{\"type\":null}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Bean2())));
     }
 
     // #281
@@ -108,18 +108,18 @@ public class NullSerializationTest
         root.putNull("a");
 
         // by default, null is... well, null
-        assertEquals("{\"a\":null}", MAPPER.writeValueAsString(root));
+        assertEquals("{\"a\":null}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
 
         // but then we can customize it:
         DefaultSerializerProvider prov = new MyNullProvider();
         prov.setNullValueSerializer(new NullSerializer());
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.setSerializerProvider(prov);
-        assertEquals("{\"a\":\"foobar\"}", m.writeValueAsString(root));
+        assertEquals("{\"a\":\"foobar\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(root)));
     }
 
     public void testNullSerializerForProperty() throws Exception
     {
-        assertEquals("{\"a\":\"foobar\"}", MAPPER.writeValueAsString(new BeanWithNullProps()));
+        assertEquals("{\"a\":\"foobar\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new BeanWithNullProps())));
     }
 }

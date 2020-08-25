@@ -49,7 +49,7 @@ public class TestCoreXMLTypes
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         long timestamp = cal.toGregorianCalendar().getTimeInMillis();
         String numStr = String.valueOf(timestamp);
-        assertEquals(numStr, mapper.writeValueAsString(cal));
+        assertEquals(numStr, com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(cal)));
 
         // [JACKSON-403] Needs to come back ok as well:
         XMLGregorianCalendar calOut = mapper.readValue(numStr, XMLGregorianCalendar.class);
@@ -60,7 +60,7 @@ public class TestCoreXMLTypes
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         // this is ALMOST same as default for XMLGregorianCalendar... just need to unify Z/+0000
         String exp = cal.toXMLFormat();
-        String act = mapper.writeValueAsString(cal);
+        String act = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(cal));
         act = act.substring(1, act.length() - 1); // remove quotes
         exp = removeZ(exp);
         act = removeZ(act);

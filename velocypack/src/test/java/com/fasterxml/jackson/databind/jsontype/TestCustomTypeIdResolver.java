@@ -179,7 +179,7 @@ public class TestCustomTypeIdResolver extends BaseMapTest
     {
         List<JavaType> types = new ArrayList<JavaType>();
         CustomResolver.initTypes = types;
-        String json = MAPPER.writeValueAsString(new CustomBean[] { new CustomBeanImpl(28) });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new CustomBean[] { new CustomBeanImpl(28) }));
         assertEquals("[{\"*\":{\"x\":28}}]", json);
         assertEquals(1, types.size());
         assertEquals(CustomBean.class, types.get(0).getRawClass());
@@ -199,7 +199,7 @@ public class TestCustomTypeIdResolver extends BaseMapTest
         ExtBeanWrapper w = new ExtBeanWrapper();
         w.value = new ExtBeanImpl(12);
 
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
 
         ExtBeanWrapper out = MAPPER.readValue(json, ExtBeanWrapper.class);
         assertNotNull(out);
@@ -216,7 +216,7 @@ public class TestCustomTypeIdResolver extends BaseMapTest
         req.val = "some value";
         Top1270 top = new Top1270();
         top.b = req;
-        String json = MAPPER.writeValueAsString(top);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(top));
         JsonNode tree = MAPPER.readTree(json);
         assertNotNull(tree.get("b"));
         assertNotNull(tree.get("b").get("options"));

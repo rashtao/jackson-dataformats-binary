@@ -57,22 +57,22 @@ public class TestDefaultForScalars
     public void testNumericScalars() throws Exception
     {
         // no typing for Integer, Double, yes for others
-        assertEquals("[123]", DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { Integer.valueOf(123) }));
-        assertEquals("[[\"java.lang.Long\",37]]", DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { Long.valueOf(37) }));
-        assertEquals("[0.25]", DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { Double.valueOf(0.25) }));
-        assertEquals("[[\"java.lang.Float\",0.5]]", DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { Float.valueOf(0.5f) }));
+        assertEquals("[123]", com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { Integer.valueOf(123) })));
+        assertEquals("[[\"java.lang.Long\",37]]", com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { Long.valueOf(37) })));
+        assertEquals("[0.25]", com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { Double.valueOf(0.25) })));
+        assertEquals("[[\"java.lang.Float\",0.5]]", com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { Float.valueOf(0.5f) })));
     }
 
     public void testDateScalars() throws Exception
     {
         long ts = 12345678L;
-        assertEquals("[[\"java.util.Date\","+ts+"]]",
-                DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { new Date(ts) }));
+        assertEquals("[[\"java.util.Date\","+ts+"]]", com.fasterxml.jackson.VPackUtils.toJson(
+                DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { new Date(ts) })));
 
         // Calendar is trickier... hmmh. Need to ensure round-tripping
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(ts);
-        String json = DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { c });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { c }));
         assertEquals("[[\""+c.getClass().getName()+"\","+ts+"]]", json);
         // and let's make sure it also comes back same way:
         Object[] result = DEFAULT_TYPING_MAPPER.readValue(json, Object[].class);
@@ -84,8 +84,8 @@ public class TestDefaultForScalars
     public void testMiscScalars() throws Exception
     {
         // no typing for Strings, booleans
-        assertEquals("[\"abc\"]", DEFAULT_TYPING_MAPPER.writeValueAsString(new Object[] { "abc" }));
-        assertEquals("[true,null,false]", DEFAULT_TYPING_MAPPER.writeValueAsString(new Boolean[] { true, null, false }));
+        assertEquals("[\"abc\"]", com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Object[] { "abc" })));
+        assertEquals("[true,null,false]", com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(new Boolean[] { true, null, false })));
     }
 
     /**
@@ -101,7 +101,7 @@ public class TestDefaultForScalars
         Object[] input = new Object[] {
                 "abc", new Date(1234567), null, Integer.valueOf(456)
         };
-        String json = m.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
         assertEquals("[\"abc\",[\"java.util.Date\",1234567],null,456]", json);
 
         // and should deserialize back as well:
@@ -112,7 +112,7 @@ public class TestDefaultForScalars
     public void test417() throws Exception
     {
         Jackson417Bean input = new Jackson417Bean();
-        String json = DEFAULT_TYPING_MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(input));
         Jackson417Bean result = DEFAULT_TYPING_MAPPER.readValue(json, Jackson417Bean.class);
         assertEquals(input.foo, result.foo);
         assertEquals(input.bar, result.bar);
@@ -137,7 +137,7 @@ public class TestDefaultForScalars
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
         // Serialize
-        String json = mapper.writeValueAsString(mapData);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(mapData));
 
         // Deserialize
         Map<?,?> result = mapper.readValue(json, Map.class);
@@ -149,7 +149,7 @@ public class TestDefaultForScalars
     public void testDefaultTypingWithNaN() throws Exception
     {
         final ObjectWrapperForPoly INPUT = new ObjectWrapperForPoly(Double.POSITIVE_INFINITY);
-        final String json = DEFAULT_TYPING_MAPPER.writeValueAsString(INPUT);
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(INPUT));
         final ObjectWrapperForPoly result = DEFAULT_TYPING_MAPPER.readValue(json, ObjectWrapperForPoly.class);
         assertEquals(Double.class, result.getObject().getClass());
         assertEquals(INPUT.getObject().toString(), result.getObject().toString());

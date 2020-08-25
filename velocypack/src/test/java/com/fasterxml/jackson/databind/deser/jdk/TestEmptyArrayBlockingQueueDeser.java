@@ -27,7 +27,7 @@ public class TestEmptyArrayBlockingQueueDeser extends BaseMapTest
 
     public void testEmptyBlockingQueue() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new RemoteEntity());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new RemoteEntity()));
         Entity entity = MAPPER.readValue(json, Entity.class);
         assertEquals(0, entity.values.size());
     }

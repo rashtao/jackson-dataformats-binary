@@ -93,8 +93,8 @@ public class TestJDKSerialization extends BaseMapTest
     {
         ObjectMapper mapper = newJsonMapper();
         // ensure we have serializers and/or deserializers, first
-        String json = mapper.writerFor(EnumPOJO.class)
-                .writeValueAsString(new EnumPOJO());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(EnumPOJO.class)
+                .writeValueAsBytes(new EnumPOJO()));
         EnumPOJO result = mapper.readerFor(EnumPOJO.class)
                 .readValue(json);
         assertNotNull(result);
@@ -116,7 +116,7 @@ public class TestJDKSerialization extends BaseMapTest
         assertNotNull(w);
 
         // plus, ensure objects are usable:
-        String json2 = w.writeValueAsString(new EnumPOJO());
+        String json2 = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(new EnumPOJO()));
         assertEquals(json, json2);
         EnumPOJO result2 = r.readValue(json2);
         assertNotNull(result2);
@@ -127,13 +127,13 @@ public class TestJDKSerialization extends BaseMapTest
         ObjectWriter origWriter = MAPPER.writer();
         final String EXP_JSON = "{\"x\":2,\"y\":3}";
         final MyPojo p = new MyPojo(2, 3);
-        assertEquals(EXP_JSON, origWriter.writeValueAsString(p));
-        String json = origWriter.writeValueAsString(new AnyBean()
-                .addEntry("a", "b"));
+        assertEquals(EXP_JSON, com.fasterxml.jackson.VPackUtils.toJson( origWriter.writeValueAsBytes(p)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( origWriter.writeValueAsBytes(new AnyBean()
+                .addEntry("a", "b")));
         assertNotNull(json);
         byte[] bytes = jdkSerialize(origWriter);
         ObjectWriter writer2 = jdkDeserialize(bytes);
-        assertEquals(EXP_JSON, writer2.writeValueAsString(p));
+        assertEquals(EXP_JSON, com.fasterxml.jackson.VPackUtils.toJson( writer2.writeValueAsBytes(p)));
     }
     
     public void testObjectReader() throws IOException
@@ -160,13 +160,13 @@ public class TestJDKSerialization extends BaseMapTest
     {
         final String EXP_JSON = "{\"x\":2,\"y\":3}";
         final MyPojo p = new MyPojo(2, 3);
-        assertEquals(EXP_JSON, MAPPER.writeValueAsString(p));
+        assertEquals(EXP_JSON, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(p)));
         assertNotNull(MAPPER.getFactory());
         assertNotNull(MAPPER.getFactory().getCodec());
 
         byte[] bytes = jdkSerialize(MAPPER);
         ObjectMapper mapper2 = jdkDeserialize(bytes);
-        assertEquals(EXP_JSON, mapper2.writeValueAsString(p));
+        assertEquals(EXP_JSON, com.fasterxml.jackson.VPackUtils.toJson( mapper2.writeValueAsBytes(p)));
         MyPojo p2 = mapper2.readValue(EXP_JSON, MyPojo.class);
         assertEquals(p.x, p2.x);
         assertEquals(p.y, p2.y);

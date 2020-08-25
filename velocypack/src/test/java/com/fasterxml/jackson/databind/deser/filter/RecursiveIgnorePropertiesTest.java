@@ -64,7 +64,7 @@ public class RecursiveIgnorePropertiesTest extends BaseMapTest
         input.personZ = p2;
         p2.personZ = input;
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertNotNull(json);
     }
 }

@@ -38,7 +38,7 @@ public class JDKTypeSerializationTest
         Map<String, Object> map = new HashMap<String, Object>();
         String PI_STR = "3.14159265";
         map.put("pi", new BigDecimal(PI_STR));
-        String str = MAPPER.writeValueAsString(map);
+        String str = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map));
         assertEquals("{\"pi\":3.14159265}", str);
     }
     
@@ -50,7 +50,7 @@ public class JDKTypeSerializationTest
         Map<String, Object> map = new HashMap<String, Object>();
         String PI_STR = "3.00000000";
         map.put("pi", new BigDecimal(PI_STR));
-        String str = mapper.writeValueAsString(map);
+        String str = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
         assertEquals("{\"pi\":3.00000000}", str);
     }
 
@@ -58,7 +58,7 @@ public class JDKTypeSerializationTest
     {
         // this may get translated to different representation on Windows, maybe Mac:
         File f = new File(new File("/tmp"), "foo.text");
-        String str = MAPPER.writeValueAsString(f);
+        String str = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(f));
         // escape backslashes (for portability with windows)
         String escapedAbsPath = f.getAbsolutePath().replaceAll("\\\\", "\\\\\\\\"); 
         assertEquals(quote(escapedAbsPath), str);
@@ -77,73 +77,73 @@ public class JDKTypeSerializationTest
     public void testCurrency() throws IOException
     {
         Currency usd = Currency.getInstance("USD");
-        assertEquals(quote("USD"), MAPPER.writeValueAsString(usd));
+        assertEquals(quote("USD"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(usd)));
     }
 
     public void testLocale() throws IOException
     {
-        assertEquals(quote("en"), MAPPER.writeValueAsString(new Locale("en")));
-        assertEquals(quote("es_ES"), MAPPER.writeValueAsString(new Locale("es", "ES")));
-        assertEquals(quote("fi_FI_savo"), MAPPER.writeValueAsString(new Locale("FI", "fi", "savo")));
+        assertEquals(quote("en"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Locale("en"))));
+        assertEquals(quote("es_ES"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Locale("es", "ES"))));
+        assertEquals(quote("fi_FI_savo"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Locale("FI", "fi", "savo"))));
 
-        assertEquals(quote("en_US"), MAPPER.writeValueAsString(Locale.US));
+        assertEquals(quote("en_US"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Locale.US)));
 
         // [databind#1123]
-        assertEquals(quote(""), MAPPER.writeValueAsString(Locale.ROOT));
+        assertEquals(quote(""), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Locale.ROOT)));
     }
 
     public void testInetAddress() throws IOException
     {
-        assertEquals(quote("127.0.0.1"), MAPPER.writeValueAsString(InetAddress.getByName("127.0.0.1")));
+        assertEquals(quote("127.0.0.1"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(InetAddress.getByName("127.0.0.1"))));
         InetAddress input = InetAddress.getByName("google.com");
-        assertEquals(quote("google.com"), MAPPER.writeValueAsString(input));
+        assertEquals(quote("google.com"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
 
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(InetAddress.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.NUMBER));
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals(quote(input.getHostAddress()), json);
 
-        assertEquals(String.format("{\"value\":\"%s\"}", input.getHostAddress()),
-                mapper.writeValueAsString(new InetAddressBean(input)));
+        assertEquals(String.format("{\"value\":\"%s\"}", input.getHostAddress()), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new InetAddressBean(input))));
     }
 
     public void testInetSocketAddress() throws IOException
     {
-        assertEquals(quote("127.0.0.1:8080"),
-                MAPPER.writeValueAsString(new InetSocketAddress("127.0.0.1", 8080)));
-        assertEquals(quote("google.com:6667"),
-                MAPPER.writeValueAsString(new InetSocketAddress("google.com", 6667)));
-        assertEquals(quote("[2001:db8:85a3:8d3:1319:8a2e:370:7348]:443"),
-                MAPPER.writeValueAsString(new InetSocketAddress("2001:db8:85a3:8d3:1319:8a2e:370:7348", 443)));
+        assertEquals(quote("127.0.0.1:8080"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new InetSocketAddress("127.0.0.1", 8080))));
+        assertEquals(quote("google.com:6667"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new InetSocketAddress("google.com", 6667))));
+        assertEquals(quote("[2001:db8:85a3:8d3:1319:8a2e:370:7348]:443"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new InetSocketAddress("2001:db8:85a3:8d3:1319:8a2e:370:7348", 443))));
     }
 
     // [JACKSON-597]
     public void testClass() throws IOException
     {
-        assertEquals(quote("java.lang.String"), MAPPER.writeValueAsString(String.class));
-        assertEquals(quote("int"), MAPPER.writeValueAsString(Integer.TYPE));
-        assertEquals(quote("boolean"), MAPPER.writeValueAsString(Boolean.TYPE));
-        assertEquals(quote("void"), MAPPER.writeValueAsString(Void.TYPE));
+        assertEquals(quote("java.lang.String"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(String.class)));
+        assertEquals(quote("int"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Integer.TYPE)));
+        assertEquals(quote("boolean"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Boolean.TYPE)));
+        assertEquals(quote("void"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Void.TYPE)));
     }
 
     public void testCharset() throws IOException
     {
-        assertEquals(quote("UTF-8"), MAPPER.writeValueAsString(Charset.forName("UTF-8")));
+        assertEquals(quote("UTF-8"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Charset.forName("UTF-8"))));
     }
 
     // [databind#239]: Support serialization of ByteBuffer
     public void testByteBuffer() throws IOException
     {
         final byte[] INPUT_BYTES = new byte[] { 1, 2, 3, 4, 5 };
-        String exp = MAPPER.writeValueAsString(INPUT_BYTES);
+        String exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT_BYTES));
         ByteBuffer bbuf = ByteBuffer.wrap(INPUT_BYTES);
-        assertEquals(exp, MAPPER.writeValueAsString(bbuf));
+        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bbuf)));
 
         // so far so good, but must ensure Native buffers also work:
         ByteBuffer bbuf2 = ByteBuffer.allocateDirect(5);
         bbuf2.put(INPUT_BYTES);
-        assertEquals(exp, MAPPER.writeValueAsString(bbuf2));
+        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bbuf2)));
     }
 
     // [databind#1662]: Sliced ByteBuffers
@@ -155,13 +155,13 @@ public class JDKTypeSerializationTest
         bbuf.position(2);
         ByteBuffer slicedBuf = bbuf.slice();
 
-        assertEquals(MAPPER.writeValueAsString(new byte[] { 3, 4, 5 }),
-                MAPPER.writeValueAsString(slicedBuf));
+        assertEquals(MAPPER.writeValueAsBytes(new byte[] { 3, 4, 5 }),
+                MAPPER.writeValueAsBytes(slicedBuf));
 
         // but how about offset within?
         slicedBuf.position(1);
-        assertEquals(MAPPER.writeValueAsString(new byte[] { 4, 5 }),
-                MAPPER.writeValueAsString(slicedBuf));
+        assertEquals(MAPPER.writeValueAsBytes(new byte[] { 4, 5 }),
+                MAPPER.writeValueAsBytes(slicedBuf));
     }
 
     // [databind#2602]: Need to consider position()
@@ -169,17 +169,17 @@ public class JDKTypeSerializationTest
     {
         final byte[] INPUT_BYTES = new byte[] { 1, 2, 3, 4, 5 };
 
-        String exp = MAPPER.writeValueAsString(new byte[] { 3, 4, 5 });
+        String exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new byte[] { 3, 4, 5 }));
         ByteBuffer bbuf = ByteBuffer.wrap(INPUT_BYTES);
         bbuf.position(2);
         ByteBuffer duplicated = bbuf.duplicate();
-        assertEquals(exp, MAPPER.writeValueAsString(duplicated));
+        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(duplicated)));
 
         // also check differently constructed bytebuffer (noting that
         // offset given is the _position_ to use, NOT array offset
-        exp = MAPPER.writeValueAsString(new byte[] { 2, 3, 4 });
+        exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new byte[] { 2, 3, 4 }));
         bbuf = ByteBuffer.wrap(INPUT_BYTES, 1, 3);
-        assertEquals(exp, MAPPER.writeValueAsString(bbuf.duplicate()));
+        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bbuf.duplicate())));
     }
 
     // Verify that efficient UUID codec won't mess things up:
@@ -195,7 +195,7 @@ public class JDKTypeSerializationTest
                 "00000007-0000-0000-0000-000000000000"
         }) {
             UUID uuid = UUID.fromString(value);
-            String json = MAPPER.writeValueAsString(uuid);
+            String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(uuid));
             assertEquals(quote(uuid.toString()), json);
 
             // Also, wrt [#362], should convert cleanly
@@ -211,7 +211,7 @@ public class JDKTypeSerializationTest
         for (int i = 0; i < chars.length(); ++i) {
             String value = TEMPL.replace('0', chars.charAt(i));
             UUID uuid = UUID.fromString(value);
-            String json = MAPPER.writeValueAsString(uuid);
+            String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(uuid));
             assertEquals(quote(uuid.toString()), json);
         }
     }
@@ -219,7 +219,7 @@ public class JDKTypeSerializationTest
     // [databind#2197]
     public void testVoidSerialization() throws Exception
     {
-        assertEquals(aposToQuotes("{'value':null}"),
-                MAPPER.writeValueAsString(new VoidBean()));
+        assertEquals(aposToQuotes("{'value':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new VoidBean())));
     }
 }

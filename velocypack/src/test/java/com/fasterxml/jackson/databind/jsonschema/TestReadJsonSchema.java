@@ -54,7 +54,7 @@ public class TestReadJsonSchema
         JsonSchema schema = mapper.generateJsonSchema(Schemable.class);
         assertNotNull(schema);
 
-        String schemaStr = mapper.writeValueAsString(schema);
+        String schemaStr = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(schema));
         assertNotNull(schemaStr);
         JsonSchema result = mapper.readValue(schemaStr, JsonSchema.class);
         assertEquals("Trying to read from '"+schemaStr+"'", schema, result);

@@ -192,8 +192,8 @@ public class TestCreators3 extends BaseMapTest
 
     // [databind#1853]
     public void testSerialization() throws Exception {
-        assertEquals(quote("testProduct"),
-                MAPPER.writeValueAsString(new Product1853(false, "testProduct")));
+        assertEquals(quote("testProduct"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Product1853(false, "testProduct"))));
     }
 
     public void testDeserializationFromObject() throws Exception {

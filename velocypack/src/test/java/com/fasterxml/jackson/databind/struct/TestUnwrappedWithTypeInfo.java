@@ -60,7 +60,7 @@ public class TestUnwrappedWithTypeInfo extends BaseMapTest
 	    ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
 	    try {
-	        mapper.writeValueAsString(outer);
+	        mapper.writeValueAsBytes(outer);
 	         fail("Expected exception to be thrown.");
 	    } catch (JsonMappingException ex) {
 	        verifyException(ex, "requires use of type information");
@@ -79,7 +79,7 @@ public class TestUnwrappedWithTypeInfo extends BaseMapTest
 		ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 		mapper = mapper.disable(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS);
 
-		String json = mapper.writeValueAsString(outer);
+		String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(outer));
 		assertEquals("{\"@type\":\"OuterType\",\"p1\":\"101\",\"p2\":\"202\"}", json);
 	}
 }

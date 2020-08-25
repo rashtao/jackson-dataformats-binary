@@ -29,13 +29,13 @@ public class TestRootName extends BaseMapTest
     public void testRootViaMapper() throws Exception
     {
         ObjectMapper mapper = rootMapper();
-        String json = mapper.writeValueAsString(new Bean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean()));
         assertEquals("{\"rudy\":{\"a\":3}}", json);
         Bean bean = mapper.readValue(json, Bean.class);
         assertNotNull(bean);
 
         // also same with explicitly "not defined"...
-        json = mapper.writeValueAsString(new RootBeanWithEmpty());
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new RootBeanWithEmpty()));
         assertEquals("{\"RootBeanWithEmpty\":{\"a\":2}}", json);
         RootBeanWithEmpty bean2 = mapper.readValue(json, RootBeanWithEmpty.class);
         assertNotNull(bean2);
@@ -45,7 +45,7 @@ public class TestRootName extends BaseMapTest
     public void testRootViaWriterAndReader() throws Exception
     {
         ObjectMapper mapper = rootMapper();
-        String json = mapper.writer().writeValueAsString(new Bean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().writeValueAsBytes(new Bean()));
         assertEquals("{\"rudy\":{\"a\":3}}", json);
         Bean bean = mapper.readerFor(Bean.class).readValue(json);
         assertNotNull(bean);
@@ -56,11 +56,11 @@ public class TestRootName extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // default: no wrapping
         final Bean input = new Bean();
-        String jsonUnwrapped = mapper.writeValueAsString(input);
+        String jsonUnwrapped = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"a\":3}", jsonUnwrapped);
         // secondary: wrapping
-        String jsonWrapped = mapper.writer(SerializationFeature.WRAP_ROOT_VALUE)
-            .writeValueAsString(input);
+        String jsonWrapped = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer(SerializationFeature.WRAP_ROOT_VALUE)
+            .writeValueAsBytes(input));
         assertEquals("{\"rudy\":{\"a\":3}}", jsonWrapped);
 
         // and then similarly for readers:
@@ -84,7 +84,7 @@ public class TestRootName extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ObjectWriter writer = mapper.writer().withRootName("wrapper");
-        String json = writer.writeValueAsString(new Bean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( writer.writeValueAsBytes(new Bean()));
         assertEquals("{\"wrapper\":{\"a\":3}}", json);
 
         ObjectReader reader = mapper.readerFor(Bean.class).withRootName("wrapper");
@@ -93,13 +93,13 @@ public class TestRootName extends BaseMapTest
 
         // also: verify that we can override SerializationFeature as well:
         ObjectMapper wrapping = rootMapper();
-        json = wrapping.writer().withRootName("something").writeValueAsString(new Bean());
+        json = com.fasterxml.jackson.VPackUtils.toJson( wrapping.writer().withRootName("something").writeValueAsBytes(new Bean()));
         assertEquals("{\"something\":{\"a\":3}}", json);
-        json = wrapping.writer().withRootName("").writeValueAsString(new Bean());
+        json = com.fasterxml.jackson.VPackUtils.toJson( wrapping.writer().withRootName("").writeValueAsBytes(new Bean()));
         assertEquals("{\"a\":3}", json);
 
         // 21-Apr-2015, tatu: Alternative available with 2.6 as well:
-        json = wrapping.writer().withoutRootName().writeValueAsString(new Bean());
+        json = com.fasterxml.jackson.VPackUtils.toJson( wrapping.writer().withoutRootName().writeValueAsBytes(new Bean()));
         assertEquals("{\"a\":3}", json);
 
         bean = wrapping.readerFor(Bean.class).withRootName("").readValue(json);

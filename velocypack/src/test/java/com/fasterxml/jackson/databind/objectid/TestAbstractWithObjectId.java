@@ -60,7 +60,7 @@ public class TestAbstractWithObjectId extends BaseMapTest
                 .build();
 
         // write and print the JSON
-        String json = om.writerWithDefaultPrettyPrinter().writeValueAsString(myList);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( om.writerWithDefaultPrettyPrinter().writeValueAsBytes(myList));
         ListWrapper<BaseInterfaceImpl> result;
         
         result = om.readValue(json, new TypeReference<ListWrapper<BaseInterfaceImpl>>() { });

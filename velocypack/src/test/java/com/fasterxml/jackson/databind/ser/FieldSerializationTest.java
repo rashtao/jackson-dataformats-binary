@@ -184,7 +184,7 @@ public class FieldSerializationTest
         FieldAndMethodBean bean = new FieldAndMethodBean();
         bean.z = 9;
         assertEquals(10, bean.getZ());
-        assertEquals("{\"z\":10}", MAPPER.writeValueAsString(bean));
+        assertEquals("{\"z\":10}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bean)));
     }
 
     /**
@@ -203,7 +203,7 @@ public class FieldSerializationTest
     public void testIssue240() throws Exception
     {
         Item240 bean = new Item240("a12", null);
-        assertEquals(MAPPER.writeValueAsString(bean), "{\"id\":\"a12\"}");
+        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(bean)), "{\"id\":\"a12\"}");
     }
     
     /*

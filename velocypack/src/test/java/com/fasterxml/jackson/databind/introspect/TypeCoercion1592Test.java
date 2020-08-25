@@ -28,7 +28,7 @@ public class TypeCoercion1592Test extends BaseMapTest
     public void testTypeCoercion1592() throws Exception
     {
         // first, serialize
-        MAPPER.writeValueAsString(new Bean1592());
+        MAPPER.writeValueAsBytes(new Bean1592());
         Bean1592 result = MAPPER.readValue("{}", Bean1592.class);
         assertNotNull(result);
     }

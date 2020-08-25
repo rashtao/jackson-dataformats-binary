@@ -147,7 +147,7 @@ public class MapperViaParserTest  extends BaseMapTest
     {
         ObjectMapper mapper = JsonMapper.builder()
                .configure(JsonWriteFeature.ESCAPE_NON_ASCII, true)
-               .build();
-        mapper.writeValueAsString(String.valueOf((char) 257));
+               .build(); com.fasterxml.jackson.VPackUtils.toJson(
+        mapper.writeValueAsBytes(String.valueOf((char) 257)));
     }
 }

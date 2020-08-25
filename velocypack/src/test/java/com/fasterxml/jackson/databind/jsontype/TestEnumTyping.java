@@ -76,7 +76,7 @@ public class TestEnumTyping extends BaseMapTest
         TagList list = new TagList();
         list.add(Tag.A);
         list.add(Tag.B);
-        String json = MAPPER.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list));
 
         TagList result = MAPPER.readValue(json, TagList.class);
         assertEquals(2, result.size());
@@ -86,7 +86,7 @@ public class TestEnumTyping extends BaseMapTest
 
     public void testEnumInterface() throws Exception
     {
-        String json = MAPPER.writeValueAsString(Tag.B);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Tag.B));
         EnumInterface result = MAPPER.readValue(json, EnumInterface.class);
         assertSame(Tag.B, result);
     }
@@ -96,7 +96,7 @@ public class TestEnumTyping extends BaseMapTest
         EnumInterfaceList list = new EnumInterfaceList();
         list.add(Tag.A);
         list.add(Tag.B);
-        String json = MAPPER.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list));
         
         EnumInterfaceList result = MAPPER.readValue(json, EnumInterfaceList.class);
         assertEquals(2, result.size());
@@ -106,7 +106,7 @@ public class TestEnumTyping extends BaseMapTest
 
     public void testUntypedEnum() throws Exception
     {
-        String str = MAPPER.writeValueAsString(new UntypedEnumBean(TestEnum.B));
+        String str = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UntypedEnumBean(TestEnum.B)));
         UntypedEnumBean result = MAPPER.readValue(str, UntypedEnumBean.class);
         assertNotNull(result);
         assertNotNull(result.value);
@@ -119,7 +119,7 @@ public class TestEnumTyping extends BaseMapTest
     public void testRoundtrip() throws Exception
     {
         EnumContaintingClass<TestEnum> input = new EnumContaintingClass<TestEnum>(TestEnum.B);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 //      Object o = MAPPER.readerFor(EnumContaintingClass.class).readValue(json);
         Object o = MAPPER.readValue(json, EnumContaintingClass.class);
         assertNotNull(o);

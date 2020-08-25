@@ -82,8 +82,8 @@ public class ExternalTypeIdWithEnum1328Test extends BaseMapTest
     public void testExample() throws Exception {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         
-        String json = mapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(Arrays.asList(new AnimalAndType(AnimalType.Dog, new Dog())));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(Arrays.asList(new AnimalAndType(AnimalType.Dog, new Dog()))));
         List<AnimalAndType> list = mapper.readerFor(new TypeReference<List<AnimalAndType>>() { })
             .readValue(json);
         assertNotNull(list);

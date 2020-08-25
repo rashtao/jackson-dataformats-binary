@@ -288,14 +288,14 @@ public abstract class BaseMapTest
     protected Map<String,Object> writeAndMap(ObjectMapper m, Object value)
         throws IOException
     {
-        String str = m.writeValueAsString(value);
+        String str = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(value));
         return (Map<String,Object>) m.readValue(str, Map.class);
     }
     
     protected String serializeAsString(ObjectMapper m, Object value)
         throws IOException
     {
-        return m.writeValueAsString(value);
+        return com.fasterxml.jackson.VPackUtils.toJson(m.writeValueAsBytes(value));
     }
 
     protected String serializeAsString(Object value)
@@ -317,7 +317,7 @@ public abstract class BaseMapTest
         for (int i = 0, len = args.length; i < len; i += 2) {
             map.put(args[i], args[i+1]);
         }
-        return m.writeValueAsString(map);
+        return com.fasterxml.jackson.VPackUtils.toJson(m.writeValueAsBytes(map));
     }
 
     /*

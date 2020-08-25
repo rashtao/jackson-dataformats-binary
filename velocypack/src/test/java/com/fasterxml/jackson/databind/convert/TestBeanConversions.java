@@ -251,7 +251,7 @@ public class TestBeanConversions
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         try {
-            assertEquals("{}", mapper.writeValueAsString(plaino));
+            assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(plaino)));
         } catch (Exception e) {
             throw (Exception) e.getCause();
         }
@@ -263,7 +263,7 @@ public class TestBeanConversions
 
     public void testConversionIssue288() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new ConvertingBean(1, 2));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ConvertingBean(1, 2)));
         // must be  {"a":2,"b":4}
         assertEquals("{\"a\":2,\"b\":4}", json);
     }

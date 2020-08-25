@@ -46,10 +46,10 @@ public class POJONodeTest extends NodeTestBase
 
       final String EXP = "{\"data\":{\"aStr\":\"The value is: Hello!\"}}";
       
-      String mapOut = MAPPER.writer().withAttribute("myAttr", "Hello!").writeValueAsString(mapTest);
+      String mapOut = com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writer().withAttribute("myAttr", "Hello!").writeValueAsBytes(mapTest));
       assertEquals(EXP, mapOut);
 
-      String treeOut = MAPPER.writer().withAttribute("myAttr", "Hello!").writeValueAsString(treeTest);
+      String treeOut = com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writer().withAttribute("myAttr", "Hello!").writeValueAsBytes(treeTest));
       assertEquals(EXP, treeOut);
     }
 }

@@ -154,7 +154,7 @@ public class TestViewsSerialization2 extends BaseMapTest
     private String serializeWithObjectMapper(Object object, Class<? extends Views.View> view, ObjectMapper mapper )
             throws IOException
     {
-        return mapper.writerWithView(view).writeValueAsString(object);
+        return com.fasterxml.jackson.VPackUtils.toJson(mapper.writerWithView(view).writeValueAsBytes(object));
     }
 
   }

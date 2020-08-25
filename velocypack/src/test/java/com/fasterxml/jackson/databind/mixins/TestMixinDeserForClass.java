@@ -110,12 +110,12 @@ public class TestMixinDeserForClass
                 .addMixIn(Object.class, HashCodeMixIn.class);
 
         // First, with something that overrides hashCode()
-        assertEquals( "{\"hashCode\":13}",
-                mapper.writeValueAsString(new Bean1990WithHashCode()));
+        assertEquals( "{\"hashCode\":13}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new Bean1990WithHashCode())));
 
         // and then special case of accessing Object#hashCode()
         String prefix = "{\"hashCode\":";
-        String json = mapper.writeValueAsString(new Bean1990WithoutHashCode());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean1990WithoutHashCode()));
         if (!json.startsWith(prefix)) {
             fail("Should start with ["+prefix+"], does not: ["+json+"]");
         }

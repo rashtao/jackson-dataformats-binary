@@ -102,21 +102,21 @@ public class TestViewSerialization
         assertEquals("2", map.get("aa"));
 
         // "ViewB", 2 prop2
-        String json = MAPPER.writerWithView(ViewB.class).writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithView(ViewB.class).writeValueAsBytes(bean));
         map = MAPPER.readValue(json, Map.class);
         assertEquals(2, map.size());
         assertEquals("2", map.get("aa"));
         assertEquals("3", map.get("b"));
 
         // and "ViewBB", 2 as well
-        json = MAPPER.writerWithView(ViewBB.class).writeValueAsString(bean);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithView(ViewBB.class).writeValueAsBytes(bean));
         map = MAPPER.readValue(json, Map.class);
         assertEquals(2, map.size());
         assertEquals("2", map.get("aa"));
         assertEquals("3", map.get("b"));
 
         // and finally, without view.
-        json = MAPPER.writerWithView(null).writeValueAsString(bean);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithView(null).writeValueAsBytes(bean));
         map = MAPPER.readValue(json, Map.class);
         assertEquals(3, map.size());
     }
@@ -133,7 +133,7 @@ public class TestViewSerialization
         MixedBean bean = new MixedBean();
 
         // default setting: both fields will get included
-        String json = MAPPER.writerWithView(ViewA.class).writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithView(ViewA.class).writeValueAsBytes(bean));
         Map<String,Object> map = MAPPER.readValue(json, Map.class);
         assertEquals(2, map.size());
         assertEquals("1", map.get("a"));
@@ -145,14 +145,14 @@ public class TestViewSerialization
                 .build();
 
         // with this setting, only explicit inclusions count:
-        json = mapper.writerWithView(ViewA.class).writeValueAsString(bean);
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithView(ViewA.class).writeValueAsBytes(bean));
         map = mapper.readValue(json, Map.class);
         assertEquals(1, map.size());
         assertEquals("1", map.get("a"));
         assertNull(map.get("b"));
 
         // but without view, view processing disabled:
-        json = mapper.writer().withView(null).writeValueAsString(bean);
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().withView(null).writeValueAsBytes(bean));
         map = mapper.readValue(json, Map.class);
         assertEquals(2, map.size());
         assertEquals("1", map.get("a"));
@@ -165,16 +165,16 @@ public class TestViewSerialization
      */
     public void testImplicitAutoDetection() throws Exception
     {
-        assertEquals("{\"a\":1}",
-                MAPPER.writeValueAsString(new ImplicitBean()));
+        assertEquals("{\"a\":1}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new ImplicitBean())));
     }
 
     public void testVisibility() throws Exception
     {
         VisibilityBean bean = new VisibilityBean();
         // Without view setting, should only see "id"
-        String json = MAPPER.writerWithView(Object.class).writeValueAsString(bean);
-        //json = mapper.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithView(Object.class).writeValueAsBytes(bean));
+        //json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean));
         assertEquals("{\"id\":\"id\"}", json);
     }
 
@@ -183,7 +183,7 @@ public class TestViewSerialization
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-        String json = mapper.writerWithView(OtherView.class).writeValueAsString(new Foo());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithView(OtherView.class).writeValueAsBytes(new Foo()));
         assertEquals(json, "{}");
     }    
 }

@@ -37,7 +37,7 @@ public class AutoDetect1947Test extends BaseMapTest
                 .disable(MapperFeature.AUTO_DETECT_CREATORS)
                 .disable(MapperFeature.AUTO_DETECT_IS_GETTERS)
                 .build();
-        String json = mapper.writeValueAsString(new Entity1947());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Entity1947()));
         JsonNode n = mapper.readTree(json);
         assertEquals(1, n.size());
         assertTrue(n.has("shouldBeDetected"));

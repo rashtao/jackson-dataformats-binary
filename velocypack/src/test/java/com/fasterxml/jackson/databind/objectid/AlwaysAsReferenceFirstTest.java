@@ -69,7 +69,7 @@ public class AlwaysAsReferenceFirstTest extends BaseMapTest
         mo.bar1 = new Bar();
         mo.bar2 = mo.bar1;
 
-        String json = MAPPER.writeValueAsString(mo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(mo));
 
         Foo result = MAPPER.readValue(json, Foo.class);
         assertNotNull(result);
@@ -78,7 +78,7 @@ public class AlwaysAsReferenceFirstTest extends BaseMapTest
     // [databind#1607]
     public void testIssue1607() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new ReallyAlwaysContainer());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ReallyAlwaysContainer()));
         assertEquals(aposToQuotes("{'alwaysClass':1,'alwaysProp':2}"), json);
     }
 }

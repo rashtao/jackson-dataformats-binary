@@ -299,16 +299,16 @@ public class ExternalTypeIdTest extends BaseMapTest
         // been written out. So we'll write it after...
         // Deserializer will work either way as it cannot rely on ordering
         // anyway.
-        assertEquals("{\"bean\":{\"value\":11},\"extType\":\"vbean\"}",
-                mapper.writeValueAsString(new ExternalBean(11)));
+        assertEquals("{\"bean\":{\"value\":11},\"extType\":\"vbean\"}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new ExternalBean(11))));
     }
 
     // If trying to use with Class, should just become "PROPERTY" instead:
     public void testImproperExternalIdSerialization() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        assertEquals("{\"extType\":\"funk\",\"i\":3}",
-                mapper.writeValueAsString(new FunkyExternalBean()));
+        assertEquals("{\"extType\":\"funk\",\"i\":3}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new FunkyExternalBean())));
     }
 
     // for [databind#942]
@@ -355,7 +355,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
-        String json = mapper.writeValueAsString(new ExternalBean3(3));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ExternalBean3(3)));
         ExternalBean3 result = mapper.readValue(json, ExternalBean3.class);
         assertNotNull(result);
         assertNotNull(result.value1);
@@ -372,7 +372,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(ValueBean.class);
-        String json = mapper.writeValueAsString(new ExternalBeanWithCreator(7));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ExternalBeanWithCreator(7)));
         ExternalBeanWithCreator result = mapper.readValue(json, ExternalBeanWithCreator.class);
         assertNotNull(result);
         assertNotNull(result.value);
@@ -398,7 +398,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     {
         Base base = new Derived1("derived1 prop val", "base prop val");
         BaseContainer baseContainer = new BaseContainer("bc prop val", base);
-        String generatedJson = MAPPER.writeValueAsString(baseContainer);
+        String generatedJson = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(baseContainer));
         BaseContainer baseContainer2 = MAPPER.readValue(generatedJson,BaseContainer.class);
         assertEquals("bc prop val", baseContainer.getBaseContainerProperty());
 
@@ -430,7 +430,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     public void testWithScalar118() throws Exception
     {
         ExternalTypeWithNonPOJO input = new ExternalTypeWithNonPOJO(new java.util.Date(123L));
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertNotNull(json);
 
         // and back just to be sure:
@@ -443,7 +443,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     public void testWithNaturalScalar118() throws Exception
     {
         ExternalTypeWithNonPOJO input = new ExternalTypeWithNonPOJO(Integer.valueOf(13));
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertNotNull(json);
         // and back just to be sure:
         ExternalTypeWithNonPOJO result = MAPPER.readValue(json, ExternalTypeWithNonPOJO.class);
@@ -452,14 +452,14 @@ public class ExternalTypeIdTest extends BaseMapTest
 
         // ditto with others types
         input = new ExternalTypeWithNonPOJO(Boolean.TRUE);
-        json = MAPPER.writeValueAsString(input);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertNotNull(json);
         result = MAPPER.readValue(json, ExternalTypeWithNonPOJO.class);
         assertNotNull(result.value);
         assertTrue(result.value instanceof Boolean);
 
         input = new ExternalTypeWithNonPOJO("foobar");
-        json = MAPPER.writeValueAsString(input);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertNotNull(json);
         result = MAPPER.readValue(json, ExternalTypeWithNonPOJO.class);
         assertNotNull(result.value);
@@ -471,7 +471,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     public void testWithAsValue() throws Exception
     {
         ExternalTypeWithNonPOJO input = new ExternalTypeWithNonPOJO(new AsValueThingy(12345L));
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertNotNull(json);
         assertEquals("{\"value\":12345,\"type\":\"thingy\"}", json);
 
@@ -488,7 +488,7 @@ public class ExternalTypeIdTest extends BaseMapTest
     {
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Issue222Bean input = new Issue222Bean(13);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"value\":{\"x\":13},\"type\":\"foo\"}", json);
     }
 
@@ -519,7 +519,7 @@ public class ExternalTypeIdTest extends BaseMapTest
         final String NUM_STR = "-10000000000.0000000001";
         w.value = new BigDecimal(NUM_STR);
 
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
 
         // simple sanity check so serialization is faithful
         if (!json.contains(NUM_STR)) {

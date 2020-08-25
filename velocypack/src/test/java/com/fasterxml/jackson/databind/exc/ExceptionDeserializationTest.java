@@ -56,7 +56,7 @@ public class ExceptionDeserializationTest
     public void testIOException() throws IOException
     {
         IOException ioe = new IOException("TEST");
-        String json = MAPPER.writeValueAsString(ioe);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(ioe));
         IOException result = MAPPER.readValue(json, IOException.class);
         assertEquals(ioe.getMessage(), result.getMessage());
     }
@@ -64,7 +64,7 @@ public class ExceptionDeserializationTest
     public void testWithCreator() throws IOException
     {
         final String MSG = "the message";
-        String json = MAPPER.writeValueAsString(new MyException(MSG, 3));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MyException(MSG, 3)));
 
         MyException result = MAPPER.readValue(json, MyException.class);
         assertEquals(MSG, result.getMessage());
@@ -77,7 +77,7 @@ public class ExceptionDeserializationTest
     {
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        String json = mapper.writeValueAsString(new IOException((String) null));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new IOException((String) null)));
         IOException result = mapper.readValue(json, IOException.class);
         assertNotNull(result);
         assertNull(result.getMessage());
@@ -106,7 +106,7 @@ public class ExceptionDeserializationTest
         } catch (IOException internal) {
             exp = internal;
         }
-        final String value = "[" + mapper.writeValueAsString(exp) + "]";
+        final String value = "[" + com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(exp) )+ "]";
         
         final IOException cloned = mapper.readValue(value, IOException.class);
         assertEquals(exp.getMessage(), cloned.getMessage());    
@@ -151,7 +151,7 @@ public class ExceptionDeserializationTest
         } catch (IOException internal) {
             exp = internal;
         }
-        final String value = "[" + mapper.writeValueAsString(exp) + "]";
+        final String value = "[" + com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(exp) )+ "]";
         
         try {
             mapper.readValue(value, IOException.class);

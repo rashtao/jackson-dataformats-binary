@@ -28,9 +28,9 @@ public class RoundtripTest extends BaseMapTest
         input.addPhoto(new MediaItem.Photo());
         input.addPhoto(new MediaItem.Photo());
 
-        String json = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(input);
+        byte[] bytes = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(input);
 
-        MediaItem output = MAPPER.readValue(new java.io.StringReader(json), MediaItem.class);
+        MediaItem output = MAPPER.readValue(bytes, MediaItem.class);
         assertNotNull(output);
 
         assertNotNull(output.getImages());
@@ -40,6 +40,6 @@ public class RoundtripTest extends BaseMapTest
         assertEquals(input.getContent().getUri(), output.getContent().getUri());
 
         // compare re-serialization as a simple check as well
-        assertEquals(json, MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(output));
+        assertEquals(bytes, MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(output));
     }
 }

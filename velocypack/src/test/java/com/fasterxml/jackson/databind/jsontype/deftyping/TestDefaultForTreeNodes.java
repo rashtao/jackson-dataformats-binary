@@ -27,7 +27,7 @@ public class TestDefaultForTreeNodes extends BaseMapTest
     public void testValueAsStringWithDefaultTyping() throws Exception
     {
         Foo foo = new Foo("baz");
-        String json = DEFAULT_MAPPER.writeValueAsString(foo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_MAPPER.writeValueAsBytes(foo));
 
         JsonNode jsonNode = DEFAULT_MAPPER.readTree(json);
         assertEquals(jsonNode.get("bar").textValue(), foo.bar);

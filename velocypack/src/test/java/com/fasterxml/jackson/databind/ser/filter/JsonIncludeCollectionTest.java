@@ -33,7 +33,7 @@ public class JsonIncludeCollectionTest extends BaseMapTest
 
     public void testEnumSet() throws Exception
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyEnumSet()));
-        assertEquals("{\"v\":[\"B\"]}", MAPPER.writeValueAsString(new NonEmptyEnumSet(ABC.B)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyEnumSet())));
+        assertEquals("{\"v\":[\"B\"]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyEnumSet(ABC.B))));
     }
 }

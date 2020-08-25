@@ -189,7 +189,7 @@ public class EnumMapDeserializationTest extends BaseMapTest
         mapper.setDefaultTyping(mapTyperAsPropertyType);
          */
 
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         Pojo1859 result = mapper.readValue(json, Pojo1859.class);
         assertNotNull(result);
         assertNotNull(result.values);
@@ -249,13 +249,13 @@ public class EnumMapDeserializationTest extends BaseMapTest
         final Map<MyEnum2457, String> map = new LinkedHashMap<>();
         map.put(MyEnum2457.A, "1");
         map.put(MyEnum2457.B, "2");
-        assertEquals(aposToQuotes("{'A':'1','B':'2'}"),
-                mapper.writeValueAsString(map));
+        assertEquals(aposToQuotes("{'A':'1','B':'2'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(map)));
 
         // But should be able to override
-        assertEquals(aposToQuotes("{'"+MyEnum2457.A.toString()+"':'1','"+MyEnum2457.B.toString()+"':'2'}"),
+        assertEquals(aposToQuotes("{'"+MyEnum2457.A.toString()+"':'1','"+MyEnum2457.B.toString()+"':'2'}"), com.fasterxml.jackson.VPackUtils.toJson(
                 mapper.writer()
                     .with(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-                    .writeValueAsString(map));
+                    .writeValueAsBytes(map)));
     }
 }

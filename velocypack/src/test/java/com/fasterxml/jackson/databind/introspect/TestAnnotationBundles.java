@@ -120,15 +120,15 @@ public class TestAnnotationBundles extends com.fasterxml.jackson.databind.BaseMa
     public void testKeepAnnotationBundle() throws Exception
     {
         MAPPER.setAnnotationIntrospector(new BundleAnnotationIntrospector());
-        assertEquals("{\"important\":42}", MAPPER.writeValueAsString(new InformingHolder()));
+        assertEquals("{\"important\":42}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new InformingHolder())));
     }
 
     public void testRecursiveBundlesField() throws Exception {
-        assertEquals("{\"unimportant\":42}", MAPPER.writeValueAsString(new RecursiveHolder()));
+        assertEquals("{\"unimportant\":42}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new RecursiveHolder())));
     }
 
     public void testRecursiveBundlesMethod() throws Exception {
-        assertEquals("{\"value\":28}", MAPPER.writeValueAsString(new RecursiveHolder2()));
+        assertEquals("{\"value\":28}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new RecursiveHolder2())));
     }
 
     public void testRecursiveBundlesConstructor() throws Exception {
@@ -139,16 +139,16 @@ public class TestAnnotationBundles extends com.fasterxml.jackson.databind.BaseMa
     
     public void testBundledIgnore() throws Exception
     {
-        assertEquals("{\"foobar\":13}", MAPPER.writeValueAsString(new Bean()));
+        assertEquals("{\"foobar\":13}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean())));
     }
 
     public void testVisibilityBundle() throws Exception
     {
-        assertEquals("{\"b\":5}", MAPPER.writeValueAsString(new NoAutoDetect()));
+        assertEquals("{\"b\":5}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoAutoDetect())));
     }
     
     public void testIssue92() throws Exception
     {
-        assertEquals("{\"_id\":\"abc\"}", MAPPER.writeValueAsString(new Bean92()));
+        assertEquals("{\"_id\":\"abc\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean92())));
     }
 }

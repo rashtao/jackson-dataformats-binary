@@ -69,8 +69,8 @@ public class JsonIncludeCustomTest extends BaseMapTest
 
     public void testSimpleCustomFilter() throws Exception
     {
-        assertEquals(aposToQuotes("{'value':'x'}"), MAPPER.writeValueAsString(new FooBean("x")));
-        assertEquals("{}", MAPPER.writeValueAsString(new FooBean("foo")));
+        assertEquals(aposToQuotes("{'value':'x'}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new FooBean("x"))));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new FooBean("foo"))));
     }
 
     public void testCustomFilterWithMap() throws Exception
@@ -80,7 +80,7 @@ public class JsonIncludeCustomTest extends BaseMapTest
                 .add("b", "foo")
                 .add("c", "2");
         
-        assertEquals(aposToQuotes("{'stuff':{'a':'1','c':'2'}}"), MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'stuff':{'a':'1','c':'2'}}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 
     /*
@@ -92,7 +92,7 @@ public class JsonIncludeCustomTest extends BaseMapTest
     public void testBrokenFilter() throws Exception
     {
         try {
-            String json = MAPPER.writeValueAsString(new BrokenBean("foo"));
+            String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new BrokenBean("foo")));
             fail("Should not pass, produced: "+json);
         } catch (InvalidDefinitionException e) {
             verifyException(e, "Problem determining whether filter of type");

@@ -49,9 +49,9 @@ public class TestOverlappingTypeIdNames extends BaseMapTest
 
     public void testOverlappingNameSer() throws Exception
     {
-        assertEquals(aposToQuotes("{'type':'a','value':1}"),
-                MAPPER.writeValueAsString(new Impl312B1()));
-        assertEquals(aposToQuotes("{'type':'a','value':1}"),
-                MAPPER.writeValueAsString(new Impl312B2()));
+        assertEquals(aposToQuotes("{'type':'a','value':1}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Impl312B1())));
+        assertEquals(aposToQuotes("{'type':'a','value':1}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Impl312B2())));
     }
 }

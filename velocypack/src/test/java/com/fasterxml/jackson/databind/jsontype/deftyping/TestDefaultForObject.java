@@ -100,7 +100,7 @@ public class TestDefaultForObject
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         // note: need to wrap, to get declared as Object
-        String str = m.writeValueAsString(new Object[] { new StringBean("abc") });
+        String str = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Object[] { new StringBean("abc") }));
 
         _verifySerializationAsMap(str);
         
@@ -122,7 +122,7 @@ public class TestDefaultForObject
                         ".hype")
                 .build();
         // note: need to wrap, to get declared as Object
-        String json = m.writeValueAsString(new StringBean("abc"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new StringBean("abc")));
         
         // Ok: serialization seems to work as expected. Now deserialize:
         Object result = m.readValue(json, Object.class);
@@ -140,7 +140,7 @@ public class TestDefaultForObject
         // First, let's verify that we'd fail without enabling default type info
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AbstractBean[] input = new AbstractBean[] { new StringBean("xyz") };
-        String serial = m.writeValueAsString(input);
+        String serial = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
         try {
             m.readValue(serial, AbstractBean[].class);
             fail("Should have failed");
@@ -153,7 +153,7 @@ public class TestDefaultForObject
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE)
                 .build();
-        serial = m.writeValueAsString(input);
+        serial = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
         AbstractBean[] beans = m.readValue(serial, AbstractBean[].class);
         assertEquals(1, beans.length);
         assertEquals(StringBean.class, beans[0].getClass());
@@ -172,14 +172,14 @@ public class TestDefaultForObject
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE)
                 .build();
         StringBean bean = new StringBean("x");
-        assertEquals("{\"name\":\"x\"}", m.writeValueAsString(bean));
+        assertEquals("{\"name\":\"x\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean)));
         // then non-final, and voila:
         m = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
-        assertEquals("[\""+StringBean.class.getName()+"\",{\"name\":\"x\"}]",
-            m.writeValueAsString(bean));
+        assertEquals("[\""+StringBean.class.getName()+"\",{\"name\":\"x\"}]", com.fasterxml.jackson.VPackUtils.toJson(
+            m.writeValueAsBytes(bean)));
     }
 
     public void testNullValue() throws Exception
@@ -189,7 +189,7 @@ public class TestDefaultForObject
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
         BeanHolder h = new BeanHolder();
-        String json = m.writeValueAsString(h);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(h));
         assertNotNull(json);
         BeanHolder result = m.readValue(json, BeanHolder.class);
         assertNotNull(result);
@@ -210,7 +210,7 @@ public class TestDefaultForObject
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
 
-        String json = m.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
         assertEquals("[[\""+Choice.class.getName()+"\",\"YES\"]]", json);
 
         // which we should get back same way
@@ -219,7 +219,7 @@ public class TestDefaultForObject
         assertEquals(Choice.YES, output[0]);
 
         // ditto for more complicated enum
-        json = m.writeValueAsString(input2);
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input2));
         assertEquals("[[\""+ComplexChoice.class.getName()+"\",\"MAYBE\"]]", json);
         output = m.readValue(json, Object[].class);
         assertEquals(1, output.length);
@@ -234,7 +234,7 @@ public class TestDefaultForObject
         ObjectMapper m = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
-        String json = m.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
         Object[] output = m.readValue(json, Object[].class);
         assertEquals(1, output.length);
         Object ob = output[0];
@@ -254,7 +254,7 @@ public class TestDefaultForObject
         ObjectMapper m = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
-        String json = m.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input));
         Object[] output = m.readValue(json, Object[].class);
         assertEquals(1, output.length);
         Object ob = output[0];
@@ -271,7 +271,7 @@ public class TestDefaultForObject
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
-        String json = mapper.writeValueAsString(new PolymorphicType("hello", 2));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PolymorphicType("hello", 2)));
         PolymorphicType value = mapper.readValue(json, PolymorphicType.class);
         assertEquals("hello", value.foo);
         assertEquals(Integer.valueOf(2), value.bar);
@@ -290,7 +290,7 @@ public class TestDefaultForObject
         buf.writeStartObject();
         buf.writeNumberField("num", 42);
         buf.writeEndObject();
-        String json = mapper.writeValueAsString(new ObjectHolder(buf));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ObjectHolder(buf)));
         ObjectHolder holder = mapper.readValue(json, ObjectHolder.class);
         assertNotNull(holder.value);
         assertSame(TokenBuffer.class, holder.value.getClass());
@@ -308,7 +308,7 @@ public class TestDefaultForObject
         buf.writeStartArray();
         buf.writeBoolean(true);
         buf.writeEndArray();
-        json = mapper.writeValueAsString(new ObjectHolder(buf));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ObjectHolder(buf)));
         holder = mapper.readValue(json, ObjectHolder.class);
         assertNotNull(holder.value);
         assertSame(TokenBuffer.class, holder.value.getClass());
@@ -323,7 +323,7 @@ public class TestDefaultForObject
         // and finally as scalar
         buf = new TokenBuffer(mapper, false);
         buf.writeNumber(321);
-        json = mapper.writeValueAsString(new ObjectHolder(buf));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ObjectHolder(buf)));
         holder = mapper.readValue(json, ObjectHolder.class);
         assertNotNull(holder.value);
         assertSame(TokenBuffer.class, holder.value.getClass());
@@ -347,7 +347,7 @@ public class TestDefaultForObject
         DomainBeanWrapper wrapper = new DomainBeanWrapper();
         wrapper.name = "mickey";
         wrapper.myBean = d1;
-        String json = mapper.writeValueAsString(wrapper);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(wrapper));
         DomainBeanWrapper result = mapper.readValue(json, DomainBeanWrapper.class);
         assertNotNull(result);
         assertNotNull(wrapper.myBean);
@@ -361,7 +361,7 @@ public class TestDefaultForObject
                 .activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, "*CLASS*")
                 .build();
-        String json = mapper.writeValueAsString(new BeanHolder(new StringBean("punny")));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new BeanHolder(new StringBean("punny"))));
         assertEquals("{\"bean\":{\"*CLASS*\":\"com.fasterxml.jackson.databind.jsontype.deftyping.TestDefaultForObject$StringBean\",\"name\":\"punny\"}}", json);
     }
 
@@ -387,15 +387,15 @@ public class TestDefaultForObject
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
-        assertEquals(aposToQuotes("{'name':'abc'}"),
-                mapper.writeValueAsString(new FinalStringBean("abc")));
+        assertEquals(aposToQuotes("{'name':'abc'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new FinalStringBean("abc"))));
 
         mapper = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.EVERYTHING)
                 .build();
-        assertEquals(aposToQuotes("['"+FinalStringBean.class.getName()+"',{'name':'abc'}]"),
-                mapper.writeValueAsString(new FinalStringBean("abc")));
+        assertEquals(aposToQuotes("['"+FinalStringBean.class.getName()+"',{'name':'abc'}]"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new FinalStringBean("abc"))));
     }
 
     /*

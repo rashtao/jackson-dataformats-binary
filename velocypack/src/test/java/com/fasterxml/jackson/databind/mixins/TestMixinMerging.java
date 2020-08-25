@@ -47,6 +47,6 @@ public class TestMixinMerging extends BaseMapTest
                 .disable(MapperFeature.INFER_PROPERTY_MUTATORS)
                 .addModule(module)
                 .build();
-        assertEquals("{\"city\":\"Seattle\"}", mapper.writeValueAsString(new PersonImpl()));
+        assertEquals("{\"city\":\"Seattle\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PersonImpl())));
     }
 }

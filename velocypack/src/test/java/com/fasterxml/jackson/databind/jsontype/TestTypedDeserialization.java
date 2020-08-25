@@ -246,7 +246,7 @@ public class TestTypedDeserialization
         input.date = new Date(1234L);
 
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
 
         Issue506DateBean output = mapper.readValue(json, Issue506DateBean.class);
         assertEquals(input.date, output.date);
@@ -259,7 +259,7 @@ public class TestTypedDeserialization
         input.number = Long.valueOf(4567L);
 
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
 
         Issue506NumberBean output = mapper.readValue(json, Issue506NumberBean.class);
         assertEquals(input.number, output.number);

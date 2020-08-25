@@ -60,7 +60,7 @@ public class InnerClassCreatorTest extends BaseMapTest
     // Used to trigger `ArrayIndexOutOfBoundsException` for missing creator property index
     public void testIssue1501() throws Exception
     {
-        String ser = MAPPER.writeValueAsString(new Something1501(false));
+        String ser = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Something1501(false)));
         try {
             MAPPER.readValue(ser, Something1501.class);
             fail("Should not pass");
@@ -73,7 +73,7 @@ public class InnerClassCreatorTest extends BaseMapTest
 
     public void testIssue1502() throws Exception
     {
-        String ser = MAPPER.writeValueAsString(new Something1502(null));
+        String ser = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Something1502(null)));
         try {
             MAPPER.readValue(ser, Something1502.class);
             fail("Should not pass");
@@ -86,7 +86,7 @@ public class InnerClassCreatorTest extends BaseMapTest
 
     public void testIssue1503() throws Exception
     {
-        String ser = MAPPER.writeValueAsString(new Outer1503());
+        String ser = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Outer1503()));
         Outer1503 result = MAPPER.readValue(ser, Outer1503.class);
         assertNotNull(result);
     }

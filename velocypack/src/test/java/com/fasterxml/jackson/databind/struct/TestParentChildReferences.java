@@ -206,7 +206,7 @@ public class TestParentChildReferences
         root.child = child;
         child.parent = root;
         
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
         
         SimpleTreeNode resultNode = MAPPER.readValue(json, SimpleTreeNode.class);
         assertEquals("root", resultNode.name);
@@ -224,7 +224,7 @@ public class TestParentChildReferences
         root.child = child;
         child.parent = root;
         
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
         
         SimpleTreeNode2 resultNode = MAPPER.readValue(json, SimpleTreeNode2.class);
         assertEquals("root", resultNode.name);
@@ -244,7 +244,7 @@ public class TestParentChildReferences
         child1.next = child2;
         child2.prev = child1;
         
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
         
         FullTreeNode resultNode = MAPPER.readValue(json, FullTreeNode.class);
         assertEquals("root", resultNode.name);
@@ -268,7 +268,7 @@ public class TestParentChildReferences
         ArrayNode node1 = new ArrayNode("a");
         ArrayNode node2 = new ArrayNode("b");
         root.nodes = new ArrayNode[] { node1, node2 };
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
         
         NodeArray result = MAPPER.readValue(json, NodeArray.class);
         ArrayNode[] kids = result.nodes;
@@ -286,7 +286,7 @@ public class TestParentChildReferences
         NodeForList node1 = new NodeForList("a");
         NodeForList node2 = new NodeForList("b");
         root.nodes = Arrays.asList(node1, node2);
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
         
         NodeList result = MAPPER.readValue(json, NodeList.class);
         List<NodeForList> kids = result.nodes;
@@ -307,7 +307,7 @@ public class TestParentChildReferences
         nodes.put("a1", node1);
         nodes.put("b2", node2);
         root.nodes = nodes;
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
         
         NodeMap result = MAPPER.readValue(json, NodeMap.class);
         Map<String,NodeForMap> kids = result.nodes;
@@ -330,7 +330,7 @@ public class TestParentChildReferences
         child.prev = parent;
 
         // serialization ought to be ok
-        String json = MAPPER.writeValueAsString(parent);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(parent));
 
         AbstractNode root = MAPPER.readValue(json, AbstractNode.class);
 

@@ -164,7 +164,7 @@ public class TestMixinSerWithViews
       ObjectMapper objectMapper = createObjectMapper();
       ObjectWriter objectWriter = objectMapper.writerWithView(Views.View.class).withDefaultPrettyPrinter();
       Object object = new ComplexTestData();
-      String json = objectWriter.writeValueAsString(object);
+      String json = com.fasterxml.jackson.VPackUtils.toJson( objectWriter.writeValueAsBytes(object));
       assertTrue( json.indexOf( "nameHidden" ) == -1 );
       assertTrue( json.indexOf( "\"name\" : \"shown\"" ) > 0 );
     }    
@@ -178,7 +178,7 @@ public class TestMixinSerWithViews
             .configure(MapperFeature.DEFAULT_VIEW_INCLUSION, Boolean.FALSE)
             .addMixIn(A.class, AMixInAnnotation.class)
             .build();
-        String json = mapper.writerWithView(AView.class).writeValueAsString(a);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithView(AView.class).writeValueAsBytes(a));
 
         assertTrue(json.indexOf("\"name\"") > 0);
     }

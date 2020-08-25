@@ -132,7 +132,7 @@ public class TestObjectId extends BaseMapTest
         Wrapper w = new Wrapper();
         w.a = col;
         w.b = col;
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
         
         Wrapper deserialized = MAPPER.readValue(json, Wrapper.class);
         assertNotNull(deserialized);
@@ -156,7 +156,7 @@ public class TestObjectId extends BaseMapTest
         comp.add(e1);
         comp.add(e2);
 
-        String json = MAPPER.writeValueAsString(comp);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(comp));
         
         assertEquals("{\"employees\":["
                 +"{\"id\":1,\"name\":\"First\",\"manager\":null,\"reports\":[2]},"
@@ -174,8 +174,8 @@ public class TestObjectId extends BaseMapTest
         inputRoot.next = inputChild;
         inputChild.ref = inputRoot;
 
-        String json = mapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(inputRoot);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(inputRoot));
         
         BaseEntity resultRoot = mapper.readValue(json, BaseEntity.class);
         assertNotNull(resultRoot);

@@ -58,7 +58,7 @@ public class TestAbstractContainers extends BaseMapTest
         ListWrapper w = new ListWrapper();
         w.list.add("x");
 
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
         Object o = MAPPER.readValue(json, ListWrapper.class);
         assertEquals(ListWrapper.class, o.getClass());
         ListWrapper out = (ListWrapper) o;
@@ -72,7 +72,7 @@ public class TestAbstractContainers extends BaseMapTest
         MapWrapper w = new MapWrapper();
         w.map.put("key1", "name1");
 
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
         Object o = MAPPER.readValue(json, MapWrapper.class);
         assertEquals(MapWrapper.class, o.getClass());
         MapWrapper out = (MapWrapper) o;

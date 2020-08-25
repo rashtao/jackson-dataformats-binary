@@ -245,21 +245,21 @@ public class TestHandlerInstantiation extends BaseMapTest
         mapper.setHandlerInstantiator(new MyInstantiator("abc:"));
         MyMap map = mapper.readValue("{\"a\":\"b\"}", MyMap.class);
         // easiest to test by just serializing...
-        assertEquals("{\"KEY\":\"b\"}", mapper.writeValueAsString(map));
+        assertEquals("{\"KEY\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map)));
     }
     
     public void testSerializer() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setHandlerInstantiator(new MyInstantiator("xyz:"));
-        assertEquals(quote("xyz:456"), mapper.writeValueAsString(new MyBean("456")));
+        assertEquals(quote("xyz:456"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new MyBean("456"))));
     }
 
     public void testTypeIdResolver() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setHandlerInstantiator(new MyInstantiator("foobar"));
-        String json = mapper.writeValueAsString(new TypeIdBeanWrapper(new TypeIdBean(123)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new TypeIdBeanWrapper(new TypeIdBean(123))));
         // should now use our custom id scheme:
         assertEquals("{\"bean\":[\"!!!\",{\"x\":123}]}", json);
         // and bring it back too:

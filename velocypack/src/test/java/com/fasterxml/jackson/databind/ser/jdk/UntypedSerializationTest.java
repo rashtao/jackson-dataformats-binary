@@ -31,7 +31,7 @@ public class UntypedSerializationTest
 
         // loop more than once, just to ensure caching works ok (during second round)
         for (int i = 0; i < 3; ++i) {
-            String str = mapper.writeValueAsString(doc);
+            String str = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(doc));
             
             JsonParser jp = f.createParser(str);
             assertEquals(JsonToken.START_ARRAY, jp.nextToken());
@@ -76,7 +76,7 @@ public class UntypedSerializationTest
 
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         for (int i = 0; i < 3; ++i) {
-            String str = mapper.writeValueAsString(doc);
+            String str = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(doc));
             JsonParser jp = f.createParser(str);
             
             assertEquals(JsonToken.START_OBJECT, jp.nextToken());

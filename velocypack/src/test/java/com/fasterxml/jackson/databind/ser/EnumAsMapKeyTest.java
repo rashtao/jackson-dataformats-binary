@@ -101,35 +101,35 @@ public class EnumAsMapKeyTest extends BaseMapTest
         bean.add(ABCEnum.B, 3);
 
         // By default Enums serialized using `name()`
-        String json = MAPPER.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bean));
         assertEquals("{\"map\":{\"B\":3}}", json);
 
         // but can change
-        json = MAPPER.writer()
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer()
                 .with(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-                .writeValueAsString(bean);
+                .writeValueAsBytes(bean));
         assertEquals("{\"map\":{\"b\":3}}", json);
 
         // [databind#1570]
 
         // 14-Sep-2019, tatu: as per [databind#2129], must NOT use this feature but
         //    instead new `WRITE_ENUM_KEYS_USING_INDEX` added in 2.10
-        json = MAPPER.writer()
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer()
                 .with(SerializationFeature.WRITE_ENUMS_USING_INDEX)
-                .writeValueAsString(bean);
+                .writeValueAsBytes(bean));
 //        assertEquals(aposToQuotes("{'map':{'"+TestEnum.B.ordinal()+"':3}}"), json);
         assertEquals(aposToQuotes("{'map':{'B':3}}"), json);
     }
 
     public void testCustomEnumMapKeySerializer() throws Exception {
-        String json = MAPPER.writeValueAsString(new MyBean661("abc"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MyBean661("abc")));
         assertEquals(aposToQuotes("{'X-FOO':'abc'}"), json);
     }
 
     // [databind#594]
     public void testJsonValueForEnumMapKey() throws Exception {
-        assertEquals(aposToQuotes("{'stuff':{'longValue':'foo'}}"),
-                MAPPER.writeValueAsString(new MyStuff594("foo")));
+        assertEquals(aposToQuotes("{'stuff':{'longValue':'foo'}}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new MyStuff594("foo"))));
     }
     
     // [databind#2129]
@@ -138,20 +138,20 @@ public class EnumAsMapKeyTest extends BaseMapTest
         final Map<Type, Integer> input = Collections.singletonMap(Type.FIRST, 3);
 
         // by default, write using name()
-        assertEquals(aposToQuotes("{'FIRST':3}"),
-                MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'FIRST':3}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
 
         // but change with setting
-        assertEquals(aposToQuotes("{'0':3}"),
+        assertEquals(aposToQuotes("{'0':3}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer()
                 .with(SerializationFeature.WRITE_ENUM_KEYS_USING_INDEX)
-                .writeValueAsString(input));
+                .writeValueAsBytes(input)));
 
         // but NOT with value settings
-        assertEquals(aposToQuotes("{'FIRST':3}"),
+        assertEquals(aposToQuotes("{'FIRST':3}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer()
                     .with(SerializationFeature.WRITE_ENUMS_USING_INDEX)
-                    .writeValueAsString(input));
+                    .writeValueAsBytes(input)));
     }
     
     // [databind#2129]
@@ -160,19 +160,19 @@ public class EnumAsMapKeyTest extends BaseMapTest
         final TypeContainer input = new TypeContainer(Type.SECOND, 72);
 
         // by default, write using name()
-        assertEquals(aposToQuotes("{'values':{'SECOND':72}}"),
-                MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'values':{'SECOND':72}}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
 
         // but change with setting
-        assertEquals(aposToQuotes("{'values':{'1':72}}"),
+        assertEquals(aposToQuotes("{'values':{'1':72}}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer()
                 .with(SerializationFeature.WRITE_ENUM_KEYS_USING_INDEX)
-                .writeValueAsString(input));
+                .writeValueAsBytes(input)));
 
         // but NOT with value settings
-        assertEquals(aposToQuotes("{'values':{'SECOND':72}}"),
+        assertEquals(aposToQuotes("{'values':{'SECOND':72}}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer()
                     .with(SerializationFeature.WRITE_ENUMS_USING_INDEX)
-                    .writeValueAsString(input));
+                    .writeValueAsBytes(input)));
     }
 }

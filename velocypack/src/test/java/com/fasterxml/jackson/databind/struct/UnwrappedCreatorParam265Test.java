@@ -71,7 +71,7 @@ public class UnwrappedCreatorParam265Test extends BaseMapTest
         JPersonWithoutName person = new JPersonWithoutName("MyName", new JAddress("main street", "springfield", "WA"));
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // serialization should be fine as far as that goes
-        String json = mapper.writeValueAsString(person);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(person));
 
         // but not deserialization:
         try {
@@ -89,7 +89,7 @@ public class UnwrappedCreatorParam265Test extends BaseMapTest
         JPersonWithName person = new JPersonWithName("MyName", new JAddress("main street", "springfield", "WA"));
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // serialization should be fine as far as that goes
-        String json = mapper.writeValueAsString(person);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(person));
         try {
             /*JPersonWithName result =*/ mapper.readValue(json, JPersonWithName.class);
             fail("Should not pass");

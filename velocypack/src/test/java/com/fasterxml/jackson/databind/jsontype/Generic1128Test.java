@@ -58,7 +58,7 @@ public class Generic1128Test extends BaseMapTest
         entity.parent = parent;
         devMContainer1.entity = entity;
     
-        String json = mapper.writeValueAsString(devMContainer1);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(devMContainer1));
 
 //        System.out.println("serializedContainer = " + json);
         final DevMContainer devMContainer = mapper.readValue(json, DevMContainer.class);

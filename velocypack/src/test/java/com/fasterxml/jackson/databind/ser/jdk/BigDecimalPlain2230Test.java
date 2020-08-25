@@ -26,12 +26,12 @@ public class BigDecimalPlain2230Test extends BaseMapTest
         final BigDecimal BD_VALUE = new BigDecimal(NORM_VALUE);
         final BigDecimalAsString INPUT = new BigDecimalAsString(BD_VALUE);
         // by default, use the default `toString()`
-        assertEquals("{\"value\":\""+BD_VALUE.toString()+"\"}", MAPPER.writeValueAsString(INPUT));
+        assertEquals("{\"value\":\""+BD_VALUE.toString()+"\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT)));
 
         // but can force to "plain" notation
         final ObjectMapper m = jsonMapperBuilder()
             .enable(StreamWriteFeature.WRITE_BIGDECIMAL_AS_PLAIN)
             .build();
-        assertEquals("{\"value\":\""+NORM_VALUE+"\"}", m.writeValueAsString(INPUT));
+        assertEquals("{\"value\":\""+NORM_VALUE+"\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(INPUT)));
     }
 }

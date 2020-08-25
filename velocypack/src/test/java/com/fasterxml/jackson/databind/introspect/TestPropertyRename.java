@@ -62,14 +62,14 @@ public class TestPropertyRename extends BaseMapTest
     public void testCreatorPropRenameWithIgnore() throws Exception
     {
         Bean323WithIgnore input = new Bean323WithIgnore(7);
-        assertEquals("{\"b\":7}", objectWriter().writeValueAsString(input));
+        assertEquals("{\"b\":7}", com.fasterxml.jackson.VPackUtils.toJson( objectWriter().writeValueAsBytes(input)));
     }
 
     public void testCreatorPropRenameWithCleave() throws Exception
     {
-        assertEquals("{\"a\":7,\"b\":7}",
-        		objectWriter().writeValueAsString(new Bean323WithExplicitCleave1(7)));
+        assertEquals("{\"a\":7,\"b\":7}", com.fasterxml.jackson.VPackUtils.toJson(
+        		objectWriter().writeValueAsBytes(new Bean323WithExplicitCleave1(7))));
         // note: 'a' NOT included as only ctor property found for it, no getter/field
-        assertEquals("{\"b\":7}", objectWriter().writeValueAsString(new Bean323WithExplicitCleave2(7)));
+        assertEquals("{\"b\":7}", com.fasterxml.jackson.VPackUtils.toJson( objectWriter().writeValueAsBytes(new Bean323WithExplicitCleave2(7))));
     }
 }

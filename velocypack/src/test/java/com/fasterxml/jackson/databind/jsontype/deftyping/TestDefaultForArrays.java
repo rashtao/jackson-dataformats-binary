@@ -51,7 +51,7 @@ public class TestDefaultForArrays extends BaseMapTest
                         DefaultTyping.NON_CONCRETE_AND_ARRAYS)
                 .build();
         ArrayBean bean = new ArrayBean(new String[0]);
-        String json = m.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean));
         ArrayBean result = m.readValue(json, ArrayBean.class);
         assertNotNull(result.values);
         assertEquals(String[].class, result.values.getClass());
@@ -65,7 +65,7 @@ public class TestDefaultForArrays extends BaseMapTest
                         DefaultTyping.NON_CONCRETE_AND_ARRAYS)
                 .build();
         ArrayBean bean = new ArrayBean(new String[0][0]);
-        String json = m.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean));
         ArrayBean result = m.readValue(json, ArrayBean.class);
         assertNotNull(result.values);
         assertEquals(String[][].class, result.values.getClass());
@@ -79,7 +79,7 @@ public class TestDefaultForArrays extends BaseMapTest
                         DefaultTyping.JAVA_LANG_OBJECT)
                 .build();
         Object[] obs = new Object[] { node };
-        String json = m.writeValueAsString(obs);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(obs));
         Object[] result = m.readValue(json, Object[].class);
         assertEquals(1, result.length);
         Object ob = result[0];
@@ -93,7 +93,7 @@ public class TestDefaultForArrays extends BaseMapTest
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
         JsonNode tree = m.convertValue(outerMap, JsonNode.class);
         
-        String json = m.writeValueAsString(tree);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(tree));
         assertEquals("{}", json);
         
         JsonNode node = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readTree("{\"a\":[]}");
@@ -107,7 +107,7 @@ public class TestDefaultForArrays extends BaseMapTest
                 DefaultTyping.JAVA_LANG_OBJECT);
 
         Object[] obs = new Object[] { node };
-        json = m.writeValueAsString(obs);
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(obs));
         Object[] result = m.readValue(json, Object[].class);
 
         assertEquals(1, result.length);
@@ -124,7 +124,7 @@ public class TestDefaultForArrays extends BaseMapTest
                 .build();
 
         Object value = new Object[][] { new Object[] {} };
-        String json = mapper.writeValueAsString(value);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(value));
 
         // try with different (but valid) nominal types:
         _testArraysAs(mapper, json, Object[][].class);
@@ -150,7 +150,7 @@ public class TestDefaultForArrays extends BaseMapTest
 
     private void _testArrayTypingForPrimitiveArrays(ObjectMapper mapper, Object v) throws Exception {
         PrimitiveArrayBean input = new PrimitiveArrayBean(v);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         PrimitiveArrayBean result = mapper.readValue(json, PrimitiveArrayBean.class);
         assertNotNull(result.stuff);
         assertSame(v.getClass(), result.stuff.getClass());

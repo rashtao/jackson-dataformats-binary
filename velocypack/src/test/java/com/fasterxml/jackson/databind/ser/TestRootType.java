@@ -91,7 +91,7 @@ public class TestRootType
 
         // and then using specified typed writer
         ObjectWriter w = mapper.writerFor(BaseType.class);
-        String json = w.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(bean));
         result = (Map<String,Object>)mapper.readValue(json, Map.class);
         assertEquals(2, result.size());
         assertEquals("a", result.get("a"));
@@ -105,7 +105,7 @@ public class TestRootType
 
         // let's constrain by interface:
         ObjectWriter w = mapper.writerFor(BaseInterface.class);
-        String json = w.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(bean));
         @SuppressWarnings("unchecked")
         Map<String,Object> result = mapper.readValue(json, Map.class);
         assertEquals(1, result.size());
@@ -119,7 +119,7 @@ public class TestRootType
                 .configure(MapperFeature.USE_STATIC_TYPING, true)
                 .build();
         SubType[] ob = new SubType[] { new SubType() };
-        String json = mapper.writerFor(BaseInterface[].class).writeValueAsString(ob);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(BaseInterface[].class).writeValueAsBytes(ob));
         // should propagate interface type through due to root declaration; static typing
         assertEquals("[{\"b\":3}]", json);
     }
@@ -136,7 +136,7 @@ public class TestRootType
         // and then let's try using incompatible type
         ObjectWriter w = mapper.writerFor(HashMap.class);
         try {
-            w.writeValueAsString(bean);
+            w.writeValueAsBytes(bean);
             fail("Should have failed due to incompatible type");
         } catch (JsonProcessingException e) {
             verifyException(e, "Incompatible types");
@@ -161,7 +161,7 @@ public class TestRootType
         final String EXP = "[{\"beanClass\":\"TestRootType$TestClass398\",\"property\":\"aa\"}]";
         
         // First simplest way:
-        String json = mapper.writerFor(collectionType).writeValueAsString(typedList);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(collectionType).writeValueAsBytes(typedList));
         assertEquals(EXP, json);
 
         StringWriter out = new StringWriter();
@@ -174,7 +174,7 @@ public class TestRootType
     // [JACKSON-163]
     public void testRootWrapping() throws Exception
     {
-        String json = WRAP_ROOT_MAPPER.writeValueAsString(new StringWrapper("abc"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( WRAP_ROOT_MAPPER.writeValueAsBytes(new StringWrapper("abc")));
         assertEquals("{\"StringWrapper\":{\"str\":\"abc\"}}", json);
     }
 
@@ -187,13 +187,13 @@ public class TestRootType
     public void testIssue456WrapperPart() throws Exception
     {
         ObjectMapper mapper = objectMapper();
-        assertEquals("123", mapper.writerFor(Integer.TYPE).writeValueAsString(Integer.valueOf(123)));
-        assertEquals("456", mapper.writerFor(Long.TYPE).writeValueAsString(Long.valueOf(456L)));
+        assertEquals("123", com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(Integer.TYPE).writeValueAsBytes(Integer.valueOf(123))));
+        assertEquals("456", com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(Long.TYPE).writeValueAsBytes(Long.valueOf(456L))));
     }
 
     public void testRootNameAnnotation() throws Exception
     {
-        String json = WRAP_ROOT_MAPPER.writeValueAsString(new WithRootName());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( WRAP_ROOT_MAPPER.writeValueAsBytes(new WithRootName()));
         assertEquals("{\"root\":{\"a\":3}}", json);
     }
 
@@ -205,7 +205,7 @@ public class TestRootType
         cmd.type = 1;
 
         ObjectWriter writer = WRAP_ROOT_MAPPER.writerFor(TestCommandParent.class);
-        String json =  writer.writeValueAsString(cmd);
+        String json = com.fasterxml.jackson.VPackUtils.toJson(  writer.writeValueAsBytes(cmd));
 
         assertEquals("{\"TestCommandParent\":{\"uuid\":\"1234\",\"type\":1}}", json);
     }

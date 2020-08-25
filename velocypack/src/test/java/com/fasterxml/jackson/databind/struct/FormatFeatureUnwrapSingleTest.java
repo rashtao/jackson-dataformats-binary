@@ -129,64 +129,64 @@ public class FormatFeatureUnwrapSingleTest extends BaseMapTest
     public void testWithArrayTypes() throws Exception
     {
         // default: strings unwrapped, ints wrapped
-        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true]}"),
-                MAPPER.writeValueAsString(new WrapWriteWithArrays()));
+        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true]}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new WrapWriteWithArrays())));
 
         // change global default to "yes, unwrap"; changes 'bools' only
-        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':true}"),
+        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':true}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer().with(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
-                .writeValueAsString(new WrapWriteWithArrays()));
+                .writeValueAsBytes(new WrapWriteWithArrays())));
 
         // change global default to "no, don't, unwrap", same as first case
-        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true]}"),
+        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true]}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer().without(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
-                .writeValueAsString(new WrapWriteWithArrays()));
+                .writeValueAsBytes(new WrapWriteWithArrays())));
 
         // And then without SerializationFeature but with config override:
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(String[].class).setFormat(JsonFormat.Value.empty()
                 .withFeature(JsonFormat.Feature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED));
-        assertEquals(aposToQuotes("{'values':'a'}"),
-                mapper.writeValueAsString(new StringArrayNotAnnoted("a")));
+        assertEquals(aposToQuotes("{'values':'a'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new StringArrayNotAnnoted("a"))));
     }
 
     public void testWithCollectionTypes() throws Exception
     {
         // default: strings unwrapped, ints wrapped
-        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true],'enums':'B'}"),
-                MAPPER.writeValueAsString(new WrapWriteWithCollections()));
+        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true],'enums':'B'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new WrapWriteWithCollections())));
 
         // change global default to "yes, unwrap"; changes 'bools' only
-        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':true,'enums':'B'}"),
+        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':true,'enums':'B'}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer().with(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
-                .writeValueAsString(new WrapWriteWithCollections()));
+                .writeValueAsBytes(new WrapWriteWithCollections())));
 
         // change global default to "no, don't, unwrap", same as first case
-        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true],'enums':'B'}"),
+        assertEquals(aposToQuotes("{'strings':'a','ints':[1],'bools':[true],'enums':'B'}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer().without(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
-                .writeValueAsString(new WrapWriteWithCollections()));
+                .writeValueAsBytes(new WrapWriteWithCollections())));
     }
 
     public void testUnwrapWithPrimitiveArraysEtc() throws Exception {
-        assertEquals("{\"v\":7}", MAPPER.writeValueAsString(new UnwrapShortArray()));
-        assertEquals("{\"v\":3}", MAPPER.writeValueAsString(new UnwrapIntArray()));
-        assertEquals("{\"v\":1}", MAPPER.writeValueAsString(new UnwrapLongArray()));
-        assertEquals("{\"v\":true}", MAPPER.writeValueAsString(new UnwrapBooleanArray()));
+        assertEquals("{\"v\":7}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapShortArray())));
+        assertEquals("{\"v\":3}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapIntArray())));
+        assertEquals("{\"v\":1}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapLongArray())));
+        assertEquals("{\"v\":true}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapBooleanArray())));
 
-        assertEquals("{\"v\":0.5}", MAPPER.writeValueAsString(new UnwrapFloatArray()));
-        assertEquals("{\"v\":0.25}", MAPPER.writeValueAsString(new UnwrapDoubleArray()));
-        assertEquals("0.5",
+        assertEquals("{\"v\":0.5}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapFloatArray())));
+        assertEquals("{\"v\":0.25}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapDoubleArray())));
+        assertEquals("0.5", com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer().with(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED)
-                .writeValueAsString(new double[] { 0.5 }));
+                .writeValueAsBytes(new double[] { 0.5 })));
 
-        assertEquals("{\"v\":\"foo\"}", MAPPER.writeValueAsString(new UnwrapIterable()));
-        assertEquals("{\"v\":\"x\"}", MAPPER.writeValueAsString(new UnwrapIterable("x")));
-        assertEquals("{\"v\":[\"x\",null]}", MAPPER.writeValueAsString(new UnwrapIterable("x", null)));
+        assertEquals("{\"v\":\"foo\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapIterable())));
+        assertEquals("{\"v\":\"x\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapIterable("x"))));
+        assertEquals("{\"v\":[\"x\",null]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapIterable("x", null))));
 
-        assertEquals("{\"v\":\"foo\"}", MAPPER.writeValueAsString(new UnwrapCollection()));
-        assertEquals("{\"v\":\"x\"}", MAPPER.writeValueAsString(new UnwrapCollection("x")));
-        assertEquals("{\"v\":[\"x\",null]}", MAPPER.writeValueAsString(new UnwrapCollection("x", null)));
+        assertEquals("{\"v\":\"foo\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapCollection())));
+        assertEquals("{\"v\":\"x\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapCollection("x"))));
+        assertEquals("{\"v\":[\"x\",null]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapCollection("x", null))));
 
-        assertEquals("{\"v\":\"http://foo\"}", MAPPER.writeValueAsString(new UnwrapStringLike()));
+        assertEquals("{\"v\":\"http://foo\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrapStringLike())));
     }
 }

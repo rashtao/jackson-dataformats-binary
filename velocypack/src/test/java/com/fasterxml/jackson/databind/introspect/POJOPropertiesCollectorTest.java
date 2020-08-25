@@ -434,7 +434,7 @@ public class POJOPropertiesCollectorTest
         assertNotNull(beanDesc);
 
         Jackson703 bean = new Jackson703();
-        String json = mapper.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean));
         assertNotNull(json);
     }
 

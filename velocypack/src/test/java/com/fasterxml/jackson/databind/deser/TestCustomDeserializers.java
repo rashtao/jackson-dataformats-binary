@@ -407,7 +407,7 @@ public class TestCustomDeserializers
     public void testIssue882() throws Exception
     {
         Model original = new Model(Collections.singletonMap(new CustomKey(123), "test"));
-        String json = MAPPER.writeValueAsString(original);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(original));
         Model deserialized = MAPPER.readValue(json, Model.class);
         assertNotNull(deserialized);
         assertNotNull(deserialized.map);

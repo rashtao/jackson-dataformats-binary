@@ -105,9 +105,9 @@ public class TestBiggerData extends BaseMapTest
 
 		ObjectWriter w = MAPPER.writerWithDefaultPrettyPrinter();
 		
-		String json1 = w.writeValueAsString(citm);
+		String json1 = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(citm));
 		Citm citm2 = MAPPER.readValue(json1, Citm.class);
-		String json2 = w.writeValueAsString(citm2);
+		String json2 = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(citm2));
 
 		assertEquals(json1, json2);
 	}

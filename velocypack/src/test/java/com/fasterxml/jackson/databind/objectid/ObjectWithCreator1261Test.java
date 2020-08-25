@@ -71,13 +71,13 @@ public class ObjectWithCreator1261Test
              .build();
 
          Answer initialAnswer = createInitialAnswer();
-         String initialAnswerString = mapper.writeValueAsString(initialAnswer);
+         String initialAnswerString = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(initialAnswer));
 // System.out.println("Initial answer:\n"+initialAnswerString);
          JsonNode tree = mapper.readTree(initialAnswerString);
          Answer deserializedAnswer = mapper.readValue(initialAnswerString,
                Answer.class);
-         String reserializedAnswerString = mapper
-               .writeValueAsString(deserializedAnswer);
+         String reserializedAnswerString = com.fasterxml.jackson.VPackUtils.toJson( mapper
+               .writeValueAsBytes(deserializedAnswer));
          JsonNode newTree = mapper.readTree(reserializedAnswerString);
          if (!tree.equals(newTree)) {
                   fail("Original and recovered Json are different. Recovered = \n"

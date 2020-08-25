@@ -69,7 +69,7 @@ public class TestDefaultForLists
     public void testListOfLongs() throws Exception
     {
         ListOfLongs input = new ListOfLongs(1L, 2L, 3L);
-        String json = POLY_MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( POLY_MAPPER.writeValueAsBytes(input));
         assertEquals("{\"longs\":[\"java.util.ArrayList\",[1,2,3]]}", json);
         ListOfLongs output = POLY_MAPPER.readValue(json, ListOfLongs.class);
 
@@ -89,7 +89,7 @@ public class TestDefaultForLists
     public void testListOfNumbers() throws Exception
     {
         ListOfNumbers input = new ListOfNumbers(Long.valueOf(1L), Integer.valueOf(2), Double.valueOf(3.0));
-        String json = POLY_MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( POLY_MAPPER.writeValueAsBytes(input));
         assertEquals("{\"nums\":[\"java.util.ArrayList\",[[\"java.lang.Long\",1],2,3.0]]}", json);
         ListOfNumbers output = POLY_MAPPER.readValue(json, ListOfNumbers.class);
 
@@ -107,7 +107,7 @@ public class TestDefaultForLists
         inputList.add(TimeZone.getTimeZone("EST"));
         inputList.add(Locale.CHINESE);
         input.values = inputList;
-        String json = POLY_MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( POLY_MAPPER.writeValueAsBytes(input));
 
         ObjectListBean output = POLY_MAPPER.readValue(json, ObjectListBean.class);
         List<Object> outputList = output.values;
@@ -121,7 +121,7 @@ public class TestDefaultForLists
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance, DefaultTyping.NON_FINAL);
         ArrayList<Foo> data = new ArrayList<Foo>();
-        String json = mapper.writeValueAsString(data);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(data));
         List<?> output = mapper.readValue(json, List.class);
         assertTrue(output.isEmpty());
     }
@@ -132,7 +132,7 @@ public class TestDefaultForLists
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);
-        String json = mapper.writeValueAsString(new SetBean("abc"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SetBean("abc")));
         SetBean bean = mapper.readValue(json, SetBean.class);
         assertNotNull(bean);
         assertTrue(bean.names instanceof HashSet);

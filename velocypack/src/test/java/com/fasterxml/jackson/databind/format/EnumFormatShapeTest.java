@@ -102,42 +102,42 @@ public class EnumFormatShapeTest
     // Tests for JsonFormat.shape
 
     public void testEnumAsObjectValid() throws Exception {
-        assertEquals("{\"value\":\"a1\"}", MAPPER.writeValueAsString(PoNUM.A));
+        assertEquals("{\"value\":\"a1\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(PoNUM.A)));
     }
 
     public void testEnumAsIndexViaAnnotations() throws Exception {
-        assertEquals("{\"text\":0}", MAPPER.writeValueAsString(new PoNUMContainer()));
+        assertEquals("{\"text\":0}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PoNUMContainer())));
     }
 
     // As of 2.5, use of Shape.ARRAY is legal alias for "write as number"
     public void testEnumAsObjectBroken() throws Exception
     {
-        assertEquals("0", MAPPER.writeValueAsString(PoAsArray.A));
+        assertEquals("0", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(PoAsArray.A)));
     }
 
     // [databind#572]
     public void testOverrideEnumAsString() throws Exception {
-        assertEquals("{\"value\":\"B\"}", MAPPER.writeValueAsString(new PoOverrideAsString()));
+        assertEquals("{\"value\":\"B\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PoOverrideAsString())));
     }
 
     public void testOverrideEnumAsNumber() throws Exception {
-        assertEquals("{\"value\":1}", MAPPER.writeValueAsString(new PoOverrideAsNumber()));
+        assertEquals("{\"value\":1}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PoOverrideAsNumber())));
     }
 
     // for [databind#1543]
     public void testEnumValueAsNumber() throws Exception {
-        assertEquals(String.valueOf(Color.GREEN.ordinal()),
-                MAPPER.writeValueAsString(Color.GREEN));
+        assertEquals(String.valueOf(Color.GREEN.ordinal()), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(Color.GREEN)));
     }
 
     public void testEnumPropertyAsNumber() throws Exception {
-        assertEquals(String.format(aposToQuotes("{'color':%s}"), Color.GREEN.ordinal()),
-                MAPPER.writeValueAsString(new ColorWrapper(Color.GREEN)));
+        assertEquals(String.format(aposToQuotes("{'color':%s}"), Color.GREEN.ordinal()), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new ColorWrapper(Color.GREEN))));
     }
 
     // [databind#2576]
     public void testEnumWithMethodOverride() throws Exception {
-        String stringResult = MAPPER.writeValueAsString(Enum2576.ATTRIBUTES);
+        String stringResult = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Enum2576.ATTRIBUTES));
         Map<?,?> result = MAPPER.readValue(stringResult, Map.class);
         Map<String,String> exp = Collections.singletonMap("key", "attributes");
         assertEquals(exp, result);

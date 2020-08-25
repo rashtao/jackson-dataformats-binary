@@ -197,7 +197,7 @@ public class TestJacksonAnnotationIntrospector
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new LcEnumIntrospector());
-        assertEquals("\"value1\"", mapper.writeValueAsString(EnumExample.VALUE1));
+        assertEquals("\"value1\"", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(EnumExample.VALUE1)));
         EnumExample result = mapper.readValue(quote("value1"), EnumExample.class);
         assertEquals(EnumExample.VALUE1, result);
     }

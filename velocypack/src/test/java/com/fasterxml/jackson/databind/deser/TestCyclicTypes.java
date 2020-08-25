@@ -104,7 +104,7 @@ public class TestCyclicTypes
         // First: exception with default settings:
         assertTrue(MAPPER.isEnabled(SerializationFeature.FAIL_ON_SELF_REFERENCES));
         try {
-            MAPPER.writeValueAsString(self1);
+            com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(self1));
             fail("Should fail with direct self-ref");
         } catch (JsonMappingException e) {
             verifyException(e, "Direct self-reference");
@@ -112,7 +112,7 @@ public class TestCyclicTypes
         
         ObjectWriter w = MAPPER.writer()
                 .without(SerializationFeature.FAIL_ON_SELF_REFERENCES);
-        String json = w.writeValueAsString(self1);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(self1));
         assertNotNull(json);
         assertEquals(aposToQuotes("{'id':1,'parent':{'id':1}}"), json);
     }

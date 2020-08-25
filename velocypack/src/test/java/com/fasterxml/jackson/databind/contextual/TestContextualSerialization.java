@@ -228,7 +228,7 @@ public class TestContextualSerialization extends BaseMapTest
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
-        assertEquals("{\"value\":\"see:foobar\"}", mapper.writeValueAsString(new ContextualBean("foobar")));
+        assertEquals("{\"value\":\"see:foobar\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ContextualBean("foobar"))));
     }
 
     // Test to verify that contextual serializer can also use annotations
@@ -239,7 +239,7 @@ public class TestContextualSerialization extends BaseMapTest
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
-        assertEquals("{\"value\":\"Voila->xyz\"}", mapper.writeValueAsString(new BeanWithClassConfig("xyz")));
+        assertEquals("{\"value\":\"Voila->xyz\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new BeanWithClassConfig("xyz"))));
     }
 
     public void testWrappedBean() throws Exception
@@ -248,7 +248,7 @@ public class TestContextualSerialization extends BaseMapTest
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
-        assertEquals("{\"wrapped\":{\"value\":\"see:xyz\"}}", mapper.writeValueAsString(new ContextualBeanWrapper("xyz")));
+        assertEquals("{\"wrapped\":{\"value\":\"see:xyz\"}}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ContextualBeanWrapper("xyz"))));
     }
     
     // Serializer should get passed property context even if contained in an array.
@@ -259,7 +259,7 @@ public class TestContextualSerialization extends BaseMapTest
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
         ContextualArrayBean beans = new ContextualArrayBean("123");
-        assertEquals("{\"beans\":[\"array->123\"]}", mapper.writeValueAsString(beans));
+        assertEquals("{\"beans\":[\"array->123\"]}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(beans)));
     }
 
     // Serializer should get passed property context even if contained in a Collection.
@@ -270,7 +270,7 @@ public class TestContextualSerialization extends BaseMapTest
         module.addSerializer(String.class, new AnnotatedContextualSerializer());
         mapper.registerModule(module);
         ContextualListBean beans = new ContextualListBean("abc");
-        assertEquals("{\"beans\":[\"list->abc\"]}", mapper.writeValueAsString(beans));
+        assertEquals("{\"beans\":[\"list->abc\"]}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(beans)));
     }
 
     // Serializer should get passed property context even if contained in a Collection.
@@ -282,14 +282,14 @@ public class TestContextualSerialization extends BaseMapTest
         mapper.registerModule(module);
         ContextualMapBean map = new ContextualMapBean();
         map.beans.put("first", "In Map");
-        assertEquals("{\"beans\":{\"first\":\"map->In Map\"}}", mapper.writeValueAsString(map));
+        assertEquals("{\"beans\":{\"first\":\"map->In Map\"}}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map)));
     }
 
     public void testContextualViaAnnotation() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         AnnotatedContextualBean bean = new AnnotatedContextualBean("abc");
-        assertEquals("{\"value\":\"prefix->abc\"}", mapper.writeValueAsString(bean));
+        assertEquals("{\"value\":\"prefix->abc\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
     }
 
     public void testResolveOnContextual() throws Exception
@@ -299,17 +299,17 @@ public class TestContextualSerialization extends BaseMapTest
         ObjectMapper mapper = jsonMapperBuilder()
                 .addModule(module)
                 .build();
-        assertEquals(quote("contextual=1,resolved=1"), mapper.writeValueAsString("abc"));
+        assertEquals(quote("contextual=1,resolved=1"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("abc")));
 
         // also: should NOT be called again
-        assertEquals(quote("contextual=1,resolved=1"), mapper.writeValueAsString("foo"));
+        assertEquals(quote("contextual=1,resolved=1"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("foo")));
     }
 
     public void testContextualArrayElement() throws Exception
     {
         ObjectMapper mapper = newJsonMapper();
         ContextualArrayElementBean beans = new ContextualArrayElementBean("456");
-        assertEquals("{\"beans\":[\"elem->456\"]}", mapper.writeValueAsString(beans));
+        assertEquals("{\"beans\":[\"elem->456\"]}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(beans)));
     }
 
     // Test to verify aspects of [databind#2429]
@@ -319,8 +319,8 @@ public class TestContextualSerialization extends BaseMapTest
                 .addModule(new SimpleModule("test", Version.unknownVersion())
                         .addSerializer(String.class, new AccumulatingContextual()))
                 .build();
-        assertEquals(quote("/ROOT/foo"), mapper.writeValueAsString("foo"));
-        assertEquals(quote("/ROOT/bar"), mapper.writeValueAsString("bar"));
-        assertEquals(quote("/ROOT/3"), mapper.writeValueAsString("3"));
+        assertEquals(quote("/ROOT/foo"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("foo")));
+        assertEquals(quote("/ROOT/bar"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("bar")));
+        assertEquals(quote("/ROOT/3"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("3")));
     }
 }

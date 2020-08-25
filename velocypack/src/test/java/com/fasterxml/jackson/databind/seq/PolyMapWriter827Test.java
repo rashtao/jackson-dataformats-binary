@@ -47,7 +47,7 @@ public class PolyMapWriter827Test extends BaseMapTest
         map.put(key, "bar");
 
         final ObjectWriter writer = mapper.writerFor(new TypeReference<Map<CustomKey,String>>() { });
-        String json = writer.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( writer.writeValueAsBytes(map));
         Assert.assertEquals("[\"java.util.HashMap\",{\"foo,1\":\"bar\"}]", json);
     }
 }

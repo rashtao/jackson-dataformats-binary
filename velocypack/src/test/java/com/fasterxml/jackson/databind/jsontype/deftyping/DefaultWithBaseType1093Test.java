@@ -40,7 +40,7 @@ public class DefaultWithBaseType1093Test extends BaseMapTest
     private void _testWithDefaultTyping(Point1093 input, ObjectReader r,
             ObjectWriter w) throws Exception
     {
-        String json = w.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(input));
         
         Point1093 result = (Point1093) r.readValue(json);
 

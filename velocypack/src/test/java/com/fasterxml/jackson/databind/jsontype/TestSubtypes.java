@@ -175,7 +175,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // must register subtypes
         mapper.registerSubtypes(SubB.class, SubC.class, SubD.class);
-        String json = mapper.writeValueAsString(new PropertyBean(new SubC()));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PropertyBean(new SubC())));
         PropertyBean result = mapper.readValue(json, PropertyBean.class);
         assertSame(SubC.class, result.value.getClass());
     }
@@ -187,7 +187,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         SimpleModule module = new SimpleModule();
         module.registerSubtypes(SubB.class, SubC.class, SubD.class);
         mapper.registerModule(module);
-        String json = mapper.writeValueAsString(new PropertyBean(new SubC()));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PropertyBean(new SubC())));
         PropertyBean result = mapper.readValue(json, PropertyBean.class);
         assertSame(SubC.class, result.value.getClass());
 
@@ -200,7 +200,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         l.add(SubD.class);
         module.registerSubtypes(l);
         mapper.registerModule(module);
-        json = mapper.writeValueAsString(new PropertyBean(new SubC()));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PropertyBean(new SubC())));
         result = mapper.readValue(json, PropertyBean.class);
         assertSame(SubC.class, result.value.getClass());
     }
@@ -209,15 +209,15 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
     {
         // serialization can detect type name ok without anything extra:
         SubB bean = new SubB();
-        assertEquals("{\"@type\":\"TypeB\",\"b\":1}", MAPPER.writeValueAsString(bean));
+        assertEquals("{\"@type\":\"TypeB\",\"b\":1}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bean)));
 
         // but we can override type name here too
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerSubtypes(new NamedType(SubB.class, "typeB"));
-        assertEquals("{\"@type\":\"typeB\",\"b\":1}", mapper.writeValueAsString(bean));
+        assertEquals("{\"@type\":\"typeB\",\"b\":1}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
 
         // and default name ought to be simple class name; with context
-        assertEquals("{\"@type\":\"TestSubtypes$SubD\",\"d\":0}", mapper.writeValueAsString(new SubD()));  
+        assertEquals("{\"@type\":\"TestSubtypes$SubD\",\"d\":0}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SubD())));
     }
 
     public void testDeserializationNonNamed() throws Exception
@@ -253,12 +253,12 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         // First, with annotations
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
-        String json = mapper.writeValueAsString(new EmptyBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyBean()));
         assertEquals("{\"@type\":\"TestSubtypes$EmptyBean\"}", json);
 
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        json = mapper.writeValueAsString(new EmptyBean());
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyBean()));
         assertEquals("{\"@type\":\"TestSubtypes$EmptyBean\"}", json);
 
         // and then with defaults
@@ -266,7 +266,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        json = mapper.writeValueAsString(new EmptyNonFinal());
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyNonFinal()));
         assertEquals("[\"com.fasterxml.jackson.databind.jsontype.TestSubtypes$EmptyNonFinal\",{}]", json);
     }
 
@@ -332,7 +332,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
 
     public void testViaAtomic() throws Exception {
         AtomicWrapper input = new AtomicWrapper(3);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         AtomicWrapper output = MAPPER.readValue(json, AtomicWrapper.class);
         assertNotNull(output);
@@ -360,7 +360,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
 
     public void testIssue1125NonDefault() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new Issue1125Wrapper(new Impl1125(1, 2, 3)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Issue1125Wrapper(new Impl1125(1, 2, 3))));
         
         Issue1125Wrapper result = MAPPER.readValue(json, Issue1125Wrapper.class);
         assertNotNull(result.value);

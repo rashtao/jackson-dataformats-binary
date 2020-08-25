@@ -37,7 +37,7 @@ public class RecursiveType1658Test extends BaseMapTest
                 .inclusion(JsonTypeInfo.As.PROPERTY);
         mapper.setDefaultTyping(typer);
 
-        String res = mapper.writeValueAsString(t);
+        String res = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(t));
 
         Tree<?> tRead = mapper.readValue(res, Tree.class);
 

@@ -24,7 +24,7 @@ public class TestDOM extends com.fasterxml.jackson.databind.BaseMapTest
             (new InputSource(new StringReader(SIMPLE_XML)));
         assertNotNull(doc);
         // need to strip xml declaration, if any
-        String outputRaw = MAPPER.writeValueAsString(doc);
+        String outputRaw = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(doc));
         // And re-parse as String, since JSON has quotes...
         String output = MAPPER.readValue(outputRaw, String.class);
         /* ... and finally, normalize to (close to) canonical XML

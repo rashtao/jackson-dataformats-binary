@@ -161,7 +161,7 @@ public class TestVisibleTypeId extends BaseMapTest
     
     public void testVisibleWithProperty() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new PropertyBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PropertyBean()));
         // just default behavior:
         assertEquals("{\"type\":\"BaseType\",\"a\":3}", json);
         // but then expect to read it back
@@ -176,7 +176,7 @@ public class TestVisibleTypeId extends BaseMapTest
 
     public void testVisibleWithWrapperArray() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new WrapperArrayBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new WrapperArrayBean()));
         // just default behavior:
         assertEquals("[\"ArrayType\",{\"a\":1}]", json);
         // but then expect to read it back
@@ -187,7 +187,7 @@ public class TestVisibleTypeId extends BaseMapTest
 
     public void testVisibleWithWrapperObject() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new WrapperObjectBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new WrapperObjectBean()));
         assertEquals("{\"ObjectType\":{\"a\":2}}", json);
         // but then expect to read it back
         WrapperObjectBean result = MAPPER.readValue(json, WrapperObjectBean.class);
@@ -196,25 +196,25 @@ public class TestVisibleTypeId extends BaseMapTest
 
     public void testTypeIdFromProperty() throws Exception
     {
-        assertEquals("{\"type\":\"SomeType\",\"a\":3}",
-                MAPPER.writeValueAsString(new TypeIdFromFieldProperty()));
+        assertEquals("{\"type\":\"SomeType\",\"a\":3}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new TypeIdFromFieldProperty())));
     }
 
     public void testTypeIdFromArray() throws Exception
     {
-        assertEquals("[\"SomeType\",{\"a\":3}]",
-                MAPPER.writeValueAsString(new TypeIdFromFieldArray()));
+        assertEquals("[\"SomeType\",{\"a\":3}]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new TypeIdFromFieldArray())));
     }
 
     public void testTypeIdFromObject() throws Exception
     {
-        assertEquals("{\"SomeType\":{\"a\":3}}",
-                MAPPER.writeValueAsString(new TypeIdFromMethodObject()));
+        assertEquals("{\"SomeType\":{\"a\":3}}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new TypeIdFromMethodObject())));
     }
 
     public void testTypeIdFromExternal() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new ExternalIdWrapper2());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ExternalIdWrapper2()));
         // Implementation detail: type id written AFTER value, due to constraints
         assertEquals("{\"bean\":{\"a\":2},\"type\":\"SomeType\"}", json);
         
@@ -223,7 +223,7 @@ public class TestVisibleTypeId extends BaseMapTest
     public void testIssue263() throws Exception
     {
         // first, serialize:
-        assertEquals("{\"name\":\"bob\",\"age\":41}", MAPPER.writeValueAsString(new I263Impl()));
+        assertEquals("{\"name\":\"bob\",\"age\":41}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new I263Impl())));
         
         // then bring back:
         I263Base result = MAPPER.readValue("{\"age\":19,\"name\":\"bob\"}", I263Base.class);
@@ -238,7 +238,7 @@ public class TestVisibleTypeId extends BaseMapTest
      */
     public void testVisibleTypeId408() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new ExternalBeanWithId(3));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ExternalBeanWithId(3)));
         ExternalBeanWithId result = MAPPER.readValue(json, ExternalBeanWithId.class);
         assertNotNull(result);
         assertNotNull(result.bean);
@@ -255,7 +255,7 @@ public class TestVisibleTypeId extends BaseMapTest
     public void testInvalidMultipleTypeIds() throws Exception
     {
         try {
-            MAPPER.writeValueAsString(new MultipleIds());
+            MAPPER.writeValueAsBytes(new MultipleIds());
             fail("Should have failed");
         } catch (JsonMappingException e) {
             verifyException(e, "multiple type ids");

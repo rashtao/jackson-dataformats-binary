@@ -75,10 +75,10 @@ public class TestTypedArraySerialization
     public void testListWithPolymorphic() throws Exception
     {
         BeanListWrapper beans = new BeanListWrapper();
-        assertEquals("{\"beans\":[{\"@type\":\"bean\",\"x\":0}]}", MAPPER.writeValueAsString(beans));
+        assertEquals("{\"beans\":[{\"@type\":\"bean\",\"x\":0}]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(beans)));
         // Related to [JACKSON-364]
         ObjectWriter w = MAPPER.writerWithView(Object.class);
-        assertEquals("{\"beans\":[{\"@type\":\"bean\",\"x\":0}]}", w.writeValueAsString(beans));
+        assertEquals("{\"beans\":[{\"@type\":\"bean\",\"x\":0}]}", com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(beans)));
     }
     
     public void testIntList() throws Exception
@@ -87,8 +87,8 @@ public class TestTypedArraySerialization
         input.add(5);
         input.add(13);
         // uses WRAPPER_ARRAY inclusion:
-        assertEquals("[\""+TypedList.class.getName()+"\",[5,13]]",
-                MAPPER.writeValueAsString(input));
+        assertEquals("[\""+TypedList.class.getName()+"\",[5,13]]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
     }
     
     // Similar to above, but this time let's request adding type info
@@ -100,8 +100,8 @@ public class TestTypedArraySerialization
         TypedListAsProp<String> input = new TypedListAsProp<String>();
         input.add("a");
         input.add("b");
-        assertEquals("[\""+TypedListAsProp.class.getName()+"\",[\"a\",\"b\"]]",
-                MAPPER.writeValueAsString(input));
+        assertEquals("[\""+TypedListAsProp.class.getName()+"\",[\"a\",\"b\"]]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
     }
 
     public void testStringListAsObjectWrapper() throws Exception
@@ -114,8 +114,8 @@ public class TestTypedArraySerialization
         // non-qualified class name as type name, since there are no
         // annotations
         String expName = "TestTypedArraySerialization$TypedListAsWrapper";
-        assertEquals("{\""+expName+"\":[true,null,false]}",
-                MAPPER.writeValueAsString(input));
+        assertEquals("{\""+expName+"\":[true,null,false]}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
     }
 
     /*
@@ -130,7 +130,7 @@ public class TestTypedArraySerialization
         m.addMixIn(int[].class, WrapperMixIn.class);
         int[] input = new int[] { 1, 2, 3 };
         String clsName = int[].class.getName();
-        assertEquals("{\""+clsName+"\":[1,2,3]}", m.writeValueAsString(input));
+        assertEquals("{\""+clsName+"\":[1,2,3]}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input)));
     }
 
     /*
@@ -145,12 +145,12 @@ public class TestTypedArraySerialization
         final String EXP = "[{\"BB\":{\"value\":2}}]";
 
         // first, with defaults
-        assertEquals(EXP, MAPPER.writeValueAsString(input));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
 
         // then with static typing enabled:
         ObjectMapper m = jsonMapperBuilder()
                 .configure(MapperFeature.USE_STATIC_TYPING, true)
                 .build();
-        assertEquals(EXP, m.writeValueAsString(input));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input)));
     }
 }

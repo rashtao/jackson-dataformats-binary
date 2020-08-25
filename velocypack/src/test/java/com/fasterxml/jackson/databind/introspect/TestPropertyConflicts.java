@@ -92,7 +92,7 @@ public class TestPropertyConflicts extends BaseMapTest
     {
         BeanWithConflict bean = new BeanWithConflict();
         try {
-            String json = objectWriter().writeValueAsString(bean);
+            String json = com.fasterxml.jackson.VPackUtils.toJson( objectWriter().writeValueAsBytes(bean));
             fail("Should have failed due to conflicting accessor definitions; got JSON = "+json);
         } catch (JsonProcessingException e) {
             verifyException(e, "Conflicting getter definitions");
@@ -105,8 +105,8 @@ public class TestPropertyConflicts extends BaseMapTest
         final ObjectWriter writer = objectWriter();
         
         // first, serialize without probs:
-        assertEquals("{\"value\":4}", writer.writeValueAsString(new Getters1A()));
-        assertEquals("{\"value\":4}", writer.writeValueAsString(new Getters1B()));
+        assertEquals("{\"value\":4}", com.fasterxml.jackson.VPackUtils.toJson( writer.writeValueAsBytes(new Getters1A())));
+        assertEquals("{\"value\":4}", com.fasterxml.jackson.VPackUtils.toJson( writer.writeValueAsBytes(new Getters1B())));
 
         // and similarly, deserialize
         ObjectMapper mapper = objectMapper();
@@ -119,7 +119,7 @@ public class TestPropertyConflicts extends BaseMapTest
         ObjectMapper mapper = jsonMapperBuilder()
                 .annotationIntrospector(new InferingIntrospector())
                 .build();
-        String json = mapper.writeValueAsString(new Infernal());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Infernal()));
         assertEquals(aposToQuotes("{'name':'Bob'}"), json);
     }
     

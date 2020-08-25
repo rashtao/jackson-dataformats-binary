@@ -74,7 +74,7 @@ public class ObjectId687Test extends BaseMapTest
         e.baseRef = base;
         e.nextRef = r;
 
-        String json = MAPPER.writeValueAsString(e);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(e));
 
         EnclosingForRefsWithCreator result = MAPPER.readValue(json,
                 EnclosingForRefsWithCreator.class);
@@ -82,7 +82,7 @@ public class ObjectId687Test extends BaseMapTest
         assertEquals(result.label, e.label);
 
         // also, compare by re-serializing:
-        assertEquals(json, MAPPER.writeValueAsString(result));
+        assertEquals(json, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(result)));
     }
 
     public void testSerializeDeserializeNoCreator() throws IOException {
@@ -93,7 +93,7 @@ public class ObjectId687Test extends BaseMapTest
         e.baseRef = base;
         e.nextRef = r;
 
-        String json = MAPPER.writeValueAsString(e);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(e));
 
         EnclosingForRefWithNoCreator result = MAPPER.readValue(json,
                 EnclosingForRefWithNoCreator.class);
@@ -101,6 +101,6 @@ public class ObjectId687Test extends BaseMapTest
         assertEquals(result.label, e.label);
 
         // also, compare by re-serializing:
-        assertEquals(json, MAPPER.writeValueAsString(result));
+        assertEquals(json, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(result)));
     }    
 }

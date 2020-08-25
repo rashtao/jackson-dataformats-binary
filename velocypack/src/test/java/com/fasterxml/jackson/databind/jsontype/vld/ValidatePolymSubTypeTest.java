@@ -269,17 +269,17 @@ public class ValidatePolymSubTypeTest extends BaseMapTest
      */
 
     private DefTypeWrapper _roundTripDefault(ObjectMapper mapper, BaseValue input) throws Exception {
-        final String json = mapper.writeValueAsString(new DefTypeWrapper(input));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DefTypeWrapper(input)));
         return mapper.readValue(json, DefTypeWrapper.class);
     }
 
     private AnnotatedWrapper _roundTripAnnotated(ObjectMapper mapper, BaseValue input) throws Exception {
-        final String json = mapper.writeValueAsString(new AnnotatedWrapper(input));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnnotatedWrapper(input)));
         return mapper.readValue(json, AnnotatedWrapper.class);
     }
 
     private AnnotatedMinimalWrapper _roundTripAnnotatedMinimal(ObjectMapper mapper, BaseValue input) throws Exception {
-        final String json = mapper.writeValueAsString(new AnnotatedMinimalWrapper(input));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnnotatedMinimalWrapper(input)));
         return mapper.readValue(json, AnnotatedMinimalWrapper.class);
     }
 
@@ -290,32 +290,32 @@ public class ValidatePolymSubTypeTest extends BaseMapTest
      */
     
     private void _verifyBadDefaultValue(ObjectMapper mapper) throws Exception {
-        final String json = mapper.writeValueAsString(new DefTypeWrapper(new BadValue()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DefTypeWrapper(new BadValue())));
         _verifyBadValue(mapper, json, DefTypeWrapper.class);
     }
 
     private void _verifyMehDefaultValue(ObjectMapper mapper) throws Exception {
-        final String json = mapper.writeValueAsString(new DefTypeWrapper(new MehValue()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DefTypeWrapper(new MehValue())));
         _verifyMehValue(mapper, json, DefTypeWrapper.class);
     }
 
     private void _verifyBadAnnotatedValue(ObjectMapper mapper) throws Exception {
-        final String json = mapper.writeValueAsString(new AnnotatedWrapper(new BadValue()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnnotatedWrapper(new BadValue())));
         _verifyBadValue(mapper, json, AnnotatedWrapper.class);
     }
 
     private void _verifyMehAnnotatedValue(ObjectMapper mapper) throws Exception {
-        final String json = mapper.writeValueAsString(new AnnotatedWrapper(new MehValue()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnnotatedWrapper(new MehValue())));
         _verifyMehValue(mapper, json, AnnotatedWrapper.class);
     }
 
     private void _verifyBadAnnotatedMinValue(ObjectMapper mapper) throws Exception {
-        final String json = mapper.writeValueAsString(new AnnotatedMinimalWrapper(new BadValue()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnnotatedMinimalWrapper(new BadValue())));
         _verifyBadValue(mapper, json, AnnotatedMinimalWrapper.class);
     }
 
     private void _verifyMehAnnotatedMinValue(ObjectMapper mapper) throws Exception {
-        final String json = mapper.writeValueAsString(new AnnotatedMinimalWrapper(new MehValue()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnnotatedMinimalWrapper(new MehValue())));
         _verifyMehValue(mapper, json, AnnotatedMinimalWrapper.class);
     }
 

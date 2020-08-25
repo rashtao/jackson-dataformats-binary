@@ -142,13 +142,13 @@ public class TestEnumSerialization
     
     public void testSimple() throws Exception
     {
-        assertEquals("\"B\"", MAPPER.writeValueAsString(TestEnum.B));
+        assertEquals("\"B\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(TestEnum.B)));
     }
 
     public void testEnumSet() throws Exception
     {
         final EnumSet<TestEnum> value = EnumSet.of(TestEnum.B);
-        assertEquals("[\"B\"]", MAPPER.writeValueAsString(value));
+        assertEquals("[\"B\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(value)));
     }
 
     /**
@@ -158,16 +158,16 @@ public class TestEnumSerialization
      */
     public void testEnumUsingToString() throws Exception
     {
-        assertEquals("\"c2\"", MAPPER.writeValueAsString(AnnotatedTestEnum.C2));
+        assertEquals("\"c2\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(AnnotatedTestEnum.C2)));
     }
 
     public void testSubclassedEnums() throws Exception
     {
-        assertEquals("\"B\"", MAPPER.writeValueAsString(EnumWithSubClass.B));
+        assertEquals("\"B\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(EnumWithSubClass.B)));
     }
 
     public void testEnumsWithJsonValue() throws Exception {
-        assertEquals("\"value:bar\"", MAPPER.writeValueAsString(EnumWithJsonValue.B));
+        assertEquals("\"value:bar\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(EnumWithJsonValue.B)));
     }
 
     public void testEnumsWithJsonValueUsingMixin() throws Exception
@@ -175,7 +175,7 @@ public class TestEnumSerialization
         // can't share, as new mix-ins are added
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.addMixIn(TestEnum.class, ToStringMixin.class);
-        assertEquals("\"b\"", m.writeValueAsString(TestEnum.B));
+        assertEquals("\"b\"", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(TestEnum.B)));
     }
 
     // [databind#601]
@@ -184,7 +184,7 @@ public class TestEnumSerialization
         EnumMap<EnumWithJsonValue,String> input = new EnumMap<EnumWithJsonValue,String>(EnumWithJsonValue.class);
         input.put(EnumWithJsonValue.B, "x");
         // 24-Sep-2015, tatu: SHOULD actually use annotated method, as per:
-        assertEquals("{\"value:bar\":\"x\"}", MAPPER.writeValueAsString(input));
+        assertEquals("{\"value:bar\":\"x\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 
     /**
@@ -193,19 +193,19 @@ public class TestEnumSerialization
      */
     public void testSerializableEnum() throws Exception
     {
-        assertEquals("\"foo\"", MAPPER.writeValueAsString(SerializableEnum.A));
+        assertEquals("\"foo\"", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(SerializableEnum.A)));
     }
 
     public void testToStringEnum() throws Exception
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-        assertEquals("\"b\"", m.writeValueAsString(LowerCaseEnum.B));
+        assertEquals("\"b\"", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(LowerCaseEnum.B)));
 
         // [databind#749] but should also be able to dynamically disable
-        assertEquals("\"B\"",
+        assertEquals("\"B\"", com.fasterxml.jackson.VPackUtils.toJson(
                 m.writer().without(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-                    .writeValueAsString(LowerCaseEnum.B));
+                    .writeValueAsBytes(LowerCaseEnum.B)));
     }
 
     public void testToStringEnumWithEnumMap() throws Exception
@@ -214,7 +214,7 @@ public class TestEnumSerialization
         m.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         EnumMap<LowerCaseEnum,String> enums = new EnumMap<LowerCaseEnum,String>(LowerCaseEnum.class);
         enums.put(LowerCaseEnum.C, "value");
-        assertEquals("{\"c\":\"value\"}", m.writeValueAsString(enums));
+        assertEquals("{\"c\":\"value\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(enums)));
     }
 
     public void testAsIndex() throws Exception
@@ -222,18 +222,18 @@ public class TestEnumSerialization
         // By default, serialize using name
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertFalse(m.isEnabled(SerializationFeature.WRITE_ENUMS_USING_INDEX));
-        assertEquals(quote("B"), m.writeValueAsString(TestEnum.B));
+        assertEquals(quote("B"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(TestEnum.B)));
 
         // but we can change (dynamically, too!) it to be number-based
         m.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
-        assertEquals("1", m.writeValueAsString(TestEnum.B));
+        assertEquals("1", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(TestEnum.B)));
     }
 
     public void testAnnotationsOnEnumCtor() throws Exception
     {
-        assertEquals(quote("V1"), MAPPER.writeValueAsString(OK.V1));
-        assertEquals(quote("V1"), MAPPER.writeValueAsString(NOT_OK.V1));
-        assertEquals(quote("V2"), MAPPER.writeValueAsString(NOT_OK2.V2));
+        assertEquals(quote("V1"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(OK.V1)));
+        assertEquals(quote("V1"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(NOT_OK.V1)));
+        assertEquals(quote("V2"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(NOT_OK2.V2)));
     }
 
     // [databind#227]
@@ -244,7 +244,7 @@ public class TestEnumSerialization
         SimpleModule module = new SimpleModule("foobar");
         module.addSerializer(Enum.class, new LowerCasingEnumSerializer());
         m.registerModule(module);
-        assertEquals(quote("b"), m.writeValueAsString(TestEnum.B));
+        assertEquals(quote("b"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(TestEnum.B)));
     }
 
     // [databind#749]
@@ -253,7 +253,7 @@ public class TestEnumSerialization
         final ObjectMapper mapper = newJsonMapper();
         EnumMap<LC749Enum, String> m = new EnumMap<LC749Enum, String>(LC749Enum.class);
         m.put(LC749Enum.A, "value");
-        assertEquals("{\"A\":\"value\"}", mapper.writeValueAsString(m));
+        assertEquals("{\"A\":\"value\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(m)));
     }
     
     public void testEnumMapSerDisableToString() throws Exception {
@@ -261,7 +261,7 @@ public class TestEnumSerialization
         ObjectWriter w = mapper.writer().without(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         EnumMap<LC749Enum, String> m = new EnumMap<LC749Enum, String>(LC749Enum.class);
         m.put(LC749Enum.A, "value");
-        assertEquals("{\"A\":\"value\"}", w.writeValueAsString(m));
+        assertEquals("{\"A\":\"value\"}", com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(m)));
     }
 
     public void testEnumMapSerEnableToString() throws Exception {
@@ -269,26 +269,26 @@ public class TestEnumSerialization
         ObjectWriter w = mapper.writer().with(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         EnumMap<LC749Enum, String> m = new EnumMap<LC749Enum, String>(LC749Enum.class);
         m.put(LC749Enum.A, "value");
-        assertEquals("{\"a\":\"value\"}", w.writeValueAsString(m));
+        assertEquals("{\"a\":\"value\"}", com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(m)));
     }
 
     // [databind#1322]
     public void testEnumsWithJsonProperty() throws Exception {
-        assertEquals(quote("aleph"), MAPPER.writeValueAsString(EnumWithJsonProperty.A));
+        assertEquals(quote("aleph"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(EnumWithJsonProperty.A)));
     }
 
     // [databind#1535]
     public void testEnumKeysWithJsonProperty() throws Exception {
         Map<EnumWithJsonProperty,Integer> input = new HashMap<EnumWithJsonProperty,Integer>();
         input.put(EnumWithJsonProperty.A, 13);
-        assertEquals(aposToQuotes("{'aleph':13}"), MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'aleph':13}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 
     // [databind#1322]
     public void testEnumsWithJsonPropertyInSet() throws Exception
     {
-        assertEquals("[\"aleph\"]",
-                MAPPER.writeValueAsString(EnumSet.of(EnumWithJsonProperty.A)));
+        assertEquals("[\"aleph\"]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(EnumSet.of(EnumWithJsonProperty.A))));
     }
 
     // [databind#1322]
@@ -296,7 +296,7 @@ public class TestEnumSerialization
     {
         EnumMap<EnumWithJsonProperty,String> input = new EnumMap<EnumWithJsonProperty,String>(EnumWithJsonProperty.class);
         input.put(EnumWithJsonProperty.A, "b");
-        assertEquals("{\"aleph\":\"b\"}", MAPPER.writeValueAsString(input));
+        assertEquals("{\"aleph\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 }
 

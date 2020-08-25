@@ -21,17 +21,17 @@ public class BeanNamingTest extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         assertFalse(mapper.isEnabled(MapperFeature.USE_STD_BEAN_NAMING));
-        assertEquals(aposToQuotes("{'url':'http://foo'}"),
-                mapper.writeValueAsString(new URLBean()));
-        assertEquals(aposToQuotes("{'a':3}"),
-                mapper.writeValueAsString(new ABean()));
+        assertEquals(aposToQuotes("{'url':'http://foo'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new URLBean())));
+        assertEquals(aposToQuotes("{'a':3}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new ABean())));
 
         mapper = jsonMapperBuilder()
                 .enable(MapperFeature.USE_STD_BEAN_NAMING)
                 .build();
-        assertEquals(aposToQuotes("{'URL':'http://foo'}"),
-                mapper.writeValueAsString(new URLBean()));
-        assertEquals(aposToQuotes("{'a':3}"),
-                mapper.writeValueAsString(new ABean()));
+        assertEquals(aposToQuotes("{'URL':'http://foo'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new URLBean())));
+        assertEquals(aposToQuotes("{'a':3}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new ABean())));
     }
 }

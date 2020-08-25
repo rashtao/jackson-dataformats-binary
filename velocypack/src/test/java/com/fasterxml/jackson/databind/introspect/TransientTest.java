@@ -57,30 +57,30 @@ public class TransientTest extends BaseMapTest
     public void testTransientFieldHandling() throws Exception
     {
         // default handling: remove transient field but do not propagate
-        assertEquals(aposToQuotes("{'x':42,'value':3}"),
-                MAPPER.writeValueAsString(new ClassyTransient()));
-        assertEquals(aposToQuotes("{'a':1}"),
-                MAPPER.writeValueAsString(new SimplePrunableTransient()));
+        assertEquals(aposToQuotes("{'x':42,'value':3}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new ClassyTransient())));
+        assertEquals(aposToQuotes("{'a':1}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new SimplePrunableTransient())));
 
         // but may change that
         ObjectMapper m = jsonMapperBuilder()
             .enable(MapperFeature.PROPAGATE_TRANSIENT_MARKER)
             .build();
-        assertEquals(aposToQuotes("{'x':42}"),
-                m.writeValueAsString(new ClassyTransient()));
+        assertEquals(aposToQuotes("{'x':42}"), com.fasterxml.jackson.VPackUtils.toJson(
+                m.writeValueAsBytes(new ClassyTransient())));
     }
 
     // for [databind#857]
     public void testBeanTransient() throws Exception
     {
-        assertEquals(aposToQuotes("{'y':4}"),
-                MAPPER.writeValueAsString(new BeanTransient()));
+        assertEquals(aposToQuotes("{'y':4}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new BeanTransient())));
     }
 
     // for [databind#1184]
     public void testOverridingTransient() throws Exception
     {
-        assertEquals(aposToQuotes("{'tValue':38}"),
-                MAPPER.writeValueAsString(new OverridableTransient(38)));
+        assertEquals(aposToQuotes("{'tValue':38}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new OverridableTransient(38))));
     }
 }

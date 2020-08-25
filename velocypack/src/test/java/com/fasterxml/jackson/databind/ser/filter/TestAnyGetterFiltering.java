@@ -91,21 +91,21 @@ public class TestAnyGetterFiltering extends BaseMapTest
     {
         FilterProvider prov = new SimpleFilterProvider().addFilter("anyFilter",
                 SimpleBeanPropertyFilter.filterOutAllExcept("b"));
-        assertEquals("{\"b\":\"2\"}", MAPPER.writer(prov).writeValueAsString(new AnyBean()));
+        assertEquals("{\"b\":\"2\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new AnyBean())));
     }
 
     // for [databind#1142]
     public void testAnyGetterIgnore() throws Exception
     {
-        assertEquals(aposToQuotes("{'a':'1','b':'3'}"),
-                MAPPER.writeValueAsString(new AnyBeanWithIgnores()));
+        assertEquals(aposToQuotes("{'a':'1','b':'3'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new AnyBeanWithIgnores())));
     }
 
     // [databind#1655]
     public void testAnyGetterPojo1655() throws Exception
     {
         FilterProvider filters = new SimpleFilterProvider().addFilter("CustomFilter", new CustomFilter());
-        String json = MAPPER.writer(filters).writeValueAsString(new OuterObject());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(filters).writeValueAsBytes(new OuterObject()));
         Map<?,?> stuff = MAPPER.readValue(json, Map.class);
         if (stuff.size() != 2) {
             fail("Should have 2 properties, got: "+stuff);

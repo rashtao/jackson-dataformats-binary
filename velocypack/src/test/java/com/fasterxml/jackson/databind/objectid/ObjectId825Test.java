@@ -45,7 +45,7 @@ public class ObjectId825Test extends BaseMapTest
         c.d = d;
         a.d = d;
 
-        String json = DEF_TYPING_MAPPER.writeValueAsString(a);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( DEF_TYPING_MAPPER.writeValueAsBytes(a));
 //        System.out.println("JSON: " + json);
         TestA testADeserialized = DEF_TYPING_MAPPER.readValue(json, TestA.class);
 

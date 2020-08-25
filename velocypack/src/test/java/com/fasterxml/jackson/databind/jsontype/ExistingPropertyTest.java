@@ -247,16 +247,16 @@ public class ExistingPropertyTest extends BaseMapTest
         assertEquals(mandarin.color, result.get("color"));
         assertEquals(mandarin.type, result.get("type"));
         
-        String pinguoSerialized = MAPPER.writeValueAsString(pinguo);
+        String pinguoSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(pinguo));
         assertEquals(pinguoSerialized, pinguoJson);
 
-        String mandarinSerialized = MAPPER.writeValueAsString(mandarin);
+        String mandarinSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(mandarin));
         assertEquals(mandarinSerialized, mandarinJson);
 
-        String fruitWrapperSerialized = MAPPER.writeValueAsString(pinguoWrapper);
+        String fruitWrapperSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(pinguoWrapper));
         assertEquals(fruitWrapperSerialized, pinguoWrapperJson);
 
-        String fruitListSerialized = MAPPER.writeValueAsString(fruitList);
+        String fruitListSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(fruitList));
         assertEquals(fruitListSerialized, fruitListJson);
     }
 
@@ -312,16 +312,16 @@ public class ExistingPropertyTest extends BaseMapTest
         assertEquals(rover.boneCount, result.get("boneCount"));
         assertEquals(rover.getType(), result.get("type"));
         
-        String beelzebubSerialized = MAPPER.writeValueAsString(beelzebub);
+        String beelzebubSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(beelzebub));
         assertEquals(beelzebubSerialized, beelzebubJson);
         
-        String roverSerialized = MAPPER.writeValueAsString(rover);
+        String roverSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(rover));
         assertEquals(roverSerialized, roverJson);
         
-        String animalWrapperSerialized = MAPPER.writeValueAsString(beelzebubWrapper);
+        String animalWrapperSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(beelzebubWrapper));
         assertEquals(animalWrapperSerialized, beelzebubWrapperJson);
 
-        String animalListSerialized = MAPPER.writeValueAsString(animalList);
+        String animalListSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(animalList));
         assertEquals(animalListSerialized, animalListJson);
     }
 
@@ -374,16 +374,16 @@ public class ExistingPropertyTest extends BaseMapTest
         assertEquals(accord.speakerCount, result.get("speakerCount"));
         assertEquals(accord.getType(), result.get("type"));
 
-        String camrySerialized = MAPPER.writeValueAsString(camry);
+        String camrySerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(camry));
         assertEquals(camrySerialized, camryJson);
 
-        String accordSerialized = MAPPER.writeValueAsString(accord);
+        String accordSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(accord));
         assertEquals(accordSerialized, accordJson);
         
-        String carWrapperSerialized = MAPPER.writeValueAsString(camryWrapper);
+        String carWrapperSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(camryWrapper));
         assertEquals(carWrapperSerialized, camryWrapperJson);
 
-        String carListSerialized = MAPPER.writeValueAsString(carList);
+        String carListSerialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(carList));
         assertEquals(carListSerialized, carListJson);
     }
 

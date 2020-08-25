@@ -121,7 +121,7 @@ public class CollectionSerializationTest
                 }
                 value = c;
             }
-            String json = MAPPER.writeValueAsString(value);
+            String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(value));
             
             // and then need to verify:
             JsonParser jp = new JsonFactory().createParser(json);
@@ -162,7 +162,7 @@ public class CollectionSerializationTest
                 break;
             case 2:
                 {
-                    String str = MAPPER.writeValueAsString(value);
+                    String str = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(value));
                     jp = createParserUsingReader(str);
                 }
                 break;
@@ -185,7 +185,7 @@ public class CollectionSerializationTest
         map.put(Key.B, "xyz");
         map.put(Key.C, "abc");
         // assuming EnumMap uses enum entry order, which I think is true...
-        String json = MAPPER.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map));
         assertEquals("{\"B\":\"xyz\",\"C\":\"abc\"}",json.trim());
     }
 
@@ -243,10 +243,10 @@ public class CollectionSerializationTest
 
     public void testListSerializer() throws IOException
     {
-        assertEquals(quote("[ab, cd, ef]"),
-                MAPPER.writeValueAsString(new PseudoList("ab", "cd", "ef")));
-        assertEquals(quote("[]"),
-                MAPPER.writeValueAsString(new PseudoList()));
+        assertEquals(quote("[ab, cd, ef]"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new PseudoList("ab", "cd", "ef"))));
+        assertEquals(quote("[]"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new PseudoList())));
     }
 
     @SuppressWarnings("deprecation")
@@ -256,28 +256,28 @@ public class CollectionSerializationTest
         EmptyListBean list = new EmptyListBean();
         EmptyArrayBean array = new EmptyArrayBean();
         assertTrue(MAPPER.isEnabled(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS));
-        assertEquals("{\"empty\":[]}", MAPPER.writeValueAsString(list));
-        assertEquals("{\"empty\":[]}", MAPPER.writeValueAsString(array));
+        assertEquals("{\"empty\":[]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list)));
+        assertEquals("{\"empty\":[]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(array)));
 
         // note: value of setting may be cached when constructing serializer, need a new instance
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
-        assertEquals("{}", m.writeValueAsString(list));
-        assertEquals("{}", m.writeValueAsString(array));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(list)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(array)));
     }
 
     public void testStaticList() throws IOException
     {
         // First: au naturel
         StaticListWrapper w = new StaticListWrapper("a", "b", "c");
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
         assertEquals(aposToQuotes("{'list':['a','b','c']}"), json);
 
         // but then with default typing
         ObjectMapper mapper = jsonMapperBuilder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance, DefaultTyping.NON_FINAL)
                 .build();
-        json = mapper.writeValueAsString(w);
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(w));
         assertEquals(aposToQuotes(String.format("['%s',{'list':['%s',['a','b','c']]}]",
                 w.getClass().getName(), w.list.getClass().getName())), json);
     }

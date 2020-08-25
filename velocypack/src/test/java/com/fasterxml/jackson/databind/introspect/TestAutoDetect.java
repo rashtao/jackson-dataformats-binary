@@ -68,15 +68,15 @@ public class TestAutoDetect
     {
         // first, by default, both field/method should be visible
         final Feature1347SerBean input = new Feature1347SerBean();
-        assertEquals(aposToQuotes("{'field':2,'value':3}"),
-                MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'field':2,'value':3}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
 
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Feature1347SerBean.class)
             .setVisibility(JsonAutoDetect.Value.construct(PropertyAccessor.GETTER,
                             Visibility.NONE));
-        assertEquals(aposToQuotes("{'field':2}"),
-                mapper.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'field':2}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(input)));
     }
 
     // [databind#1347]

@@ -75,53 +75,53 @@ public class JsonIncludeArrayTest extends BaseMapTest
 
     public void testByteArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyByteArray()));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyByteArray())));
     }
 
     public void testShortArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyShortArray()));
-        assertEquals("{\"value\":[1]}", MAPPER.writeValueAsString(new NonEmptyShortArray((short) 1)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyShortArray())));
+        assertEquals("{\"value\":[1]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyShortArray((short) 1))));
     }
 
     public void testCharArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyCharArray()));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyCharArray())));
         // by default considered to be serialized as String
-        assertEquals("{\"value\":\"ab\"}", MAPPER.writeValueAsString(new NonEmptyCharArray('a', 'b')));
+        assertEquals("{\"value\":\"ab\"}", com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(new NonEmptyCharArray('a', 'b'))));
         // but can force as sparse (real) array too
-        assertEquals("{\"value\":[\"a\",\"b\"]}", MAPPER
+        assertEquals("{\"value\":[\"a\",\"b\"]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER
                 .writer().with(SerializationFeature.WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS)
-                .writeValueAsString(new NonEmptyCharArray('a', 'b')));
+                .writeValueAsBytes(new NonEmptyCharArray('a', 'b'))));
     }
 
     public void testIntArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyIntArray()));
-        assertEquals("{\"value\":[2]}", MAPPER.writeValueAsString(new NonEmptyIntArray(2)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyIntArray())));
+        assertEquals("{\"value\":[2]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyIntArray(2))));
     }
 
     public void testLongArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyLongArray()));
-        assertEquals("{\"value\":[3,4]}", MAPPER.writeValueAsString(new NonEmptyLongArray(3, 4)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyLongArray())));
+        assertEquals("{\"value\":[3,4]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyLongArray(3, 4))));
     }
 
     public void testBooleanArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyBooleanArray()));
-        assertEquals("{\"value\":[true,false]}", MAPPER.writeValueAsString(new NonEmptyBooleanArray(true,false)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyBooleanArray())));
+        assertEquals("{\"value\":[true,false]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyBooleanArray(true,false))));
     }
 
     public void testDoubleArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyDoubleArray()));
-        assertEquals("{\"value\":[0.25,-1.0]}", MAPPER.writeValueAsString(new NonEmptyDoubleArray(0.25,-1.0)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyDoubleArray())));
+        assertEquals("{\"value\":[0.25,-1.0]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyDoubleArray(0.25,-1.0))));
     }
 
     public void testFloatArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new NonEmptyFloatArray()));
-        assertEquals("{\"value\":[0.5]}", MAPPER.writeValueAsString(new NonEmptyFloatArray(0.5f)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyFloatArray())));
+        assertEquals("{\"value\":[0.5]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonEmptyFloatArray(0.5f))));
     }
 }

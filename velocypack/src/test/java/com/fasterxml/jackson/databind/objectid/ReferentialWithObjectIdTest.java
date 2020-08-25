@@ -49,7 +49,7 @@ public class ReferentialWithObjectIdTest extends BaseMapTest
         EmployeeList input = new EmployeeList();
         input.first = new AtomicReference<Employee>(first);
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         // and back
  

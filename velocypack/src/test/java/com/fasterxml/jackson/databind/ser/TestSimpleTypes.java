@@ -47,18 +47,18 @@ public class TestSimpleTypes
         final byte[] INPUT = "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890X".getBytes("UTF-8");
         
         // default encoding is "MIME, no linefeeds", so:
-        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), MAPPER.writeValueAsString(INPUT));
-        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="),
-                MAPPER.writer(Base64Variants.MIME_NO_LINEFEEDS).writeValueAsString(INPUT));
+        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT)));
+        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writer(Base64Variants.MIME_NO_LINEFEEDS).writeValueAsBytes(INPUT)));
 
         // but others should be slightly different
         assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1\\ndnd4eXoxMjM0NTY3ODkwWA=="),
-                MAPPER.writer(Base64Variants.MIME).writeValueAsString(INPUT));
+                com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writer(Base64Variants.MIME).writeValueAsBytes(INPUT)));
         assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA"), // no padding or LF
-                MAPPER.writer(Base64Variants.MODIFIED_FOR_URL).writeValueAsString(INPUT));
+                com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writer(Base64Variants.MODIFIED_FOR_URL).writeValueAsBytes(INPUT)));
         // PEM mandates 64 char lines:
-        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamts\\nbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="),
-                MAPPER.writer(Base64Variants.PEM).writeValueAsString(INPUT));
+        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamts\\nbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writer(Base64Variants.PEM).writeValueAsBytes(INPUT)));
     }
     
     public void testShortArray() throws Exception
@@ -95,7 +95,7 @@ public class TestSimpleTypes
 
     public void testClass() throws Exception
     {
-        String result = MAPPER.writeValueAsString(java.util.List.class);
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(java.util.List.class));
         assertEquals("\"java.util.List\"", result);
     }
 }

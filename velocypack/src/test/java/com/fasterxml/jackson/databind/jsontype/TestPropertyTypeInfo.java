@@ -84,7 +84,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
     public void testSimpleField() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(new FieldWrapperBean(new StringWrapper("foo")));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new FieldWrapperBean(new StringWrapper("foo"))));
 //System.out.println("JSON/field+object == "+json);
         FieldWrapperBean bean = mapper.readValue(json, FieldWrapperBean.class);
         assertNotNull(bean.value);
@@ -95,7 +95,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
     public void testSimpleMethod() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(new FieldWrapperBean(new IntWrapper(37)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new FieldWrapperBean(new IntWrapper(37))));
 //System.out.println("JSON/method+object == "+json);
         FieldWrapperBean bean = mapper.readValue(json, FieldWrapperBean.class);
         assertNotNull(bean.value);
@@ -108,7 +108,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         FieldWrapperBeanList list = new FieldWrapperBeanList();
         list.add(new FieldWrapperBean(new OtherBean()));
-        String json = mapper.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(list));
 //System.out.println("JSON/field+list == "+json);
         FieldWrapperBeanList result = mapper.readValue(json, FieldWrapperBeanList.class);
         assertNotNull(result);
@@ -126,7 +126,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
         list.add(new MethodWrapperBean(new BooleanValue(true)));
         list.add(new MethodWrapperBean(new StringWrapper("x")));
         list.add(new MethodWrapperBean(new OtherBean()));
-        String json = mapper.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(list));
         MethodWrapperBeanList result = mapper.readValue(json, MethodWrapperBeanList.class);
         assertNotNull(result);
         assertEquals(3, result.size());
@@ -145,7 +145,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         FieldWrapperBeanArray array = new FieldWrapperBeanArray(new
                 FieldWrapperBean[] { new FieldWrapperBean(new BooleanValue(true)) });
-        String json = mapper.writeValueAsString(array);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(array));
         FieldWrapperBeanArray result = mapper.readValue(json, FieldWrapperBeanArray.class);
         assertNotNull(result);
         FieldWrapperBean[] beans = result.beans;
@@ -160,7 +160,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MethodWrapperBeanArray array = new MethodWrapperBeanArray(new
                 MethodWrapperBean[] { new MethodWrapperBean(new StringWrapper("A")) });
-        String json = mapper.writeValueAsString(array);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(array));
         MethodWrapperBeanArray result = mapper.readValue(json, MethodWrapperBeanArray.class);
         assertNotNull(result);
         MethodWrapperBean[] beans = result.beans;
@@ -175,7 +175,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         FieldWrapperBeanMap map = new FieldWrapperBeanMap();
         map.put("foop", new FieldWrapperBean(new IntWrapper(13)));
-        String json = mapper.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
         FieldWrapperBeanMap result = mapper.readValue(json, FieldWrapperBeanMap.class);
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -191,7 +191,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MethodWrapperBeanMap map = new MethodWrapperBeanMap();
         map.put("xyz", new MethodWrapperBean(new BooleanValue(true)));
-        String json = mapper.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
         MethodWrapperBeanMap result = mapper.readValue(json, MethodWrapperBeanMap.class);
         assertNotNull(result);
         assertEquals(1, result.size());

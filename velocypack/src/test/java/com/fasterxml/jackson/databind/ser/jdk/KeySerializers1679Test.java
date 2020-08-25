@@ -19,7 +19,7 @@ public class KeySerializers1679Test extends BaseMapTest
     {
         Map<Object, Object> objectMap = new HashMap<Object, Object>();
         objectMap.put(new Object(), "foo");
-        String json = MAPPER.writeValueAsString(objectMap);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(objectMap));
         assertNotNull(json);
     }
 }

@@ -75,7 +75,7 @@ public class TestEmptyClass
         // Including class annotation through mix-ins
         ObjectMapper m2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m2.addMixIn(Empty.class, EmptyWithAnno.class);
-        assertEquals("{}", m2.writeValueAsString(new Empty()));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m2.writeValueAsBytes(new Empty())));
     }
 
     /**
@@ -94,8 +94,8 @@ public class TestEmptyClass
     public void testCustomNoEmpty() throws Exception
     {
         // first non-empty:
-        assertEquals("{\"value\":123}", mapper.writeValueAsString(new NonZeroWrapper(123)));
+        assertEquals("{\"value\":123}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NonZeroWrapper(123))));
         // then empty:
-        assertEquals("{}", mapper.writeValueAsString(new NonZeroWrapper(0)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NonZeroWrapper(0))));
     }
 }

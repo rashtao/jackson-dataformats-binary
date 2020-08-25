@@ -130,7 +130,7 @@ public class TypeRefinementForMapTest extends BaseMapTest
         assertEquals(1, testInstance.mapProperty.size());
         Object key = testInstance.mapProperty.keySet().iterator().next();
         assertEquals(CompoundKey.class, key.getClass());
-        String testInstanceSerialized = mapper.writeValueAsString(testInstance);
+        String testInstanceSerialized = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(testInstance));
         assertEquals(TEST_INSTANCE_SERIALIZED, testInstanceSerialized);
     }
 }

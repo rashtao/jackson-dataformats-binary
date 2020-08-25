@@ -62,7 +62,7 @@ public class TestTreeWithType extends BaseMapTest
     public void testValueAsStringWithoutDefaultTyping() throws Exception {
 
         Foo foo = new Foo("baz");
-        String json = MAPPER.writeValueAsString(foo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(foo));
 
         JsonNode jsonNode = MAPPER.readTree(json);
         assertEquals(jsonNode.get("bar").textValue(), foo.bar);
@@ -75,7 +75,7 @@ public class TestTreeWithType extends BaseMapTest
                 .build();
 
         Foo foo = new Foo("baz");
-        String json = mapper.writeValueAsString(foo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));
 
         JsonNode jsonNode = mapper.readTree(json);
         assertEquals(jsonNode.get("bar").textValue(), foo.bar);
@@ -125,7 +125,7 @@ public class TestTreeWithType extends BaseMapTest
          mapper.registerModule(testModule);
 
          SavedCookie savedCookie = new SavedCookie("key", "v");
-         String json = mapper.writeValueAsString(savedCookie);
+         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(savedCookie));
          SavedCookie out = mapper.readerFor(SavedCookie.class).readValue(json);
 
          assertEquals("key", out.name);

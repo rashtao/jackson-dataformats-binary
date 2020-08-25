@@ -381,7 +381,7 @@ public class DateDeserializationTest
     public void testFormatAndCtors1722() throws Exception
     {
         Date1722 input = new Date1722(new Date(0L), "bogus");
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         Date1722 result = MAPPER.readValue(json, Date1722.class);
         assertNotNull(result);
     }

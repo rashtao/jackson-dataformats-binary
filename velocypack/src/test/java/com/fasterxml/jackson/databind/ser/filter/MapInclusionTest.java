@@ -52,9 +52,9 @@ public class MapInclusionTest extends BaseMapTest
     // [databind#588]
     public void testNonEmptyValueMapViaProp() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new NoEmptiesMapContainer()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoEmptiesMapContainer()
             .add("a", null)
-            .add("b", ""));
+            .add("b", "")));
         assertEquals(aposToQuotes("{}"), json);
     }
 
@@ -63,7 +63,7 @@ public class MapInclusionTest extends BaseMapTest
         NoNullsMapContainer input = new NoNullsMapContainer()
                 .add("a", null)
                 .add("b", "");
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'stuff':{'b':''}}"), json);
     }
 
@@ -72,12 +72,12 @@ public class MapInclusionTest extends BaseMapTest
         NoNullsNotEmptyMapContainer input = new NoNullsNotEmptyMapContainer()
                 .add("a", null)
                 .add("b", "");
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'stuff':{'b':''}}"), json);
 
-        json = MAPPER.writeValueAsString(new NoNullsNotEmptyMapContainer()
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoNullsNotEmptyMapContainer()
                 .add("a", null)
-                .add("b", null));
+                .add("b", null)));
         assertEquals(aposToQuotes("{}"), json);
     }
 }

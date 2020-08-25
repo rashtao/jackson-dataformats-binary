@@ -51,7 +51,7 @@ public class PolymorphicViaRefTypeTest extends BaseMapTest
     {
         TypeInfoAtomic data = new TypeInfoAtomic();
         data.value = new AtomicReference<BaseForAtomic>(new ImplForAtomic(42));
-        String json = MAPPER.writeValueAsString(data);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(data));
         TypeInfoAtomic result = MAPPER.readValue(json, TypeInfoAtomic.class);
         assertNotNull(result);
         BaseForAtomic value = result.value.get();
@@ -67,7 +67,7 @@ public class PolymorphicViaRefTypeTest extends BaseMapTest
                         DefaultTyping.NON_FINAL)
                 .build();
         AtomicStringWrapper data = new AtomicStringWrapper("foo");
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(data));
         AtomicStringWrapper result = mapper.readValue(json, AtomicStringWrapper.class);
         assertNotNull(result);
         assertNotNull(result.wrapper);

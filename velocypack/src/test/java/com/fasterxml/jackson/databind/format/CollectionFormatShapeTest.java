@@ -48,7 +48,7 @@ public class CollectionFormatShapeTest extends BaseMapTest
         CollectionAsPOJO list = new CollectionAsPOJO();
         list.add("a");
         list.add("b");
-        String json = MAPPER.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list));
         assertEquals("{\"size\":2,\"values\":[\"a\",\"b\"]}", json);
 
         // and then bring it back!

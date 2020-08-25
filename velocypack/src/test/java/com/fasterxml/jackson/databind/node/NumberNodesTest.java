@@ -368,16 +368,16 @@ public class NumberNodesTest extends NodeTestBase
                 .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
         final String INPUT = "{\"x\":1e2}";
         final JsonNode node = mapper.readTree(INPUT);
-        String result = mapper.writeValueAsString(node);
+        String result = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(node));
         assertEquals("{\"x\":100}", result);
 
         // also via ObjectWriter:
-        assertEquals("{\"x\":100}", mapper.writer().writeValueAsString(node));
+        assertEquals("{\"x\":100}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().writeValueAsBytes(node)));
 
         // and once more for [core#175]:
         BigDecimal bigDecimal = new BigDecimal(100);
         JsonNode tree = mapper.valueToTree(bigDecimal);
-        assertEquals("100", mapper.writeValueAsString(tree));
+        assertEquals("100", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(tree)));
     }
 
     // Related to [databind#333]

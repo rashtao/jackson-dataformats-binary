@@ -91,7 +91,7 @@ public class PojoAsArray646Test extends BaseMapTest
         Outer outer = new Outer();
         outer.getAttributes().put("entry1", item);
 
-        String json = MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(outer);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(outer));
 
         Outer result = MAPPER.readValue(json, Outer.class);
         assertNotNull(result);

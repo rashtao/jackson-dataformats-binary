@@ -74,31 +74,31 @@ public class AtomicTypeSerializationTest
     
     public void testAtomicBoolean() throws Exception
     {
-        assertEquals("true", MAPPER.writeValueAsString(new AtomicBoolean(true)));
-        assertEquals("false", MAPPER.writeValueAsString(new AtomicBoolean(false)));
+        assertEquals("true", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AtomicBoolean(true))));
+        assertEquals("false", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AtomicBoolean(false))));
     }
 
     public void testAtomicInteger() throws Exception
     {
-        assertEquals("1", MAPPER.writeValueAsString(new AtomicInteger(1)));
-        assertEquals("-9", MAPPER.writeValueAsString(new AtomicInteger(-9)));
+        assertEquals("1", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AtomicInteger(1))));
+        assertEquals("-9", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AtomicInteger(-9))));
     }
 
     public void testAtomicLong() throws Exception
     {
-        assertEquals("0", MAPPER.writeValueAsString(new AtomicLong(0)));
+        assertEquals("0", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AtomicLong(0))));
     }
 
     public void testAtomicReference() throws Exception
     {
         String[] strs = new String[] { "abc" };
-        assertEquals("[\"abc\"]", MAPPER.writeValueAsString(new AtomicReference<String[]>(strs)));
+        assertEquals("[\"abc\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AtomicReference<String[]>(strs))));
     }
 
     public void testCustomSerializer() throws Exception
     {
         final String VALUE = "fooBAR";
-        String json = MAPPER.writeValueAsString(new UCStringWrapper(VALUE));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UCStringWrapper(VALUE)));
         assertEquals(json, aposToQuotes("{'value':'FOOBAR'}"));
     }
 
@@ -112,7 +112,7 @@ public class AtomicTypeSerializationTest
         input.date = new AtomicReference<>(new Date(0L));
         input.date1 = new AtomicReference<>(new Date(0L));
         input.date2 = new AtomicReference<>(new Date(0L));
-        final String json = mapper.writeValueAsString(input);
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals(aposToQuotes(
                 "{'date1':'1970+01+01','date2':'1970*01*01','date':'1970/01/01'}"),
                 json);
@@ -122,7 +122,7 @@ public class AtomicTypeSerializationTest
     public void testPolymorphicReferenceSimple() throws Exception
     {
         final String EXPECTED = "{\"type\":\"Foo\",\"foo\":42}";
-        String json = MAPPER.writeValueAsString(new ContainerA());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ContainerA()));
         assertEquals("{\"strategy\":" + EXPECTED + "}", json);
     }
 
@@ -132,7 +132,7 @@ public class AtomicTypeSerializationTest
         final String EXPECTED = "{\"type\":\"Foo\",\"foo\":42}";
         // Reproduction of issue seen with scala.Option and java8 Optional types:
         // https://github.com/FasterXML/jackson-module-scala/issues/346#issuecomment-336483326
-        String json = MAPPER.writeValueAsString(new ContainerB());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ContainerB()));
         assertEquals("{\"strategy\":[" + EXPECTED + "]}", json);
     }
 }

@@ -94,7 +94,7 @@ public class TestMapConversions
         // use local instance to ensure no caching affects it:
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         final Request request = new Request();
-        final String retString = mapper.writeValueAsString(request);
+        final String retString = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(request));
         assertEquals("{\"hello\":{\"value\":1}}",retString);
     }
 

@@ -73,7 +73,7 @@ public class MapRelatedTypesDeserTest
     {
         final TypeReference<Map<String,IntWrapper>> type = new TypeReference<Map<String,IntWrapper>>() { };
 
-        String json = MAPPER.writeValueAsString(Collections.singletonMap("value", new IntWrapper(5)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Collections.singletonMap("value", new IntWrapper(5))));
         Map<String,IntWrapper> result = MAPPER.readValue(json, type);
         assertNotNull(result);
         assertEquals(1, result.size());

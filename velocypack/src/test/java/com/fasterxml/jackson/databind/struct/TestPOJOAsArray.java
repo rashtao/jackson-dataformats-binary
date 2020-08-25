@@ -166,7 +166,7 @@ public class TestPOJOAsArray extends BaseMapTest
      */
     public void testWriteSimplePropertyValue() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new PojoAsArrayWrapper("Foobar", 42, 13, true));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PojoAsArrayWrapper("Foobar", 42, 13, true)));
         // will have wrapper POJO, then POJO-as-array..
         assertEquals("{\"value\":[true,\"Foobar\",42,13]}", json);
     }
@@ -176,7 +176,7 @@ public class TestPOJOAsArray extends BaseMapTest
      */
     public void testWriteSimpleRootValue() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new FlatPojo("Bubba", 1, 2, false));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new FlatPojo("Bubba", 1, 2, false)));
         // will have wrapper POJO, then POJO-as-array..
         assertEquals("[false,\"Bubba\",1,2]", json);
     }
@@ -184,7 +184,7 @@ public class TestPOJOAsArray extends BaseMapTest
     // [Issue#223]
     public void testNullColumn() throws Exception
     {
-        assertEquals("[null,\"bar\"]", MAPPER.writeValueAsString(new TwoStringsBean()));
+        assertEquals("[null,\"bar\"]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new TwoStringsBean())));
     }
 
     /*
@@ -196,7 +196,7 @@ public class TestPOJOAsArray extends BaseMapTest
     public void testSerializeAsArrayWithSingleProperty() throws Exception {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED);
-        String json = mapper.writeValueAsString(new SingleBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SingleBean()));
         assertEquals("\"foo\"", json);
     }
 
@@ -218,12 +218,12 @@ public class TestPOJOAsArray extends BaseMapTest
     public void testAnnotationOverride() throws Exception
     {
         // by default, POJOs become JSON Objects;
-        assertEquals("{\"value\":{\"x\":1,\"y\":2}}", MAPPER.writeValueAsString(new A()));
+        assertEquals("{\"value\":{\"x\":1,\"y\":2}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new A())));
 
         // but override should change it:
         ObjectMapper mapper2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper2.setAnnotationIntrospector(new ForceArraysIntrospector());
-        assertEquals("[[1,2]]", mapper2.writeValueAsString(new A()));
+        assertEquals("[[1,2]]", com.fasterxml.jackson.VPackUtils.toJson( mapper2.writeValueAsBytes(new A())));
 
         // and allow reading back, too
     }
@@ -231,7 +231,7 @@ public class TestPOJOAsArray extends BaseMapTest
     public void testWithMaps() throws Exception
     {
         AsArrayWithMap input = new AsArrayWithMap(1, 2);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         AsArrayWithMap output = MAPPER.readValue(json, AsArrayWithMap.class);
         assertNotNull(output);
         assertNotNull(output.attrs);
@@ -254,7 +254,7 @@ public class TestPOJOAsArray extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(NonAnnotatedXY.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.ARRAY));
-        String json = mapper.writeValueAsString(new NonAnnotatedXY(2, 3));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NonAnnotatedXY(2, 3)));
         assertEquals("[2,3]", json);
 
         // also, read it back

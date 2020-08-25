@@ -105,7 +105,7 @@ public class TestAbstractTypeNames  extends BaseMapTest
         friends.add(new DefaultEmployee("Richard Nasr",null,"MDA"));
 
         User user = new DefaultEmployee("John Vanspronssen", friends, "MDA");
-        String json = mapper.writeValueAsString(user);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(user));
 
         /* 24-Feb-2011, tatu: For now let's simply require registration of
          *   concrete subtypes; can't think of a way to avoid that for now
@@ -131,7 +131,7 @@ public class TestAbstractTypeNames  extends BaseMapTest
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         DefaultTyping.NON_FINAL)
                 .build();
-        String json = mapper.writeValueAsString(new BeanWithAnon());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new BeanWithAnon()));
         BeanWithAnon result = mapper.readValue(json, BeanWithAnon.class);
         assertEquals(BeanWithAnon.class, result.getClass());
     }

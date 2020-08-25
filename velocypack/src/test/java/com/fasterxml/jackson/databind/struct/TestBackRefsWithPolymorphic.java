@@ -210,7 +210,7 @@ public class TestBackRefsWithPolymorphic extends BaseMapTest
     public void testDeserialize() throws IOException
     {
         PropertySheet input = MAPPER.readValue(JSON, PropertySheet.class);
-        assertEquals(JSON, MAPPER.writeValueAsString(input));
+        assertEquals(JSON, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 
     public void testSerialize() throws IOException
@@ -219,7 +219,7 @@ public class TestBackRefsWithPolymorphic extends BaseMapTest
 
         sheet.addProperty(new StringPropertyImpl("p1name", "p1value"));
         sheet.addProperty(new StringPropertyImpl("p2name", "p2value"));
-        String actual = MAPPER.writeValueAsString(sheet);
+        String actual = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(sheet));
         assertEquals(JSON, actual);
     }
 }

@@ -133,7 +133,7 @@ public class TestPolymorphicCreators
          final ObjectReader r = MAPPER.readerFor(AbstractRoot.class);
 
          AbstractRoot input = AbstractRoot.make(1, "oh hai!");
-         String json = w.writeValueAsString(input);
+         String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(input));
          AbstractRoot result = r.readValue(json);
          assertNotNull(result);
          assertEquals("oh hai!", result.getOpt());

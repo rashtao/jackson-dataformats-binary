@@ -518,7 +518,7 @@ public class TestTokenBuffer extends BaseMapTest
 
         // let's see how empty works...
         buf = new TokenBuffer(MAPPER, false);
-        assertEquals("", MAPPER.writeValueAsString(buf));
+        assertEquals("", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
         buf.close();
         
         buf = new TokenBuffer(MAPPER, false);
@@ -530,7 +530,7 @@ public class TestTokenBuffer extends BaseMapTest
         buf.writeNumber((short) 4);
         buf.writeNumber(0.5);
         buf.writeEndArray();
-        assertEquals(aposToQuotes("[true,false,"+l+",4,0.5]"), MAPPER.writeValueAsString(buf));
+        assertEquals(aposToQuotes("[true,false,"+l+",4,0.5]"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
         buf.close();
 
         buf = new TokenBuffer(MAPPER, false);
@@ -541,7 +541,7 @@ public class TestTokenBuffer extends BaseMapTest
         buf.writeNumber(BigInteger.valueOf(123));
         buf.writeFieldName("dec");
         buf.writeNumber(BigDecimal.valueOf(5).movePointLeft(2));
-        assertEquals(aposToQuotes("{'foo':null,'bar':123,'dec':0.05}"), MAPPER.writeValueAsString(buf));
+        assertEquals(aposToQuotes("{'foo':null,'bar':123,'dec':0.05}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
         buf.close();
     }
 
@@ -648,7 +648,7 @@ public class TestTokenBuffer extends BaseMapTest
         buf.close();
 
         // then verify it would be serialized just fine
-        assertEquals(RAW, MAPPER.writeValueAsString(buf));
+        assertEquals(RAW, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
     }
 
     // [databind#1730]

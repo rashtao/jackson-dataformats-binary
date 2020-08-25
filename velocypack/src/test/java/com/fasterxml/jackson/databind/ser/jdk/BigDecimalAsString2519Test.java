@@ -23,7 +23,7 @@ public class BigDecimalAsString2519Test extends BaseMapTest
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(BigDecimal.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
-        String json = mapper.writeValueAsString(foo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));
         assertEquals(aposToQuotes("{'values':['2.34']}"), json);
     }
 
@@ -34,7 +34,7 @@ public class BigDecimalAsString2519Test extends BaseMapTest
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(BigDecimal.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
-        String json = mapper.writeValueAsString(foo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));
         assertEquals(aposToQuotes("{'values':['2.34']}"), json);
     }
 }

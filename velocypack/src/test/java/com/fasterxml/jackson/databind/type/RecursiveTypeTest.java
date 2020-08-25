@@ -81,7 +81,7 @@ public class RecursiveTypeTest extends BaseMapTest
 
         List<ImmutablePair<String, Double>> list = new ArrayList<ImmutablePair<String, Double>>();
         list.add(ImmutablePair.of("Hello World!", 123d));
-        String json = MAPPER.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list));
 
         assertNotNull(json);
 

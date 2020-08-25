@@ -61,7 +61,7 @@ public class ReadOnlyDeser1805Test extends BaseMapTest
     public void testViaReadOnly() throws Exception {
         UserWithReadOnly user = new UserWithReadOnly();
         user.name = "foo";
-        String json = MAPPER.writeValueAsString(user);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(user));
         UserWithReadOnly result = MAPPER.readValue(json, UserWithReadOnly.class);
         assertNotNull(result);
     }
@@ -70,7 +70,7 @@ public class ReadOnlyDeser1805Test extends BaseMapTest
     public void testUsingAllowGetters() throws Exception {
         UserAllowGetters user = new UserAllowGetters();
         user.name = "foo";
-        String json = MAPPER.writeValueAsString(user);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(user));
         assertTrue(json.contains("roles"));
         UserAllowGetters result = MAPPER.readValue(json, UserAllowGetters.class);
         assertNotNull(result);

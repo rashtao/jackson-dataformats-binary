@@ -81,7 +81,7 @@ public class TestStringConversions
 
     public void testLowerCasingSerializer() throws Exception
     {
-        assertEquals("{\"value\":\"abc\"}", MAPPER.writeValueAsString(new StringWrapperWithConvert("ABC")));
+        assertEquals("{\"value\":\"abc\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new StringWrapperWithConvert("ABC"))));
     }
 
     public void testLowerCasingDeserializer() throws Exception

@@ -85,7 +85,7 @@ public class TestDefaultForMaps
         List<Object> ints = new ArrayList<Object>();
         ints.add(Integer.valueOf(3));
         holder.map.put(new MapKey("key"), ints);
-        String json = serMapper.writeValueAsString(holder);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( serMapper.writeValueAsBytes(holder));
 
         // Then deserialize: need separate mapper to initialize type id resolver appropriately
         ObjectMapper deserMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
@@ -133,7 +133,7 @@ public class TestDefaultForMaps
         ItemList parent = new ItemList();
         parent.value = "I am parent";
         parent.addChildItem(child);
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(parent);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(parent));
 
         Object o = mapper.readValue(json, ItemList.class);
         assertNotNull(o);
@@ -151,7 +151,7 @@ public class TestDefaultForMaps
         parent.value = "I am parent";
         parent.addChildItem("child", child);
 
-        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(parent);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(parent));
         Object o = mapper.readValue(json, ItemMap.class);
         assertNotNull(o);
     }

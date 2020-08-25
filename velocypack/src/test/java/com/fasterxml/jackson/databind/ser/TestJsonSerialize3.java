@@ -38,7 +38,7 @@ public class TestJsonSerialize3 extends BaseMapTest
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         MyObject object = new MyObject();
         object.list = Arrays.asList("foo");
-        String json = m.writeValueAsString(object);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(object));
         assertEquals("{\"list\":[\"bar\"]}", json);
     }
 }

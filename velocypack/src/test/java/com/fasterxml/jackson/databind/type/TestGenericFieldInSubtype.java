@@ -12,7 +12,7 @@ public class TestGenericFieldInSubtype extends BaseMapTest
         JavaType t677 = mapper.constructType(Result677.Success677.class);
         assertNotNull(t677);
         Result677.Success677<Integer> s = new Result677.Success677<Integer>(Integer.valueOf(4));
-        String json = mapper.writeValueAsString(s);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(s));
         assertEquals("{\"value\":4}", json);
     }
 

@@ -43,7 +43,7 @@ public class TestPolymorphicDelegating extends BaseMapTest
     {
         Issue580Bean input = new Issue580Bean(new Issue580Impl(13));
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
 
         Issue580Bean result = mapper.readValue(json, Issue580Bean.class);
         assertNotNull(result);

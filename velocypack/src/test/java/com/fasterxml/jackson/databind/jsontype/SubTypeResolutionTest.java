@@ -111,7 +111,7 @@ public class SubTypeResolutionTest extends BaseMapTest
         AccessModel accessModel = new AccessModel();
         accessModel.setRepositoryPrivileges(repoPrivilegesMap);
 
-        String jsonStr = MAPPER.writeValueAsString(accessModel);
+        String jsonStr = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(accessModel));
         // ... could/should verify more, perhaps, but for now let it be.
         assertNotNull(jsonStr);
     }
@@ -121,7 +121,7 @@ public class SubTypeResolutionTest extends BaseMapTest
     {
         MetaModel<Dummy, Dummy> metaModel = new MetaModel<>();
         metaModel.describeList("a1");
-        String jsonStr = MAPPER.writeValueAsString(metaModel);
+        String jsonStr = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(metaModel));
         // ... could/should verify more, perhaps, but for now let it be.
         assertNotNull(jsonStr);
     }
@@ -135,7 +135,7 @@ public class SubTypeResolutionTest extends BaseMapTest
         String json;
 
         try {
-            json = MAPPER.writeValueAsString(new Foo());
+            json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Foo()));
             assertNotNull(json);
             fail("Should not (yet?) pass");
         } catch (JsonMappingException e) {

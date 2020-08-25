@@ -97,38 +97,38 @@ public class TestVirtualProperties extends BaseMapTest
         stuff.put("x", 3);
         stuff.put("y", ABC.B);
 
-        String json = WRITER.withAttribute("id", "abc123")
+        String json = com.fasterxml.jackson.VPackUtils.toJson(WRITER.withAttribute("id", "abc123")
                 .withAttribute("internal", stuff)
-                .writeValueAsString(new SimpleBean());
+                .writeValueAsBytes(new SimpleBean()));
         assertEquals(aposToQuotes("{'value':13,'id':'abc123','extra':{'x':3,'y':'B'}}"), json);
 
-        json = WRITER.withAttribute("id", "abc123")
+        json = com.fasterxml.jackson.VPackUtils.toJson(WRITER.withAttribute("id", "abc123")
                 .withAttribute("internal", stuff)
-                .writeValueAsString(new SimpleBeanPrepend());
+                .writeValueAsBytes(new SimpleBeanPrepend()));
         assertEquals(aposToQuotes("{'id':'abc123','extra':{'x':3,'y':'B'},'value':13}"), json);
     }
 
     public void testAttributePropInclusion() throws Exception
     {
         // first, with desc
-        String json = WRITER.withAttribute("desc", "nice")
-                .writeValueAsString(new OptionalsBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson(WRITER.withAttribute("desc", "nice")
+                .writeValueAsBytes(new OptionalsBean()));
         assertEquals(aposToQuotes("{'value':28,'desc':'nice'}"), json);
 
         // then with null (not defined)
-        json = WRITER.writeValueAsString(new OptionalsBean());
+        json = com.fasterxml.jackson.VPackUtils.toJson( WRITER.writeValueAsBytes(new OptionalsBean()));
         assertEquals(aposToQuotes("{'value':28}"), json);
 
         // and finally "empty"
-        json = WRITER.withAttribute("desc", "")
-                .writeValueAsString(new OptionalsBean());
+        json = com.fasterxml.jackson.VPackUtils.toJson(WRITER.withAttribute("desc", "")
+                .writeValueAsBytes(new OptionalsBean()));
         assertEquals(aposToQuotes("{'value':28}"), json);
     }
 
     public void testCustomProperties() throws Exception
     {
-        String json = WRITER.withAttribute("desc", "nice")
-                .writeValueAsString(new CustomVBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson(WRITER.withAttribute("desc", "nice")
+                .writeValueAsBytes(new CustomVBean()));
         assertEquals(aposToQuotes("{'id':'abc123','extra':[42],'value':72}"), json);
     }
 }

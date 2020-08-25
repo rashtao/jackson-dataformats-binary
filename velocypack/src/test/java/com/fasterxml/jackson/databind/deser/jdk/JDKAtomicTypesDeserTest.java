@@ -144,10 +144,10 @@ public class JDKAtomicTypesDeserTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
-        assertEquals(aposToQuotes("{'value':true}"),
-                mapper.writeValueAsString(new SimpleWrapper(Boolean.TRUE)));
-        assertEquals(aposToQuotes("{}"),
-                mapper.writeValueAsString(new SimpleWrapper(null)));
+        assertEquals(aposToQuotes("{'value':true}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new SimpleWrapper(Boolean.TRUE))));
+        assertEquals(aposToQuotes("{}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new SimpleWrapper(null))));
     }
 
     public void testSerPropInclusionAlways() throws Exception
@@ -156,8 +156,8 @@ public class JDKAtomicTypesDeserTest
                 JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.ALWAYS);
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDefaultPropertyInclusion(incl);
-        assertEquals(aposToQuotes("{'value':true}"),
-                mapper.writeValueAsString(new SimpleWrapper(Boolean.TRUE)));
+        assertEquals(aposToQuotes("{'value':true}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new SimpleWrapper(Boolean.TRUE))));
     }
 
     public void testSerPropInclusionNonNull() throws Exception
@@ -166,8 +166,8 @@ public class JDKAtomicTypesDeserTest
                 JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.NON_NULL);
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDefaultPropertyInclusion(incl);
-        assertEquals(aposToQuotes("{'value':true}"),
-                mapper.writeValueAsString(new SimpleWrapper(Boolean.TRUE)));
+        assertEquals(aposToQuotes("{'value':true}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new SimpleWrapper(Boolean.TRUE))));
     }
 
     public void testSerPropInclusionNonAbsent() throws Exception
@@ -176,8 +176,8 @@ public class JDKAtomicTypesDeserTest
                 JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.NON_ABSENT);
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDefaultPropertyInclusion(incl);
-        assertEquals(aposToQuotes("{'value':true}"),
-                mapper.writeValueAsString(new SimpleWrapper(Boolean.TRUE)));
+        assertEquals(aposToQuotes("{'value':true}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new SimpleWrapper(Boolean.TRUE))));
     }
 
     public void testSerPropInclusionNonEmpty() throws Exception
@@ -186,15 +186,15 @@ public class JDKAtomicTypesDeserTest
                 JsonInclude.Value.construct(JsonInclude.Include.NON_ABSENT, JsonInclude.Include.NON_EMPTY);
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDefaultPropertyInclusion(incl);
-        assertEquals(aposToQuotes("{'value':true}"),
-                mapper.writeValueAsString(new SimpleWrapper(Boolean.TRUE)));
+        assertEquals(aposToQuotes("{'value':true}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new SimpleWrapper(Boolean.TRUE))));
     }
 
     // [databind#340]
     public void testPolymorphicAtomicReference() throws Exception
     {
         RefWrapper input = new RefWrapper(13);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         
         RefWrapper result = MAPPER.readValue(json, RefWrapper.class);
         assertNotNull(result.w);
@@ -210,17 +210,17 @@ public class JDKAtomicTypesDeserTest
         ObjectMapper mapper = MAPPER;
 
         // by default, include as null
-        assertEquals(aposToQuotes("{'value':null}"), mapper.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'value':null}"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input)));
 
         // ditto with "no nulls"
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().setSerializationInclusion(JsonInclude
                 .Include.NON_NULL);
-        assertEquals(aposToQuotes("{'value':null}"), mapper.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'value':null}"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input)));
 
         // but not with "non empty"
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().setSerializationInclusion(JsonInclude
                 .Include.NON_EMPTY);
-        assertEquals("{}", mapper.writeValueAsString(input));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input)));
     }
 
     public void testTypeRefinement() throws Exception
@@ -228,7 +228,7 @@ public class JDKAtomicTypesDeserTest
         RefiningWrapper input = new RefiningWrapper();
         BigDecimal bd = new BigDecimal("0.25");
         input.value = new AtomicReference<Serializable>(bd);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         // so far so good. But does it come back as expected?
         RefiningWrapper result = MAPPER.readValue(json, RefiningWrapper.class);
@@ -253,7 +253,7 @@ public class JDKAtomicTypesDeserTest
     public void testWithUnwrapping() throws Exception
     {
          String jsonExp = aposToQuotes("{'XX.name':'Bob'}");
-         String jsonAct = MAPPER.writeValueAsString(new UnwrappingRefParent());
+         String jsonAct = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new UnwrappingRefParent()));
          assertEquals(jsonExp, jsonAct);
     }
 
@@ -269,7 +269,7 @@ public class JDKAtomicTypesDeserTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
 
-        String json = mapper.writeValueAsString(new Issue1256Bean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Issue1256Bean()));
         assertEquals("{}", json);
     }
 
@@ -278,7 +278,7 @@ public class JDKAtomicTypesDeserTest
     public void testNullValueHandling() throws Exception
     {
         AtomicReference<Double> inputData = new AtomicReference<Double>();
-        String json = MAPPER.writeValueAsString(inputData);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(inputData));
         AtomicReference<Double> readData = (AtomicReference<Double>) MAPPER.readValue(json, AtomicReference.class);
         assertNotNull(readData);
         assertNull(readData.get());

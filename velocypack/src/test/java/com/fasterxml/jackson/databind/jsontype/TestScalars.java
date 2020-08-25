@@ -62,28 +62,28 @@ public class TestScalars extends BaseMapTest
         ObjectMapper m = MAPPER;
 
         // first, check "native" types
-        json = m.writeValueAsString(new DynamicWrapper(Integer.valueOf(3)));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new DynamicWrapper(Integer.valueOf(3))));
         result = m.readValue(json, DynamicWrapper.class);
         assertEquals(Integer.valueOf(3), result.value);
 
-        json = m.writeValueAsString(new DynamicWrapper("abc"));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new DynamicWrapper("abc")));
         result = m.readValue(json, DynamicWrapper.class);
         assertEquals("abc", result.value);
 
-        json = m.writeValueAsString(new DynamicWrapper("abc"));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new DynamicWrapper("abc")));
         result = m.readValue(json, DynamicWrapper.class);
         assertEquals("abc", result.value);
 
-        json = m.writeValueAsString(new DynamicWrapper(Boolean.TRUE));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new DynamicWrapper(Boolean.TRUE)));
         result = m.readValue(json, DynamicWrapper.class);
         assertEquals(Boolean.TRUE, result.value);
         
         // then verify other scalars
-        json = m.writeValueAsString(new DynamicWrapper(Long.valueOf(7L)));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new DynamicWrapper(Long.valueOf(7L))));
         result = m.readValue(json, DynamicWrapper.class);
         assertEquals(Long.valueOf(7), result.value);
 
-        json = m.writeValueAsString(new DynamicWrapper(TestEnum.B));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new DynamicWrapper(TestEnum.B)));
         result = m.readValue(json, DynamicWrapper.class);
         assertEquals(TestEnum.B, result.value);
     }
@@ -95,28 +95,28 @@ public class TestScalars extends BaseMapTest
         AbstractWrapper result;
 
         // first, check "native" types
-        json = m.writeValueAsString(new AbstractWrapper(Integer.valueOf(3)));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new AbstractWrapper(Integer.valueOf(3))));
         result = m.readValue(json, AbstractWrapper.class);
         assertEquals(Integer.valueOf(3), result.value);
 
-        json = m.writeValueAsString(new AbstractWrapper("abc"));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new AbstractWrapper("abc")));
         result = m.readValue(json, AbstractWrapper.class);
         assertEquals("abc", result.value);
 
-        json = m.writeValueAsString(new AbstractWrapper("abc"));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new AbstractWrapper("abc")));
         result = m.readValue(json, AbstractWrapper.class);
         assertEquals("abc", result.value);
 
-        json = m.writeValueAsString(new AbstractWrapper(Boolean.TRUE));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new AbstractWrapper(Boolean.TRUE)));
         result = m.readValue(json, AbstractWrapper.class);
         assertEquals(Boolean.TRUE, result.value);
         
         // then verify other scalars
-        json = m.writeValueAsString(new AbstractWrapper(Long.valueOf(7L)));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new AbstractWrapper(Long.valueOf(7L))));
         result = m.readValue(json, AbstractWrapper.class);
         assertEquals(Long.valueOf(7), result.value);
 
-        json = m.writeValueAsString(new AbstractWrapper(TestEnum.B));
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new AbstractWrapper(TestEnum.B)));
         result = m.readValue(json, AbstractWrapper.class);
         assertEquals(TestEnum.B, result.value);
     }
@@ -130,7 +130,7 @@ public class TestScalars extends BaseMapTest
                 .add(java.lang.Object.class)
                 .add(NULL_UUID)
                 ;
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         ScalarList result = MAPPER.readValue(json, ScalarList.class);
         assertNotNull(result.values);

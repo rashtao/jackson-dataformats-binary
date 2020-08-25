@@ -56,7 +56,7 @@ public class BeanSerializerModifier1612Test extends BaseMapTest
         ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(mod);
         try {
-            objectMapper.writeValueAsString(new Bean1612(0, 1, 2d));
+            objectMapper.writeValueAsBytes(new Bean1612(0, 1, 2d));
             fail("Should not pass");
         } catch (InvalidDefinitionException e) {
             verifyException(e, "Failed to construct BeanSerializer");

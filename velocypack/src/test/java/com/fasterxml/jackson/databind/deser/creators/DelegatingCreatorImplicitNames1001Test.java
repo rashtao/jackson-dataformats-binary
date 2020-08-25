@@ -72,7 +72,7 @@ public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
 
         D d = D.make("abc:def");
 
-        String actualJson = sut.writeValueAsString(d);
+        String actualJson = com.fasterxml.jackson.VPackUtils.toJson( sut.writeValueAsBytes(d));
         D actualD = sut.readValue(actualJson, D.class);
 
         assertEquals("\"abc:def\"", actualJson);
@@ -87,7 +87,7 @@ public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
 
         D d = D.make("abc:def");
 
-        String actualJson = sut.writeValueAsString(d);
+        String actualJson = com.fasterxml.jackson.VPackUtils.toJson( sut.writeValueAsBytes(d));
         D actualD = sut.readValue(actualJson, D.class);
 
         assertEquals("\"abc:def\"", actualJson);

@@ -91,7 +91,7 @@ public class NumberSerTest extends BaseMapTest
             if (Double.isNaN(d) || Double.isInfinite(d)) {
                 expected = "\""+d+"\"";
             }
-            assertEquals(expected, MAPPER.writeValueAsString(Double.valueOf(d)));
+            assertEquals(expected, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Double.valueOf(d))));
         }
     }
 
@@ -106,26 +106,26 @@ public class NumberSerTest extends BaseMapTest
 
         for (BigInteger value : values) {
             String expected = value.toString();
-            assertEquals(expected, MAPPER.writeValueAsString(value));
+            assertEquals(expected, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(value)));
         }
     }
 
     public void testNumbersAsString() throws Exception
     {
-        assertEquals(aposToQuotes("{'value':'3'}"), MAPPER.writeValueAsString(new IntAsString()));
-        assertEquals(aposToQuotes("{'value':'4'}"), MAPPER.writeValueAsString(new LongAsString()));
-        assertEquals(aposToQuotes("{'value':'-0.5'}"), MAPPER.writeValueAsString(new DoubleAsString()));
-        assertEquals(aposToQuotes("{'value':'0.25'}"), MAPPER.writeValueAsString(new BigDecimalAsString()));
-        assertEquals(aposToQuotes("{'value':'123456'}"), MAPPER.writeValueAsString(new BigIntegerAsString()));
+        assertEquals(aposToQuotes("{'value':'3'}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new IntAsString())));
+        assertEquals(aposToQuotes("{'value':'4'}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new LongAsString())));
+        assertEquals(aposToQuotes("{'value':'-0.5'}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new DoubleAsString())));
+        assertEquals(aposToQuotes("{'value':'0.25'}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new BigDecimalAsString())));
+        assertEquals(aposToQuotes("{'value':'123456'}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new BigIntegerAsString())));
     }
 
     public void testNumbersAsStringNonEmpty() throws Exception
     {
-        assertEquals(aposToQuotes("{'value':'3'}"), NON_EMPTY_MAPPER.writeValueAsString(new IntAsString()));
-        assertEquals(aposToQuotes("{'value':'4'}"), NON_EMPTY_MAPPER.writeValueAsString(new LongAsString()));
-        assertEquals(aposToQuotes("{'value':'-0.5'}"), NON_EMPTY_MAPPER.writeValueAsString(new DoubleAsString()));
-        assertEquals(aposToQuotes("{'value':'0.25'}"), NON_EMPTY_MAPPER.writeValueAsString(new BigDecimalAsString()));
-        assertEquals(aposToQuotes("{'value':'123456'}"), NON_EMPTY_MAPPER.writeValueAsString(new BigIntegerAsString()));
+        assertEquals(aposToQuotes("{'value':'3'}"), com.fasterxml.jackson.VPackUtils.toJson( NON_EMPTY_MAPPER.writeValueAsBytes(new IntAsString())));
+        assertEquals(aposToQuotes("{'value':'4'}"), com.fasterxml.jackson.VPackUtils.toJson( NON_EMPTY_MAPPER.writeValueAsBytes(new LongAsString())));
+        assertEquals(aposToQuotes("{'value':'-0.5'}"), com.fasterxml.jackson.VPackUtils.toJson( NON_EMPTY_MAPPER.writeValueAsBytes(new DoubleAsString())));
+        assertEquals(aposToQuotes("{'value':'0.25'}"), com.fasterxml.jackson.VPackUtils.toJson( NON_EMPTY_MAPPER.writeValueAsBytes(new BigDecimalAsString())));
+        assertEquals(aposToQuotes("{'value':'123456'}"), com.fasterxml.jackson.VPackUtils.toJson( NON_EMPTY_MAPPER.writeValueAsBytes(new BigIntegerAsString())));
     }
 
     public void testConfigOverridesForNumbers() throws Exception
@@ -138,23 +138,23 @@ public class NumberSerTest extends BaseMapTest
         mapper.configOverride(BigDecimal.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
 
-        assertEquals(aposToQuotes("{'i':'3'}"),
-                mapper.writeValueAsString(new IntWrapper(3)));
-        assertEquals(aposToQuotes("{'value':'0.75'}"),
-                mapper.writeValueAsString(new DoubleWrapper(0.75)));
-        assertEquals(aposToQuotes("{'value':'-0.5'}"),
-                mapper.writeValueAsString(new BigDecimalWrapper(BigDecimal.valueOf(-0.5))));
+        assertEquals(aposToQuotes("{'i':'3'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new IntWrapper(3))));
+        assertEquals(aposToQuotes("{'value':'0.75'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new DoubleWrapper(0.75))));
+        assertEquals(aposToQuotes("{'value':'-0.5'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new BigDecimalWrapper(BigDecimal.valueOf(-0.5)))));
     }
 
     public void testNumberType() throws Exception
     {
-        assertEquals(aposToQuotes("{'value':1}"), MAPPER.writeValueAsString(new NumberWrapper(Byte.valueOf((byte) 1))));
-        assertEquals(aposToQuotes("{'value':2}"), MAPPER.writeValueAsString(new NumberWrapper(Short.valueOf((short) 2))));
-        assertEquals(aposToQuotes("{'value':3}"), MAPPER.writeValueAsString(new NumberWrapper(Integer.valueOf(3))));
-        assertEquals(aposToQuotes("{'value':4}"), MAPPER.writeValueAsString(new NumberWrapper(Long.valueOf(4L))));
-        assertEquals(aposToQuotes("{'value':0.5}"), MAPPER.writeValueAsString(new NumberWrapper(Float.valueOf(0.5f))));
-        assertEquals(aposToQuotes("{'value':0.05}"), MAPPER.writeValueAsString(new NumberWrapper(Double.valueOf(0.05))));
-        assertEquals(aposToQuotes("{'value':123}"), MAPPER.writeValueAsString(new NumberWrapper(BigInteger.valueOf(123))));
-        assertEquals(aposToQuotes("{'value':0.025}"), MAPPER.writeValueAsString(new NumberWrapper(BigDecimal.valueOf(0.025))));
+        assertEquals(aposToQuotes("{'value':1}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(Byte.valueOf((byte) 1)))));
+        assertEquals(aposToQuotes("{'value':2}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(Short.valueOf((short) 2)))));
+        assertEquals(aposToQuotes("{'value':3}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(Integer.valueOf(3)))));
+        assertEquals(aposToQuotes("{'value':4}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(Long.valueOf(4L)))));
+        assertEquals(aposToQuotes("{'value':0.5}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(Float.valueOf(0.5f)))));
+        assertEquals(aposToQuotes("{'value':0.05}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(Double.valueOf(0.05)))));
+        assertEquals(aposToQuotes("{'value':123}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(BigInteger.valueOf(123)))));
+        assertEquals(aposToQuotes("{'value':0.025}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NumberWrapper(BigDecimal.valueOf(0.025)))));
     }
 }

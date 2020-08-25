@@ -28,7 +28,7 @@ public class ExceptionPathTest extends BaseMapTest
 
     public void testReferenceChainForInnerClass() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new Outer());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Outer()));
         try {
             MAPPER.readValue(json, Outer.class);
             fail("Should not pass");

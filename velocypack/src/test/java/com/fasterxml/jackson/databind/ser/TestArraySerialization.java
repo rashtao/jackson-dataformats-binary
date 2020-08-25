@@ -36,7 +36,7 @@ public class TestArraySerialization
     
     public void testIntArray() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new int[] { 1, 2, 3, -7 });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new int[] { 1, 2, 3, -7 }));
         assertEquals("[1,2,3,-7]", json);
     }
 
@@ -67,27 +67,27 @@ public class TestArraySerialization
     
     public void testLongArray() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new long[] { Long.MIN_VALUE, 0, Long.MAX_VALUE });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new long[] { Long.MIN_VALUE, 0, Long.MAX_VALUE }));
         assertEquals("["+Long.MIN_VALUE+",0,"+Long.MAX_VALUE+"]", json);
     }
 
     public void testStringArray() throws Exception
     {
-        assertEquals("[\"a\",\"\\\"foo\\\"\",null]",
-                MAPPER.writeValueAsString(new String[] { "a", "\"foo\"", null }));
-        assertEquals("[]",
-                MAPPER.writeValueAsString(new String[] { }));
+        assertEquals("[\"a\",\"\\\"foo\\\"\",null]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new String[] { "a", "\"foo\"", null })));
+        assertEquals("[]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new String[] { })));
     }
 
     public void testDoubleArray() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new double[] { 1.01, 2.0, -7, Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new double[] { 1.01, 2.0, -7, Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY }));
         assertEquals("[1.01,2.0,-7.0,\"NaN\",\"-Infinity\",\"Infinity\"]", json);
     }
 
     public void testFloatArray() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new float[] { 1.01f, 2.0f, -7f, Float.NaN, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new float[] { 1.01f, 2.0f, -7f, Float.NaN, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY }));
         assertEquals("[1.01,2.0,-7.0,\"NaN\",\"-Infinity\",\"Infinity\"]", json);
     }
 }

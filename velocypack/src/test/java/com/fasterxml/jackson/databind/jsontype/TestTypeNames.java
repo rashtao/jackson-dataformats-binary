@@ -65,10 +65,10 @@ public class TestTypeNames extends BaseMapTest
         // static type on serialization. If we had root static types,
         // could use those; but at the moment root type is dynamic
         
-        assertEquals("[{\"doggy\":{\"name\":\"Spot\",\"ageInYears\":3}}]",
-                MAPPER.writeValueAsString(new Animal[] { new Dog("Spot", 3) }));
-        assertEquals("[{\"MaineCoon\":{\"name\":\"Belzebub\",\"purrs\":true}}]",
-                MAPPER.writeValueAsString(new Animal[] { new MaineCoon("Belzebub", true)}));
+        assertEquals("[{\"doggy\":{\"name\":\"Spot\",\"ageInYears\":3}}]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Animal[] { new Dog("Spot", 3) })));
+        assertEquals("[{\"MaineCoon\":{\"name\":\"Belzebub\",\"purrs\":true}}]", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Animal[] { new MaineCoon("Belzebub", true)})));
     }
 
     public void testRoundTrip() throws Exception
@@ -79,7 +79,7 @@ public class TestTypeNames extends BaseMapTest
                 new MaineCoon("Piru", false),
                 new Persian("Khomeini", true)
         };
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         List<Animal> output = MAPPER.readValue(json,
                 TypeFactory.defaultInstance().constructCollectionType(ArrayList.class, Animal.class));
         assertEquals(input.length, output.size());
@@ -94,7 +94,7 @@ public class TestTypeNames extends BaseMapTest
         AnimalMap input = new AnimalMap();
         input.put("venla", new MaineCoon("Venla", true));
         input.put("ama", new Dog("Amadeus", 13));
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         AnimalMap output = MAPPER.readValue(json, AnimalMap.class);
         assertNotNull(output);
         assertEquals(AnimalMap.class, output.getClass());

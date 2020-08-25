@@ -148,13 +148,13 @@ public class TestUnwrapped extends BaseMapTest
     private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
     public void testSimpleUnwrappingSerialize() throws Exception {
-        assertEquals("{\"name\":\"Tatu\",\"x\":1,\"y\":2}",
-                MAPPER.writeValueAsString(new Unwrapping("Tatu", 1, 2)));
+        assertEquals("{\"name\":\"Tatu\",\"x\":1,\"y\":2}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Unwrapping("Tatu", 1, 2))));
     }
 
     public void testDeepUnwrappingSerialize() throws Exception {
-        assertEquals("{\"name\":\"Tatu\",\"x\":1,\"y\":2}",
-                MAPPER.writeValueAsString(new DeepUnwrapping("Tatu", 1, 2)));
+        assertEquals("{\"name\":\"Tatu\",\"x\":1,\"y\":2}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new DeepUnwrapping("Tatu", 1, 2))));
     }
 
     /*
@@ -215,7 +215,7 @@ public class TestUnwrapped extends BaseMapTest
     public void testIssue615() throws Exception
     {
         Parent input = new Parent("name");
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         Parent output = MAPPER.readValue(json, Parent.class);
         assertEquals("name", output.c1.field);
     }
@@ -228,7 +228,7 @@ public class TestUnwrapped extends BaseMapTest
         Outer outer = new Outer();
         outer.inner = inner;
 
-        String actual = MAPPER.writeValueAsString(outer);
+        String actual = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(outer));
 
         assertTrue(actual.contains("animal"));
         assertTrue(actual.contains("Zebra"));

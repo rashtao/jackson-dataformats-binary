@@ -54,7 +54,7 @@ public class TestCreatorWithPolymorphic113 extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         String id = "nice dogy";
-        String json = mapper.writeValueAsString(new AnimalWrapper(new Dog(id)));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnimalWrapper(new Dog(id))));
 //System.err.println("JSON = "+json);
         AnimalWrapper wrapper = mapper.readValue(json, AnimalWrapper.class);
         assertEquals(id, wrapper.getAnimal().getId());

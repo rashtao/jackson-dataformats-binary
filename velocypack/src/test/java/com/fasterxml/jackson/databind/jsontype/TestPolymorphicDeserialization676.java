@@ -81,7 +81,7 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
         MapContainer deserMapBad = createDeSerMapContainer(originMap, mapper);
         assertEquals(originMap, deserMapBad);
         assertEquals(originMap,
-                mapper.readValue(mapper.writeValueAsString(originMap), MapContainer.class));
+                mapper.readValue(mapper.writeValueAsBytes(originMap), MapContainer.class));
     }
 
     public void testDeSerCorrect() throws IOException {
@@ -91,7 +91,7 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
         map.put("1", 1);
         // commenting out the following statement will fail the test
         assertEquals(new MapContainer(map),
-                mapper.readValue(mapper.writeValueAsString(new MapContainer(map)),
+                mapper.readValue(mapper.writeValueAsBytes(new MapContainer(map)),
                         MapContainer.class));
 
         MapContainer deserMapGood = createDeSerMapContainer(originMap, mapper);
@@ -99,13 +99,13 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
         assertEquals(originMap, deserMapGood);
         assertEquals(new Date(TIMESTAMP), deserMapGood.map.get("DateValue"));
 
-        assertEquals(originMap, mapper.readValue(mapper.writeValueAsString(originMap), MapContainer.class));
+        assertEquals(originMap, mapper.readValue(mapper.writeValueAsBytes(originMap), MapContainer.class));
     }
 
     private MapContainer createDeSerMapContainer(MapContainer src, ObjectMapper mapper) throws IOException {
         PolymorphicValueWrapper result = new PolymorphicValueWrapper();
         result.value = src;
-        String json = mapper.writeValueAsString(result);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(result));
         assertEquals("{\"value\":{\"@class\":"
                 + "\""+getClass().getName()+"$MapContainer\","
                 + "\"map\":{\"DateValue\":[\"java.util.Date\",123456]}}}",

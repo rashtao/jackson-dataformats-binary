@@ -22,7 +22,7 @@ public class DateFormatTest extends BaseMapTest
         mapper.configOverride(Date.class)
             .setFormat(JsonFormat.Value.forPattern("yyyy.dd.MM"));
         // First serialize, should result in this (in UTC):
-        String json = mapper.writeValueAsString(new DateWrapper(0L));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateWrapper(0L)));
         assertEquals(aposToQuotes("{'value':'1970.01.01'}"), json);
 
         // and then read back

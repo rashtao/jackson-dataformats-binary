@@ -68,7 +68,7 @@ public class RaceCondition738Test extends BaseMapTest
             @Override
             public String call() throws Exception {
                 Wrapper wrapper = new Wrapper(new TypeOne("test"));
-                return mapper.writeValueAsString(wrapper);
+                return com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(wrapper));
             }
         };
 

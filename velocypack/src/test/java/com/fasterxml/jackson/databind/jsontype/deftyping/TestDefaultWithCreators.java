@@ -72,7 +72,7 @@ public class TestDefaultWithCreators
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
         UrlJob input = new UrlJob(123L, "http://foo", 3);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertNotNull(json);
         Job output = mapper.readValue(json, Job.class);
         assertNotNull(output);
@@ -90,9 +90,9 @@ public class TestDefaultWithCreators
         ObjectMapper mapper = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
-        String json = mapper.writeValueAsString(new Bean1385Wrapper(
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean1385Wrapper(
                 new Bean1385(BYTES)
-        ));
+        )));
         Bean1385Wrapper result = mapper.readValue(json, Bean1385Wrapper.class);
         assertNotNull(result);
         assertNotNull(result.value);

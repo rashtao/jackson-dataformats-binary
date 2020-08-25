@@ -203,7 +203,7 @@ public class TestJsonSerialize
                 .build();
         ValueList list = new ValueList();
         list.add(new ValueClass());
-        assertEquals("[{\"x\":3}]", m.writeValueAsString(list));
+        assertEquals("[{\"x\":3}]", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(list)));
     }
 
     public void testStaticTypingWithLinkedList() throws Exception
@@ -227,8 +227,8 @@ public class TestJsonSerialize
 
     public void testIssue294() throws Exception
     {
-        assertEquals("{\"id\":\"fooId\",\"bar\":\"barId\"}",
-                MAPPER.writeValueAsString(new Foo294("fooId", "barId")));
+        assertEquals("{\"id\":\"fooId\",\"bar\":\"barId\"}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Foo294("fooId", "barId"))));
     }
 
     @JsonPropertyOrder({ "a", "something" })
@@ -247,7 +247,7 @@ public class TestJsonSerialize
         .setVisibility(PropertyAccessor.CREATOR, Visibility.NONE)
         .setVisibility(PropertyAccessor.IS_GETTER, Visibility.NONE)
         .setVisibility(PropertyAccessor.SETTER, Visibility.NONE);        
-        final String JSON = m.writeValueAsString(new Response());
+        final String JSON = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Response()));
         assertEquals(aposToQuotes("{'a':'x','something':true}"), JSON);
     }
 }

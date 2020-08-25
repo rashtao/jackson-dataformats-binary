@@ -148,7 +148,7 @@ public class MapFormatShapeTest extends BaseMapTest
     // for [databind#476]: Maps as POJOs
     public void testSerializeAsPOJOViaClass() throws Exception
     {
-        String result = MAPPER.writeValueAsString(new Bean476Container(1,2,0));
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean476Container(1,2,0)));
         assertEquals(aposToQuotes("{'a':{'extra':13,'empty':false},'b':{'value':2}}"),
                 result);
     }
@@ -158,14 +158,14 @@ public class MapFormatShapeTest extends BaseMapTest
     /*
     public void testSerializeAsPOJOViaProperty() throws Exception
     {
-        String result = MAPPER.writeValueAsString(new Bean476Container(1,0,3));
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean476Container(1,0,3)));
         assertEquals(aposToQuotes("{'a':{'extra':13,'empty':false},'c':{'empty':false,'value':3}}"),
                 result);
     }
 
     public void testSerializeNaturalViaOverride() throws Exception
     {
-        String result = MAPPER.writeValueAsString(new Bean476Override(123));
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean476Override(123)));
         assertEquals(aposToQuotes("{'stuff':{'value':123}}"),
                 result);
     }
@@ -185,7 +185,7 @@ public class MapFormatShapeTest extends BaseMapTest
         input.put(12, 45);
         input.put(6, 88);
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         assertEquals(aposToQuotes("{'property':55,'map':{'6':88,'12':45}}"), json);
 

@@ -228,7 +228,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
         DataB db = new DataB();
         db.da.i = 11;
         db.k = 13;
-        String jsonBString = mapper.writeValueAsString(db);
+        String jsonBString = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(db));
         JsonNode jsonBNode = mapper.valueToTree(db);
 
         // create parent
@@ -260,7 +260,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
 
     // [databind#1831]
     public void test1831UsingNode() throws IOException {
-        String catJson = MAPPER.writeValueAsString(new Cat());
+        String catJson = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Cat()));
         JsonNode jsonNode = MAPPER.readTree(catJson);
         AnimalWrapper optionalCat = new AnimalWrapper();
         ObjectReader r = MAPPER.readerForUpdating(optionalCat);
@@ -269,7 +269,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     }
 
     public void test1831UsingString() throws IOException {
-        String catJson = MAPPER.writeValueAsString(new Cat());
+        String catJson = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Cat()));
         AnimalWrapper optionalCat = new AnimalWrapper();
         AnimalWrapper result = MAPPER.readerForUpdating(optionalCat).readValue(catJson);
         assertSame(optionalCat, result);

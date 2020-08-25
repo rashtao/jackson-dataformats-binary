@@ -85,7 +85,7 @@ public class TestIgnoredTypes extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(module);
         PersonWrapper input = new PersonWrapper();
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"value\":1}", json);
     }
     
@@ -96,7 +96,7 @@ public class TestIgnoredTypes extends BaseMapTest
         mapper.registerModule(module);
         List<Person> persons = new ArrayList<Person>();
         persons.add(new Person("Bob"));
-        String json = mapper.writeValueAsString(persons);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(persons));
         assertEquals("[{\"name\":\"Bob\"}]", json);
     }
 
@@ -106,7 +106,7 @@ public class TestIgnoredTypes extends BaseMapTest
         mapper.configOverride(Wrapped.class).setIsIgnoredType(true);
 
         // serialize , first
-        String json = mapper.writeValueAsString(new Wrapper());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Wrapper()));
         assertEquals(aposToQuotes("{'value':3}"), json);
 
         // then deserialize

@@ -29,7 +29,7 @@ public class NoTypeInfoTest extends BaseMapTest
             .activateDefaultTyping(NoCheckSubTypeValidator.instance)
             .build();
         // serialize without type info
-        String json = mapper.writeValueAsString(new NoType());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NoType()));
         assertEquals("{\"a\":3}", json);
 
         // and deserialize successfully

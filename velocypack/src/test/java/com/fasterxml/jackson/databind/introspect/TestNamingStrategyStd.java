@@ -205,7 +205,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testLowerCaseTranslations() throws Exception
     {
         // First serialize
-        String json = _lcWithUndescoreMapper.writeValueAsString(new PersonBean("Joe", "Sixpack", 42));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( _lcWithUndescoreMapper.writeValueAsBytes(new PersonBean("Joe", "Sixpack", 42)));
         assertEquals("{\"first_name\":\"Joe\",\"last_name\":\"Sixpack\",\"age\":42}", json);
         
         // then deserialize
@@ -218,7 +218,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testLowerCaseAcronymsTranslations() throws Exception
     {
         // First serialize
-        String json = _lcWithUndescoreMapper.writeValueAsString(new Acronyms("world wide web", "http://jackson.codehaus.org", "/path1/,/path2/"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson(_lcWithUndescoreMapper.writeValueAsBytes(new Acronyms("world wide web", "http://jackson.codehaus.org", "/path1/,/path2/")));
         assertEquals("{\"www\":\"world wide web\",\"some_url\":\"http://jackson.codehaus.org\",\"some_uris\":\"/path1/,/path2/\"}", json);
         
         // then deserialize
@@ -231,7 +231,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testLowerCaseOtherNonStandardNamesTranslations() throws Exception
     {
         // First serialize
-        String json = _lcWithUndescoreMapper.writeValueAsString(new OtherNonStandardNames("Results", "_User", "___", "$User"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson(_lcWithUndescoreMapper.writeValueAsBytes(new OtherNonStandardNames("Results", "_User", "___", "$User")));
         assertEquals("{\"results\":\"Results\",\"user\":\"_User\",\"__\":\"___\",\"$_user\":\"$User\"}", json);
         
         // then deserialize
@@ -245,7 +245,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testLowerCaseUnchangedNames() throws Exception
     {
         // First serialize
-        String json = _lcWithUndescoreMapper.writeValueAsString(new UnchangedNames("from_user", "_user", "from$user", "from7user", "_x"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson(_lcWithUndescoreMapper.writeValueAsBytes(new UnchangedNames("from_user", "_user", "from$user", "from7user", "_x")));
         assertEquals("{\"from_user\":\"from_user\",\"user\":\"_user\",\"from$user\":\"from$user\",\"from7user\":\"from7user\",\"x\":\"_x\"}", json);
         
         // then deserialize
@@ -282,9 +282,9 @@ public class TestNamingStrategyStd extends BaseMapTest
     // [databind#428]
     public void testIssue428PascalWithOverrides() throws Exception
     {
-        String json = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
-                .writeValueAsString(new Bean428());
+                .writeValueAsBytes(new Bean428()));
         if (!json.contains(quote("fooBar"))) {
             fail("Should use name 'fooBar', does not: "+json);
         }
@@ -302,8 +302,8 @@ public class TestNamingStrategyStd extends BaseMapTest
         final BoringBean input = new BoringBean();
         ObjectMapper m = objectMapper();
 
-        assertEquals(aposToQuotes("{'firstname':'Bob','lastname':'Burger'}"),
-                m.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'firstname':'Bob','lastname':'Burger'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                m.writeValueAsBytes(input)));
     }
 
     /*
@@ -332,7 +332,7 @@ public class TestNamingStrategyStd extends BaseMapTest
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
-        assertEquals(aposToQuotes("{'first-name':'Bob'}"), m.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'first-name':'Bob'}"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input)));
 
         FirstNameBean result = m.readValue(aposToQuotes("{'first-name':'Billy'}"),
                 FirstNameBean.class);
@@ -365,7 +365,7 @@ public class TestNamingStrategyStd extends BaseMapTest
             .build();
 
         final FirstNameBean input = new FirstNameBean("Bob");
-        assertEquals(aposToQuotes("{'first.name':'Bob'}"), m.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'first.name':'Bob'}"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input)));
 
         FirstNameBean result = m.readValue(aposToQuotes("{'first.name':'Billy'}"),
                 FirstNameBean.class);
@@ -403,8 +403,8 @@ public class TestNamingStrategyStd extends BaseMapTest
                 .enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
                 .build();
         // by default, renaming will not take place on explicitly named fields
-        assertEquals(aposToQuotes("{'firstName':'Peter','lastName':'Venkman','user_age':'35'}"),
-                m.writeValueAsString(new ExplicitBean()));
+        assertEquals(aposToQuotes("{'firstName':'Peter','lastName':'Venkman','user_age':'35'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                m.writeValueAsBytes(new ExplicitBean())));
 
         m = jsonMapperBuilder()
                 .propertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
@@ -412,8 +412,8 @@ public class TestNamingStrategyStd extends BaseMapTest
                 .enable(MapperFeature.ALLOW_EXPLICIT_PROPERTY_RENAMING)
                 .build();
         // w/ feature enabled, ALL property names should get re-written
-        assertEquals(aposToQuotes("{'first_name':'Peter','last_name':'Venkman','user_age':'35'}"),
-                m.writeValueAsString(new ExplicitBean()));
+        assertEquals(aposToQuotes("{'first_name':'Peter','last_name':'Venkman','user_age':'35'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                m.writeValueAsBytes(new ExplicitBean())));
 
         // test deserialization as well
         ExplicitBean bean =
@@ -430,7 +430,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testExplicitNoNaming() throws Exception
     {
         ObjectMapper mapper = objectMapper();
-        String json = mapper.writeValueAsString(new DefaultNaming());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DefaultNaming()));
         assertEquals(aposToQuotes("{'someValue':3}"), json);
     }
 }

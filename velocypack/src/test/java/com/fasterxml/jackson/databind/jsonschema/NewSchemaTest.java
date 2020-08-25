@@ -284,7 +284,7 @@ public class NewSchemaTest extends BaseMapTest
     {
         // first: serialize using 'toString()', not name
         final String EXP = quote("host-name");
-        assertEquals(EXP, MAPPER.writeValueAsString(JsonValueFormat.HOST_NAME));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(JsonValueFormat.HOST_NAME)));
 
         // and second, deserialize ok from that as well
         assertSame(JsonValueFormat.HOST_NAME, MAPPER.readValue(EXP, JsonValueFormat.class));

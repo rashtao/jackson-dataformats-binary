@@ -46,10 +46,10 @@ public class TestAutoDetect
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // by default, only public fields and getters are detected
-        assertEquals("{\"p1\":\"public\"}",
-                     m.writeValueAsString(new FieldBean()));
-        assertEquals("{\"a\":\"a\"}",
-                     m.writeValueAsString(new MethodBean()));
+        assertEquals("{\"p1\":\"public\"}", com.fasterxml.jackson.VPackUtils.toJson(
+                     m.writeValueAsBytes(new FieldBean())));
+        assertEquals("{\"a\":\"a\"}", com.fasterxml.jackson.VPackUtils.toJson(
+                     m.writeValueAsBytes(new MethodBean())));
     }
 
     public void testProtectedViaAnnotations() throws Exception

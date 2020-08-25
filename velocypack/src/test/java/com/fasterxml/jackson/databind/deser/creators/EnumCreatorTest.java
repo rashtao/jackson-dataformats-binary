@@ -288,7 +288,7 @@ public class EnumCreatorTest extends BaseMapTest
     public void testEnumCreators1291() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(Enum1291.V2);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(Enum1291.V2));
         Enum1291 result = mapper.readValue(json, Enum1291.class);
         assertSame(Enum1291.V2, result);
     }

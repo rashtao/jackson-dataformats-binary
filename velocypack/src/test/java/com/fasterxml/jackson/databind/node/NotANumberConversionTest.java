@@ -15,17 +15,17 @@ public class NotANumberConversionTest extends BaseMapTest
     {
         JsonNode tree = m.valueToTree(new DoubleWrapper(Double.NaN));
         assertNotNull(tree);
-        String json = m.writeValueAsString(tree);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(tree));
         assertNotNull(json);
 
         tree = m.valueToTree(new DoubleWrapper(Double.NEGATIVE_INFINITY));
         assertNotNull(tree);
-        json = m.writeValueAsString(tree);
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(tree));
         assertNotNull(json);
 
         tree = m.valueToTree(new DoubleWrapper(Double.POSITIVE_INFINITY));
         assertNotNull(tree);
-        json = m.writeValueAsString(tree);
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(tree));
         assertNotNull(json);
     }
 

@@ -58,14 +58,14 @@ public class DefaultViewTest extends BaseMapTest
 
     public void testSerialization() throws IOException
     {
-        assertEquals(aposToQuotes("{'a':3,'b':5}"),
-                MAPPER.writeValueAsString(new Defaulting()));
+        assertEquals(aposToQuotes("{'a':3,'b':5}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Defaulting())));
 
-        assertEquals(aposToQuotes("{'a':3}"),
+        assertEquals(aposToQuotes("{'a':3}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writerWithView(ViewA.class)
-                    .writeValueAsString(new Defaulting()));
-        assertEquals(aposToQuotes("{'b':5}"),
+                    .writeValueAsBytes(new Defaulting())));
+        assertEquals(aposToQuotes("{'b':5}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writerWithView(ViewB.class)
-                    .writeValueAsString(new Defaulting()));
+                    .writeValueAsBytes(new Defaulting())));
     }
 }

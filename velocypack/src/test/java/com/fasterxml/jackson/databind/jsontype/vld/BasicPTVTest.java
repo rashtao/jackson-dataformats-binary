@@ -88,12 +88,12 @@ public class BasicPTVTest extends BaseMapTest
                 .build();        
 
         // First, test accepted case
-        final String json = mapper.writeValueAsString(BaseValueWrapper.withA(42));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(BaseValueWrapper.withA(42)));
         BaseValueWrapper w = mapper.readValue(json, BaseValueWrapper.class);
         assertEquals(42, w.value.x);
 
         // then non-accepted
-        final String json2 = mapper.writeValueAsString(new NumberWrapper(Byte.valueOf((byte) 4)));
+        final String json2 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NumberWrapper(Byte.valueOf((byte) 4))));
         try {
             mapper.readValue(json2, NumberWrapper.class);
             fail("Should not pass");
@@ -123,12 +123,12 @@ public class BasicPTVTest extends BaseMapTest
                 .build();        
 
         // First, test accepted case
-        final String json = mapper.writeValueAsString(BaseValueWrapper.withA(42));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(BaseValueWrapper.withA(42)));
         BaseValueWrapper w = mapper.readValue(json, BaseValueWrapper.class);
         assertEquals(42, w.value.x);
 
         // then non-accepted
-        final String json2 = mapper.writeValueAsString(new NumberWrapper(Byte.valueOf((byte) 4)));
+        final String json2 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NumberWrapper(Byte.valueOf((byte) 4))));
         try {
             mapper.readValue(json2, NumberWrapper.class);
             fail("Should not pass");
@@ -148,12 +148,12 @@ public class BasicPTVTest extends BaseMapTest
                 .build();        
 
         // First, test accepted case
-        final String json = mapper.writeValueAsString(BaseValueWrapper.withA(42));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(BaseValueWrapper.withA(42)));
         BaseValueWrapper w = mapper.readValue(json, BaseValueWrapper.class);
         assertEquals(42, w.value.x);
 
         // then non-accepted
-        final String json2 = mapper.writeValueAsString(new NumberWrapper(Byte.valueOf((byte) 4)));
+        final String json2 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NumberWrapper(Byte.valueOf((byte) 4))));
         try {
             mapper.readValue(json2, NumberWrapper.class);
             fail("Should not pass");
@@ -174,7 +174,7 @@ public class BasicPTVTest extends BaseMapTest
         ObjectMapper mapper = jsonMapperBuilder()
                 .activateDefaultTyping(ptv, DefaultTyping.NON_FINAL)
                 .build();        
-        final String json = mapper.writeValueAsString(new ObjectWrapper(new ValueA(15)));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ObjectWrapper(new ValueA(15))));
         try {
             mapper.readValue(json, ObjectWrapper.class);
             fail("Should not pass");
@@ -200,13 +200,13 @@ public class BasicPTVTest extends BaseMapTest
                 .build();        
 
         // First, test accepted case
-        final String json = mapper.writeValueAsString(BaseValueWrapper.withB(42));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(BaseValueWrapper.withB(42)));
         BaseValueWrapper w = mapper.readValue(json, BaseValueWrapper.class);
         assertEquals(42, w.value.x);
 
-        // then non-accepted
+        // com.fasterxml.jackson.VPackUtils.toJson( then non-accepted
         try {
-            mapper.readValue(mapper.writeValueAsString(BaseValueWrapper.withA(43)),
+            mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(BaseValueWrapper.withA(43))),
                     BaseValueWrapper.class);
             fail("Should not pass");
         } catch (InvalidTypeIdException e) {
@@ -224,13 +224,13 @@ public class BasicPTVTest extends BaseMapTest
                 .build();        
 
         // First, test accepted case
-        final String json = mapper.writeValueAsString(BaseValueWrapper.withB(42));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(BaseValueWrapper.withB(42)));
         BaseValueWrapper w = mapper.readValue(json, BaseValueWrapper.class);
         assertEquals(42, w.value.x);
 
-        // then non-accepted
+        // com.fasterxml.jackson.VPackUtils.toJson( then non-accepted
         try {
-            mapper.readValue(mapper.writeValueAsString(BaseValueWrapper.withA(43)),
+            mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(BaseValueWrapper.withA(43))),
                     BaseValueWrapper.class);
             fail("Should not pass");
         } catch (InvalidTypeIdException e) {
@@ -248,13 +248,13 @@ public class BasicPTVTest extends BaseMapTest
                 .build();        
 
         // First, test accepted case
-        final String json = mapper.writeValueAsString(BaseValueWrapper.withB(42));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(BaseValueWrapper.withB(42)));
         BaseValueWrapper w = mapper.readValue(json, BaseValueWrapper.class);
         assertEquals(42, w.value.x);
 
-        // then non-accepted
+        // com.fasterxml.jackson.VPackUtils.toJson( then non-accepted
         try {
-            mapper.readValue(mapper.writeValueAsString(BaseValueWrapper.withA(43)),
+            mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(BaseValueWrapper.withA(43))),
                     BaseValueWrapper.class);
             fail("Should not pass");
         } catch (InvalidTypeIdException e) {

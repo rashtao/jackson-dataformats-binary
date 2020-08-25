@@ -38,7 +38,7 @@ public class TestObjectIdWithInjectables538 extends BaseMapTest
         a.b = b;
         b.a = a;
 
-        String json = MAPPER.writeValueAsString(a);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(a));
 
         InjectableValues.Std inject = new InjectableValues.Std();
         inject.addValue("i1", "e1");

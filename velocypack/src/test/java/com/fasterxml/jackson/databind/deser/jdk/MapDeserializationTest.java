@@ -102,7 +102,7 @@ public class MapDeserializationTest
                 map.put(String.valueOf(i), map2);
             }
         }
-        String json = MAPPER.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map));
         Object bound = MAPPER.readValue(json, Object.class);
         assertEquals(map, bound);
     }
@@ -340,7 +340,7 @@ public class MapDeserializationTest
         testTypesList.add(ConcreteType.TWO);
         ListContainer listContainer = new ListContainer();
         listContainer.testTypes = testTypesList;
-        String json = mapper.writeValueAsString(listContainer);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(listContainer));
         listContainer = mapper.readValue(json, ListContainer.class);
         EnumMapContainer enumMapContainer = new EnumMapContainer();
         EnumMap<KeyEnum,ITestType> testTypesMap = new EnumMap<KeyEnum,ITestType>(KeyEnum.class);
@@ -348,7 +348,7 @@ public class MapDeserializationTest
         testTypesMap.put(KeyEnum.B, ConcreteType.TWO);
         enumMapContainer.testTypes = testTypesMap;
         
-        json = mapper.writeValueAsString(enumMapContainer);
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(enumMapContainer));
         enumMapContainer = mapper.readValue(json, EnumMapContainer.class);
     }
 

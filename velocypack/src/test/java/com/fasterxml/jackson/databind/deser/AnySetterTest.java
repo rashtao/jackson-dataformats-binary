@@ -295,7 +295,7 @@ public class AnySetterTest
 
     public void testIssue797() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new Bean797BaseImpl());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean797BaseImpl()));
         assertEquals("{}", json);
     }
 
@@ -305,7 +305,7 @@ public class AnySetterTest
         PolyAnyBean input = new PolyAnyBean();
         input.props.put("a", new Impl("xyz"));
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         
 //        System.err.println("JSON: "+json);
 

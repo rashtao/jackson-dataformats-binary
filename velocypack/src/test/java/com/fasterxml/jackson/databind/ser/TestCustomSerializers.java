@@ -224,7 +224,7 @@ public class TestCustomSerializers extends BaseMapTest
             }
         });
         mapper.registerModule(module);
-        assertEquals("null", mapper.writeValueAsString(new ArrayList<Object>()));
+        assertEquals("null", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ArrayList<Object>())));
     }
 
     // [databind#87]: delegating serializer
@@ -244,34 +244,34 @@ public class TestCustomSerializers extends BaseMapTest
                     }
         }));
         mapper.registerModule(module);
-        assertEquals("{\"x\":3,\"y\":7}", mapper.writeValueAsString(new Immutable()));
+        assertEquals("{\"x\":3,\"y\":7}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Immutable())));
     }
 
     // [databind#215]: Allow registering CharacterEscapes via ObjectWriter
     public void testCustomEscapes() throws Exception
     {
-        assertEquals(quote("foo\\u0062\\Ar"),
-                MAPPER.writer(new CustomEscapes()).writeValueAsString("foobar"));
+        assertEquals(quote("foo\\u0062\\Ar"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writer(new CustomEscapes()).writeValueAsBytes("foobar")));
     }
     
     public void testNumberSubclass() throws Exception
     {
-        assertEquals(aposToQuotes("{'x':42}"),
-                MAPPER.writeValueAsString(new LikeNumber(42)));
+        assertEquals(aposToQuotes("{'x':42}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new LikeNumber(42))));
     }
 
     public void testWithCurrentValue() throws Exception
     {
-        assertEquals(aposToQuotes("{'prop':'Issue631Bean/42'}"),
-                MAPPER.writeValueAsString(new Issue631Bean(42)));
+        assertEquals(aposToQuotes("{'prop':'Issue631Bean/42'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new Issue631Bean(42))));
     }
 
     public void testWithCustomElements() throws Exception
     {
         // First variant that uses per-property override
         StringListWrapper wr = new StringListWrapper("a", null, "b");
-        assertEquals(aposToQuotes("{'list':['A',null,'B']}"),
-                MAPPER.writeValueAsString(wr));
+        assertEquals(aposToQuotes("{'list':['A',null,'B']}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(wr)));
 
         // and then per-type registration
         
@@ -280,15 +280,15 @@ public class TestCustomSerializers extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
                 .registerModule(module);
 
-        assertEquals(quote("FOOBAR"), mapper.writeValueAsString("foobar"));
-        assertEquals(aposToQuotes("['FOO',null]"),
-                mapper.writeValueAsString(new String[] { "foo", null }));
+        assertEquals(quote("FOOBAR"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("foobar")));
+        assertEquals(aposToQuotes("['FOO',null]"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new String[] { "foo", null })));
 
         List<String> list = Arrays.asList("foo", null);
-        assertEquals(aposToQuotes("['FOO',null]"), mapper.writeValueAsString(list));
+        assertEquals(aposToQuotes("['FOO',null]"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(list)));
 
         Set<String> set = new LinkedHashSet<String>(Arrays.asList("foo", null));
-        assertEquals(aposToQuotes("['FOO',null]"), mapper.writeValueAsString(set));
+        assertEquals(aposToQuotes("['FOO',null]"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(set)));
     }
 
     // [databind#2475]
@@ -298,11 +298,11 @@ public class TestCustomSerializers extends BaseMapTest
 
         // contents don't really matter that much as verification within filter but... let's
         // check anyway
-        assertEquals(aposToQuotes("{'id':'ID-1','set':[]}"),
-                writer.writeValueAsString(new Item2475(new ArrayList<String>(), "ID-1")));
+        assertEquals(aposToQuotes("{'id':'ID-1','set':[]}"), com.fasterxml.jackson.VPackUtils.toJson(
+                writer.writeValueAsBytes(new Item2475(new ArrayList<String>(), "ID-1"))));
 
-        assertEquals(aposToQuotes("{'id':'ID-2','set':[]}"),
-                writer.writeValueAsString(new Item2475(new HashSet<String>(), "ID-2")));
+        assertEquals(aposToQuotes("{'id':'ID-2','set':[]}"), com.fasterxml.jackson.VPackUtils.toJson(
+                writer.writeValueAsBytes(new Item2475(new HashSet<String>(), "ID-2"))));
     }    
 
 }

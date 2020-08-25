@@ -287,7 +287,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
 
     /*
     public void testDontWriteIfDefaultImpl() throws Exception {
-        String json = MAPPER.writeValueAsString(new MyInter());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MyInter()));
         assertEquals("{\"blah\":null}", json);
     }
     */

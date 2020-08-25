@@ -39,7 +39,7 @@ public class TestDefaultForEnums
         
         // First, without type info
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = m.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean));
         TimeUnitBean result = m.readValue(json, TimeUnitBean.class);
         assertEquals(TimeUnit.SECONDS, result.timeUnit);
         
@@ -47,7 +47,7 @@ public class TestDefaultForEnums
         m = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
-        json = m.writeValueAsString(bean);
+        json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean));
         result = m.readValue(json, TimeUnitBean.class);
 
         assertEquals(TimeUnit.SECONDS, result.timeUnit);
@@ -59,7 +59,7 @@ public class TestDefaultForEnums
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         // Typing is needed for enums
-        String json = m.writeValueAsString(new Object[] { TestEnum.A });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Object[] { TestEnum.A }));
         assertEquals("[[\"com.fasterxml.jackson.databind.jsontype.deftyping.TestDefaultForEnums$TestEnum\",\"A\"]]", json);
 
         // and let's verify we get it back ok as well:
@@ -73,7 +73,7 @@ public class TestDefaultForEnums
         ObjectMapper m = JsonMapper.builder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
-        String json = m.writeValueAsString(new EnumHolder(TestEnum.B));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new EnumHolder(TestEnum.B)));
         assertEquals("{\"value\":[\"com.fasterxml.jackson.databind.jsontype.deftyping.TestDefaultForEnums$TestEnum\",\"B\"]}", json);
         EnumHolder holder = m.readValue(json, EnumHolder.class);
         assertSame(TestEnum.B, holder.value);

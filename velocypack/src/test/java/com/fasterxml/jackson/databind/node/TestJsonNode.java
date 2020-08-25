@@ -101,7 +101,7 @@ public class TestJsonNode extends NodeTestBase
         ObjectNode root = MAPPER.createObjectNode();
         root.putRawValue("a", new RawValue(new SerializedString("[1, 2, 3]")));
 
-        assertEquals("{\"a\":[1, 2, 3]}", MAPPER.writeValueAsString(root));
+        assertEquals("{\"a\":[1, 2, 3]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
     }
 
     // [databind#790]

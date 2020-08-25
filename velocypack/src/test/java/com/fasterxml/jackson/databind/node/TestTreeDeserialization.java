@@ -50,7 +50,7 @@ public class TestTreeDeserialization
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         JsonNode jNode = mapper.readValue(json, JsonNode.class);
 
-        String generated = mapper.writeValueAsString( jNode);  //back slashes are gone
+        String generated = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes( jNode));  //back slashes are gone
         JsonNode out = mapper.readValue( generated, JsonNode.class );   //crashes here
         assertTrue(out.isObject());
         assertEquals(1, out.size());

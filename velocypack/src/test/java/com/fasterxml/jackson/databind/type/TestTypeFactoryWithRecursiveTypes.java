@@ -26,7 +26,7 @@ public class TestTypeFactoryWithRecursiveTypes extends BaseMapTest {
         tf.constructType(Base.class);
         tf.constructType(Sub.class);
         Sub sub = new Sub();
-        String serialized = objectMapper().writeValueAsString(sub);
+        String serialized = com.fasterxml.jackson.VPackUtils.toJson( objectMapper().writeValueAsBytes(sub));
         assertEquals("{\"base\":1,\"sub\":2}", serialized);
     }
 }

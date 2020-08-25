@@ -205,7 +205,7 @@ public class SimpleModuleTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // first: serialization failure:
         try {
-            mapper.writeValueAsString(new CustomBean("foo", 3));
+            mapper.writeValueAsBytes(new CustomBean("foo", 3));
             fail("Should have caused an exception");
         } catch (IOException e) {
             verifyException(e, "No serializer found");
@@ -233,7 +233,7 @@ public class SimpleModuleTest extends BaseMapTest
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addSerializer(new CustomBeanSerializer());
         mapper.registerModule(mod);
-        assertEquals(quote("abcde|5"), mapper.writeValueAsString(new CustomBean("abcde", 5)));
+        assertEquals(quote("abcde|5"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new CustomBean("abcde", 5))));
     }
 
     public void testSimpleEnumSerializer() throws Exception
@@ -243,7 +243,7 @@ public class SimpleModuleTest extends BaseMapTest
         mod.addSerializer(new SimpleEnumSerializer());
         // for fun, call "multi-module" registration
         mapper.registerModules(mod);
-        assertEquals(quote("b"), mapper.writeValueAsString(SimpleEnum.B));
+        assertEquals(quote("b"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(SimpleEnum.B)));
     }
 
     public void testSimpleInterfaceSerializer() throws Exception
@@ -254,8 +254,8 @@ public class SimpleModuleTest extends BaseMapTest
         // and another variant here too
         List<SimpleModule> mods = Arrays.asList(mod);
         mapper.registerModules(mods);
-        assertEquals(quote("Base:1"), mapper.writeValueAsString(new Impl1()));
-        assertEquals(quote("Base:2"), mapper.writeValueAsString(new Impl2()));
+        assertEquals(quote("Base:1"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Impl1())));
+        assertEquals(quote("Base:2"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Impl2())));
     }
     
     /*
@@ -300,7 +300,7 @@ public class SimpleModuleTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(mod1);
         mapper.registerModule(mod2);
-        assertEquals(quote("b"), mapper.writeValueAsString(SimpleEnum.B));
+        assertEquals(quote("b"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(SimpleEnum.B)));
         SimpleEnum result = mapper.readValue(quote("a"), SimpleEnum.class);
         assertSame(SimpleEnum.A, result);
 
@@ -308,7 +308,7 @@ public class SimpleModuleTest extends BaseMapTest
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(mod2);
         mapper.registerModule(mod1);
-        assertEquals(quote("b"), mapper.writeValueAsString(SimpleEnum.B));
+        assertEquals(quote("b"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(SimpleEnum.B)));
         result = mapper.readValue(quote("a"), SimpleEnum.class);
         assertSame(SimpleEnum.A, result);
     }

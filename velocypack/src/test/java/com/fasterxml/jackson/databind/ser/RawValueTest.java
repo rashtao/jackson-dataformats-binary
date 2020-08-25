@@ -58,7 +58,7 @@ public class RawValueTest
     public void testSimpleStringGetter() throws Exception
     {
         String value = "abc";
-        String result = MAPPER.writeValueAsString(new ClassGetter<String>(value));
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ClassGetter<String>(value)));
         String expected = String.format("{\"nonRaw\":\"%s\",\"raw\":%s,\"value\":%s}", value, value, value);
         assertEquals(expected, result);
     }
@@ -66,14 +66,14 @@ public class RawValueTest
     public void testSimpleNonStringGetter() throws Exception
     {
         int value = 123;
-        String result = MAPPER.writeValueAsString(new ClassGetter<Integer>(value));
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ClassGetter<Integer>(value)));
         String expected = String.format("{\"nonRaw\":%d,\"raw\":%d,\"value\":%d}", value, value, value);
         assertEquals(expected, result);
     }
 
     public void testNullStringGetter() throws Exception
     {
-        String result = MAPPER.writeValueAsString(new ClassGetter<String>(null));
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ClassGetter<String>(null)));
         String expected = "{\"nonRaw\":null,\"raw\":null,\"value\":null}";
         assertEquals(expected, result);
     }
@@ -82,7 +82,7 @@ public class RawValueTest
     {
         JsonNode w = MAPPER.valueToTree(new RawWrapped("{ }"));
         assertNotNull(w);
-        assertEquals("{\"json\":{ }}", MAPPER.writeValueAsString(w));
+        assertEquals("{\"json\":{ }}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w)));
     }
 
     // for [databind#743]
@@ -93,7 +93,7 @@ public class RawValueTest
         Map<String, Object> object = new HashMap<String, Object>();
         object.put("key", myType);
         JsonNode jsonNode = MAPPER.valueToTree(object);
-        String json = MAPPER.writeValueAsString(jsonNode);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(jsonNode));
         assertEquals("{\"key\":Jackson}", json);
     }
 }

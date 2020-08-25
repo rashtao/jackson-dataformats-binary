@@ -259,7 +259,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SerializerModifierModule(new RemovingModifier("a")));
         Bean bean = new Bean();
-        assertEquals("{\"b\":\"b\"}", mapper.writeValueAsString(bean));
+        assertEquals("{\"b\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
     }
 
     public void testPropertyReorder() throws Exception
@@ -267,7 +267,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SerializerModifierModule(new ReorderingModifier()));
         Bean bean = new Bean();
-        assertEquals("{\"a\":\"a\",\"b\":\"b\"}", mapper.writeValueAsString(bean));
+        assertEquals("{\"a\":\"a\",\"b\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
     }
 
     public void testBuilderReplacement() throws Exception
@@ -275,14 +275,14 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SerializerModifierModule(new BuilderModifier(new BogusBeanSerializer(17))));
         Bean bean = new Bean();
-        assertEquals("17", mapper.writeValueAsString(bean));
+        assertEquals("17", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
     }    
     public void testSerializerReplacement() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SerializerModifierModule(new ReplacingModifier(new BogusBeanSerializer(123))));
         Bean bean = new Bean();
-        assertEquals("123", mapper.writeValueAsString(bean));
+        assertEquals("123", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
     }
 
     // for [JACKSON-670]
@@ -297,7 +297,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
                 context.addBeanSerializerModifier(new EmptyBeanModifier());
             }
         });
-        String json = mapper.writeValueAsString(new EmptyBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyBean()));
         assertEquals("{\"bogus\":\"foo\"}", json);
     }
 
@@ -312,7 +312,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
                 context.addBeanSerializerModifier(new EmptyBeanModifier539());
             }
         });
-        String json = mapper.writeValueAsString(new EmptyBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyBean()));
         assertEquals("42", json);
     }
     
@@ -323,7 +323,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setSerializerModifier(new ArraySerializerModifier()));
-        assertEquals("123", mapper.writeValueAsString(new Integer[] { 1, 2 }));
+        assertEquals("123", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Integer[] { 1, 2 })));
     }
 
     public void testModifyCollectionSerializer() throws Exception
@@ -331,7 +331,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setSerializerModifier(new CollectionSerializerModifier()));
-        assertEquals("123", mapper.writeValueAsString(new ArrayList<Integer>()));
+        assertEquals("123", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ArrayList<Integer>())));
     }
 
     public void testModifyMapSerializer() throws Exception
@@ -339,7 +339,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setSerializerModifier(new MapSerializerModifier()));
-        assertEquals("123", mapper.writeValueAsString(new HashMap<String,String>()));
+        assertEquals("123", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new HashMap<String,String>())));
     }
 
     public void testModifyEnumSerializer() throws Exception
@@ -347,7 +347,7 @@ public class BeanSerializerModifierTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setSerializerModifier(new EnumSerializerModifier()));
-        assertEquals("123", mapper.writeValueAsString(ABC.C));
+        assertEquals("123", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(ABC.C)));
     }
 
     public void testModifyKeySerializer() throws Exception
@@ -357,6 +357,6 @@ public class BeanSerializerModifierTest extends BaseMapTest
             .setSerializerModifier(new KeySerializerModifier()));
         Map<String,Integer> map = new HashMap<String,Integer>();
         map.put("x", 3);
-        assertEquals("{\"foo\":3}", mapper.writeValueAsString(map));
+        assertEquals("{\"foo\":3}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map)));
     }
 }

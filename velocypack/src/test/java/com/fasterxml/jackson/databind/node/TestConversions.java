@@ -231,7 +231,7 @@ public class TestConversions extends BaseMapTest
         ObjectNode node = MAPPER.createObjectNode();
         node.put("data", inputData);
         Issue709Bean result = MAPPER.treeToValue(node, Issue709Bean.class);
-        String json = MAPPER.writeValueAsString(node);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(node));
         Issue709Bean resultFromString = MAPPER.readValue(json, Issue709Bean.class);
         Issue709Bean resultFromConvert = MAPPER.convertValue(node, Issue709Bean.class);
         
@@ -283,13 +283,13 @@ public class TestConversions extends BaseMapTest
         final String EXP = "{\"x\":13}";
         
         // first, sanity check
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(EXP, json);
 
         // then via conversions: should become JSON Object
         JsonNode tree = MAPPER.valueToTree(input);
         assertTrue("Expected Object, got "+tree.getNodeType(), tree.isObject());
-        assertEquals(EXP, MAPPER.writeValueAsString(tree));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(tree)));
     }
 
     // [databind#467]
@@ -299,13 +299,13 @@ public class TestConversions extends BaseMapTest
         final String EXP = "true";
 
         // first, sanity check
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(EXP, json);
 
         // then via conversions: should become JSON Object
         JsonNode tree = MAPPER.valueToTree(input);
         assertTrue("Expected Object, got "+tree.getNodeType(), tree.isBoolean());
-        assertEquals(EXP, MAPPER.writeValueAsString(tree));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(tree)));
     }
 
     // [databind#1940]: losing of precision due to coercion

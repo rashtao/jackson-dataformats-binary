@@ -276,19 +276,19 @@ public class ObjectNodeTest
     public void testValidWith() throws Exception
     {
         ObjectNode root = MAPPER.createObjectNode();
-        assertEquals("{}", MAPPER.writeValueAsString(root));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
         JsonNode child = root.with("prop");
         assertTrue(child instanceof ObjectNode);
-        assertEquals("{\"prop\":{}}", MAPPER.writeValueAsString(root));
+        assertEquals("{\"prop\":{}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
     }
 
     public void testValidWithArray() throws Exception
     {
         JsonNode root = MAPPER.createObjectNode();
-        assertEquals("{}", MAPPER.writeValueAsString(root));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
         ArrayNode child = root.withArray("arr");
         assertTrue(child instanceof ArrayNode);
-        assertEquals("{\"arr\":[]}", MAPPER.writeValueAsString(root));
+        assertEquals("{\"arr\":[]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
     }
 
     public void testInvalidWith() throws Exception
@@ -435,16 +435,16 @@ public class ObjectNodeTest
     {
         ObNodeWrapper w = new ObNodeWrapper(MAPPER.createObjectNode()
                 .put("a", 3));
-        assertEquals("{\"node\":{\"a\":3}}", MAPPER.writeValueAsString(w));
+        assertEquals("{\"node\":{\"a\":3}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w)));
         w = new ObNodeWrapper(MAPPER.createObjectNode());
-        assertEquals("{}", MAPPER.writeValueAsString(w));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w)));
     }
 
     public void testIssue941() throws Exception
     {
         ObjectNode object = MAPPER.createObjectNode();
 
-        String json = MAPPER.writeValueAsString(object);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(object));
 //        System.out.println("json: "+json);
 
         ObjectNode de1 = MAPPER.readValue(json, ObjectNode.class);  // this works

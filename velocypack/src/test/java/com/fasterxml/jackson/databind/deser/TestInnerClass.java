@@ -37,7 +37,7 @@ public class TestInnerClass extends BaseMapTest
         // Let's actually verify by first serializing, then deserializing back
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Dog input = new Dog("Smurf", true);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         Dog output = mapper.readValue(json, Dog.class);
         assertEquals("Smurf", output.name);
         assertNotNull(output.brain);
@@ -50,7 +50,7 @@ public class TestInnerClass extends BaseMapTest
         // also, null handling
         input.brain = null;
 
-        output = mapper.readValue(mapper.writeValueAsString(input), Dog.class);
+        output = mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(input)), Dog.class);
         assertNull(output.brain);
     }
 }

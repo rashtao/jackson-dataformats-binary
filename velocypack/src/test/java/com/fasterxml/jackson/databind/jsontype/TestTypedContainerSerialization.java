@@ -112,12 +112,12 @@ public class TestTypedContainerSerialization
 		dog.setBoneCount(3);
 		Container1 c1 = new Container1();
 		c1.setAnimal(dog);
-		String s1 = mapper.writeValueAsString(c1);
+		String s1 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(c1));
 		Assert.assertTrue("polymorphic type info is kept (1)", s1
 				.indexOf("\"object-type\":\"doggy\"") >= 0);
 		Container2<Animal> c2 = new Container2<Animal>();
 		c2.setAnimal(dog);
-		String s2 = mapper.writeValueAsString(c2);
+		String s2 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(c2));
 		Assert.assertTrue("polymorphic type info is kept (2)", s2
 				.indexOf("\"object-type\":\"doggy\"") >= 0);
     }
@@ -127,7 +127,7 @@ public class TestTypedContainerSerialization
         ArrayList<Animal> animals = new ArrayList<Animal>();
         animals.add(new Dog("Spot"));
         JavaType rootType = mapper.getTypeFactory().constructParametricType(Iterator.class, Animal.class);
-        String json = mapper.writerFor(rootType).writeValueAsString(animals.iterator());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(rootType).writeValueAsBytes(animals.iterator()));
         if (json.indexOf("\"object-type\":\"doggy\"") < 0) {
             fail("No polymorphic type retained, should be; JSON = '"+json+"'");
         }
@@ -140,7 +140,7 @@ public class TestTypedContainerSerialization
             l2.add(new Issue508A());
             l.add(l2);
             TypeReference<List<List<Issue508A>>> typeRef = new TypeReference<List<List<Issue508A>>>() {};
-            String json = mapper.writerFor(typeRef).writeValueAsString(l);
+            String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(typeRef).writeValueAsBytes(l));
 
             List<?> output = mapper.readValue(json, typeRef);
             assertEquals(1, output.size());

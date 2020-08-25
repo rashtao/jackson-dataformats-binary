@@ -238,7 +238,7 @@ public class JsonIncludeTest
     public void testNonDefaultByClassNoCtor() throws IOException
     {
         NonDefaultBeanXYZ bean = new NonDefaultBeanXYZ(1, 2, 0);
-        String json = MAPPER.writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bean));
         assertEquals(aposToQuotes("{'x':1,'y':2}"), json);
     }
     
@@ -262,20 +262,20 @@ public class JsonIncludeTest
 
     public void testDefaultForEmptyList() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new ListBean()));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ListBean())));
     }
 
     // NON_DEFAULT shoud work for arrays too
     public void testNonEmptyDefaultArray() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new ArrayBean()));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ArrayBean())));
     }
 
     public void testDefaultForIntegers() throws IOException
     {
-        assertEquals("{}", MAPPER.writeValueAsString(new DefaultIntBean(0, Integer.valueOf(0))));
-        assertEquals("{\"i2\":1}", MAPPER.writeValueAsString(new DefaultIntBean(0, Integer.valueOf(1))));
-        assertEquals("{\"i1\":3}", MAPPER.writeValueAsString(new DefaultIntBean(3, Integer.valueOf(0))));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new DefaultIntBean(0, Integer.valueOf(0)))));
+        assertEquals("{\"i2\":1}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new DefaultIntBean(0, Integer.valueOf(1)))));
+        assertEquals("{\"i1\":3}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new DefaultIntBean(3, Integer.valueOf(0)))));
     }
 
     public void testEmptyInclusionScalars() throws IOException
@@ -285,25 +285,25 @@ public class JsonIncludeTest
 
         // First, Strings
         StringWrapper str = new StringWrapper("");
-        assertEquals("{\"str\":\"\"}", defMapper.writeValueAsString(str));
-        assertEquals("{}", inclMapper.writeValueAsString(str));
-        assertEquals("{}", inclMapper.writeValueAsString(new StringWrapper()));
+        assertEquals("{\"str\":\"\"}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(str)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(str)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(new StringWrapper())));
 
-        assertEquals("{\"value\":\"x\"}", defMapper.writeValueAsString(new NonEmptyString("x")));
-        assertEquals("{}", defMapper.writeValueAsString(new NonEmptyString("")));
+        assertEquals("{\"value\":\"x\"}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(new NonEmptyString("x"))));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(new NonEmptyString(""))));
 
         // Then numbers
         // 11-Nov-2015, tatu: As of Jackson 2.7, scalars should NOT be considered empty,
         //   except for wrappers if they are `null`
-        assertEquals("{\"value\":12}", defMapper.writeValueAsString(new NonEmptyInt(12)));
-        assertEquals("{\"value\":0}", defMapper.writeValueAsString(new NonEmptyInt(0)));
+        assertEquals("{\"value\":12}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(new NonEmptyInt(12))));
+        assertEquals("{\"value\":0}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(new NonEmptyInt(0))));
 
-        assertEquals("{\"value\":1.25}", defMapper.writeValueAsString(new NonEmptyDouble(1.25)));
-        assertEquals("{\"value\":0.0}", defMapper.writeValueAsString(new NonEmptyDouble(0.0)));
+        assertEquals("{\"value\":1.25}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(new NonEmptyDouble(1.25))));
+        assertEquals("{\"value\":0.0}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(new NonEmptyDouble(0.0))));
 
         IntWrapper zero = new IntWrapper(0);
-        assertEquals("{\"i\":0}", defMapper.writeValueAsString(zero));
-        assertEquals("{\"i\":0}", inclMapper.writeValueAsString(zero));
+        assertEquals("{\"i\":0}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(zero)));
+        assertEquals("{\"i\":0}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(zero)));
     }
 
     // [databind#1351], [databind#1417]
@@ -311,21 +311,21 @@ public class JsonIncludeTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-        assertEquals(aposToQuotes("{}"),
-                mapper.writeValueAsString(new Issue1351Bean(null, (double) 0)));
+        assertEquals(aposToQuotes("{}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new Issue1351Bean(null, (double) 0))));
         // [databind#1417]
-        assertEquals(aposToQuotes("{}"),
-                mapper.writeValueAsString(new Issue1351NonBean(0)));
+        assertEquals(aposToQuotes("{}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(new Issue1351NonBean(0))));
     }
 
     // [databind#1550]
     public void testInclusionOfDate() throws Exception
     {
         final Date input = new Date(0L);
-        assertEquals(aposToQuotes("{'value':0}"), 
-                MAPPER.writeValueAsString(new NonEmptyDate(input)));
-        assertEquals("{}", 
-                MAPPER.writeValueAsString(new NonDefaultDate(input)));
+        assertEquals(aposToQuotes("{'value':0}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new NonEmptyDate(input))));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new NonDefaultDate(input))));
 
     
     }
@@ -335,9 +335,9 @@ public class JsonIncludeTest
     {
         final Calendar input = new GregorianCalendar();
         input.setTimeInMillis(0L);
-        assertEquals(aposToQuotes("{'value':0}"), 
-                MAPPER.writeValueAsString(new NonEmptyCalendar(input)));
-        assertEquals("{}", 
-                MAPPER.writeValueAsString(new NonDefaultCalendar(input)));
+        assertEquals(aposToQuotes("{'value':0}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new NonEmptyCalendar(input))));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new NonDefaultCalendar(input))));
     }
 }

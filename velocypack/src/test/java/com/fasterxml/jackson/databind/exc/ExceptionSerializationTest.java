@@ -72,7 +72,7 @@ public class ExceptionSerializationTest
     {
         JsonParser p = MAPPER.getFactory().createParser("{ }");
         InvalidFormatException exc = InvalidFormatException.from(p, "Test", getClass(), String.class);
-        String json = MAPPER.writeValueAsString(exc);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(exc));
         p.close();
         assertNotNull(json);
     }
@@ -85,9 +85,9 @@ public class ExceptionSerializationTest
         input.initCause(new IOException("surprise!"));
 
         // First, should ignore anything with class annotations
-        String json = MAPPER
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER
                 .writerWithDefaultPrettyPrinter()
-                .writeValueAsString(input);
+                .writeValueAsBytes(input));
 
         Map<String,Object> result = MAPPER.readValue(json, Map.class);
         assertEquals("foobar", result.get("message"));
@@ -99,8 +99,8 @@ public class ExceptionSerializationTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(ExceptionWithIgnoral.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("bogus2"));
-        String json2 = mapper
-                .writeValueAsString(new ExceptionWithIgnoral("foobar"));
+        String json2 = com.fasterxml.jackson.VPackUtils.toJson( mapper
+                .writeValueAsBytes(new ExceptionWithIgnoral("foobar")));
 
         Map<String,Object> result2 = mapper.readValue(json2, Map.class);
         assertNull(result2.get("bogus1"));
@@ -124,7 +124,7 @@ public class ExceptionSerializationTest
             e = e0;
         }
         // but should be able to serialize new exception we got
-        String json = MAPPER.writeValueAsString(e);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(e));
         JsonNode root = MAPPER.readTree(json);
         String msg = root.path("message").asText();
         String MATCH = "cannot construct instance";

@@ -102,7 +102,7 @@ public class UtilCollectionsTypesTest extends BaseMapTest
        // Here there are no semantics to preserve, so simply check that
        // contents remain the same
        List<String> input = Arrays.asList("a", "bc", "def");
-       String json = DEFAULT_MAPPER.writeValueAsString(input);
+       String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_MAPPER.writeValueAsBytes(input));
        List<?> result = DEFAULT_MAPPER.readValue(json, List.class);
        assertEquals(input, result);
    }
@@ -120,13 +120,13 @@ public class UtilCollectionsTypesTest extends BaseMapTest
    }
 
    protected Collection<?> _writeReadCollection(Collection<?> input) throws Exception {
-       final String json = DEFAULT_MAPPER.writeValueAsString(input);
+       final String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_MAPPER.writeValueAsBytes(input));
        return DEFAULT_MAPPER.readValue(json, Collection.class);
    }
    
    protected void _verifyMap(Map<?,?> exp) throws Exception
    {
-       String json = DEFAULT_MAPPER.writeValueAsString(exp);
+       String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_MAPPER.writeValueAsBytes(exp));
        Map<?,?> act = DEFAULT_MAPPER.readValue(json, Map.class);
 
        assertEquals(exp, act);

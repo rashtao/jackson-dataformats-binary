@@ -10,7 +10,7 @@ public class ToStringForNodesTest extends BaseMapTest
     {
         _verifyToStrings(MAPPER.readTree("{ \"key\" : 1, \"b\" : \"x\", \"array\" : [ 1, false ] }"));
         final ObjectNode n = MAPPER.createObjectNode().put("msg", "hello world");
-        assertEquals(MAPPER.writeValueAsString(n), n.toString());
+        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(n)), n.toString());
         final String expPretty = MAPPER.writer().withDefaultPrettyPrinter()
                 .writeValueAsString(n);
         assertEquals(expPretty, n.toPrettyString());
@@ -31,9 +31,9 @@ public class ToStringForNodesTest extends BaseMapTest
     
     protected void _verifyToStrings(JsonNode node) throws Exception
     {
-        assertEquals(MAPPER.writeValueAsString(node), node.toString());
+        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(node)), node.toString());
 
-        assertEquals(MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(node),
+        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(node)),
                 node.toPrettyString());
     }
 }

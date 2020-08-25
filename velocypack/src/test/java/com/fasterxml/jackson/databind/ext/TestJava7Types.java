@@ -15,7 +15,7 @@ public class TestJava7Types extends BaseMapTest
 
         Path input = Paths.get("/tmp", "foo.txt");
 
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertNotNull(json);
 
         Path p = mapper.readValue(json, Path.class);
@@ -34,7 +34,7 @@ public class TestJava7Types extends BaseMapTest
                 .build();
         Path input = Paths.get("/tmp", "foo.txt");
 
-        String json = mapper.writeValueAsString(new Object[] { input });
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Object[] { input }));
 
         Object[] obs = mapper.readValue(json, Object[].class);
         assertEquals(1, obs.length);

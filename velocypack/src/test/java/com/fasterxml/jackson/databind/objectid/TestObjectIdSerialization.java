@@ -194,11 +194,11 @@ public class TestObjectIdSerialization extends BaseMapTest
         src.next = src;
         
         // First, serialize:
-        String json = MAPPER.writeValueAsString(src);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_SIMPLE_INT_CLASS, json);
 
         // and ensure that state is cleared in-between as well:
-        json = MAPPER.writeValueAsString(src);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_SIMPLE_INT_CLASS, json);
     }
     
@@ -211,10 +211,10 @@ public class TestObjectIdSerialization extends BaseMapTest
         src.node.next = src;
         
         // First, serialize:
-        String json = MAPPER.writeValueAsString(src);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_SIMPLE_INT_PROP, json);
         // and second time too, for a good measure
-        json = MAPPER.writeValueAsString(src);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_SIMPLE_INT_PROP, json);
     }
 
@@ -222,7 +222,7 @@ public class TestObjectIdSerialization extends BaseMapTest
     public void testEmptyObjectWithId() throws Exception
     {
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(new EmptyObject());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyObject()));
         assertEquals(aposToQuotes("{'@id':1}"), json);
     }    
 
@@ -234,7 +234,7 @@ public class TestObjectIdSerialization extends BaseMapTest
         ob2.next = ob1;
 
         // first just verify we get some output
-        String json = MAPPER.writeValueAsString(ob1);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(ob1));
         assertNotNull(json);
 
         // then get them back
@@ -268,11 +268,11 @@ public class TestObjectIdSerialization extends BaseMapTest
         src.next = src;
         
         // First, serialize:
-        String json = MAPPER.writeValueAsString(src);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_CUSTOM_PROP, json);
 
         // and ensure that state is cleared in-between as well:
-        json = MAPPER.writeValueAsString(src);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_CUSTOM_PROP, json);
     }
 
@@ -284,16 +284,16 @@ public class TestObjectIdSerialization extends BaseMapTest
         src.node.next = src;
         
         // First, serialize:
-        String json = MAPPER.writeValueAsString(src);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_CUSTOM_PROP_VIA_REF, json);
         // and second time too, for a good measure
-        json = MAPPER.writeValueAsString(src);
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(src));
         assertEquals(EXP_CUSTOM_PROP_VIA_REF, json);
     }
 
     public void testAlwaysAsId() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new AlwaysContainer());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new AlwaysContainer()));
         assertEquals("{\"a\":1,\"b\":2}", json);
     }
 
@@ -302,7 +302,7 @@ public class TestObjectIdSerialization extends BaseMapTest
         TreeNode root = new TreeNode(null, 1, "root");     
         TreeNode leaf = new TreeNode(root, 2, "leaf");
         root.child = leaf;
-        String json = MAPPER.writeValueAsString(root);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root));
 //        System.out.println(json);
         assertEquals("{\"id\":1,\"name\":\"root\",\"parent\":null,\"child\":"
                 +"{\"id\":2,\"name\":\"leaf\",\"parent\":1,\"child\":null}}",
@@ -328,7 +328,7 @@ public class TestObjectIdSerialization extends BaseMapTest
     public void testInvalidProp() throws Exception
     {
         try {
-            MAPPER.writeValueAsString(new Broken());
+            MAPPER.writeValueAsBytes(new Broken());
             fail("Should have thrown an exception");
         } catch (JsonMappingException e) {
             verifyException(e, "cannot find property with name 'id'");

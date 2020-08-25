@@ -20,7 +20,7 @@ public class TestJacksonTypes
         // note: source reference is untyped, only String guaranteed to work
         JsonLocation loc = new JsonLocation("whatever",  -1, -1, 100, 13);
         // Let's use serializer here; goal is round-tripping
-        String ser = MAPPER.writeValueAsString(loc);
+        String ser = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(loc));
         JsonLocation result = MAPPER.readValue(ser, JsonLocation.class);
         assertNotNull(result);
         assertEquals(loc.getSourceRef(), result.getSourceRef());
@@ -47,7 +47,7 @@ public class TestJacksonTypes
     {
         TypeFactory tf = TypeFactory.defaultInstance();
         // first simple type:
-        String json = MAPPER.writeValueAsString(tf.constructType(String.class));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(tf.constructType(String.class)));
         assertEquals(quote(java.lang.String.class.getName()), json);
         // and back
         JavaType t = MAPPER.readValue(json, JavaType.class);

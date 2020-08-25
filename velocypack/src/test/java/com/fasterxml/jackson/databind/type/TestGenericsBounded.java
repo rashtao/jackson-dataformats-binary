@@ -133,7 +133,7 @@ public class TestGenericsBounded
     public void testGenericsComplex() throws Exception
     {
         DoubleRange in = new DoubleRange(-0.5, 0.5);
-        String json = MAPPER.writeValueAsString(in);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(in));
         DoubleRange out = MAPPER.readValue(json, DoubleRange.class);
         assertNotNull(out);
         assertEquals(-0.5, out.start);
@@ -173,7 +173,7 @@ public class TestGenericsBounded
     {
         AnnotatedValueSimple<Integer> item = new AnnotatedValueSimple<Integer>(5);
         CbFailing<AnnotatedValueSimple<Integer>, Integer> codebook = new CbFailing<AnnotatedValueSimple<Integer>, Integer>(item);
-        String json = MAPPER.writeValueAsString(codebook);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(codebook));
         assertNotNull(json);
     }
 }

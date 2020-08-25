@@ -176,12 +176,12 @@ public class MapKeySerializationTest extends BaseMapTest
     final private ObjectMapper MAPPER = objectMapper();
 
     public void testNotKarl() throws IOException {
-        final String serialized = MAPPER.writeValueAsString(new NotKarlBean());
+        final String serialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NotKarlBean()));
         assertEquals("{\"map\":{\"Not Karl\":1}}", serialized);
     }
 
     public void testKarl() throws IOException {
-        final String serialized = MAPPER.writeValueAsString(new KarlBean());
+        final String serialized = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new KarlBean()));
         assertEquals("{\"map\":{\"Karl\":1}}", serialized);
     }
 
@@ -190,9 +190,9 @@ public class MapKeySerializationTest extends BaseMapTest
     {
         // Let's NOT use shared one, to ensure caching starts from clean slate
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        final String value1 = mapper.writeValueAsString(new NotKarlBean());
+        final String value1 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NotKarlBean()));
         assertEquals("{\"map\":{\"Not Karl\":1}}", value1);
-        final String value2 = mapper.writeValueAsString(new KarlBean());
+        final String value2 = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new KarlBean()));
         assertEquals("{\"map\":{\"Karl\":1}}", value2);
     }
 
@@ -205,7 +205,7 @@ public class MapKeySerializationTest extends BaseMapTest
         mod.addKeySerializer(ABC.class, new ABCKeySerializer());
         mapper.registerModule(mod);
 
-        String json = mapper.writeValueAsString(new ABCMapWrapper());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ABCMapWrapper()));
         assertEquals("{\"stuff\":{\"xxxB\":\"bar\"}}", json);
     }
 
@@ -216,9 +216,9 @@ public class MapKeySerializationTest extends BaseMapTest
         mapper.getSerializerProvider().setNullValueSerializer(new NullValueSerializer("NULL"));
         Map<String,Integer> input = new HashMap<>();
         input.put(null, 3);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"NULL-KEY\":3}", json);
-        json = mapper.writeValueAsString(new Object[] { 1, null, true });
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Object[] { 1, null, true }));
         assertEquals("[1,\"NULL\",true]", json);
     }
     
@@ -248,7 +248,7 @@ public class MapKeySerializationTest extends BaseMapTest
         m.getSerializerProvider().setDefaultKeySerializer(new DefaultKeySerializer());
         Map<String,String> map = new HashMap<String,String>();
         map.put("a", "b");
-        assertEquals("{\"DEFAULT:a\":\"b\"}", m.writeValueAsString(map));
+        assertEquals("{\"DEFAULT:a\":\"b\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map)));
     }
     
     // [databind#47]
@@ -257,7 +257,7 @@ public class MapKeySerializationTest extends BaseMapTest
         WatMap input = new WatMap();
         input.put(new Wat("3"), true);
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(aposToQuotes("{'3':true}"), json);
     }    
 
@@ -266,7 +266,7 @@ public class MapKeySerializationTest extends BaseMapTest
     {
         Map<Class<?>,Integer> map = new LinkedHashMap<Class<?>,Integer>();
         map.put(String.class, 2);
-        String json = MAPPER.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map));
         assertEquals(aposToQuotes("{'java.lang.String':2}"), json);
     }
 
@@ -285,8 +285,8 @@ public class MapKeySerializationTest extends BaseMapTest
 
         Map<ABC,BAR<?>> stuff = new HashMap<ABC,BAR<?>>();
         stuff.put(ABC.B, new BAR<String>("bar"));
-        String json = mapper.writerFor(new TypeReference<Map<ABC,BAR<?>>>() {})
-                .writeValueAsString(stuff);
+        String json = com.fasterxml.jackson.VPackUtils.toJson(mapper.writerFor(new TypeReference<Map<ABC,BAR<?>>>() {})
+                .writeValueAsBytes(stuff));
         assertEquals("{\"xxxB\":\"bar\"}", json);
     }
 
@@ -307,8 +307,8 @@ public class MapKeySerializationTest extends BaseMapTest
 
         Map<ABC,String> stuff = new HashMap<ABC,String>();
         stuff.put(ABC.B, "bar");
-        String json = mapper.writerFor(new TypeReference<Map<ABC, String>>() {})
-                .writeValueAsString(stuff);
+        String json = com.fasterxml.jackson.VPackUtils.toJson(mapper.writerFor(new TypeReference<Map<ABC, String>>() {})
+                .writeValueAsBytes(stuff));
         assertEquals("{\"@type\":\"HashMap\",\"xxxB\":\"bar\"}", json);
     }
     
@@ -318,7 +318,7 @@ public class MapKeySerializationTest extends BaseMapTest
         Map<Object,Integer> stuff = new LinkedHashMap<Object,Integer>();
         stuff.put(AbcLC.B, Integer.valueOf(3));
         stuff.put(new UCString("foo"), Integer.valueOf(4));
-        String json = MAPPER.writeValueAsString(stuff);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(stuff));
         assertEquals(aposToQuotes("{'b':3,'FOO':4}"), json);
     }    
     // [databind#1552]
@@ -330,13 +330,13 @@ public class MapKeySerializationTest extends BaseMapTest
         MapWrapper<byte[], String> input = new MapWrapper<>(binary, "stuff");
         String expBase64 = Base64Variants.MIME.encode(binary);
         
-        assertEquals(aposToQuotes("{'map':{'"+expBase64+"':'stuff'}}"),
-                MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'map':{'"+expBase64+"':'stuff'}}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
 
         // and then dynamically..
         Map<byte[],String> map = new LinkedHashMap<>();
         map.put(binary, "xyz");
-        assertEquals(aposToQuotes("{'"+expBase64+"':'xyz'}"),
-                MAPPER.writeValueAsString(map));
+        assertEquals(aposToQuotes("{'"+expBase64+"':'xyz'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(map)));
     }
 }

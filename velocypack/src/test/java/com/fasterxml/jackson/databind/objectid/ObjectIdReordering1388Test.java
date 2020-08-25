@@ -51,7 +51,7 @@ public class ObjectIdReordering1388Test extends BaseMapTest
         final TypeReference<List<NamedThing>> namedThingListType = new TypeReference<List<NamedThing>>() { };
 
         {
-            final String jsog = mapper.writeValueAsString(Arrays.asList(thing, thing, thing));
+            final String jsog = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(Arrays.asList(thing, thing, thing)));
             final List<NamedThing> list = mapper.readValue(jsog, namedThingListType);
             _assertAllSame(list);
             // this is the jsog representation of the list of 3 of the same item

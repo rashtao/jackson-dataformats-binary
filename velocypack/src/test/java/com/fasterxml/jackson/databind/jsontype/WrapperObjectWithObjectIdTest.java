@@ -75,8 +75,8 @@ public class WrapperObjectWithObjectIdTest extends BaseMapTest
 
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
-        String json = mapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(comp);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsBytes(comp));
 
         Company result = mapper.readValue(json, Company.class);
         assertNotNull(result);

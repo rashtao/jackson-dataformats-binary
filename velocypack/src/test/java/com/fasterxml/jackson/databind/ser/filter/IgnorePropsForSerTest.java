@@ -119,26 +119,26 @@ public class IgnorePropsForSerTest
 
     public void testIgnoreViaOnlyProps() throws Exception
     {
-        assertEquals("{\"value\":{\"x\":1}}",
-                MAPPER.writeValueAsString(new WrapperWithPropIgnore()));
+        assertEquals("{\"value\":{\"x\":1}}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new WrapperWithPropIgnore())));
     }
 
     // Also: should be fine even if nominal type is `java.lang.Object`
     public void testIgnoreViaPropForUntyped() throws Exception
     {
-        assertEquals("{\"value\":{\"z\":3}}",
-                MAPPER.writeValueAsString(new WrapperWithPropIgnoreUntyped()));
+        assertEquals("{\"value\":{\"z\":3}}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new WrapperWithPropIgnoreUntyped())));
     }
     
     public void testIgnoreWithMapProperty() throws Exception
     {
-        assertEquals("{\"value\":{\"b\":2}}", MAPPER.writeValueAsString(new MapWrapper()));
+        assertEquals("{\"value\":{\"b\":2}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new MapWrapper())));
     }
     
     public void testIgnoreViaPropsAndClass() throws Exception
     {
-        assertEquals("{\"value\":{\"y\":2}}",
-                MAPPER.writeValueAsString(new WrapperWithPropIgnore2()));
+        assertEquals("{\"value\":{\"y\":2}}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new WrapperWithPropIgnore2())));
     }
 
     public void testIgnoreViaConfigOverride() throws Exception
@@ -146,7 +146,7 @@ public class IgnorePropsForSerTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Point.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("x"));
-        assertEquals("{\"y\":3}", mapper.writeValueAsString(new Point(2, 3)));
+        assertEquals("{\"y\":3}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Point(2, 3))));
     }
 
     // for [databind#1060]
@@ -154,11 +154,11 @@ public class IgnorePropsForSerTest
     public void testIgnoreForListValues() throws Exception
     {
         // should apply to elements
-        assertEquals(aposToQuotes("{'coordinates':[{'y':2}]}"),
-                MAPPER.writeValueAsString(new IgnoreForListValuesXY()));
+        assertEquals(aposToQuotes("{'coordinates':[{'y':2}]}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new IgnoreForListValuesXY())));
 
         // and combine values too
-        assertEquals(aposToQuotes("{'coordinates':[{'z':3}]}"),
-                MAPPER.writeValueAsString(new IgnoreForListValuesXYZ()));
+        assertEquals(aposToQuotes("{'coordinates':[{'z':3}]}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new IgnoreForListValuesXYZ())));
     }
 }

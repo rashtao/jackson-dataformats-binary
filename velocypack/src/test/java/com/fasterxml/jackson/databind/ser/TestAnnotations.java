@@ -228,7 +228,7 @@ public class TestAnnotations
 
     public void testInactiveMethodSerializer() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new InactiveClassMethodSerializer(8));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new InactiveClassMethodSerializer(8)));
         // Here we will get wrapped as an object, since we have
         // full object, just override a single property
         assertEquals("{\"x\":8}", json);
@@ -241,13 +241,13 @@ public class TestAnnotations
         assertFalse(m.isEnabled(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS));
     
         // by default, all 4 found:
-        assertEquals("{\"a\":3,\"b\":4,\"c\":5,\"d\":6}", m.writeValueAsString(bean));
+        assertEquals("{\"a\":3,\"b\":4,\"c\":5,\"d\":6}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean)));
 
         // but 3 if we require mutator:
         m = jsonMapperBuilder()
                 .enable(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS)
                 .build();
-        assertEquals("{\"a\":3,\"c\":5,\"d\":6}", m.writeValueAsString(bean));
+        assertEquals("{\"a\":3,\"c\":5,\"d\":6}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean)));
     }
 
     public void testGettersWithoutSettersOverride() throws Exception
@@ -256,6 +256,6 @@ public class TestAnnotations
         ObjectMapper m = jsonMapperBuilder()
                 .enable(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS)
                 .build();
-        assertEquals("{\"a\":123}", m.writeValueAsString(bean));
+        assertEquals("{\"a\":123}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(bean)));
     }
 }

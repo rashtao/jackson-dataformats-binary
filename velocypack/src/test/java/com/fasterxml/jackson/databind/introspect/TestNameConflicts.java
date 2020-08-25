@@ -89,20 +89,20 @@ public class TestNameConflicts extends BaseMapTest
     // [Issue#193]
     public void testIssue193() throws Exception
     {
-        String json = objectWriter().writeValueAsString(new Bean193(1, 2));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( objectWriter().writeValueAsBytes(new Bean193(1, 2)));
         assertNotNull(json);
     }
 
     // [Issue#327]
     public void testNonConflict() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new BogusConflictBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new BogusConflictBean()));
         assertEquals(aposToQuotes("{'prop1':2,'prop2':1}"), json);
     }    
 
     public void testHypotheticalGetters() throws Exception
     {
-        String json = objectWriter().writeValueAsString(new MultipleTheoreticalGetters());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( objectWriter().writeValueAsBytes(new MultipleTheoreticalGetters()));
         assertEquals(aposToQuotes("{'a':3}"), json);
     }
 
@@ -110,7 +110,7 @@ public class TestNameConflicts extends BaseMapTest
     public void testOverrideName() throws Exception
     {
         final ObjectMapper mapper = objectMapper();
-        String json = mapper.writeValueAsString(new CoreBean158());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new CoreBean158()));
         assertEquals(aposToQuotes("{'bar':'x'}"), json);
 
         // and back

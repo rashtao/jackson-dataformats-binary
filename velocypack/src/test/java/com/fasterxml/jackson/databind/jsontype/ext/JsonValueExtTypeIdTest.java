@@ -69,14 +69,14 @@ public class JsonValueExtTypeIdTest extends BaseMapTest
     public void testDoubleMetadata() throws IOException {
         DoubleMetadata doub = new DoubleMetadata();
         String expected = "{\"metadata\":[{\"key\":\"num\",\"value\":1234.25,\"@type\":\"doubleValue\"}]}";
-        String json = MAPPER.writeValueAsString(doub);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(doub));
         assertEquals("Serialized json not equivalent", expected, json);
     }
 
     public void testDecimalMetadata() throws IOException{
         DecimalMetadata dec = new DecimalMetadata();
         String expected = "{\"metadata\":[{\"key\":\"num\",\"value\":111.1,\"@type\":\"decimalValue\"}]}";
-        String json = MAPPER.writeValueAsString(dec);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(dec));
         assertEquals("Serialized json not equivalent", expected, json);
     }
 }

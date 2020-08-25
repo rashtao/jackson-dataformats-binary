@@ -46,7 +46,7 @@ public class DelegatingExternalProperty1003Test extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
-        final String json = mapper.writeValueAsString(new HeroBattle(new Superman()));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new HeroBattle(new Superman())));
 
         final HeroBattle battle = mapper.readValue(json, HeroBattle.class);
 

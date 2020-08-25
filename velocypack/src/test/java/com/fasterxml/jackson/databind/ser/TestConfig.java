@@ -110,8 +110,8 @@ public class TestConfig
     {
         Map<String,Integer> map = new HashMap<String,Integer>();
         map.put("a", Integer.valueOf(2));
-        String result = MAPPER.writer().with(SerializationFeature.INDENT_OUTPUT)
-                .writeValueAsString(map);
+        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer().with(SerializationFeature.INDENT_OUTPUT)
+                .writeValueAsBytes(map));
         // 02-Jun-2009, tatu: not really a clean way but...
         String lf = getLF();
         assertEquals("{"+lf+"  \"a\" : 2"+lf+"}", result);
@@ -163,11 +163,11 @@ public class TestConfig
     public void testIndentWithPassedGenerator() throws Exception
     {
         Indentable input = new Indentable();
-        assertEquals("{\"a\":3}", MAPPER.writeValueAsString(input));
+        assertEquals("{\"a\":3}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
         String LF = getLF();
         String INDENTED = "{"+LF+"  \"a\" : 3"+LF+"}";
         final ObjectWriter indentWriter = MAPPER.writer().with(SerializationFeature.INDENT_OUTPUT);
-        assertEquals(INDENTED, indentWriter.writeValueAsString(input));
+        assertEquals(INDENTED, com.fasterxml.jackson.VPackUtils.toJson( indentWriter.writeValueAsBytes(input)));
 
         // [Issue#12]
         StringWriter sw = new StringWriter();
@@ -191,7 +191,7 @@ public class TestConfig
         ObjectMapper m = jsonMapperBuilder()
             .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
             .build();
-        assertEquals("{\"x\":1}", m.writeValueAsString(new SimpleBean()));
+        assertEquals("{\"x\":1}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new SimpleBean())));
     }
 
     public void testDateFormatConfig() throws Exception

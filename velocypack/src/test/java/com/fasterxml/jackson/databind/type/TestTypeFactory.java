@@ -498,7 +498,7 @@ public class TestTypeFactory
     public void testSneakySelfRefs() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String json = mapper.writeValueAsString(new SneakyBean2());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SneakyBean2()));
         assertEquals("{\"foobar\":null}", json);
     }
 

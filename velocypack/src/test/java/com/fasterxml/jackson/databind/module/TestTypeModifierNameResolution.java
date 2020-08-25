@@ -53,7 +53,7 @@ public class TestTypeModifierNameResolution extends BaseMapTest
 		MyType obj = new MyTypeImpl();
 		obj.setData("something");
 
-		String s = mapper.writer().writeValueAsString(obj);
+		String s = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().writeValueAsBytes(obj));
 		assertTrue(s.startsWith("{\"TestTypeModifierNameResolution$MyType\":"));
 	}
 }

@@ -26,7 +26,7 @@ public class LocalTypeTest extends BaseMapTest
         
         EntityContainer input = new EntityContainer(); 
         input.entity = new RuleForm(12);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         
         EntityContainer output = mapper.readValue(json, EntityContainer.class);
         assertEquals(12, output.getEntity().value);

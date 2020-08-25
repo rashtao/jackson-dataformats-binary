@@ -47,23 +47,23 @@ public class SqlDateSerializationTest extends BaseMapTest
         // 11-Oct-2016, tatu: As per [databind#219] we really should use global
         //   defaults in 2.9, even if this changes behavior.
 
-        assertEquals(String.valueOf(date99.getTime()),
-                MAPPER.writeValueAsString(date99));
+        assertEquals(String.valueOf(date99.getTime()), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(date99)));
 
-        assertEquals(aposToQuotes("{'date':0}"),
-                MAPPER.writeValueAsString(new SqlDateAsDefaultBean(0L)));
+        assertEquals(aposToQuotes("{'date':0}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new SqlDateAsDefaultBean(0L))));
 
         // but may explicitly force timestamp too
-        assertEquals(aposToQuotes("{'date':0}"),
-                MAPPER.writeValueAsString(new SqlDateAsNumberBean(0L)));
+        assertEquals(aposToQuotes("{'date':0}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new SqlDateAsNumberBean(0L))));
 
         // And also should be able to use String output as need be:
         ObjectWriter w = MAPPER.writer().without(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
                
-        assertEquals(quote("1999-04-01"), w.writeValueAsString(date99));
-        assertEquals(quote(date0.toString()), w.writeValueAsString(date0));
-        assertEquals(aposToQuotes("{'date':'"+date0.toString()+"'}"),
-                w.writeValueAsString(new SqlDateAsDefaultBean(0L)));
+        assertEquals(quote("1999-04-01"), com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(date99)));
+        assertEquals(quote(date0.toString()), com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(date0)));
+        assertEquals(aposToQuotes("{'date':'"+date0.toString()+"'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                w.writeValueAsBytes(new SqlDateAsDefaultBean(0L))));
     }
 
     public void testSqlTime() throws IOException
@@ -71,7 +71,7 @@ public class SqlDateSerializationTest extends BaseMapTest
         java.sql.Time time = new java.sql.Time(0L);
         // not 100% sure what we should expect wrt timezone, but what serializes
         // does use is quite simple:
-        assertEquals(quote(time.toString()), MAPPER.writeValueAsString(time));
+        assertEquals(quote(time.toString()), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(time)));
     }
 
     public void testSqlTimestamp() throws IOException
@@ -79,8 +79,8 @@ public class SqlDateSerializationTest extends BaseMapTest
         java.sql.Timestamp input = new java.sql.Timestamp(0L);
         // just should produce same output as standard `java.util.Date`:
         Date altTnput = new Date(0L);
-        assertEquals(MAPPER.writeValueAsString(altTnput),
-                MAPPER.writeValueAsString(input));
+        assertEquals(MAPPER.writeValueAsBytes(altTnput),
+                MAPPER.writeValueAsBytes(input));
     }
     
     public void testPatternWithSqlDate() throws Exception
@@ -91,8 +91,8 @@ public class SqlDateSerializationTest extends BaseMapTest
 
         Person i = new Person();
         i.dateOfBirth = java.sql.Date.valueOf("1980-04-14");
-        assertEquals(aposToQuotes("{'dateOfBirth':'1980.04.14'}"),
-                mapper.writeValueAsString(i));
+        assertEquals(aposToQuotes("{'dateOfBirth':'1980.04.14'}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(i)));
     }
 
     // [databind#2064]
@@ -102,7 +102,7 @@ public class SqlDateSerializationTest extends BaseMapTest
         mapper.setTimeZone(TimeZone.getDefault());
         mapper.configOverride(java.sql.Date.class)
             .setFormat(JsonFormat.Value.forPattern("yyyy+MM+dd"));        
-        assertEquals("\"1980+04+14\"",
-            mapper.writeValueAsString(java.sql.Date.valueOf("1980-04-14")));
+        assertEquals("\"1980+04+14\"", com.fasterxml.jackson.VPackUtils.toJson(
+            mapper.writeValueAsBytes(java.sql.Date.valueOf("1980-04-14"))));
     }
 }

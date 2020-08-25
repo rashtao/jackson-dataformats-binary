@@ -138,7 +138,7 @@ public class TestWithGenerics extends BaseMapTest
     public void testWrapperWithGetter() throws Exception
     {
         Dog dog = new Dog("Fluffy", 3);
-        String json = MAPPER.writeValueAsString(new ContainerWithGetter<Animal>(dog));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ContainerWithGetter<Animal>(dog)));
         if (json.indexOf("\"object-type\":\"doggy\"") < 0) {
             fail("polymorphic type not kept, result == "+json+"; should contain 'object-type':'...'");
         }
@@ -147,7 +147,7 @@ public class TestWithGenerics extends BaseMapTest
     public void testWrapperWithField() throws Exception
     {
         Dog dog = new Dog("Fluffy", 3);
-        String json = MAPPER.writeValueAsString(new ContainerWithField<Animal>(dog));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ContainerWithField<Animal>(dog)));
         if (json.indexOf("\"object-type\":\"doggy\"") < 0) {
             fail("polymorphic type not kept, result == "+json+"; should contain 'object-type':'...'");
         }
@@ -157,8 +157,8 @@ public class TestWithGenerics extends BaseMapTest
     {
         Dog dog = new Dog("Fluffy", 3);
         ContainerWithGetter<Animal> c2 = new ContainerWithGetter<Animal>(dog);
-        String json = MAPPER.writerFor(MAPPER.getTypeFactory().constructParametricType(ContainerWithGetter.class,
-                Animal.class)).writeValueAsString(c2);
+        String json = com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writerFor(MAPPER.getTypeFactory().constructParametricType(ContainerWithGetter.class,
+                Animal.class)).writeValueAsBytes(c2));
         if (json.indexOf("\"object-type\":\"doggy\"") < 0) {
             fail("polymorphic type not kept, result == "+json+"; should contain 'object-type':'...'");
         }
@@ -192,7 +192,7 @@ public class TestWithGenerics extends BaseMapTest
         mc.params.add( moc3 );
         mc.params.add( moc4 );
 
-        String json = om.writeValueAsString( mc );
+        String json = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes( mc ));
         
         MyClass mc2 = om.readValue(json, MyClass.class );
         assertNotNull(mc2);
@@ -208,7 +208,7 @@ public class TestWithGenerics extends BaseMapTest
         MyClass mc = new MyClass();
         mc.params.add(new MyParam<Integer>(1));
 
-        String str = om.writeValueAsString( mc );
+        String str = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes( mc ));
 //        System.out.println( str );
         
         MyClass mc2 = om.readValue( str, MyClass.class );
@@ -222,7 +222,7 @@ public class TestWithGenerics extends BaseMapTest
     {
         WrappedContainerWithField wrappedContainerWithField = new WrappedContainerWithField();
         wrappedContainerWithField.animalContainer = new ContainerWithTwoAnimals<Dog,Dog>(new Dog("d1",1), new Dog("d2",2));
-        String json = MAPPER.writeValueAsString(wrappedContainerWithField);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(wrappedContainerWithField));
         assertNotNull(json);
     }
 }

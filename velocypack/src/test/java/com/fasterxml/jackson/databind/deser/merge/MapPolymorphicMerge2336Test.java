@@ -98,7 +98,7 @@ public class MapPolymorphicMerge2336Test extends BaseMapTest
         
         SomeOtherClass toBeMerged = new SomeOtherClass("house");
         toBeMerged.addValue("SOMEKEY", new SomeClassA("jim", null, 2));
-        String jsonForMerging = MAPPER.writeValueAsString(toBeMerged);
+        String jsonForMerging = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(toBeMerged));
 
         assertEquals("fred", baseValue.data.get("SOMEKEY").getName());
         

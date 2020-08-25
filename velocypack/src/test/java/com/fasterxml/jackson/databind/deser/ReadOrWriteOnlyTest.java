@@ -77,7 +77,7 @@ public class ReadOrWriteOnlyTest extends BaseMapTest
     // [databind#935]
     public void testReadOnlyAndWriteOnly() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new ReadXWriteY());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ReadXWriteY()));
         assertEquals("{\"x\":1}", json);
 
         ReadXWriteY result = MAPPER.readValue("{\"x\":5, \"y\":6}", ReadXWriteY.class);
@@ -88,7 +88,7 @@ public class ReadOrWriteOnlyTest extends BaseMapTest
 
     public void testReadOnly935() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new Pojo935());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Pojo935()));
         Pojo935 result = MAPPER.readValue(json, Pojo935.class);
         assertNotNull(result);
     }

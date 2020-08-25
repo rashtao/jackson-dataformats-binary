@@ -100,7 +100,7 @@ public class TestObjectIdWithEquals extends BaseMapTest
         foo.otherBars.add(anotherBar1);
         foo.otherBars.add(bar2);
 
-        String json = mapper.writeValueAsString(foo);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));
         assertEquals("{\"id\":1,\"bars\":[{\"id\":1},{\"id\":2}],\"otherBars\":[1,2]}", json);
 
         Foo foo2 = mapper.readValue(json, Foo.class);       
@@ -126,9 +126,9 @@ public class TestObjectIdWithEquals extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID);
 
-//        String json = mapper.writeValueAsString(input);
-        String json = mapper.writerFor(new TypeReference<List<Element>>() { })
-                .writeValueAsString(input);
+//        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(new TypeReference<List<Element>>() { })
+                .writeValueAsBytes(input));
 
         Element[] output = mapper.readValue(json, Element[].class);
         assertNotNull(output);

@@ -58,21 +58,21 @@ public class JsonIncludeOverrideTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // First, with defaults, both included:
         JsonIncludeOverrideTest.EmptyListMapBean empty = new JsonIncludeOverrideTest.EmptyListMapBean();
-        assertEquals(aposToQuotes("{'list':[],'map':{}}"),
-                mapper.writeValueAsString(empty));
+        assertEquals(aposToQuotes("{'list':[],'map':{}}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(empty)));
 
         // and then change inclusion criteria for either
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Map.class)
             .setInclude(JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, null));
-        assertEquals(aposToQuotes("{'list':[]}"),
-                mapper.writeValueAsString(empty));
+        assertEquals(aposToQuotes("{'list':[]}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(empty)));
 
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(List.class)
             .setInclude(JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, null));
-        assertEquals(aposToQuotes("{'map':{}}"),
-                mapper.writeValueAsString(empty));
+        assertEquals(aposToQuotes("{'map':{}}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(empty)));
     }
 
     public void testOverrideForIncludeAsPropertyNonNull() throws Exception
@@ -80,23 +80,23 @@ public class JsonIncludeOverrideTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // First, with defaults, all but NON_NULL annotated included
         JsonIncludeOverrideTest.MixedTypeAlwaysBean nullValues = new JsonIncludeOverrideTest.MixedTypeAlwaysBean();
-        assertEquals(aposToQuotes("{'num':null,'plain':null}"),
-                mapper.writeValueAsString(nullValues));
+        assertEquals(aposToQuotes("{'num':null,'plain':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         // and then change inclusion as property criteria for either
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(String.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.NON_NULL, null));
-        assertEquals("{\"num\":null}",
-                mapper.writeValueAsString(nullValues));
+        assertEquals("{\"num\":null}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Integer.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.NON_NULL, null));
-        assertEquals("{\"plain\":null}",
-                mapper.writeValueAsString(nullValues));
+        assertEquals("{\"plain\":null}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
     }
 
     public void testOverrideForIncludeAsPropertyAlways() throws Exception
@@ -104,23 +104,23 @@ public class JsonIncludeOverrideTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // First, with defaults, only ALWAYS annotated included
         JsonIncludeOverrideTest.MixedTypeNonNullBean nullValues = new JsonIncludeOverrideTest.MixedTypeNonNullBean();
-        assertEquals("{\"annotated\":null}",
-                mapper.writeValueAsString(nullValues));
+        assertEquals("{\"annotated\":null}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         // and then change inclusion as property criteria for either
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(String.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.ALWAYS, null));
-        assertEquals(aposToQuotes("{'annotated':null,'plain':null}"),
-                mapper.writeValueAsString(nullValues));
+        assertEquals(aposToQuotes("{'annotated':null,'plain':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(Integer.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.ALWAYS, null));
-        assertEquals(aposToQuotes("{'num':null,'annotated':null}"),
-                mapper.writeValueAsString(nullValues));
+        assertEquals(aposToQuotes("{'num':null,'annotated':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
     }
 
     public void testOverridesForIncludeAndIncludeAsPropertyNonNull() throws Exception
@@ -131,8 +131,8 @@ public class JsonIncludeOverrideTest
         mapper.configOverride(JsonIncludeOverrideTest.MixedTypeNonNullBean.class)
                 .setInclude(JsonInclude.Value
                         .construct(JsonInclude.Include.ALWAYS, null));
-        assertEquals(aposToQuotes("{'num':null,'annotated':null,'plain':null}"),
-                mapper.writeValueAsString(nullValues));
+        assertEquals(aposToQuotes("{'num':null,'annotated':null,'plain':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         // and then change inclusion as property criteria for either
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
@@ -142,8 +142,8 @@ public class JsonIncludeOverrideTest
         mapper.configOverride(String.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.NON_NULL, null));
-        assertEquals(aposToQuotes("{'num':null,'annotated':null}"),
-                mapper.writeValueAsString(nullValues));
+        assertEquals(aposToQuotes("{'num':null,'annotated':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(JsonIncludeOverrideTest.MixedTypeNonNullBean.class)
@@ -152,8 +152,8 @@ public class JsonIncludeOverrideTest
         mapper.configOverride(Integer.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.NON_NULL, null));
-        assertEquals(aposToQuotes("{'annotated':null,'plain':null}"),
-                mapper.writeValueAsString(nullValues));
+        assertEquals(aposToQuotes("{'annotated':null,'plain':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
     }
 
     public void testOverridesForIncludeAndIncludeAsPropertyAlways() throws Exception
@@ -164,8 +164,8 @@ public class JsonIncludeOverrideTest
         mapper.configOverride(JsonIncludeOverrideTest.MixedTypeAlwaysBean.class)
                 .setInclude(JsonInclude.Value
                         .construct(JsonInclude.Include.NON_NULL, null));
-        assertEquals("{}",
-                mapper.writeValueAsString(nullValues));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         // and then change inclusion as property criteria for either
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
@@ -175,8 +175,8 @@ public class JsonIncludeOverrideTest
         mapper.configOverride(String.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.ALWAYS, null));
-        assertEquals("{\"plain\":null}",
-                mapper.writeValueAsString(nullValues));
+        assertEquals("{\"plain\":null}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
 
         mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configOverride(JsonIncludeOverrideTest.MixedTypeAlwaysBean.class)
@@ -185,7 +185,7 @@ public class JsonIncludeOverrideTest
         mapper.configOverride(Integer.class)
                 .setIncludeAsProperty(JsonInclude.Value
                         .construct(JsonInclude.Include.ALWAYS, null));
-        assertEquals("{\"num\":null}",
-                mapper.writeValueAsString(nullValues));
+        assertEquals("{\"num\":null}", com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writeValueAsBytes(nullValues)));
     }
 }

@@ -219,7 +219,7 @@ public class JSOGDeserialize622Test extends BaseMapTest
         ex.next = ex;
         w.jsog = ex;
 
-        String json = MAPPER.writeValueAsString(w);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(w));
 
         JSOGWrapper out = MAPPER.readValue(json, JSOGWrapper.class);
         assertNotNull(out);
@@ -237,7 +237,7 @@ public class JSOGDeserialize622Test extends BaseMapTest
         outer.foo = "foo";
         outer.inner1 = outer.inner2 = new SubInner("bar", "extra");
 
-        String jsog = MAPPER.writeValueAsString(outer);
+        String jsog = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(outer));
         
         Outer back = MAPPER.readValue(jsog, Outer.class);
 

@@ -167,7 +167,7 @@ public class TestMapFiltering extends BaseMapTest
     {
         FilterProvider prov = new SimpleFilterProvider().addFilter("filterX",
                 SimpleBeanPropertyFilter.filterOutAllExcept("b"));
-        String json = MAPPER.writer(prov).writeValueAsString(new MapBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new MapBean()));
         assertEquals(aposToQuotes("{'values':{'b':5}}"), json);
     }
 
@@ -178,17 +178,17 @@ public class TestMapFiltering extends BaseMapTest
         bean.put("b", 3);
         FilterProvider prov = new SimpleFilterProvider().addFilter("filterForMaps",
                 SimpleBeanPropertyFilter.filterOutAllExcept("b"));
-        String json = MAPPER.writer(prov).writeValueAsString(bean);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(bean));
         assertEquals(aposToQuotes("{'b':3}"), json);
     }
 
     // [databind#527]
     public void testNonNullValueMapViaProp() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new NoNullValuesMapContainer()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoNullValuesMapContainer()
             .add("a", "foo")
             .add("b", null)
-            .add("c", "bar"));
+            .add("c", "bar")));
         assertEquals(aposToQuotes("{'stuff':{'a':'foo','c':'bar'}}"), json);
     }
     
@@ -197,32 +197,32 @@ public class TestMapFiltering extends BaseMapTest
     {
         FilterProvider prov = new SimpleFilterProvider().addFilter("filterX",
                 new TestMapFilter());
-        String json = MAPPER.writer(prov).writeValueAsString(new MapBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new MapBean()));
         // a=1 should become a=2
         assertEquals(aposToQuotes("{'values':{'a':2}}"), json);
 
         // and then one without annotation as contrast
-        json = MAPPER.writer(prov).writeValueAsString(new MapBeanNoOffset());
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new MapBeanNoOffset()));
         assertEquals(aposToQuotes("{'values':{'a':1}}"), json);
     }
 
     // [databind#527]
     public void testMapNonNullValue() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new NoNullsStringMap()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoNullsStringMap()
             .add("a", "foo")
             .add("b", null)
-            .add("c", "bar"));
+            .add("c", "bar")));
         assertEquals(aposToQuotes("{'a':'foo','c':'bar'}"), json);
     }
 
     // [databind#527]
     public void testMapNonEmptyValue() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new NoEmptyStringsMap()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoEmptyStringsMap()
             .add("a", "foo")
             .add("b", "bar")
-            .add("c", ""));
+            .add("c", "")));
         assertEquals(aposToQuotes("{'a':'foo','b':'bar'}"), json);
     }
 
@@ -230,9 +230,9 @@ public class TestMapFiltering extends BaseMapTest
     // [databind#527]
     public void testMapAbsentValue() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new NoAbsentStringMap()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NoAbsentStringMap()
             .add("a", "foo")
-            .add("b", null));
+            .add("b", null)));
         assertEquals(aposToQuotes("{'a':'foo'}"), json);
     }
 
@@ -243,12 +243,12 @@ public class TestMapFiltering extends BaseMapTest
         Map<String,String> map = new HashMap<String,String>();
         map.put("a", null);
         // by default, should output null-valued entries:
-        assertEquals("{\"a\":null}", m.writeValueAsString(map));
+        assertEquals("{\"a\":null}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map)));
         // but not if explicitly asked not to (note: config value is dynamic here)
 
         m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();        
         m.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
-        assertEquals("{}", m.writeValueAsString(map));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map)));
     }
 
     // [databind#527]
@@ -257,14 +257,14 @@ public class TestMapFiltering extends BaseMapTest
         String json;
 
         // First, non empty:
-        json = MAPPER.writeValueAsString(new Wrapper497(new StringMap497()
-            .add("a", "123")));
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Wrapper497(new StringMap497()
+            .add("a", "123"))));
         assertEquals(aposToQuotes("{'values':{'a':'123'}}"), json);
 
         // then empty
-        json = MAPPER.writeValueAsString(new Wrapper497(new StringMap497()
+        json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Wrapper497(new StringMap497()
             .add("a", "")
-            .add("b", null)));
+            .add("b", null))));
         assertEquals(aposToQuotes("{}"), json);
     }
 
@@ -274,11 +274,11 @@ public class TestMapFiltering extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDefaultPropertyInclusion(JsonInclude.Value.empty()
                 .withContentInclusion(JsonInclude.Include.NON_EMPTY));
-        assertEquals(aposToQuotes("{'a':'b'}"), mapper.writeValueAsString(
+        assertEquals(aposToQuotes("{'a':'b'}"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(
                 new StringMap497()
                     .add("x", "")
                     .add("a", "b")
-                    ));
+                    )));
     }
 
     public void testMapViaTypeOverride() throws Exception
@@ -288,10 +288,10 @@ public class TestMapFiltering extends BaseMapTest
         mapper.configOverride(Map.class)
             .setInclude(JsonInclude.Value.empty()
                 .withContentInclusion(JsonInclude.Include.NON_EMPTY));
-        assertEquals(aposToQuotes("{'a':'b'}"), mapper.writeValueAsString(
+        assertEquals(aposToQuotes("{'a':'b'}"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(
                 new StringMap497()
                     .add("foo", "")
                     .add("a", "b")
-                    ));
+                    )));
     }
 }

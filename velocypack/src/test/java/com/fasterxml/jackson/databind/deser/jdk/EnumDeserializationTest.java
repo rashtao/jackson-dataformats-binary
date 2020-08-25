@@ -258,7 +258,7 @@ public class EnumDeserializationTest
      */
     public void testComplexEnum() throws Exception
     {
-        String json = MAPPER.writeValueAsString(TimeUnit.SECONDS);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(TimeUnit.SECONDS));
         assertEquals(quote("SECONDS"), json);
         TimeUnit result = MAPPER.readValue(json, TimeUnit.class);
         assertSame(TimeUnit.SECONDS, result);
@@ -322,9 +322,9 @@ public class EnumDeserializationTest
 
     public void testEnumsWithIndex() throws Exception
     {
-        String json = MAPPER.writer()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer()
                 .with(SerializationFeature.WRITE_ENUMS_USING_INDEX)
-                .writeValueAsString(TestEnum.RULES);
+                .writeValueAsBytes(TestEnum.RULES));
         assertEquals(String.valueOf(TestEnum.RULES.ordinal()), json);
         TestEnum result = MAPPER.readValue(json, TestEnum.class);
         assertSame(TestEnum.RULES, result);
@@ -470,9 +470,9 @@ public class EnumDeserializationTest
 
     public void testEnumWithJsonPropertyRename() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new EnumWithPropertyAnno[] {
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new EnumWithPropertyAnno[] {
                 EnumWithPropertyAnno.B, EnumWithPropertyAnno.A
-        });
+        }));
         assertEquals("[\"b\",\"a\"]", json);
 
         // and while not really proper place, let's also verify deser while we're at it

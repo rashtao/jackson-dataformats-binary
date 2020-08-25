@@ -36,7 +36,7 @@ public class JsonInclude1327Test
         ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
-        final String jsonString = om.writeValueAsString(new Issue1327BeanEmpty());
+        final String jsonString = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes(new Issue1327BeanEmpty()));
 
         if (jsonString.contains("myList")) {
             fail("Should not contain `myList`: "+jsonString);
@@ -47,7 +47,7 @@ public class JsonInclude1327Test
         ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
-        final String jsonString = om.writeValueAsString(new Issue1327BeanAlways());
+        final String jsonString = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes(new Issue1327BeanAlways()));
 
         if (!jsonString.contains("myList")) {
             fail("Should contain `myList` with Include.ALWAYS: "+jsonString);

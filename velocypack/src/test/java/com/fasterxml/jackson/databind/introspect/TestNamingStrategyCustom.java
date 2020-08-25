@@ -175,7 +175,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new PrefixStrategy());
-        assertEquals("{\"Get-key\":123}", mapper.writeValueAsString(new GetterBean()));
+        assertEquals("{\"Get-key\":123}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new GetterBean())));
     }
 
     public void testSimpleSetters() throws Exception
@@ -191,7 +191,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
         // First serialize
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new PrefixStrategy());
-        String json = mapper.writeValueAsString(new FieldBean(999));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new FieldBean(999)));
         assertEquals("{\"Field-key\":999}", json);
 
         // then deserialize
@@ -204,7 +204,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
         // First serialize
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new CStyleStrategy());
-        String json = mapper.writeValueAsString(new PersonBean("Joe", "Sixpack", 42));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PersonBean("Joe", "Sixpack", 42)));
         assertEquals("{\"first_name\":\"Joe\",\"last_name\":\"Sixpack\",\"age\":42}", json);
         
         // then deserialize
@@ -219,7 +219,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new CStyleStrategy());
         SetterlessWithValue input = new SetterlessWithValue().add(3);
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"value_list\":[{\"int_value\":3}]}", json);
 
         SetterlessWithValue result = mapper.readValue(json, SetterlessWithValue.class);
@@ -246,7 +246,7 @@ public class TestNamingStrategyCustom extends BaseMapTest
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setPropertyNamingStrategy(new LcStrategy());
         BeanWithPrefixNames input = new BeanWithPrefixNames();
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"Get-a\":3}", json);
 
         BeanWithPrefixNames output = mapper.readValue("{\"Set-a\":7}",

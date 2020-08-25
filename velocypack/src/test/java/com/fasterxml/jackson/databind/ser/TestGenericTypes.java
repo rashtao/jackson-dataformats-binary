@@ -115,7 +115,7 @@ public class TestGenericTypes extends BaseMapTest
         p1.setAccount(new Key<Account>(new Account("something", 42L)));
         
         // First: ensure we can serialize (pre 1.7 this failed)
-        String json = MAPPER.writeValueAsString(p1);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(p1));
 
         // and then verify that results make sense
         Map<String,Object> map = MAPPER.readValue(json, Map.class);
@@ -141,7 +141,7 @@ public class TestGenericTypes extends BaseMapTest
         p2.setAccounts(accounts);
 
         // serialize without error:
-        String json = MAPPER.writeValueAsString(p2);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(p2));
 
         // then verify output
         Map<String,Object> map = MAPPER.readValue(json, Map.class);
@@ -160,7 +160,7 @@ public class TestGenericTypes extends BaseMapTest
     public void testUnboundTypes() throws Exception
     {
         GenericBogusWrapper<Integer> list = new GenericBogusWrapper<Integer>(Integer.valueOf(7));
-        String json = MAPPER.writeValueAsString(list);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list));
         assertEquals("{\"wrapped\":{\"value\":7}}", json);
     }
 
@@ -171,11 +171,11 @@ public class TestGenericTypes extends BaseMapTest
 
         final String EXP = aposToQuotes("[{'a':1,'b':2}]");
         // Without type enforcement, produces expected output:
-        assertEquals(EXP, MAPPER.writeValueAsString(input));
-        assertEquals(EXP, MAPPER.writer().writeValueAsString(input));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer().writeValueAsBytes(input)));
 
         // but enforcing type will hinder:
         TypeReference<?> typeRef = new TypeReference<List<Base727>>() { };
-        assertEquals(EXP, MAPPER.writer().forType(typeRef).writeValueAsString(input));
+        assertEquals(EXP, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer().forType(typeRef).writeValueAsBytes(input)));
     }
 }

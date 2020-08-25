@@ -58,7 +58,7 @@ public class TestAnyGetterAccess
         DynaBean b = new DynaBean();
         b.id = 123;
         b.set("name", "Billy");
-        assertEquals("{\"id\":123,\"name\":\"Billy\"}", MAPPER.writeValueAsString(b));
+        assertEquals("{\"id\":123,\"name\":\"Billy\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(b)));
 
         DynaBean result = MAPPER.readValue("{\"id\":2,\"name\":\"Joe\"}", DynaBean.class);
         assertEquals(2, result.id);
@@ -67,7 +67,7 @@ public class TestAnyGetterAccess
 
     public void testPrivate() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new PrivateThing());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new PrivateThing()));
         assertEquals("{\"a\":\"A\"}", json);
     }
 }

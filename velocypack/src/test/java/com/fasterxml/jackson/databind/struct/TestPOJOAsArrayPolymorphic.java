@@ -30,7 +30,7 @@ public class TestPOJOAsArrayPolymorphic extends BaseMapTest
         // 20-Sep-2019, taut: this fails to add shape information, due to class annotations
         //   not being checked due to missing `property` for `createContextual()`
 
-        String json = MAPPER.writeValueAsString(new DirectLayout());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new DirectLayout()));
 
         Layout instance = MAPPER.readValue(json, Layout.class);
         assertNotNull(instance);

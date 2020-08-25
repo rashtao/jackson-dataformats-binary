@@ -70,7 +70,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
     public void testByteBuffer() throws Exception
     {
         byte[] INPUT = new byte[] { 1, 3, 9, -1, 6 };
-        String exp = MAPPER.writeValueAsString(INPUT);
+        String exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT));
         ByteBuffer result = MAPPER.readValue(exp,  ByteBuffer.class); 
         assertNotNull(result);
         assertEquals(INPUT.length, result.remaining());
@@ -105,7 +105,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
 
     public void testClassWithParams() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new ParamClassBean("Foobar"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ParamClassBean("Foobar")));
 
         ParamClassBean result = MAPPER.readValue(json, ParamClassBean.class);
         assertEquals("Foobar", result.name);
@@ -125,7 +125,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
         String abs = src.getAbsolutePath();
 
         // escape backslashes (for portability with windows)
-        String json = MAPPER.writeValueAsString(abs);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(abs));
         File result = MAPPER.readValue(json, File.class);
         assertEquals(abs, result.getAbsolutePath());
     }
@@ -194,7 +194,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
         /* Ok: easiest way is to just serialize first; problem
          * is the backslash
          */
-        String json = MAPPER.writeValueAsString(exp);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(exp));
         Pattern result = MAPPER.readValue(json, Pattern.class);
         assertEquals(exp.pattern(), result.pattern());
     }
@@ -206,7 +206,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
         } catch (Exception e) {
             elem = e.getStackTrace()[0];
         }
-        String json = MAPPER.writeValueAsString(elem);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(elem));
         StackTraceElement back = MAPPER.readValue(json, StackTraceElement.class);
         
         assertEquals("testStackTraceElement", back.getMethodName());

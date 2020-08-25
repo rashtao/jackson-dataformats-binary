@@ -92,7 +92,7 @@ public class TestPOJOAsArrayAdvanced extends BaseMapTest
         input.a = 1;
         input.b = 2;
         input.c = 3;
-        String json = MAPPER.writerWithView(ViewA.class).writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writerWithView(ViewA.class).writeValueAsBytes(input));
         assertEquals("[1,null,3]", json);
 
         // and then that conversely deserializer does something similar
@@ -122,7 +122,7 @@ public class TestPOJOAsArrayAdvanced extends BaseMapTest
         input.b = 2;
 
         // note: Creator properties get sorted ahead of others, hence not [1,2,3,4] but:
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals("[3,4,1,2]", json);
 
         // and should get back in proper order, too
@@ -141,7 +141,7 @@ public class TestPOJOAsArrayAdvanced extends BaseMapTest
         input.b = 2;
 
         // note: explicit ordering overrides implicit creators-first ordering:
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals("[1,2,3,4]", json);
 
         // and should get back in proper order, too

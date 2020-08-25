@@ -124,7 +124,7 @@ public class TestJsonSerialize2
     {
         SimpleValueList list = new SimpleValueList();
         list.add(new ActualValue("foo"));
-        assertEquals("[{\"value\":\"foo\"}]", MAPPER.writeValueAsString(list));
+        assertEquals("[{\"value\":\"foo\"}]", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(list)));
     }
 
     // test value annotation applied to Map value class
@@ -132,7 +132,7 @@ public class TestJsonSerialize2
     {
         SimpleValueMap map = new SimpleValueMap();
         map.put(new SimpleKey("x"), new ActualValue("y"));
-        assertEquals("{\"toString:x\":{\"value\":\"y\"}}", MAPPER.writeValueAsString(map));
+        assertEquals("{\"toString:x\":{\"value\":\"y\"}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map)));
     }
 
     // test Serialization annotation with List
@@ -141,39 +141,39 @@ public class TestJsonSerialize2
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         SimpleValueListWithSerializer list = new SimpleValueListWithSerializer();
         list.add(new ActualValue("foo"));
-        assertEquals("[\"value foo\"]", m.writeValueAsString(list));
+        assertEquals("[\"value foo\"]", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(list)));
     }
 
     public void testSerializedAsListWithPropertyAnnotations() throws IOException
     {
         ListWrapperSimple input = new ListWrapperSimple("bar");
-        assertEquals("{\"values\":[{\"value\":\"bar\"}]}", MAPPER.writeValueAsString(input));
+        assertEquals("{\"values\":[{\"value\":\"bar\"}]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
     
     public void testSerializedAsMapWithClassSerializer() throws IOException
     {
         SimpleValueMapWithSerializer map = new SimpleValueMapWithSerializer();
         map.put(new SimpleKey("abc"), new ActualValue("123"));
-        assertEquals("{\"key abc\":\"value 123\"}", MAPPER.writeValueAsString(map));
+        assertEquals("{\"key abc\":\"value 123\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(map)));
     }
 
     public void testSerializedAsMapWithPropertyAnnotations() throws IOException
     {
         MapWrapperSimple input = new MapWrapperSimple("a", "b");
-        assertEquals("{\"values\":{\"toString:a\":{\"value\":\"b\"}}}",
-                MAPPER.writeValueAsString(input));
+        assertEquals("{\"values\":{\"toString:a\":{\"value\":\"b\"}}}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
     }
     
     public void testSerializedAsListWithPropertyAnnotations2() throws IOException
     {
         ListWrapperWithSerializer input = new ListWrapperWithSerializer("abc");
-        assertEquals("{\"values\":[\"value abc\"]}", MAPPER.writeValueAsString(input));
+        assertEquals("{\"values\":[\"value abc\"]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 
     public void testSerializedAsMapWithPropertyAnnotations2() throws IOException
     {
         MapWrapperWithSerializer input = new MapWrapperWithSerializer("foo", "b");
-        assertEquals("{\"values\":{\"key foo\":\"value b\"}}", MAPPER.writeValueAsString(input));
+        assertEquals("{\"values\":{\"key foo\":\"value b\"}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
     }
 
     public void testEmptyInclusionContainers() throws IOException
@@ -182,24 +182,24 @@ public class TestJsonSerialize2
         ObjectMapper inclMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         ListWrapper<String> list = new ListWrapper<String>();
-        assertEquals("{\"list\":[]}", defMapper.writeValueAsString(list));
-        assertEquals("{}", inclMapper.writeValueAsString(list));
-        assertEquals("{}", inclMapper.writeValueAsString(new ListWrapper<String>()));
+        assertEquals("{\"list\":[]}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(list)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(list)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(new ListWrapper<String>())));
 
         MapWrapper<String,Integer> map = new MapWrapper<String,Integer>(new HashMap<String,Integer>());
-        assertEquals("{\"map\":{}}", defMapper.writeValueAsString(map));
-        assertEquals("{}", inclMapper.writeValueAsString(map));
-        assertEquals("{}", inclMapper.writeValueAsString(new MapWrapper<String,Integer>(null)));
+        assertEquals("{\"map\":{}}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(map)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(map)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(new MapWrapper<String,Integer>(null))));
 
         ArrayWrapper<Integer> array = new ArrayWrapper<Integer>(new Integer[0]);
-        assertEquals("{\"array\":[]}", defMapper.writeValueAsString(array));
-        assertEquals("{}", inclMapper.writeValueAsString(array));
-        assertEquals("{}", inclMapper.writeValueAsString(new ArrayWrapper<Integer>(null)));
+        assertEquals("{\"array\":[]}", com.fasterxml.jackson.VPackUtils.toJson( defMapper.writeValueAsBytes(array)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(array)));
+        assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( inclMapper.writeValueAsBytes(new ArrayWrapper<Integer>(null))));
     }
 
     public void testNullSerializer() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new NullBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NullBean()));
         assertEquals("{\"value\":null}", json);
     }
 }

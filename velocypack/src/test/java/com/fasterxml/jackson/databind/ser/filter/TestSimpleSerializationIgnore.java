@@ -110,6 +110,6 @@ public class TestSimpleSerializationIgnore
 
     public void testIgnoreType() throws Exception
     {
-        assertEquals("{\"value\":13}", MAPPER.writeValueAsString(new NonIgnoredType()));
+        assertEquals("{\"value\":13}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NonIgnoredType())));
     }
 }

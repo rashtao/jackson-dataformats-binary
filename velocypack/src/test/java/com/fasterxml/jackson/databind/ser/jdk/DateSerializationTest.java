@@ -108,7 +108,7 @@ public class DateSerializationTest
         // default is to output time stamps...
         assertTrue(MAPPER.isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS));
         // shouldn't matter which offset we give...
-        String json = MAPPER.writeValueAsString(new Date(199L));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Date(199L)));
         assertEquals("199", json);
     }
 
@@ -198,13 +198,13 @@ public class DateSerializationTest
     public void testTimeZone() throws IOException
     {
         TimeZone input = TimeZone.getTimeZone("PST");
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals(quote("PST"), json);
     }
 
     public void testTimeZoneInBean() throws IOException
     {
-        String json = MAPPER.writeValueAsString(new TimeZoneBean("PST"));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new TimeZoneBean("PST")));
         assertEquals("{\"tz\":\"PST\"}", json);
     }
 
@@ -212,17 +212,17 @@ public class DateSerializationTest
     {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss");
         TimeZone tz = TimeZone.getTimeZone("PST");
-        assertEquals(quote("1969-12-31X16:00:00"),
+        assertEquals(quote("1969-12-31X16:00:00"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer(df)
                     .with(tz)
-                    .writeValueAsString(new Date(0L)));
+                    .writeValueAsBytes(new Date(0L))));
         ObjectWriter w = MAPPER.writer((DateFormat)null);
-        assertEquals("0", w.writeValueAsString(new Date(0L)));
+        assertEquals("0", com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(new Date(0L))));
 
         w = w.with(df).with(tz);
-        assertEquals(quote("1969-12-31X16:00:00"), w.writeValueAsString(new Date(0L)));
+        assertEquals(quote("1969-12-31X16:00:00"), com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(new Date(0L))));
         w = w.with((DateFormat) null);
-        assertEquals("0", w.writeValueAsString(new Date(0L)));
+        assertEquals("0", com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(new Date(0L))));
     }
 
     public void testDatesAsMapKeys() throws IOException
@@ -232,11 +232,11 @@ public class DateSerializationTest
         assertFalse(mapper.isEnabled(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS));
         map.put(new Date(0L), Integer.valueOf(1));
         // by default will serialize as ISO-8601 values...
-        assertEquals("{\"1970-01-01T00:00:00.000+0000\":1}", mapper.writeValueAsString(map));
+        assertEquals("{\"1970-01-01T00:00:00.000+0000\":1}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map)));
         
         // but can change to use timestamps too
         mapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, true);
-        assertEquals("{\"0\":1}", mapper.writeValueAsString(map));
+        assertEquals("{\"0\":1}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map)));
     }
 
     public void testDateWithJsonFormat() throws Exception
@@ -246,24 +246,24 @@ public class DateSerializationTest
 
         // first: test overriding writing as timestamp
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsNumberBean(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsNumberBean(0L)));
         assertEquals(aposToQuotes("{'date':0}"), json);
 
         // then reverse
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writer().with(getUTCTimeZone()).writeValueAsString(new DateAsStringBean(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().with(getUTCTimeZone()).writeValueAsBytes(new DateAsStringBean(0L)));
         assertEquals("{\"date\":\"1970-01-01\"}", json);
 
         // and with different DateFormat; CET is one hour ahead of GMT
-        json = mapper.writeValueAsString(new DateInCETBean(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateInCETBean(0L)));
         assertEquals("{\"date\":\"1970-01-01,01:00\"}", json);
         
         // and for [Issue#423] as well:
-        json = mapper.writer().with(getUTCTimeZone()).writeValueAsString(new CalendarAsStringBean(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().with(getUTCTimeZone()).writeValueAsBytes(new CalendarAsStringBean(0L)));
         assertEquals("{\"value\":\"1970-01-01\"}", json);
 
         // and with default (ISO8601) format (databind#1109)
-        json = mapper.writeValueAsString(new DateAsDefaultStringBean(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultStringBean(0L)));
         assertEquals("{\"date\":\"1970-01-01T00:00:00.000+0000\"}", json);
     }
 
@@ -288,7 +288,7 @@ public class DateSerializationTest
         // Also: should be able to dynamically change timezone:
         ObjectWriter w = mapper.writer();
         w = w.with(TimeZone.getTimeZone("EST"));
-        String json = w.writeValueAsString(new Date(0));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(new Date(0)));
         assertEquals(quote("1969-12-31/19:00 EST"), json);
     }
 
@@ -301,42 +301,42 @@ public class DateSerializationTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         // No @JsonFormat => default to user config
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        String json = mapper.writeValueAsString(new DateAsDefaultBean(0L));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBean(0L)));
         assertEquals(aposToQuotes("{'date':0}"), json);
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBean(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBean(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01T00:00:00.000+0000'}"), json);
 
         // Empty @JsonFormat => default to user config
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithEmptyJsonFormat(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithEmptyJsonFormat(0L)));
         assertEquals(aposToQuotes("{'date':0}"), json);
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithEmptyJsonFormat(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithEmptyJsonFormat(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01T00:00:00.000+0000'}"), json);
 
         // @JsonFormat with Shape.ANY and pattern => STRING shape, regardless of user config
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithPattern(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithPattern(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01'}"), json);
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithPattern(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithPattern(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01'}"), json);
 
         // @JsonFormat with Shape.ANY and locale => STRING shape, regardless of user config
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithLocale(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithLocale(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01T00:00:00.000+0000'}"), json);
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithLocale(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithLocale(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01T00:00:00.000+0000'}"), json);
 
         // @JsonFormat with Shape.ANY and timezone => STRING shape, regardless of user config
         mapper.enable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithTimezone(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithTimezone(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01T01:00:00.000+0100'}"), json);
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        json = mapper.writeValueAsString(new DateAsDefaultBeanWithTimezone(0L));
+        json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithTimezone(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01T01:00:00.000+0100'}"), json);
     }
 
@@ -345,7 +345,7 @@ public class DateSerializationTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss"));
-        String json = mapper.writeValueAsString(new DateAsDefaultBeanWithTimezone(0L));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new DateAsDefaultBeanWithTimezone(0L)));
         assertEquals(aposToQuotes("{'date':'1970-01-01X01:00:00'}"), json);
     }
 
@@ -366,10 +366,10 @@ public class DateSerializationTest
     }
 
     private void serialize(ObjectMapper mapper, Object date, String expected) throws IOException {
-        Assert.assertEquals(quote(expected), mapper.writeValueAsString(date));
+        Assert.assertEquals(quote(expected), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(date)));
     }
 
     private void serialize(ObjectWriter w, Object date, String expected) throws IOException {
-        Assert.assertEquals(quote(expected), w.writeValueAsString(date));
+        Assert.assertEquals(quote(expected), com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(date)));
     }
 }

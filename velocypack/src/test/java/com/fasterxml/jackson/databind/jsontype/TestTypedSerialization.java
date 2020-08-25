@@ -156,7 +156,7 @@ public class TestTypedSerialization
         Animal[] animals = new Animal[] { new Cat("Miuku", "white"), new Dog("Murre", 9) };
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("a", animals);
-        String json = m.writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map));
         Map<String,Object> result = m.readValue(json, Map.class);
         assertEquals(1, result.size());
         Object ob = result.get("a");
@@ -183,7 +183,7 @@ public class TestTypedSerialization
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        assertEquals("{\"@type\":\"empty\"}", m.writeValueAsString(new Empty()));
+        assertEquals("{\"@type\":\"empty\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Empty())));
     }
 
     /**
@@ -197,7 +197,9 @@ public class TestTypedSerialization
         List<Super> list = new ArrayList<Super>();
         list.add(new A());
         map.put(1L, list);
-        String json = mapper.writerFor(new TypeReference<Map<Long, Collection<Super>>>() {}).writeValueAsString(map);
+        String json = com.fasterxml.jackson.VPackUtils.toJson(
+                mapper.writerFor(new TypeReference<Map<Long, Collection<Super>>>() {}).writeValueAsBytes(map)
+        );
         assertTrue("JSON does not contain '@class': "+json, json.contains("@class"));
     }
 }

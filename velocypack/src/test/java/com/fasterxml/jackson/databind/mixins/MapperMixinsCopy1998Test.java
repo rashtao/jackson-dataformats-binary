@@ -113,7 +113,7 @@ public class MapperMixinsCopy1998Test extends BaseMapTest
     }
 
     private String getString(MyModelRoot myModelInstance, ObjectMapper myObjectMapper) throws IOException {
-        return myObjectMapper.writerFor(MyModelRoot.class).writeValueAsString(myModelInstance);
+        return com.fasterxml.jackson.VPackUtils.toJson(myObjectMapper.writerFor(MyModelRoot.class).writeValueAsBytes(myModelInstance));
     }
 
     private ObjectMapper defaultMapper()

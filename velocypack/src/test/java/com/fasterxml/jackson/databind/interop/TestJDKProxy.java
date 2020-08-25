@@ -38,7 +38,7 @@ public class TestJDKProxy extends BaseMapTest
     public void testSimple() throws Exception
     {
         IPlanet input = getProxy(IPlanet.class, new Planet("Foo"));
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals("{\"name\":\"Foo\"}", json);
         
         // and just for good measure

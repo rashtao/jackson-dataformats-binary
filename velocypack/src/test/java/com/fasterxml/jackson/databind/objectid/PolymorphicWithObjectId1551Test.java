@@ -43,8 +43,8 @@ public class PolymorphicWithObjectId1551Test extends BaseMapTest
         v2.ownedVehicle = c;
 
         ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        String serialized = objectMapper.writer()
-                .writeValueAsString(new VehicleOwnerViaProp[] { v1, v2 });
+        String serialized = com.fasterxml.jackson.VPackUtils.toJson( objectMapper.writer()
+                .writeValueAsBytes(new VehicleOwnerViaProp[] { v1, v2 }));
         // 02-May-2017, tatu: Not possible to support as of Jackson 2.8 at least, so:
 
         VehicleOwnerViaProp[] deserialized = objectMapper.readValue(serialized, VehicleOwnerViaProp[].class);
@@ -66,7 +66,7 @@ public class PolymorphicWithObjectId1551Test extends BaseMapTest
         ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         try {
             objectMapper.writer()
-                .writeValueAsString(new VehicleOwnerBroken[] { v1, v2 });
+                .writeValueAsBytes(new VehicleOwnerBroken[] { v1, v2 });
         } catch (InvalidDefinitionException e) {
             // on serialization, reported for different type
             assertEquals(Car.class, e.getType().getRawClass());

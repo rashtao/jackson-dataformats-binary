@@ -148,19 +148,19 @@ public class TestUnwrappedWithPrefix extends BaseMapTest
 
     public void testPrefixedUnwrappingSerialize() throws Exception
     {
-        assertEquals("{\"name\":\"Tatu\",\"_x\":1,\"_y\":2}",
-                MAPPER.writeValueAsString(new PrefixUnwrap("Tatu", 1, 2)));
+        assertEquals("{\"name\":\"Tatu\",\"_x\":1,\"_y\":2}", com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(new PrefixUnwrap("Tatu", 1, 2))));
     }
 
     public void testDeepPrefixedUnwrappingSerialize() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new DeepPrefixUnwrap("Bubba", 1, 1));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new DeepPrefixUnwrap("Bubba", 1, 1)));
         assertEquals("{\"u.name\":\"Bubba\",\"u._x\":1,\"u._y\":1}", json);
     }
 
     public void testHierarchicConfigSerialize() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new ConfigRoot("Fred", 25));
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ConfigRoot("Fred", 25)));
         assertEquals("{\"general.names.name\":\"Fred\",\"misc.value\":25}", json);
     }
 
@@ -211,7 +211,7 @@ public class TestUnwrappedWithPrefix extends BaseMapTest
     public void testHierarchicConfigRoundTrip() throws Exception
     {
         ConfigAlternate input = new ConfigAlternate(123, "Joe", 42);
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         ConfigAlternate root = MAPPER.readValue(json, ConfigAlternate.class);
         assertEquals(123, root.id);
@@ -232,7 +232,7 @@ public class TestUnwrappedWithPrefix extends BaseMapTest
         input.c2.sc1 = new SubChild();
         input.c2.sc1.value = "b";
 
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
 
         Parent output = MAPPER.readValue(json, Parent.class);
         assertNotNull(output.c1);

@@ -141,7 +141,7 @@ public class AnyGetterTest extends BaseMapTest
     
     public void testSimpleAnyBean() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new Bean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean()));
         Map<?,?> map = MAPPER.readValue(json, Map.class);
         assertEquals(2, map.size());
         assertEquals(Integer.valueOf(3), map.get("x"));
@@ -167,7 +167,7 @@ public class AnyGetterTest extends BaseMapTest
 
     public void testAnyDisabling() throws Exception
     {
-        String json = MAPPER.writeValueAsString(new NotEvenAnyBean());
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new NotEvenAnyBean()));
         assertEquals(aposToQuotes("{'value':42}"), json);
     }
 
@@ -176,14 +176,14 @@ public class AnyGetterTest extends BaseMapTest
     {
         MapAsAny input = new MapAsAny();
         input.add("bar", null);
-        assertEquals(aposToQuotes("{'bar':null}"),
-                MAPPER.writeValueAsString(input));
+        assertEquals(aposToQuotes("{'bar':null}"), com.fasterxml.jackson.VPackUtils.toJson(
+                MAPPER.writeValueAsBytes(input)));
     }
 
     public void testIssue705() throws Exception
     {
         Issue705Bean input = new Issue705Bean("key", "value");        
-        String json = MAPPER.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input));
         assertEquals("{\"stuff\":\"[key/value]\"}", json);
     }
 
@@ -193,7 +193,7 @@ public class AnyGetterTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         Bean1124 input = new Bean1124();
         input.addAdditionalProperty("key", "value");
-        String json = mapper.writeValueAsString(input);
+        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals("{\"key\":\"VALUE\"}", json);
     }
 }

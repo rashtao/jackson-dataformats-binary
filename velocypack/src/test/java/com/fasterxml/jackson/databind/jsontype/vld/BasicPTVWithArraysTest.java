@@ -55,7 +55,7 @@ public class BasicPTVWithArraysTest extends BaseMapTest
                 .activateDefaultTyping(ptv, DefaultTyping.NON_FINAL)
                 .build();        
 
-        final String json = mapper.writeValueAsString(new ObjectWrapper(new Base2534[] { new Good2534(42) }));
+        final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ObjectWrapper(new Base2534[] { new Good2534(42) })));
 
         // First test blocked case:
         try {
@@ -84,7 +84,7 @@ public class BasicPTVWithArraysTest extends BaseMapTest
         assertEquals(42, arrayOut[0].x);
 
         // but ensure array-acceptance does NOT allow non-validated element types!
-        final String badJson = mapper.writeValueAsString(new ObjectWrapper(new Base2534[] { new Bad2534(13) }));
+        final String badJson = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new ObjectWrapper(new Base2534[] { new Bad2534(13) })));
         try {
             mapper.readValue(badJson, ObjectWrapper.class);
             fail("Should not pass");
