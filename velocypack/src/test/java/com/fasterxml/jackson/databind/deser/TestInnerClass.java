@@ -50,7 +50,7 @@ public class TestInnerClass extends BaseMapTest
         // also, null handling
         input.brain = null;
 
-        output = mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(input)), Dog.class);
+        output = mapper.readValue(mapper.writeValueAsBytes(input), Dog.class);
         assertNull(output.brain);
     }
 }

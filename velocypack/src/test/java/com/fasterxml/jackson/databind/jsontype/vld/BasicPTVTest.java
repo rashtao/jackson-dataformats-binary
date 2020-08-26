@@ -206,7 +206,7 @@ public class BasicPTVTest extends BaseMapTest
 
         // com.fasterxml.jackson.VPackUtils.toJson( then non-accepted
         try {
-            mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(BaseValueWrapper.withA(43))),
+            mapper.readValue(mapper.writeValueAsBytes(BaseValueWrapper.withA(43)),
                     BaseValueWrapper.class);
             fail("Should not pass");
         } catch (InvalidTypeIdException e) {
@@ -230,7 +230,7 @@ public class BasicPTVTest extends BaseMapTest
 
         // com.fasterxml.jackson.VPackUtils.toJson( then non-accepted
         try {
-            mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(BaseValueWrapper.withA(43))),
+            mapper.readValue(mapper.writeValueAsBytes(BaseValueWrapper.withA(43)),
                     BaseValueWrapper.class);
             fail("Should not pass");
         } catch (InvalidTypeIdException e) {
@@ -254,7 +254,7 @@ public class BasicPTVTest extends BaseMapTest
 
         // com.fasterxml.jackson.VPackUtils.toJson( then non-accepted
         try {
-            mapper.readValue(com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(BaseValueWrapper.withA(43))),
+            mapper.readValue(mapper.writeValueAsBytes(BaseValueWrapper.withA(43)),
                     BaseValueWrapper.class);
             fail("Should not pass");
         } catch (InvalidTypeIdException e) {

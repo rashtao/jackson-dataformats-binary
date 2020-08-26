@@ -141,10 +141,10 @@ public class AnyGetterTest extends BaseMapTest
     
     public void testSimpleAnyBean() throws Exception
     {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Bean()));
-        Map<?,?> map = MAPPER.readValue(json, Map.class);
+        byte[] bytes = (MAPPER.writeValueAsBytes(new Bean()));
+        Map<?,?> map = MAPPER.readValue(bytes, Map.class);
         assertEquals(2, map.size());
-        assertEquals(Integer.valueOf(3), map.get("x"));
+        assertEquals(Long.valueOf(3), map.get("x"));
         assertEquals(Boolean.TRUE, map.get("a"));
     }
 

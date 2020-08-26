@@ -32,11 +32,11 @@ public final class VPackUtils {
     }
 
     public static String toJson(byte[] bytes) {
-        return PARSER.toJson(new VPackSlice(bytes));
+        return PARSER.toJson(new VPackSlice(bytes), true);
     }
 
     public static byte[] toBytes(String json) {
-        return PARSER.fromJson(json).getBuffer();
+        return PARSER.fromJson(json, true).getBuffer();
     }
 
 }
