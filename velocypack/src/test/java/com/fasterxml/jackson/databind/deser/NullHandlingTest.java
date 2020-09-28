@@ -89,7 +89,7 @@ public class NullHandlingTest extends BaseMapTest
     public void testNull() throws Exception
     {
         // null doesn't really have a type, fake by assuming Object
-        Object result = MAPPER.readValue("   null", Object.class);
+        Object result = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes("   null"), Object.class);
         assertNull(result);
     }  
     
@@ -103,7 +103,7 @@ public class NullHandlingTest extends BaseMapTest
         String nullValue = "{\""+fieldName+"\":null}";
 
         // should get non-default null directly:
-        AnySetter result = mapper.readValue(nullValue, AnySetter.class);
+        AnySetter result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(nullValue), AnySetter.class);
 
         assertEquals(1, result.getAny().size());
         assertNotNull(result.getAny().get(fieldName));
@@ -111,7 +111,7 @@ public class NullHandlingTest extends BaseMapTest
 
         // as well as via ObjectReader
         ObjectReader reader = mapper.readerFor(AnySetter.class);
-        result = reader.readValue(nullValue);
+        result = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(nullValue));
 
         assertEquals(1, result.getAny().size());
         assertNotNull(result.getAny().get(fieldName));
@@ -126,13 +126,13 @@ public class NullHandlingTest extends BaseMapTest
         mapper.registerModule(module);
 
         // should get non-default null directly:
-        String str = mapper.readValue("null", String.class);
+        String str = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("null"), String.class);
         assertNotNull(str);
         assertEquals("funny", str);
         
         // as well as via ObjectReader
         ObjectReader reader = mapper.readerFor(String.class);
-        str = reader.readValue("null");
+        str = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("null"));
         assertNotNull(str);
         assertEquals("funny", str);
     }
@@ -149,14 +149,14 @@ public class NullHandlingTest extends BaseMapTest
         JavaType type = mapper.getTypeFactory().constructCollectionType(List.class, String.class);
 
         // should get non-default null directly:
-        List<?> deser = mapper.readValue("[null]", type);
+        List<?> deser = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[null]"), type);
         assertNotNull(deser);
         assertEquals(1, deser.size());
         assertEquals(list.get(0), deser.get(0));
 
         // as well as via ObjectReader
         ObjectReader reader = mapper.readerFor(type);
-        deser = reader.readValue("[null]");
+        deser = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[null]"));
         assertNotNull(deser);
         assertEquals(1, deser.size());
         assertEquals(list.get(0), deser.get(0));
@@ -172,14 +172,14 @@ public class NullHandlingTest extends BaseMapTest
 
         JavaType type = mapper.getTypeFactory().constructMapType(Map.class, String.class, String.class);
         // should get non-default null directly:
-        Map<?,?> deser = mapper.readValue("{\"key\":null}", type);
+        Map<?,?> deser = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"key\":null}"), type);
         assertNotNull(deser);
         assertEquals(1, deser.size());
         assertEquals("funny", deser.get("key"));
 
         // as well as via ObjectReader
         ObjectReader reader = mapper.readerFor(type);
-        deser = reader.readValue("{\"key\":null}");
+        deser = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"key\":null}"));
         assertNotNull(deser);
         assertEquals(1, deser.size());
         assertEquals("funny", deser.get("key"));
@@ -190,15 +190,15 @@ public class NullHandlingTest extends BaseMapTest
     {
         String typeA =
                 "{\"name\":\"TypeAData\", \"type\":\"TypeA\", \"proxy\":{\"aValue\":\"This works!\"}}";
-        RootData typeAData = MAPPER.readValue(typeA, RootData.class);
+        RootData typeAData = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(typeA), RootData.class);
         assertEquals("No value for aValue!?", "This works!", ((TypeA) typeAData.proxy).aValue);
         String typeB =
                 "{\"name\":\"TypeBData\", \"type\":\"TypeB\", \"proxy\":{\"bValue\":\"This works too!\"}}";
-        RootData typeBData = MAPPER.readValue(typeB, RootData.class);
+        RootData typeBData = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(typeB), RootData.class);
         assertEquals("No value for bValue!?", "This works too!", ((TypeB) typeBData.proxy).bValue);
         String typeBNull =
                 "{\"name\":\"TypeBData\", \"type\":\"TypeB\", \"proxy\": null}";
-        RootData typeBNullData = MAPPER.readValue(typeBNull, RootData.class);
+        RootData typeBNullData = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(typeBNull), RootData.class);
         assertNull("Proxy should be null!", typeBNullData.proxy);
     }
 }

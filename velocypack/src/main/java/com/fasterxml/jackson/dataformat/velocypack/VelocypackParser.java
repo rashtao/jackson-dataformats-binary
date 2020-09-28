@@ -359,7 +359,11 @@ public class VelocypackParser extends ParserMinimalBase {
                 type = NumberType.INT;
                 break;
             case INT:
-                type = NumberType.LONG;
+                if (currentValue.getAsLong() < Integer.MIN_VALUE || currentValue.getAsLong() > Integer.MAX_VALUE) {
+                    type = NumberType.LONG;
+                } else {
+                    type = NumberType.INT;
+                }
                 break;
             case UINT:
                 type = NumberType.BIG_INTEGER;

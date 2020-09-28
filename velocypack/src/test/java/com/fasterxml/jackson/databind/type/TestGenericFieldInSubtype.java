@@ -20,7 +20,7 @@ public class TestGenericFieldInSubtype extends BaseMapTest
     public void testInnerType() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        BaseType.SubType<?> r = mapper.readValue("{}", BaseType.SubType.class);
+        BaseType.SubType<?> r = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"), BaseType.SubType.class);
         assertNotNull(r);
     }
 

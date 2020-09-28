@@ -80,7 +80,7 @@ public class ReadOrWriteOnlyTest extends BaseMapTest
         String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new ReadXWriteY()));
         assertEquals("{\"x\":1}", json);
 
-        ReadXWriteY result = MAPPER.readValue("{\"x\":5, \"y\":6}", ReadXWriteY.class);
+        ReadXWriteY result = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"x\":5, \"y\":6}"), ReadXWriteY.class);
         assertNotNull(result);
         assertEquals(1, result.x);
         assertEquals(6, result.y);
@@ -88,14 +88,13 @@ public class ReadOrWriteOnlyTest extends BaseMapTest
 
     public void testReadOnly935() throws Exception
     {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Pojo935()));
-        Pojo935 result = MAPPER.readValue(json, Pojo935.class);
+        Pojo935 result = MAPPER.readValue(MAPPER.writeValueAsBytes(new Pojo935()), Pojo935.class);
         assertNotNull(result);
     }
 
     public void testReadOnly1345() throws Exception
     {
-        Foo1345 result = MAPPER.readValue("{\"name\":\"test\"}", Foo1345.class);
+        Foo1345 result = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"name\":\"test\"}"), Foo1345.class);
         assertNotNull(result);
         assertEquals("test", result.name);
         assertNull(result.id);

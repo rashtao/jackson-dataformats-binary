@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.databind.big;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
@@ -76,7 +78,9 @@ public class TestBiggerData extends BaseMapTest
 
 	public void testReading() throws Exception
 	{
-		Citm citm = MAPPER.readValue(getClass().getResourceAsStream("/data/citm_catalog.json"),
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getResource("/data/citm_catalog.json").toURI())));
+
+		Citm citm = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json),
 				Citm.class);
 		assertNotNull(citm);
 		assertNotNull(citm.areaNames);
@@ -100,13 +104,14 @@ public class TestBiggerData extends BaseMapTest
 
 	public void testRoundTrip() throws Exception
 	{
-		Citm citm = MAPPER.readValue(getClass().getResourceAsStream("/data/citm_catalog.json"),
+		String json = new String(Files.readAllBytes(Paths.get(getClass().getResource("/data/citm_catalog.json").toURI())));
+		Citm citm = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json),
 				Citm.class);
 
 		ObjectWriter w = MAPPER.writerWithDefaultPrettyPrinter();
 		
 		String json1 = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(citm));
-		Citm citm2 = MAPPER.readValue(json1, Citm.class);
+		Citm citm2 = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json1), Citm.class);
 		String json2 = com.fasterxml.jackson.VPackUtils.toJson( w.writeValueAsBytes(citm2));
 
 		assertEquals(json1, json2);

@@ -86,7 +86,7 @@ public class TestStringConversions
 
     public void testLowerCasingDeserializer() throws Exception
     {
-        StringWrapperWithConvert value = MAPPER.readValue("{\"value\":\"XyZ\"}", StringWrapperWithConvert.class);
+        StringWrapperWithConvert value = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"value\":\"XyZ\"}"), StringWrapperWithConvert.class);
         assertNotNull(value);
         assertEquals("xyz", value.value);
     }

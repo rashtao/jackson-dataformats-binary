@@ -37,7 +37,7 @@ public class TestPolymorphicUpdateValue extends BaseMapTest
          Child c = new Child();
          c.w = 10;
          c.h = 11;
-         MAPPER.readerForUpdating(c).readValue("{\"x\":3,\"y\":4,\"w\":111}");
+         MAPPER.readerForUpdating(c).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"x\":3,\"y\":4,\"w\":111}"));
          assertEquals(3, c.x);
          assertEquals(4, c.y);
          assertEquals(111, c.w);

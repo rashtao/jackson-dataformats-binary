@@ -289,8 +289,7 @@ public abstract class BaseMapTest
     protected Map<String,Object> writeAndMap(ObjectMapper m, Object value)
         throws IOException
     {
-        String str = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(value));
-        return (Map<String,Object>) m.readValue(str, Map.class);
+        return (Map<String,Object>) m.readValue(m.writeValueAsBytes(value), Map.class);
     }
     
     protected String serializeAsString(ObjectMapper m, Object value)

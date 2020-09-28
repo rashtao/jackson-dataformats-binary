@@ -88,21 +88,21 @@ public class PropertyAliasTest extends BaseMapTest
         AliasBean bean;
 
         // first, one indicated by field annotation, set via field
-        bean = MAPPER.readValue(aposToQuotes("{'Name':'Foobar','a':3,'xyz':37}"),
+        bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'Name':'Foobar','a':3,'xyz':37}")),
                 AliasBean.class);
         assertEquals("Foobar", bean.name);
         assertEquals(3, bean._a);
         assertEquals(37, bean._xyz);
 
         // then method-bound one
-        bean = MAPPER.readValue(aposToQuotes("{'name':'Foobar','a':3,'Xyz':37}"),
+        bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'name':'Foobar','a':3,'Xyz':37}")),
                 AliasBean.class);
         assertEquals("Foobar", bean.name);
         assertEquals(3, bean._a);
         assertEquals(37, bean._xyz);
         
         // and finally, constructor-backed one
-        bean = MAPPER.readValue(aposToQuotes("{'name':'Foobar','A':3,'xyz':37}"),
+        bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'name':'Foobar','A':3,'xyz':37}")),
                 AliasBean.class);
         assertEquals("Foobar", bean.name);
         assertEquals(3, bean._a);
@@ -111,8 +111,8 @@ public class PropertyAliasTest extends BaseMapTest
 
     public void testAliasWithPolymorphic() throws Exception
     {
-        PolyWrapperForAlias value = MAPPER.readValue(aposToQuotes(
-                "{'value': ['ab', {'nm' : 'Bob', 'A' : 17} ] }"
+        PolyWrapperForAlias value = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes(
+                "{'value': ['ab', {'nm' : 'Bob', 'A' : 17} ] }")
                 ), PolyWrapperForAlias.class);
         assertNotNull(value.value);
         AliasBean bean = (AliasBean) value.value;
@@ -123,9 +123,9 @@ public class PropertyAliasTest extends BaseMapTest
     // [databind#2378]
     public void testAliasInFactoryMethod() throws Exception
     {
-        AliasBean2378 bean = MAPPER.readValue(aposToQuotes(
+        AliasBean2378 bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes(
                 "{'partitionId' : 'a', 'userId' : '123'}"
-                ), AliasBean2378.class);
+        )), AliasBean2378.class);
         assertEquals("a", bean.partitionId);
         assertEquals("123", bean._id);
     }
@@ -138,7 +138,7 @@ public class PropertyAliasTest extends BaseMapTest
                 .build();
 
         String text = "{\"name\":\"test\"}";
-        Pojo2669 pojo = mapper.readValue(text, Pojo2669.class);
+        Pojo2669 pojo = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(text), Pojo2669.class);
         assertNotNull(pojo);
         assertEquals("test", pojo.getName());
     }
