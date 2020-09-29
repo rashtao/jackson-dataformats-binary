@@ -1,14 +1,16 @@
 package com.fasterxml.jackson.databind;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.core.io.SerializedString;
-import com.fasterxml.jackson.core.json.JsonWriteFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.velocypack.VelocypackFactory;
+import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 public class MapperViaParserTest  extends BaseMapTest
 {
@@ -76,9 +78,11 @@ public class MapperViaParserTest  extends BaseMapTest
 
     public void testPojoReading() throws IOException
     {
-        JsonFactory jf = new MappingJsonFactory();
+        VelocypackFactory jf = new VelocypackFactory();
+        VelocypackMapper mapper = new VelocypackMapper(jf);
+        jf.setCodec(mapper);
         final String JSON = "{ \"x\" : 9 }";
-        JsonParser jp = jf.createParser(new StringReader(JSON));
+        JsonParser jp = jf.createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
 
         // let's try first by advancing:
         assertToken(JsonToken.START_OBJECT, jp.nextToken());
@@ -87,7 +91,7 @@ public class MapperViaParserTest  extends BaseMapTest
         jp.close();
 
         // and without
-        jp = jf.createParser(new StringReader(JSON));
+        jp = jf.createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         p = jp.readValueAs(Pojo.class);
         assertEquals(9, p._x);
         jp.close();
@@ -96,11 +100,12 @@ public class MapperViaParserTest  extends BaseMapTest
     /**
      * Test similar to above, but instead reads a sequence of values
      */
-    public void testIncrementalPojoReading() throws IOException
-    {
-        JsonFactory jf = new MappingJsonFactory();
+    public void testIncrementalPojoReading() throws IOException {
+        VelocypackFactory jf = new VelocypackFactory();
+        VelocypackMapper mapper = new VelocypackMapper(jf);
+        jf.setCodec(mapper);
         final String JSON = "[ 1, true, null, \"abc\" ]";
-        JsonParser p = jf.createParser(new StringReader(JSON));
+        JsonParser p = jf.createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
 
         // let's advance past array start to prevent full binding
         assertToken(JsonToken.START_ARRAY, p.nextToken());

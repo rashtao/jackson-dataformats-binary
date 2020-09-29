@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.core.util.MinimalPrettyPrinter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -191,17 +189,6 @@ public class ObjectMapperTest extends BaseMapTest
         assertSame(customSetter, config2.getDefaultSetterInfo());
         assertEquals(Boolean.TRUE, config2.getDefaultMergeable());
         assertSame(customVis, config2.getDefaultVisibilityChecker());
-    }
-
-    public void testFailedCopy() throws Exception
-    {
-        NoCopyMapper src = new NoCopyMapper();
-        try {
-            src.copy();
-            fail("Should not pass");
-        } catch (IllegalStateException e) {
-            verifyException(e, "does not override copy()");
-        }
     }
 
     public void testAnnotationIntrospectorCopyin() 

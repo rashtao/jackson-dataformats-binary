@@ -58,6 +58,7 @@ public class VelocypackParser extends ParserMinimalBase {
      */
 
     protected VPackSlice currentValue;
+    protected boolean beforeFirstToken;
     protected String currentName;
     protected final LinkedList<Iterator<Map.Entry<String, VPackSlice>>> objectIterators;
     protected final LinkedList<Iterator<VPackSlice>> arrayIterators;
@@ -103,6 +104,7 @@ public class VelocypackParser extends ParserMinimalBase {
         this.bufferRecyclable = bufferRecyclable;
 
         currentValue = new VPackSlice(inputBuffer, start);
+        beforeFirstToken = true;
         _currToken = null;
         objectIterators = new LinkedList<>();
         arrayIterators = new LinkedList<>();
@@ -212,7 +214,8 @@ public class VelocypackParser extends ParserMinimalBase {
 
     @Override
     public JsonToken nextToken() {
-        if (_currToken == null) {
+        if (beforeFirstToken && _currToken == null) {
+            beforeFirstToken = false;
             _currToken = getToken(currentValue.getType(), currentValue);
             return _currToken;
         }
@@ -226,6 +229,9 @@ public class VelocypackParser extends ParserMinimalBase {
         if (_currToken == JsonToken.FIELD_NAME) {
             _currToken = getToken(currentValue.getType(), currentValue);
             return _currToken;
+        }
+        if (currentCompoundValue.isEmpty()) {
+            return null;
         }
         if (currentCompoundValue.getLast() == JsonToken.START_OBJECT && !objectIterators.isEmpty()) {
             final Iterator<Map.Entry<String, VPackSlice>> lastObject = objectIterators.getLast();
