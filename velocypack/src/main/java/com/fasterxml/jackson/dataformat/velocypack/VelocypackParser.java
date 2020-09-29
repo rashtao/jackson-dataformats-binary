@@ -295,12 +295,18 @@ public class VelocypackParser extends ParserMinimalBase {
 
     @Override
     public String getText() {
-        return _currToken == JsonToken.FIELD_NAME ? currentName : currentValue.getAsString();
+        if (currentValue.isNumber()) {
+            return getNumberValue().toString();
+        } else if (_currToken == JsonToken.FIELD_NAME) {
+            return currentName;
+        } else {
+            return currentValue.getAsString();
+        }
     }
 
     @Override
     public char[] getTextCharacters() {
-        return null;
+        return getText().toCharArray();
     }
 
     @Override
@@ -348,7 +354,25 @@ public class VelocypackParser extends ParserMinimalBase {
 
     @Override
     public Number getNumberValue() {
-        return currentValue.getAsNumber();
+        switch (currentValue.getType()) {
+            case SMALLINT:
+                return currentValue.getAsInt();
+            case INT:
+                long longValue = currentValue.getAsLong();
+                if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
+                    return longValue;
+                } else {
+                    return currentValue.getAsInt();
+                }
+            case UINT:
+                return currentValue.getAsBigInteger();
+            case DOUBLE:
+                return currentValue.getAsDouble();
+            case STRING:
+                throw new UnsupportedOperationException("NOT IMPLEMENTED: String should decode either to BigInteger or BigDecimal");
+            default:
+                throw new UnsupportedOperationException("Cannot get number from " + currentValue.getType());
+        }
     }
 
     @Override
@@ -359,7 +383,8 @@ public class VelocypackParser extends ParserMinimalBase {
                 type = NumberType.INT;
                 break;
             case INT:
-                if (currentValue.getAsLong() < Integer.MIN_VALUE || currentValue.getAsLong() > Integer.MAX_VALUE) {
+                long longValue = currentValue.getAsLong();
+                if (longValue < Integer.MIN_VALUE || longValue > Integer.MAX_VALUE) {
                     type = NumberType.LONG;
                 } else {
                     type = NumberType.INT;
@@ -371,6 +396,8 @@ public class VelocypackParser extends ParserMinimalBase {
             case DOUBLE:
                 type = NumberType.DOUBLE;
                 break;
+            case STRING:
+                throw new UnsupportedOperationException("NOT IMPLEMENTED: String should decode either to BigInteger or BigDecimal");
             default:
                 type = null;
                 break;
