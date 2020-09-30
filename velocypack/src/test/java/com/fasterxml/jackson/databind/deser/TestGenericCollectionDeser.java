@@ -44,7 +44,7 @@ public class TestGenericCollectionDeser
     public void testListSubClass() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        ListSubClass result = mapper.readValue("[ \"123\" ]", ListSubClass.class);
+        ListSubClass result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ \"123\" ]"), ListSubClass.class);
         assertEquals(1, result.size());
         Object value = result.get(0);
         assertEquals(StringWrapper.class, value.getClass());
@@ -62,7 +62,7 @@ public class TestGenericCollectionDeser
     public void testAnnotatedLStringist() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        AnnotatedStringList result = mapper.readValue("[ \"...\" ]", AnnotatedStringList.class);
+        AnnotatedStringList result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ \"...\" ]"), AnnotatedStringList.class);
         assertEquals(1, result.size());
         Object ob = result.get(0);
         assertEquals(StringWrapper.class, ob.getClass());
@@ -72,7 +72,7 @@ public class TestGenericCollectionDeser
     public void testAnnotatedBooleanList() throws Exception
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        AnnotatedBooleanList result = mapper.readValue("[ false ]", AnnotatedBooleanList.class);
+        AnnotatedBooleanList result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ false ]"), AnnotatedBooleanList.class);
         assertEquals(1, result.size());
         Object ob = result.get(0);
         assertEquals(BooleanElement.class, ob.getClass());

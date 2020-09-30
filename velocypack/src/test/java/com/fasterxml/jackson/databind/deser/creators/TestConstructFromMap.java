@@ -72,7 +72,7 @@ public class TestConstructFromMap
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         ConstructorFromMap result = m.readValue
-            ("{ \"x\":1, \"y\" : \"abc\" }", ConstructorFromMap.class);
+            (com.fasterxml.jackson.VPackUtils.toBytes("{ \"x\":1, \"y\" : \"abc\" }"), ConstructorFromMap.class);
         assertEquals(1, result._x);
         assertEquals("abc", result._y);
     }
@@ -80,7 +80,7 @@ public class TestConstructFromMap
     public void testViaFactory() throws Exception
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        FactoryFromPoint result = m.readValue("{ \"x\" : 3, \"y\" : 4 }", FactoryFromPoint.class);
+        FactoryFromPoint result = m.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"x\" : 3, \"y\" : 4 }"), FactoryFromPoint.class);
         assertEquals(3, result._x);
         assertEquals(4, result._y);
     }
@@ -88,7 +88,7 @@ public class TestConstructFromMap
     public void testViaFactoryUsingString() throws Exception
     {
         ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        FactoryFromDecimalString result = m.readValue("\"12.57\"", FactoryFromDecimalString.class);
+        FactoryFromDecimalString result = m.readValue(com.fasterxml.jackson.VPackUtils.toBytes("\"12.57\""), FactoryFromDecimalString.class);
         assertNotNull(result);
         assertEquals(12, result._value);
     }

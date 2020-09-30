@@ -149,7 +149,7 @@ public class SingleArgCreatorTest extends BaseMapTest
 
     public void testNamedSingleArg() throws Exception
     {
-        SingleNamedStringBean bean = MAPPER.readValue(quote("foobar"),
+        SingleNamedStringBean bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("foobar")),
                 SingleNamedStringBean.class);
         assertEquals("foobar", bean._ss);
     }
@@ -158,7 +158,7 @@ public class SingleArgCreatorTest extends BaseMapTest
     {
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector("value"));
-        StringyBean bean = mapper.readValue(quote("foobar"), StringyBean.class);
+        StringyBean bean = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("foobar")), StringyBean.class);
         assertEquals("foobar", bean.getValue());
     }    
 
@@ -167,14 +167,14 @@ public class SingleArgCreatorTest extends BaseMapTest
     {
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector("value"));
-        StringyBeanWithProps bean = mapper.readValue("{\"value\":\"x\"}", StringyBeanWithProps.class);
+        StringyBeanWithProps bean = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"value\":\"x\"}"), StringyBeanWithProps.class);
         assertEquals("x", bean.getValue());
     }    
 
     // [databind#714]
     public void testSingleExplicitlyNamedButDelegating() throws Exception
     {
-        SingleNamedButStillDelegating bean = MAPPER.readValue(quote("xyz"),
+        SingleNamedButStillDelegating bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("xyz")),
                 SingleNamedButStillDelegating.class);
         assertEquals("xyz", bean.value);
     }
@@ -182,7 +182,7 @@ public class SingleArgCreatorTest extends BaseMapTest
     public void testExplicitFactory660a() throws Exception
     {
         // First, explicit override for factory
-        ExplicitFactoryBeanA bean = MAPPER.readValue(quote("abc"), ExplicitFactoryBeanA.class);
+        ExplicitFactoryBeanA bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("abc")), ExplicitFactoryBeanA.class);
         assertNotNull(bean);
         assertEquals("abc", bean.value());
     }
@@ -190,7 +190,7 @@ public class SingleArgCreatorTest extends BaseMapTest
     public void testExplicitFactory660b() throws Exception
     {
         // and then one for private constructor
-        ExplicitFactoryBeanB bean2 = MAPPER.readValue(quote("def"), ExplicitFactoryBeanB.class);
+        ExplicitFactoryBeanB bean2 = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("def")), ExplicitFactoryBeanB.class);
         assertNotNull(bean2);
         assertEquals("def", bean2.value());
     }
@@ -200,7 +200,7 @@ public class SingleArgCreatorTest extends BaseMapTest
     {
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector("value"));
-        SingleArgWithImplicit bean = mapper.readValue(aposToQuotes("{'x':1,'y':2}"),
+        SingleArgWithImplicit bean = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'x':1,'y':2}")),
                 SingleArgWithImplicit.class);
         XY v = bean.getFoobar();
         assertNotNull(v);

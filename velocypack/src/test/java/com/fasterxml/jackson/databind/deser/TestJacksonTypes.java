@@ -20,8 +20,7 @@ public class TestJacksonTypes
         // note: source reference is untyped, only String guaranteed to work
         JsonLocation loc = new JsonLocation("whatever",  -1, -1, 100, 13);
         // Let's use serializer here; goal is round-tripping
-        String ser = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(loc));
-        JsonLocation result = MAPPER.readValue(ser, JsonLocation.class);
+        JsonLocation result = MAPPER.readValue(MAPPER.writeValueAsBytes(loc), JsonLocation.class);
         assertNotNull(result);
         assertEquals(loc.getSourceRef(), result.getSourceRef());
         assertEquals(loc.getByteOffset(), result.getByteOffset());
@@ -50,7 +49,7 @@ public class TestJacksonTypes
         String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(tf.constructType(String.class)));
         assertEquals(quote(java.lang.String.class.getName()), json);
         // and back
-        JavaType t = MAPPER.readValue(json, JavaType.class);
+        JavaType t = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json), JavaType.class);
         assertNotNull(t);
         assertEquals(String.class, t.getRawClass());
     }
@@ -62,7 +61,7 @@ public class TestJacksonTypes
     public void testTokenBufferWithSample() throws Exception
     {
         // First, try standard sample doc:
-        TokenBuffer result = MAPPER.readValue(SAMPLE_DOC_JSON_SPEC, TokenBuffer.class);
+        TokenBuffer result = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(SAMPLE_DOC_JSON_SPEC), TokenBuffer.class);
         verifyJsonSpecSampleDoc(result.asParser(), true);
         result.close();
     }
@@ -113,8 +112,8 @@ public class TestJacksonTypes
     // [databind#2398]
     public void testDeeplyNestedArrays() throws Exception
     {
-        try (JsonParser p = MAPPER.tokenStreamFactory().createParser(_createNested(RECURSION_2398 * 2,
-                "[", " 123 ", "]"))) {
+        try (JsonParser p = MAPPER.tokenStreamFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(_createNested(RECURSION_2398 * 2,
+                "[", " 123 ", "]")))) {
             p.nextToken();
             TokenBuffer b = new TokenBuffer(p);
             b.copyCurrentStructure(p);
@@ -124,8 +123,8 @@ public class TestJacksonTypes
 
     public void testDeeplyNestedObjects() throws Exception
     {
-        try (JsonParser p = MAPPER.tokenStreamFactory().createParser(_createNested(RECURSION_2398,
-                "{\"a\":", "42", "}"))) {
+        try (JsonParser p = MAPPER.tokenStreamFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(_createNested(RECURSION_2398,
+                "{\"a\":", "42", "}")))) {
             p.nextToken();
             TokenBuffer b = new TokenBuffer(p);
             b.copyCurrentStructure(p);
