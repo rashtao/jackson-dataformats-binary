@@ -229,13 +229,13 @@ public class AnySetterTest
             (com.fasterxml.jackson.VPackUtils.toBytes("{ \"a\" : 3, \"b\" : true, \"c\":[1,2,3] }"), MapImitator.class);
         Map<String,Object> result = mapHolder._map;
         assertEquals(3, result.size());
-        assertEquals(Long.valueOf(3), result.get("a"));
+        assertEquals(Integer.valueOf(3), result.get("a"));
         assertEquals(Boolean.TRUE, result.get("b"));
         Object ob = result.get("c");
         assertTrue(ob instanceof List<?>);
         List<?> l = (List<?>)ob;
         assertEquals(3, l.size());
-        assertEquals(Long.valueOf(3), l.get(2));
+        assertEquals(Integer.valueOf(3), l.get(2));
     }
 
     public void testAnySetterDisable() throws Exception

@@ -146,7 +146,7 @@ public class TestJDKSerialization extends BaseMapTest
         assertEquals(2, p1.y);
         ObjectReader anyReader = MAPPER.readerFor(AnyBean.class);
         AnyBean any = anyReader.readValue(bytes);
-        assertEquals(Long.valueOf(2), any.properties().get("y"));
+        assertEquals(Integer.valueOf(2), any.properties().get("y"));
         
         byte[] readerBytes = jdkSerialize(origReader);
         ObjectReader reader2 = jdkDeserialize(readerBytes);
@@ -155,7 +155,7 @@ public class TestJDKSerialization extends BaseMapTest
 
         ObjectReader anyReader2 = jdkDeserialize(jdkSerialize(anyReader));
         AnyBean any2 = anyReader2.readValue(bytes);
-        assertEquals(Long.valueOf(2), any2.properties().get("y"));
+        assertEquals(Integer.valueOf(2), any2.properties().get("y"));
     }
 
     public void testObjectMapper() throws IOException
