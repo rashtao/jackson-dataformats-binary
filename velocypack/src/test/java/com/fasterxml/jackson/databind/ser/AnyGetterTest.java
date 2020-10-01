@@ -144,7 +144,7 @@ public class AnyGetterTest extends BaseMapTest
         byte[] bytes = (MAPPER.writeValueAsBytes(new Bean()));
         Map<?,?> map = MAPPER.readValue(bytes, Map.class);
         assertEquals(2, map.size());
-        assertEquals(Long.valueOf(3), map.get("x"));
+        assertEquals(Integer.valueOf(3), map.get("x"));
         assertEquals(Boolean.TRUE, map.get("a"));
     }
 
