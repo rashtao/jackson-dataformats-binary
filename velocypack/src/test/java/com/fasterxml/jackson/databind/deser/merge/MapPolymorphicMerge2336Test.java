@@ -98,12 +98,11 @@ public class MapPolymorphicMerge2336Test extends BaseMapTest
         
         SomeOtherClass toBeMerged = new SomeOtherClass("house");
         toBeMerged.addValue("SOMEKEY", new SomeClassA("jim", null, 2));
-        String jsonForMerging = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(toBeMerged));
 
         assertEquals("fred", baseValue.data.get("SOMEKEY").getName());
         
         // now try to do the merge and it blows up
-        SomeOtherClass mergedResult = reader.readValue(jsonForMerging);
+        SomeOtherClass mergedResult = reader.readValue(MAPPER.writeValueAsBytes(toBeMerged));
 
         // First of all, should update main POJO (since it's "value to update")
         assertSame(baseValue, mergedResult);

@@ -38,14 +38,15 @@ public class PolymorphicList1451SerTest extends BaseMapTest
                 new TypeReference<Collection<A>>(){};
         ObjectWriter writer = mapper.writerFor(typeRef);
 
-        String result = com.fasterxml.jackson.VPackUtils.toJson( writer.writeValueAsBytes(input));
+        byte[] bytes = writer.writeValueAsBytes(input);
+        String result = com.fasterxml.jackson.VPackUtils.toJson( bytes);
 
         assertEquals(aposToQuotes(
 "[{'@class':'."+CLASS_NAME+"$A','a':'a1'},{'@class':'."+CLASS_NAME+"$B','a':'a2','b':'b'}]"
 ), result);
 
         List<A> output = mapper.readerFor(typeRef)
-                .readValue(result);
+                .readValue(bytes);
         assertEquals(2, output.size());
         assertEquals(A.class, output.get(0).getClass());
         assertEquals(B.class, output.get(1).getClass());

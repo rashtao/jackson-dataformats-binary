@@ -150,7 +150,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
 
     public void testDeserializationWithObject() throws Exception
     {
-        Inter inter = MAPPER.readerFor(Inter.class).readValue("{\"type\": \"mine\", \"blah\": [\"a\", \"b\", \"c\"]}");
+        Inter inter = MAPPER.readerFor(Inter.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"type\": \"mine\", \"blah\": [\"a\", \"b\", \"c\"]}"));
         assertTrue(inter instanceof MyInter);
         assertFalse(inter instanceof LegacyInter);
         assertEquals(Arrays.asList("a", "b", "c"), ((MyInter) inter).blah);
@@ -158,21 +158,21 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
 
     public void testDeserializationWithString() throws Exception
     {
-        Inter inter = MAPPER.readerFor(Inter.class).readValue("\"a,b,c,d\"");
+        Inter inter = MAPPER.readerFor(Inter.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("\"a,b,c,d\""));
         assertTrue(inter instanceof LegacyInter);
         assertEquals(Arrays.asList("a", "b", "c", "d"), ((MyInter) inter).blah);
     }
 
     public void testDeserializationWithArray() throws Exception
     {
-        Inter inter = MAPPER.readerFor(Inter.class).readValue("[\"a\", \"b\", \"c\", \"d\"]");
+        Inter inter = MAPPER.readerFor(Inter.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("[\"a\", \"b\", \"c\", \"d\"]"));
         assertTrue(inter instanceof LegacyInter);
         assertEquals(Arrays.asList("a", "b", "c", "d"), ((MyInter) inter).blah);
     }
 
     public void testDeserializationWithArrayOfSize2() throws Exception
     {
-        Inter inter = MAPPER.readerFor(Inter.class).readValue("[\"a\", \"b\"]");
+        Inter inter = MAPPER.readerFor(Inter.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("[\"a\", \"b\"]"));
         assertTrue(inter instanceof LegacyInter);
         assertEquals(Arrays.asList("a", "b"), ((MyInter) inter).blah);
     }
@@ -180,18 +180,18 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     // [databind#148]
     public void testDefaultAsNoClass() throws Exception
     {
-        Object ob = MAPPER.readerFor(DefaultWithNoClass.class).readValue("{ }");
+        Object ob = MAPPER.readerFor(DefaultWithNoClass.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ }"));
         assertNull(ob);
-        ob = MAPPER.readerFor(DefaultWithNoClass.class).readValue("{ \"bogus\":3 }");
+        ob = MAPPER.readerFor(DefaultWithNoClass.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"bogus\":3 }"));
         assertNull(ob);
     }
 
     // same, with 2.5 and Void.class
     public void testDefaultAsVoid() throws Exception
     {
-        Object ob = MAPPER.readerFor(DefaultWithVoidAsDefault.class).readValue("{ }");
+        Object ob = MAPPER.readerFor(DefaultWithVoidAsDefault.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ }"));
         assertNull(ob);
-        ob = MAPPER.readerFor(DefaultWithVoidAsDefault.class).readValue("{ \"bogus\":3 }");
+        ob = MAPPER.readerFor(DefaultWithVoidAsDefault.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"bogus\":3 }"));
         assertNull(ob);
     }
 
@@ -214,9 +214,9 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
                 DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES
         );
         String json = "{\"many\":[{\"sub1\":{\"a\":\"foo\"}},{\"sub2\":{\"b\":\"bar\"}}]}" ;
-        Good goodResult = reader.forType(Good.class).readValue(json) ;
+        Good goodResult = reader.forType(Good.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes(json)) ;
         assertNotNull(goodResult) ;
-        Bad badResult = reader.forType(Bad.class).readValue(json);
+        Bad badResult = reader.forType(Bad.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertNotNull(badResult);
     }
 
@@ -237,12 +237,12 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
                 +"'item':{'type':'xevent','location':'location1'},"
                 +"'item2':{'type':'event','location':'location1'}}");
         // can't read item2 - which is valid
-        CallRecord r = reader.readValue(json);
+        CallRecord r = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertNull(r.item);
         assertNotNull(r.item2);
 
         json = aposToQuotes("{'item':{'type':'xevent','location':'location1'}, 'version':0.0,'application':'123'}");
-        CallRecord r3 = reader.readValue(json);
+        CallRecord r3 = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertNull(r3.item);
         assertEquals("123", r3.application);
     }
@@ -251,8 +251,8 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     {
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
-        BaseWrapper w = mapper.readValue(aposToQuotes
-                ("{'value':{'clazz':'com.foobar.Nothing'}}'"),
+        BaseWrapper w = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes
+                        ("{'value':{'clazz':'com.foobar.Nothing'}}")),
                 BaseWrapper.class);
         assertNotNull(w);
         assertNull(w.value);
@@ -263,7 +263,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
         ObjectReader r = MAPPER.readerFor(AsPropertyWrapper.class)
                 .without(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
         try {
-            r.readValue("{ \"value\": \"\" }");
+            r.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"value\": \"\" }"));
             fail("Expected " + JsonMappingException.class);
         } catch (InvalidTypeIdException e) {
             verifyException(e, "missing type id property 'type'");
@@ -275,7 +275,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     {
         ObjectReader r = MAPPER.readerFor(AsPropertyWrapper.class)
                 .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        AsPropertyWrapper wrapper = r.readValue("{ \"value\": \"\" }");
+        AsPropertyWrapper wrapper = r.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"value\": \"\" }"));
         assertNull(wrapper.value);
     }
 
