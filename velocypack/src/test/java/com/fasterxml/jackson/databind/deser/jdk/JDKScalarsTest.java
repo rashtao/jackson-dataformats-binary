@@ -240,14 +240,14 @@ public class JDKScalarsTest
         try {
             MAPPER.readerFor(CharacterBean.class)
                 .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
-                .readValue("{\"v\":null}");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"v\":null}"));
             fail("Attempting to deserialize a 'null' JSON reference into a 'char' property did not throw an exception");
         } catch (MismatchedInputException e) {
             verifyException(e, "cannot map `null`");
         }
         final CharacterBean charBean = MAPPER.readerFor(CharacterBean.class)
                 .without(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
-                .readValue("{\"v\":null}");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"v\":null}"));
         assertNotNull(wrapper);
         assertEquals('\u0000', charBean.getV());
     }
@@ -348,7 +348,7 @@ public class JDKScalarsTest
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         try {
-            mapper.readValue("{\"v\":[3]}", LongBean.class);
+            mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"v\":[3]}"), LongBean.class);
             fail("Did not throw exception when reading a value from a single value array with the UNWRAP_SINGLE_VALUE_ARRAYS feature disabled");
         } catch (MismatchedInputException exp) {
             //Correctly threw exception
@@ -551,10 +551,10 @@ public class JDKScalarsTest
         // as per [databind#1095] should only allow coercion from empty String,
         // if `null` is acceptable
         ObjectReader intR = MAPPER.readerFor(primType);
-        assertEquals(emptyValue, intR.readValue(EMPTY));
+        assertEquals(emptyValue, intR.readValue(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY)));
         try {
             intR.with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
-                .readValue("\"\"");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("\"\""));
             fail("Should not have passed");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot coerce empty String");
@@ -571,20 +571,20 @@ public class JDKScalarsTest
                 byte[].class));
         ObjectReader reader = MAPPER.readerFor(byte[].class);
         Assert.assertArrayEquals(INPUT, (byte[]) reader.with(Base64Variants.MIME_NO_LINEFEEDS).readValue(
-                quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="
-        )));
+                com.fasterxml.jackson.VPackUtils.toBytes(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="))
+        ));
 
         // but others should be slightly different
         Assert.assertArrayEquals(INPUT, (byte[]) reader.with(Base64Variants.MIME).readValue(
-                quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1\\ndnd4eXoxMjM0NTY3ODkwWA=="
-        )));
+                com.fasterxml.jackson.VPackUtils.toBytes(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1\\ndnd4eXoxMjM0NTY3ODkwWA=="))
+        ));
         Assert.assertArrayEquals(INPUT, (byte[]) reader.with(Base64Variants.MODIFIED_FOR_URL).readValue(
-                quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA"
-        )));
+                com.fasterxml.jackson.VPackUtils.toBytes(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA"))
+        ));
         // PEM mandates 64 char lines:
         Assert.assertArrayEquals(INPUT, (byte[]) reader.with(Base64Variants.PEM).readValue(
-                quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamts\\nbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="
-        )));
+                com.fasterxml.jackson.VPackUtils.toBytes(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamts\\nbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="))
+        ));
     }    
 
     /*
@@ -592,27 +592,6 @@ public class JDKScalarsTest
     /* Sequence tests
     /**********************************************************
      */
-
-    /**
-     * Then a unit test to verify that we can conveniently bind sequence of
-     * space-separate simple values
-     */
-    public void testSequenceOfInts() throws Exception
-    {
-        final int NR_OF_INTS = 100;
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < NR_OF_INTS; ++i) {
-            sb.append(" ");
-            sb.append(i);
-        }
-        JsonParser jp = MAPPER.getFactory().createParser(sb.toString());
-        for (int i = 0; i < NR_OF_INTS; ++i) {
-            Integer result = MAPPER.readValue(jp, Integer.class);
-            assertEquals(Integer.valueOf(i), result);
-        }
-        jp.close();
-    }
 
     /*
     /**********************************************************
@@ -673,7 +652,7 @@ public class JDKScalarsTest
                 .readerFor(PrimitivesBean.class)
                 .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
         try {
-            reader.readValue(aposToQuotes("{'"+propName+"':''}"));
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'"+propName+"':''}")));
             fail("Expected failure for boolean + empty String");
         } catch (JsonMappingException e) {
             verifyException(e, "Cannot coerce empty String (\"\")");
@@ -724,7 +703,7 @@ public class JDKScalarsTest
                 .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
         // boolean
         try {
-            reader.readValue("{\"booleanValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"booleanValue\":null}"));
             fail("Expected failure for boolean + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type boolean");
@@ -732,35 +711,35 @@ public class JDKScalarsTest
         }
         // byte/char/short/int/long
         try {
-            reader.readValue("{\"byteValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"byteValue\":null}"));
             fail("Expected failure for byte + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type byte");
             verifyPath(e, "byteValue");
         }
         try {
-            reader.readValue("{\"charValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"charValue\":null}"));
             fail("Expected failure for char + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type char");
             verifyPath(e, "charValue");
         }
         try {
-            reader.readValue("{\"shortValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"shortValue\":null}"));
             fail("Expected failure for short + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type short");
             verifyPath(e, "shortValue");
         }
         try {
-            reader.readValue("{\"intValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"intValue\":null}"));
             fail("Expected failure for int + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type int");
             verifyPath(e, "intValue");
         }
         try {
-            reader.readValue("{\"longValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"longValue\":null}"));
             fail("Expected failure for long + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type long");
@@ -769,14 +748,14 @@ public class JDKScalarsTest
 
         // float/double
         try {
-            reader.readValue("{\"floatValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"floatValue\":null}"));
             fail("Expected failure for float + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type float");
             verifyPath(e, "floatValue");
         }
         try {
-            reader.readValue("{\"doubleValue\":null}");
+            reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"doubleValue\":null}"));
             fail("Expected failure for double + null");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type double");
@@ -791,7 +770,7 @@ public class JDKScalarsTest
             /*PrimitiveCreatorBean bean =*/ MAPPER
                     .readerFor(PrimitiveCreatorBean.class)
                     .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
-                    .readValue(aposToQuotes("{'a': null}"));
+                    .readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'a': null}")));
             fail("Expected failure for `int` and `null`");
         } catch (MismatchedInputException e) {
             verifyException(e, "Cannot map `null` into type int");
@@ -831,11 +810,11 @@ public class JDKScalarsTest
         final ObjectReader readerNoCoerce = readerCoerceOk
                 .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
 
-        Object ob = readerCoerceOk.forType(cls).readValue(JSON_WITH_NULL);
+        Object ob = readerCoerceOk.forType(cls).readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_WITH_NULL));
         assertEquals(1, Array.getLength(ob));
         assertEquals(defValue, Array.get(ob, 0));
         try {
-            readerNoCoerce.readValue(JSON_WITH_NULL);
+            readerNoCoerce.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_WITH_NULL));
             fail("Should not pass");
         } catch (JsonMappingException e) {
             verifyException(e, "Cannot coerce `null`");
@@ -843,12 +822,12 @@ public class JDKScalarsTest
         }
         
         if (testEmptyString) {
-            ob = readerCoerceOk.forType(cls).readValue(EMPTY_STRING_JSON);
+            ob = readerCoerceOk.forType(cls).readValue(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY_STRING_JSON));
             assertEquals(1, Array.getLength(ob));
             assertEquals(defValue, Array.get(ob, 0));
 
             try {
-                readerNoCoerce.readValue(EMPTY_STRING_JSON);
+                readerNoCoerce.readValue(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY_STRING_JSON));
                 fail("Should not pass");
             } catch (JsonMappingException e) {
                 verifyException(e, "Cannot coerce empty String (\"\")");
@@ -901,7 +880,7 @@ public class JDKScalarsTest
         final String SIMPLE_NAME = cls.getSimpleName();
 
         try {
-            MAPPER.readerFor(cls).readValue(JSON);
+            MAPPER.readerFor(cls).readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
             fail("Should not pass");
         } catch (JsonMappingException e) {
             verifyException(e, "Cannot deserialize value of type `"+SIMPLE_NAME+"` from String \"foobar\"");
