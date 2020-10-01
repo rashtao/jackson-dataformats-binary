@@ -207,9 +207,8 @@ public class TestAnnotations
      */
     public void testClassSerializer() throws Exception
     {
-        StringWriter sw = new StringWriter();
-        MAPPER.writeValue(sw, new ClassSerializer());
-        assertEquals("true", sw.toString());
+        byte[] bytes = MAPPER.writeValueAsBytes(new ClassSerializer());
+        assertEquals("true", com.fasterxml.jackson.VPackUtils.toJson(bytes));
     }
 
     /**
@@ -218,12 +217,11 @@ public class TestAnnotations
      */
     public void testActiveMethodSerializer() throws Exception
     {
-        StringWriter sw = new StringWriter();
-        MAPPER.writeValue(sw, new ClassMethodSerializer(13));
+        byte[] bytes = MAPPER.writeValueAsBytes(new ClassMethodSerializer(13));
         /* Here we will get wrapped as an object, since we have
          * full object, just override a single property
          */
-        assertEquals("{\"x\":\"X13X\"}", sw.toString());
+        assertEquals("{\"x\":\"X13X\"}", com.fasterxml.jackson.VPackUtils.toJson(bytes));
     }
 
     public void testInactiveMethodSerializer() throws Exception

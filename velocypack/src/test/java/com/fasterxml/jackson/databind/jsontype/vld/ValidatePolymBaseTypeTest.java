@@ -107,10 +107,9 @@ public class ValidatePolymBaseTypeTest extends BaseMapTest
     }
 
     public void testAnnotedBad() throws Exception {
-        final String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER_ANNOTATED.writeValueAsBytes(new AnnotatedBadWrapper()));
         // should fail
         try {
-            MAPPER_ANNOTATED.readValue(json, AnnotatedBadWrapper.class);
+            MAPPER_ANNOTATED.readValue(MAPPER_ANNOTATED.writeValueAsBytes(new AnnotatedBadWrapper()), AnnotatedBadWrapper.class);
             fail("Should not pass");
         } catch (InvalidDefinitionException e) {
             verifyException(e, "Configured `PolymorphicTypeValidator`");
@@ -132,10 +131,9 @@ public class ValidatePolymBaseTypeTest extends BaseMapTest
     }
 
     public void testDefaultBad() throws Exception {
-        final String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER_DEF_TYPING.writeValueAsBytes(new DefTypeBadWrapper()));
         // should fail
         try {
-            MAPPER_DEF_TYPING.readValue(json, DefTypeBadWrapper.class);
+            MAPPER_DEF_TYPING.readValue(MAPPER_DEF_TYPING.writeValueAsBytes(new DefTypeBadWrapper()), DefTypeBadWrapper.class);
             fail("Should not pass");
         } catch (InvalidDefinitionException e) {
             verifyException(e, "Configured `PolymorphicTypeValidator`");
