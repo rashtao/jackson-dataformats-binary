@@ -299,6 +299,9 @@ public class VelocypackParser extends ParserMinimalBase {
     /**********************************************************
      */
 
+    /**
+     * FIXME: Method can be called for any token type.
+     */
     @Override
     public String getText() {
         if (currentValue.isNumber()) {
@@ -322,7 +325,7 @@ public class VelocypackParser extends ParserMinimalBase {
 
     @Override
     public int getTextLength() {
-        return currentValue.getLength();
+        return getTextCharacters().length;
     }
 
     @Override
