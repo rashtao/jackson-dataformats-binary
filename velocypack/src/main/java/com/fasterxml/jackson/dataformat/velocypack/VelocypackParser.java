@@ -299,17 +299,20 @@ public class VelocypackParser extends ParserMinimalBase {
     /**********************************************************
      */
 
-    /**
-     * FIXME: Method can be called for any token type.
-     */
     @Override
     public String getText() {
-        if (currentValue.isNumber()) {
-            return getNumberValue().toString();
-        } else if (_currToken == JsonToken.FIELD_NAME) {
+        if (_currToken == JsonToken.FIELD_NAME) {
             return currentName;
+        } else if (currentValue.isNumber()) {
+            return String.valueOf(getNumberValue());
+        } else if (currentValue.isBoolean()) {
+            return String.valueOf(currentValue.getAsBoolean());
+        } else if (currentValue.isNull()) {
+            return "null";
+        } else if (currentValue.isString()) {
+            return String.valueOf(currentValue.getAsString());
         } else {
-            return currentValue.getAsString();
+            throw new UnsupportedOperationException("Calling getText() on " + currentValue.getType());
         }
     }
 
