@@ -166,12 +166,8 @@ public class TestJacksonAnnotationIntrospector
         ex.setElementProperty("elementValue");
         ex.setWrappedElementProperty(Arrays.asList("wrappedElementValue"));
         ex.setEnumProperty(EnumExample.VALUE1);
-        StringWriter writer = new StringWriter();
-        mapper.writeValue(writer, ex);
-        writer.flush();
-        writer.close();
 
-        String json = writer.toString();
+        String json = com.fasterxml.jackson.VPackUtils.toJson(mapper.writeValueAsBytes(ex));
         JacksonExample readEx = mapper.readValue(json, JacksonExample.class);
 
         assertEquals(ex.qname, readEx.qname);
