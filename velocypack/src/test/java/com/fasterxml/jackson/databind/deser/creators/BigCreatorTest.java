@@ -47,9 +47,9 @@ public class BigCreatorTest extends BaseMapTest
     
     public void testBigPartial() throws Exception
     {
-        Biggie value = BIGGIE_READER.readValue(aposToQuotes(
+        Biggie value = BIGGIE_READER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes(
                 "{'v7':7, 'v8':8,'v29':29, 'v35':35}"
-                ));
+        )));
         int[] stuff = value.stuff;
         for (int i = 0; i < stuff.length; ++i) {
             int exp;

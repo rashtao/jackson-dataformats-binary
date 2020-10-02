@@ -196,7 +196,7 @@ public class TestBeanConversions
     // [Issue-11]: simple cast, for Tree
     public void testNodeConvert() throws Exception
     {
-        ObjectNode src = (ObjectNode) MAPPER.readTree("{}");
+        ObjectNode src = (ObjectNode) MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
         TreeNode node = src;
         ObjectNode result = MAPPER.treeToValue(node, ObjectNode.class);
         // should just cast...

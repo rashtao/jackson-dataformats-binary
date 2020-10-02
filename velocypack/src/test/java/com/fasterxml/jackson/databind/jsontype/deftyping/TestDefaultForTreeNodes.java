@@ -29,7 +29,7 @@ public class TestDefaultForTreeNodes extends BaseMapTest
         Foo foo = new Foo("baz");
         String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_MAPPER.writeValueAsBytes(foo));
 
-        JsonNode jsonNode = DEFAULT_MAPPER.readTree(json);
+        JsonNode jsonNode = DEFAULT_MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(jsonNode.get("bar").textValue(), foo.bar);
     }
 

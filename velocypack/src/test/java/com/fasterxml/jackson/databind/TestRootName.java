@@ -47,7 +47,7 @@ public class TestRootName extends BaseMapTest
         ObjectMapper mapper = rootMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().writeValueAsBytes(new Bean()));
         assertEquals("{\"rudy\":{\"a\":3}}", json);
-        Bean bean = mapper.readerFor(Bean.class).readValue(json);
+        Bean bean = mapper.readerFor(Bean.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertNotNull(bean);
     }
 
@@ -68,14 +68,14 @@ public class TestRootName extends BaseMapTest
         assertNotNull(result);
         try { // must not have extra wrapping
             result = mapper.readerFor(Bean.class).with(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(jsonUnwrapped);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(jsonUnwrapped));
             fail("Should have failed");
         } catch (JsonMappingException e) {
             verifyException(e, "Root name 'a'");
         }
         // except wrapping may be expected:
         result = mapper.readerFor(Bean.class).with(DeserializationFeature.UNWRAP_ROOT_VALUE)
-            .readValue(jsonWrapped);
+            .readValue(com.fasterxml.jackson.VPackUtils.toBytes(jsonWrapped));
         assertNotNull(result);
     }
     
@@ -88,7 +88,7 @@ public class TestRootName extends BaseMapTest
         assertEquals("{\"wrapper\":{\"a\":3}}", json);
 
         ObjectReader reader = mapper.readerFor(Bean.class).withRootName("wrapper");
-        Bean bean = reader.readValue(json);
+        Bean bean = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertNotNull(bean);
 
         // also: verify that we can override SerializationFeature as well:
@@ -102,16 +102,16 @@ public class TestRootName extends BaseMapTest
         json = com.fasterxml.jackson.VPackUtils.toJson( wrapping.writer().withoutRootName().writeValueAsBytes(new Bean()));
         assertEquals("{\"a\":3}", json);
 
-        bean = wrapping.readerFor(Bean.class).withRootName("").readValue(json);
+        bean = wrapping.readerFor(Bean.class).withRootName("").readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertNotNull(bean);
         assertEquals(3, bean.a);
 
-        bean = wrapping.readerFor(Bean.class).withoutRootName().readValue("{\"a\":4}");
+        bean = wrapping.readerFor(Bean.class).withoutRootName().readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":4}"));
         assertNotNull(bean);
         assertEquals(4, bean.a);
 
         // and back to defaults
-        bean = wrapping.readerFor(Bean.class).readValue("{\"rudy\":{\"a\":7}}");
+        bean = wrapping.readerFor(Bean.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"rudy\":{\"a\":7}}"));
         assertNotNull(bean);
         assertEquals(7, bean.a);
     }

@@ -47,7 +47,7 @@ public class TestCreatorNullPrimitives extends BaseMapTest {
             .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
         String json = aposToQuotes("{'x': 2}");
         try {
-            r.readValue(json);
+            r.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
             fail("Should not have succeeded");
         } catch (JsonMappingException e) {
             verifyException(e, "Cannot map `null` into type int");
@@ -61,7 +61,7 @@ public class TestCreatorNullPrimitives extends BaseMapTest {
                 .with(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
         String json = aposToQuotes("{ 'entity': {'x': 2}}");
         try {
-            r.readValue(json);
+            r.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
             fail("Should not have succeeded");
         } catch (JsonMappingException e) {
             verifyException(e, "Cannot map `null` into type int");

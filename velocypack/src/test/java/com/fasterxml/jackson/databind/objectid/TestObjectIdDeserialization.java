@@ -347,7 +347,7 @@ public class TestObjectIdDeserialization extends BaseMapTest
     {
         IdWrapper w = MAPPER.readerFor(IdWrapper.class)
                 .without(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS)
-                .readValue(aposToQuotes("{'node':123}"));
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'node':123}")));
         assertNotNull(w);
         assertNull(w.node);
     }
@@ -433,7 +433,7 @@ public class TestObjectIdDeserialization extends BaseMapTest
         pool.put(5, new WithCustomResolution(5, 5));
         ContextAttributes attrs = MAPPER.getDeserializationConfig().getAttributes().withSharedAttribute(POOL_KEY, pool);
         String content = "{\"data\":[1,2,3,4,5]}";
-        CustomResolutionWrapper wrapper = MAPPER.readerFor(CustomResolutionWrapper.class).with(attrs).readValue(content);
+        CustomResolutionWrapper wrapper = MAPPER.readerFor(CustomResolutionWrapper.class).with(attrs).readValue(com.fasterxml.jackson.VPackUtils.toBytes(content));
         assertFalse(wrapper.data.isEmpty());
         for (WithCustomResolution ob : wrapper.data) {
             assertSame(pool.get(ob.id), ob);

@@ -198,9 +198,8 @@ public class TestCustomSerializers extends BaseMapTest
         ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         objectMapper.addMixIn(Element.class, ElementMixin.class);
         Element element = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().createElement("el");
-        StringWriter sw = new StringWriter();
-        objectMapper.writeValue(sw, element);
-        assertEquals(sw.toString(), "\"element\"");
+        byte[] bytes = objectMapper.writeValueAsBytes(element);
+        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(bytes), "\"element\"");
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -169,7 +169,7 @@ public class TestCustomEnumKeyDeserializer extends BaseMapTest
     // Test passing with the fix
     public void testWithEnumKeys() throws Exception {
         ObjectMapper plainObjectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        JsonNode tree = plainObjectMapper.readTree(aposToQuotes("{'red' : [ 'a', 'b']}"));
+        JsonNode tree = plainObjectMapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'red' : [ 'a', 'b']}")));
 
         ObjectMapper fancyObjectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().registerModule(new TestEnumModule());
 

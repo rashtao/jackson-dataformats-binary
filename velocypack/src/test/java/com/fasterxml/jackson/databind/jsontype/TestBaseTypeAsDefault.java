@@ -46,18 +46,18 @@ public class TestBaseTypeAsDefault extends BaseMapTest
             .build();
     
     public void testPositiveForParent() throws IOException {
-        Object o = MAPPER_WITH_BASE.readerFor(Parent.class).readValue("{}");
+        Object o = MAPPER_WITH_BASE.readerFor(Parent.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
         assertEquals(o.getClass(), Parent.class);
     }
 
     public void testPositiveForChild() throws IOException {
-        Object o = MAPPER_WITH_BASE.readerFor(Child.class).readValue("{}");
+        Object o = MAPPER_WITH_BASE.readerFor(Child.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
         assertEquals(o.getClass(), Child.class);
     }
 
     public void testNegativeForParent() throws IOException {
         try {
-            /*Object o =*/ MAPPER_WITHOUT_BASE.readerFor(Parent.class).readValue("{}");
+            /*Object o =*/ MAPPER_WITHOUT_BASE.readerFor(Parent.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
             fail("Should not pass");
         } catch (JsonMappingException ex) {
             assertTrue(ex.getMessage().contains("missing type id property '@class'"));
@@ -66,7 +66,7 @@ public class TestBaseTypeAsDefault extends BaseMapTest
 
     public void testNegativeForChild() throws IOException {
         try {
-            /*Object o =*/ MAPPER_WITHOUT_BASE.readerFor(Child.class).readValue("{}");
+            /*Object o =*/ MAPPER_WITHOUT_BASE.readerFor(Child.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
             fail("Should not pass");
         } catch (JsonMappingException ex) {
             assertTrue(ex.getMessage().contains("missing type id property '@class'"));
@@ -75,18 +75,18 @@ public class TestBaseTypeAsDefault extends BaseMapTest
 
     public void testConversionForAbstractWithDefault() throws IOException {
         // should pass shouldn't it?
-        Object o = MAPPER_WITH_BASE.readerFor(AbstractParentWithDefault.class).readValue("{}");
+        Object o = MAPPER_WITH_BASE.readerFor(AbstractParentWithDefault.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
         assertEquals(o.getClass(), ChildOfChild.class);
     }
 
     public void testPositiveWithTypeSpecification() throws IOException {
         Object o = MAPPER_WITH_BASE.readerFor(Parent.class)
-                .readValue("{\"@class\":\""+Child.class.getName()+"\"}");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"@class\":\""+Child.class.getName()+"\"}"));
         assertEquals(o.getClass(), Child.class);
     }
 
     public void testPositiveWithManualDefault() throws IOException {
-        Object o = MAPPER_WITH_BASE.readerFor(ChildOfAbstract.class).readValue("{}");
+        Object o = MAPPER_WITH_BASE.readerFor(ChildOfAbstract.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
 
         assertEquals(o.getClass(), ChildOfChild.class);
     }

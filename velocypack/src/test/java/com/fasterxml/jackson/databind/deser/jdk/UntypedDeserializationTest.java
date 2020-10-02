@@ -271,14 +271,14 @@ public class UntypedDeserializationTest
                         DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
         WrappedPolymorphicUntyped w;
 
-        w = rDefault.readValue(aposToQuotes("{'value':10}"));
+        w = rDefault.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'value':10}")));
         assertEquals(Integer.valueOf(10), w.value);
-        w = rAlt.readValue(aposToQuotes("{'value':10}"));
+        w = rAlt.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'value':10}")));
         assertEquals(BigInteger.TEN, w.value);
 
-        w = rDefault.readValue(aposToQuotes("{'value':5.0}"));
+        w = rDefault.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'value':5.0}")));
         assertEquals(Double.valueOf(5.0), w.value);
-        w = rAlt.readValue(aposToQuotes("{'value':5.0}"));
+        w = rAlt.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'value':5.0}")));
         assertEquals(new BigDecimal("5.0"), w.value);
 
         StringBuilder sb = new StringBuilder(100).append("[0");
@@ -291,7 +291,7 @@ public class UntypedDeserializationTest
         // First read as-is, no type wrapping
         Object ob = mapper.readerFor(Object.class)
                 .with(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)
-                .readValue(INT_ARRAY_JSON);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(INT_ARRAY_JSON));
         assertTrue(ob instanceof Object[]);
         Object[] obs = (Object[]) ob;
         for (int i = 0; i < 100; ++i) {
@@ -336,14 +336,14 @@ public class UntypedDeserializationTest
         DelegatingUntyped pojo;
         ObjectReader r = MAPPER.readerFor(DelegatingUntyped.class);
 
-        pojo = r.readValue("[]");
+        pojo = r.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[]"));
         assertTrue(pojo.value instanceof List);
-        pojo = r.readValue("[{}]");
+        pojo = r.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[{}]"));
         assertTrue(pojo.value instanceof List);
         
-        pojo = r.readValue("{}");
+        pojo = r.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{}"));
         assertTrue(pojo.value instanceof Map);
-        pojo = r.readValue("{\"a\":[]}");
+        pojo = r.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":[]}"));
         assertTrue(pojo.value instanceof Map);
     }
 
@@ -363,12 +363,12 @@ public class UntypedDeserializationTest
     {
         final String JSON = aposToQuotes("{'value':3}");
         WrappedUntyped1460 w = MAPPER.readerFor(WrappedUntyped1460.class)
-                .readValue(JSON);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         assertEquals(Integer.valueOf(3), w.value);
 
         w = MAPPER.readerFor(WrappedUntyped1460.class)
                 .with(DeserializationFeature.USE_LONG_FOR_INTS)
-                .readValue(JSON);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         assertEquals(Long.valueOf(3), w.value);
     }
 
@@ -409,7 +409,7 @@ public class UntypedDeserializationTest
 
         String serialized = "{\"timestamp\":"+VALUE+"}";
         // works fine as node
-        JsonNode deserialized = mapper.readTree(serialized);
+        JsonNode deserialized = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(serialized));
         assertEquals(VALUE, deserialized.get("timestamp").asLong());
         // and actually should work in Maps too
         Map<?,?> deserMap = mapper.readValue(serialized, Map.class);

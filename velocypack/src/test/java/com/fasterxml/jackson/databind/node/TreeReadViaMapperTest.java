@@ -1,11 +1,15 @@
 package com.fasterxml.jackson.databind.node;
 
-import java.io.*;
-import java.util.*;
-
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TestTreeDeserialization.Bean;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Iterator;
 
 /**
  * This unit test suite tries to verify that ObjectMapper
@@ -23,11 +27,7 @@ public class TreeReadViaMapperTest extends BaseMapTest
         for (int type = 0; type < 2; ++type) {
             JsonNode result;
 
-            if (type == 0) {
-                result = MAPPER.readTree(new StringReader(JSON));
-            } else {
-                result = MAPPER.readTree(JSON);
-            }
+            result = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
 
             assertType(result, ObjectNode.class);
             assertEquals(1, result.size());

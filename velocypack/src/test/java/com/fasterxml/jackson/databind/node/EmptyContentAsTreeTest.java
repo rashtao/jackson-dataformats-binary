@@ -25,32 +25,10 @@ public class EmptyContentAsTreeTest extends BaseMapTest
 
     public void testNullFromEOFWithParserAndMapper() throws Exception
     {
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY0)) {
+        try (JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY0))) {
             _assertNullTree(MAPPER.readTree(p));
         }
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1)) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new StringReader(EMPTY0))) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new StringReader(EMPTY1))) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY0_BYTES)) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1_BYTES)) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1_BYTES, 0, EMPTY1_BYTES.length)) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new ByteArrayInputStream(EMPTY0_BYTES))) {
-            _assertNullTree(MAPPER.readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new ByteArrayInputStream(EMPTY1_BYTES))) {
+        try (JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY1))) {
             _assertNullTree(MAPPER.readTree(p));
         }
     }
@@ -58,33 +36,10 @@ public class EmptyContentAsTreeTest extends BaseMapTest
     // [databind#1406]
     public void testNullFromEOFWithParserAndReader() throws Exception
     {
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY0)) {
+        try (JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY0))) {
             _assertNullTree(MAPPER.reader().readTree(p));
         }
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1)) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new StringReader(EMPTY0))) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new StringReader(EMPTY1))) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY0_BYTES)) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1_BYTES)) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(EMPTY1_BYTES, 0, EMPTY1_BYTES.length)) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-
-        try (JsonParser p = MAPPER.getFactory().createParser(new ByteArrayInputStream(EMPTY0_BYTES))) {
-            _assertNullTree(MAPPER.reader().readTree(p));
-        }
-        try (JsonParser p = MAPPER.getFactory().createParser(new ByteArrayInputStream(EMPTY1_BYTES))) {
+        try (JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY1))) {
             _assertNullTree(MAPPER.reader().readTree(p));
         }
     }
@@ -93,35 +48,16 @@ public class EmptyContentAsTreeTest extends BaseMapTest
     // return "missing node" instead of alternate (return `null`, throw exception).
     public void testMissingNodeForEOFOtherMapper() throws Exception
     {
-        _assertMissing(MAPPER.readTree(EMPTY0));
-        _assertMissing(MAPPER.readTree(EMPTY1));
-        _assertMissing(MAPPER.readTree(new StringReader(EMPTY0)));
-        _assertMissing(MAPPER.readTree(new StringReader(EMPTY1)));
-        
-        _assertMissing(MAPPER.readTree(EMPTY0_BYTES));
-        _assertMissing(MAPPER.readTree(EMPTY0_BYTES, 0, EMPTY0_BYTES.length));
-        _assertMissing(MAPPER.readTree(new ByteArrayInputStream(EMPTY0_BYTES)));
-        _assertMissing(MAPPER.readTree(EMPTY1_BYTES));
-        _assertMissing(MAPPER.readTree(EMPTY1_BYTES, 0, EMPTY1_BYTES.length));
-        _assertMissing(MAPPER.readTree(new ByteArrayInputStream(EMPTY1_BYTES)));
-
+        _assertMissing(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY0)));
+        _assertMissing(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY1)));
         // Assume File, URL, etc are fine. Note: `DataInput` probably can't be made to
         // work since it can not easily/gracefully handle unexpected end-of-input
     }
 
     public void testMissingNodeViaObjectReader() throws Exception
     {
-        _assertMissing(MAPPER.reader().readTree(EMPTY0));
-        _assertMissing(MAPPER.reader().readTree(EMPTY1));
-        _assertMissing(MAPPER.reader().readTree(new StringReader(EMPTY0)));
-        _assertMissing(MAPPER.reader().readTree(new StringReader(EMPTY1)));
-        
-        _assertMissing(MAPPER.reader().readTree(EMPTY0_BYTES));
-        _assertMissing(MAPPER.reader().readTree(EMPTY0_BYTES, 0, EMPTY0_BYTES.length));
-        _assertMissing(MAPPER.reader().readTree(new ByteArrayInputStream(EMPTY0_BYTES)));
-        _assertMissing(MAPPER.reader().readTree(EMPTY1_BYTES));
-        _assertMissing(MAPPER.reader().readTree(EMPTY1_BYTES, 0, EMPTY1_BYTES.length));
-        _assertMissing(MAPPER.reader().readTree(new ByteArrayInputStream(EMPTY1_BYTES)));
+        _assertMissing(MAPPER.reader().readTree(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY0)));
+        _assertMissing(MAPPER.reader().readTree(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY1)));
     }
 
     private void _assertNullTree(TreeNode n) {

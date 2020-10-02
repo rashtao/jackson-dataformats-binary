@@ -64,7 +64,7 @@ public class TestNullNode extends NodeTestBase
     public void testNullHandling() throws Exception
     {
         // First, a stand-alone null
-        JsonNode n = MAPPER.readTree("null");
+        JsonNode n = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes("null"));
         assertNotNull(n);
         assertTrue(n.isNull());
         assertFalse(n.isNumber());
@@ -72,12 +72,12 @@ public class TestNullNode extends NodeTestBase
         assertEquals("null", n.asText());
         assertEquals(n, NullNode.instance);
 
-        n = objectMapper().readTree("null");
+        n = objectMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes("null"));
         assertNotNull(n);
         assertTrue(n.isNull());
         
         // Then object property
-        ObjectNode root = (ObjectNode) objectReader().readTree("{\"x\":null}");
+        ObjectNode root = (ObjectNode) objectReader().readTree(com.fasterxml.jackson.VPackUtils.toBytes("{\"x\":null}"));
         assertEquals(1, root.size());
         n = root.get("x");
         assertNotNull(n);
@@ -86,9 +86,8 @@ public class TestNullNode extends NodeTestBase
 
     public void testNullSerialization() throws Exception
     {
-        StringWriter sw = new StringWriter();
-        MAPPER.writeValue(sw, NullNode.instance);
-        assertEquals("null", sw.toString());
+        byte[] bytes = MAPPER.writeValueAsBytes(NullNode.instance);
+        assertEquals("null", com.fasterxml.jackson.VPackUtils.toJson(bytes));
     }
 
     public void testNullHandlingCovariance() throws Exception

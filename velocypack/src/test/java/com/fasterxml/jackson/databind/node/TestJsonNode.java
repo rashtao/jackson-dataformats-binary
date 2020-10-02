@@ -1,12 +1,13 @@
 package com.fasterxml.jackson.databind.node;
 
-import java.util.Comparator;
-
-import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.io.SerializedString;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
 import com.fasterxml.jackson.databind.util.RawValue;
+
+import java.util.Comparator;
 
 /**
  * Basic tests for {@link JsonNode} base class and some features
@@ -41,8 +42,8 @@ public class TestJsonNode extends NodeTestBase
 
         assertNodeNumbers(f, 0, 0.0);
         assertNodeNumbers(t, 1, 1.0);
-    
-        JsonNode result = objectMapper().readTree("true\n");
+
+        JsonNode result = objectMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes("true\n"));
         assertFalse(result.isNull());
         assertFalse(result.isNumber());
         assertFalse(result.isTextual());
@@ -96,12 +97,11 @@ public class TestJsonNode extends NodeTestBase
     }
 
     // [databind#743]
-    public void testRawValue() throws Exception
-    {
+    public void testRawValue() throws Exception {
         ObjectNode root = MAPPER.createObjectNode();
         root.putRawValue("a", new RawValue(new SerializedString("[1, 2, 3]")));
-
-        assertEquals("{\"a\":[1, 2, 3]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(root)));
+        byte[] bytes = MAPPER.writeValueAsBytes(root);
+        assertEquals("{\"a\":[1, 2, 3]}", com.fasterxml.jackson.VPackUtils.toJson(bytes));
     }
 
     // [databind#790]
@@ -180,11 +180,11 @@ public class TestJsonNode extends NodeTestBase
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
             .activateDefaultTyping(NoCheckSubTypeValidator.instance);
 
-        JsonNode array = mapper.readTree("[ 1, 2 ]");
+        JsonNode array = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes("[ 1, 2 ]"));
         assertTrue(array.isArray());
         assertEquals(2, array.size());
 
-        JsonNode obj = mapper.readTree("{ \"a\" : 2 }");
+        JsonNode obj = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes("{ \"a\" : 2 }"));
         assertTrue(obj.isObject());
         assertEquals(1, obj.size());
         assertEquals(2, obj.path("a").asInt());

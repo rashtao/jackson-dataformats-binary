@@ -38,7 +38,7 @@ public class TestMissingNode extends NodeTestBase
     public void testMissingViaMapper() throws Exception
     {
         String JSON = "[ { }, [ ] ]";
-        JsonNode result = objectMapper().readTree(new StringReader(JSON));
+        JsonNode result = objectMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
 
         assertTrue(result.isContainerNode());
         assertTrue(result.isArray());

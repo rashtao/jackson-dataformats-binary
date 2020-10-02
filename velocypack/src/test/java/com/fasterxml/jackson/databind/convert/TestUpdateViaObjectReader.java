@@ -130,7 +130,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
         assertEquals(3, bean.c.length);
         assertNull(bean.child);
 
-        Object ob = MAPPER.readerForUpdating(bean).readValue("{ \"b\":\"x\", \"c\":[4,5], \"child\":{ \"a\":\"y\"} }");
+        Object ob = MAPPER.readerForUpdating(bean).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"b\":\"x\", \"c\":[4,5], \"child\":{ \"a\":\"y\"} }"));
         assertSame(ob, bean);
 
         assertEquals("a", bean.a);
@@ -150,7 +150,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
         List<String> strs = new ArrayList<String>();
         strs.add("a");
         // for lists, we will be appending entries
-        Object ob = MAPPER.readerForUpdating(strs).readValue("[ \"b\", \"c\", \"d\" ]");
+        Object ob = MAPPER.readerForUpdating(strs).readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ \"b\", \"c\", \"d\" ]"));
         assertSame(strs, ob);
         assertEquals(4, strs.size());
         assertEquals("a", strs.get(0));
@@ -165,7 +165,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
         strs.put("a", "a");
         strs.put("b", "b");
         // for maps, we will be adding and/or overwriting entries
-        Object ob = MAPPER.readerForUpdating(strs).readValue("{ \"c\" : \"c\", \"a\" : \"z\" }");
+        Object ob = MAPPER.readerForUpdating(strs).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"c\" : \"c\", \"a\" : \"z\" }"));
         assertSame(strs, ob);
         assertEquals(3, strs.size());
         assertEquals("z", strs.get("a"));
@@ -179,7 +179,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     {
         XYBean toUpdate = new XYBean();
         Iterator<XYBean> it = MAPPER.readerForUpdating(toUpdate).readValues(
-                "{\"x\":1,\"y\":2}\n{\"x\":16}{\"y\":37}");
+                com.fasterxml.jackson.VPackUtils.toBytes("{\"x\":1,\"y\":2}\n{\"x\":16}{\"y\":37}"));
 
         assertTrue(it.hasNext());
         XYBean value = it.next();
@@ -210,7 +210,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
         bean.str = "test";
         Updateable result = MAPPER.readerForUpdating(bean)
                 .withView(TextView.class)
-                .readValue("{\"num\": 10, \"str\":\"foobar\"}");    
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"num\": 10, \"str\":\"foobar\"}"));
         assertSame(bean, result);
 
         assertEquals(100, bean.num);
@@ -246,7 +246,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
 
         assertEquals(1, dbUpdViaString.da.i);
         assertEquals(3, dbUpdViaString.k);
-        mapper.readerForUpdating(dbUpdViaString).readValue(jsonBString);
+        mapper.readerForUpdating(dbUpdViaString).readValue(com.fasterxml.jackson.VPackUtils.toBytes(jsonBString));
         assertEquals(5, dbUpdViaString.da.i);
         assertEquals(13, dbUpdViaString.k);
 
@@ -261,7 +261,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     // [databind#1831]
     public void test1831UsingNode() throws IOException {
         String catJson = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Cat()));
-        JsonNode jsonNode = MAPPER.readTree(catJson);
+        JsonNode jsonNode = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(catJson));
         AnimalWrapper optionalCat = new AnimalWrapper();
         ObjectReader r = MAPPER.readerForUpdating(optionalCat);
         AnimalWrapper result = r.readValue(jsonNode);
@@ -271,7 +271,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     public void test1831UsingString() throws IOException {
         String catJson = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new Cat()));
         AnimalWrapper optionalCat = new AnimalWrapper();
-        AnimalWrapper result = MAPPER.readerForUpdating(optionalCat).readValue(catJson);
+        AnimalWrapper result = MAPPER.readerForUpdating(optionalCat).readValue(com.fasterxml.jackson.VPackUtils.toBytes(catJson));
         assertSame(optionalCat, result);
     }
 }
