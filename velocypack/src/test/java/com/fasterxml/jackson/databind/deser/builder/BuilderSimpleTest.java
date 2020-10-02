@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.deser.builder;
 
 import java.util.*;
 
+import com.fasterxml.jackson.VPackUtils;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.core.Version;
@@ -368,7 +369,8 @@ public class BuilderSimpleTest extends BaseMapTest
 
     public void testSelfBuilder777() throws Exception
     {
-        SelfBuilder777 result = MAPPER.readValue(aposToQuotes("{'x':3}'"),
+        byte[] bytes = VPackUtils.toBytes(aposToQuotes("{'x':3}"));
+        SelfBuilder777 result = MAPPER.readValue(bytes,
                 SelfBuilder777.class);
         assertNotNull(result);
         assertEquals(3, result.x);

@@ -33,7 +33,6 @@ public class TestVersions extends BaseMapTest
         Version v = vers.version();
         assertFalse("Should find version information (got "+v+")", v.isUnknownVersion());
         Version exp = PackageVersion.VERSION;
-        assertEquals(exp.toFullString(), v.toFullString());
-        assertEquals(exp, v);
+        assertEquals(exp.toString(), v.toString());
     }
 }

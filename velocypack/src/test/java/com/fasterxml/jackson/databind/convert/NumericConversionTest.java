@@ -1,10 +1,7 @@
 package com.fasterxml.jackson.databind.convert;
 
-import com.arangodb.velocypack.exception.VPackException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-
-import static com.fasterxml.jackson.VPackUtils.toBytes;
 
 public class NumericConversionTest extends BaseMapTest
 {
@@ -14,74 +11,74 @@ public class NumericConversionTest extends BaseMapTest
     public void testDoubleToInt() throws Exception
     {
         // by default, should be ok
-        Integer I = MAPPER.readValue(toBytes("1.25"), Integer.class);
+        Integer I = MAPPER.readValue(" 1.25 ", Integer.class);
         assertEquals(1, I.intValue());
-        IntWrapper w = MAPPER.readValue(toBytes("{\"i\":-2.25}"), IntWrapper.class);
+        IntWrapper w = MAPPER.readValue("{\"i\":-2.25 }", IntWrapper.class);
         assertEquals(-2, w.i);
-        int[] arr = MAPPER.readValue(toBytes("[1.25]"), int[].class);
+        int[] arr = MAPPER.readValue("[ 1.25 ]", int[].class);
         assertEquals(1, arr[0]);
 
         try {
-            R.forType(Integer.class).readValue(toBytes("1.5"));
+            R.forType(Integer.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("1.5"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof VPackException);
+        } catch (JsonMappingException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
         try {
-            R.forType(Integer.TYPE).readValue(toBytes("1.5"));
+            R.forType(Integer.TYPE).readValue(com.fasterxml.jackson.VPackUtils.toBytes("1.5"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof VPackException);
+        } catch (JsonMappingException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
         try {
-            R.forType(IntWrapper.class).readValue(toBytes("{\"i\":-2.25 }"));
+            R.forType(IntWrapper.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"i\":-2.25 }"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof JsonMappingException);
+        } catch (JsonMappingException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
         try {
-            R.forType(int[].class).readValue(toBytes("[ 2.5 ]"));
+            R.forType(int[].class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ 2.5 ]"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof JsonMappingException);
+        } catch (JsonMappingException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
     }
 
     public void testDoubleToLong() throws Exception
     {
         // by default, should be ok
-        Long L = MAPPER.readValue(toBytes(" 3.33 "), Long.class);
+        Long L = MAPPER.readValue(" 3.33 ", Long.class);
         assertEquals(3L, L.longValue());
-        LongWrapper w = MAPPER.readValue(toBytes("{\"l\":-2.25 }"), LongWrapper.class);
+        LongWrapper w = MAPPER.readValue("{\"l\":-2.25 }", LongWrapper.class);
         assertEquals(-2L, w.l);
-        long[] arr = MAPPER.readValue(toBytes("[ 1.25 ]"), long[].class);
+        long[] arr = MAPPER.readValue("[ 1.25 ]", long[].class);
         assertEquals(1, arr[0]);
 
         try {
-            R.forType(Long.class).readValue(toBytes("1.5"));
+            R.forType(Long.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("1.5"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof VPackException);
+        } catch (MismatchedInputException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
 
         try {
-            R.forType(Long.TYPE).readValue(toBytes("1.5"));
+            R.forType(Long.TYPE).readValue(com.fasterxml.jackson.VPackUtils.toBytes("1.5"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof VPackException);
+        } catch (MismatchedInputException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
-        
+
         try {
-            R.forType(LongWrapper.class).readValue(toBytes("{\"l\": 7.7 }"));
+            R.forType(LongWrapper.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"l\": 7.7 }"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof JsonMappingException);
+        } catch (MismatchedInputException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
         try {
-            R.forType(long[].class).readValue(toBytes("[ 2.5 ]"));
+            R.forType(long[].class).readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ 2.5 ]"));
             fail("Should not pass");
-        } catch (Exception e) {
-            assertTrue(e instanceof JsonMappingException);
+        } catch (MismatchedInputException e) {
+            verifyException(e, "Cannot coerce a floating-point");
         }
     }
 }
