@@ -181,7 +181,7 @@ public class CollectionDeserTest
     public void testFromEmptyString() throws Exception
     {
         ObjectReader r = MAPPER.reader(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-        List<?> result = r.forType(List.class).readValue(quote(""));
+        List<?> result = r.forType(List.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("")));
         assertNull(result);
     }
 

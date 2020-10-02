@@ -38,20 +38,20 @@ public class DefaultViewTest extends BaseMapTest
 
         // first: no views:
         Defaulting result = MAPPER.readerFor(Defaulting.class)
-                .readValue(JSON);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         assertEquals(result.a, 1);
         assertEquals(result.b, 2);
 
         // Then views; first A, then B(B)
         result = MAPPER.readerFor(Defaulting.class)
                 .withView(ViewA.class)
-                .readValue(JSON);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         assertEquals(result.a, 1);
         assertEquals(result.b, 5);
 
         result = MAPPER.readerFor(Defaulting.class)
                 .withView(ViewBB.class)
-                .readValue(JSON);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         assertEquals(result.a, 3);
         assertEquals(result.b, 2);
     }

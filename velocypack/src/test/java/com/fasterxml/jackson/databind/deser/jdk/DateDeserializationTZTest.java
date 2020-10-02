@@ -357,7 +357,7 @@ public class DateDeserializationTZTest
         {
             DateAsStringBean result = MAPPER.readerFor(DateAsStringBean.class)
                     .with(Locale.GERMANY)
-                    .readValue(json);
+                    .readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
             assertNotNull(result);
             assertEquals( expected, result.date );
         }
@@ -365,7 +365,7 @@ public class DateDeserializationTZTest
         // or, via annotations
         {
             DateAsStringBeanGermany result = MAPPER.readerFor(DateAsStringBeanGermany.class)
-                                                   .readValue(json);
+                                                   .readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
             assertNotNull(result);
             assertEquals( expected, result.date );
         }

@@ -73,7 +73,7 @@ public class TestViewDeserialization extends BaseMapTest
         // but with different views, different contents
         bean = mapper.readerWithView(ViewAA.class)
                 .forType(Bean.class)
-                .readValue("{\"a\":3, \"aa\":\"foo\", \"b\": 9 }");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":3, \"aa\":\"foo\", \"b\": 9 }"));
         // should include 'a' and 'aa' (as per view)
         assertEquals(3, bean.a);
         assertEquals("foo", bean.aa);
@@ -82,14 +82,14 @@ public class TestViewDeserialization extends BaseMapTest
 
         bean = mapper.readerWithView(ViewA.class)
                 .forType(Bean.class)
-                .readValue("{\"a\":1, \"aa\":\"x\", \"b\": 3 }");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":1, \"aa\":\"x\", \"b\": 3 }"));
         assertEquals(1, bean.a);
         assertNull(bean.aa);
         assertEquals(0, bean.b);
         
         bean = mapper.readerFor(Bean.class)
                 .withView(ViewB.class)
-                .readValue("{\"a\":-3, \"aa\":\"y\", \"b\": 2 }");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":-3, \"aa\":\"y\", \"b\": 2 }"));
         assertEquals(0, bean.a);
         assertEquals("y", bean.aa);
         assertEquals(2, bean.b);
@@ -110,7 +110,7 @@ public class TestViewDeserialization extends BaseMapTest
         // but with, say, AA, will not get 'b'
         bean = myMapper.readerWithView(ViewAA.class)
                 .forType(DefaultsBean.class)
-                .readValue("{\"a\":1, \"b\": 2 }");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":1, \"b\": 2 }"));
         // 'a' not there any more
         assertEquals(0, bean.a);
         assertEquals(2, bean.b);
@@ -122,20 +122,20 @@ public class TestViewDeserialization extends BaseMapTest
 
         result = mapper.readerFor(ViewsAndCreatorBean.class)
                 .withView(ViewA.class)
-                .readValue(aposToQuotes("{'a':1,'b':2}"));
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'a':1,'b':2}")));
         assertEquals(1, result.a);
         assertEquals(0, result.b);
 
         result = mapper.readerFor(ViewsAndCreatorBean.class)
                 .withView(ViewB.class)
-                .readValue(aposToQuotes("{'a':1,'b':2}"));
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'a':1,'b':2}")));
         assertEquals(0, result.a);
         assertEquals(2, result.b);
 
         // and actually... fine to skip incompatible stuff too
         result = mapper.readerFor(ViewsAndCreatorBean.class)
                 .withView(ViewB.class)
-                .readValue(aposToQuotes("{'a':[ 1, 23, { } ],'b':2}"));
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'a':[ 1, 23, { } ],'b':2}")));
         assertEquals(0, result.a);
         assertEquals(2, result.b);
     }

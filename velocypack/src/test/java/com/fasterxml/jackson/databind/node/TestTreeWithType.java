@@ -64,7 +64,7 @@ public class TestTreeWithType extends BaseMapTest
         Foo foo = new Foo("baz");
         String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(foo));
 
-        JsonNode jsonNode = MAPPER.readTree(json);
+        JsonNode jsonNode = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(jsonNode.get("bar").textValue(), foo.bar);
     }
 
@@ -77,7 +77,7 @@ public class TestTreeWithType extends BaseMapTest
         Foo foo = new Foo("baz");
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));
 
-        JsonNode jsonNode = mapper.readTree(json);
+        JsonNode jsonNode = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(jsonNode.get("bar").textValue(), foo.bar);
     }
 
@@ -91,7 +91,7 @@ public class TestTreeWithType extends BaseMapTest
                         JsonTypeInfo.As.PROPERTY)
                 .build();
         String json = "{\"@class\":\""+CLASS+"\",\"bar\":\"baz\"}";
-        JsonNode jsonNode = mapper.readTree(json);
+        JsonNode jsonNode = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(jsonNode.get("bar").textValue(), "baz");
     }
 
@@ -126,7 +126,7 @@ public class TestTreeWithType extends BaseMapTest
 
          SavedCookie savedCookie = new SavedCookie("key", "v");
          String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(savedCookie));
-         SavedCookie out = mapper.readerFor(SavedCookie.class).readValue(json);
+         SavedCookie out = mapper.readerFor(SavedCookie.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
 
          assertEquals("key", out.name);
          assertEquals("v", out.value);

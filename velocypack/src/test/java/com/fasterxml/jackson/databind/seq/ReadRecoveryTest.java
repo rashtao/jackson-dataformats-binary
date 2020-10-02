@@ -25,7 +25,7 @@ public class ReadRecoveryTest extends BaseMapTest
     public void testRootBeans() throws Exception
     {
         final String JSON = aposToQuotes("{'a':3} {'x':5}");
-        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(JSON);
+        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         // First one should be fine
         assertTrue(it.hasNextValue());
         Bean bean = it.nextValue();
@@ -50,7 +50,7 @@ public class ReadRecoveryTest extends BaseMapTest
     {
         final String JSON = aposToQuotes("{'a':3}{'a':27,'foo':[1,2],'b':{'x':3}}  {'a':1,'b':2} ");
 
-        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(JSON);
+        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         Bean bean = it.nextValue();
 
         assertNotNull(bean);
@@ -79,7 +79,7 @@ public class ReadRecoveryTest extends BaseMapTest
     {
         final String JSON = aposToQuotes("[{'a':3},{'a':27,'foo':[1,2],'b':{'x':3}}  ,{'a':1,'b':2}  ]");
 
-        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(JSON);
+        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         Bean bean = it.nextValue();
 
         assertNotNull(bean);

@@ -13,7 +13,7 @@ public class TreeFromIncompleteJsonTest extends BaseMapTest
     public void testErrorHandling() throws IOException {
 
       String json = "{\"A\":{\"B\":\n";
-      JsonParser parser = MAPPER.getFactory().createParser(json);
+      JsonParser parser = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(json));
       try {
           parser.readValueAsTree();
       } catch (JsonEOFException e) {

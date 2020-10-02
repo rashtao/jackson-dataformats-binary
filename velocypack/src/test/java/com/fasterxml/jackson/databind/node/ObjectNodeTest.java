@@ -74,7 +74,7 @@ public class ObjectNodeTest
     public void testSimpleObject() throws Exception
     {
         String JSON = "{ \"key\" : 1, \"b\" : \"x\" }";
-        JsonNode root = MAPPER.readTree(JSON);
+        JsonNode root = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
 
         // basic properties first:
         assertFalse(root.isValueNode());
@@ -375,12 +375,12 @@ public class ObjectNodeTest
         
         // first: verify defaults:
         assertFalse(MAPPER.isEnabled(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY));
-        ObjectNode root = (ObjectNode) MAPPER.readTree(DUP_JSON);
+        ObjectNode root = (ObjectNode) MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(DUP_JSON));
         assertEquals(2, root.path("a").asInt());
         
         // and then enable checks:
         try {
-            MAPPER.reader(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY).readTree(DUP_JSON);
+            MAPPER.reader(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY).readTree(com.fasterxml.jackson.VPackUtils.toBytes(DUP_JSON));
             fail("Should have thrown exception!");
         } catch (JsonMappingException e) {
             verifyException(e, "duplicate field 'a'");
@@ -395,7 +395,7 @@ public class ObjectNodeTest
         try {
             MAPPER.readerFor(ObNodeWrapper.class)
                 .with(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY)
-                .readValue(DOC);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(DOC));
             fail("Should have thrown exception!");
         } catch (JsonMappingException e) {
             verifyException(e, "duplicate field 'foo'");
@@ -423,7 +423,7 @@ public class ObjectNodeTest
 
     public void testSimplePath() throws Exception
     {
-        JsonNode root = MAPPER.readTree("{ \"results\" : { \"a\" : 3 } }");
+        JsonNode root = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes("{ \"results\" : { \"a\" : 3 } }"));
         assertTrue(root.isObject());
         JsonNode rnode = root.path("results");
         assertNotNull(rnode);

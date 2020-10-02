@@ -85,13 +85,13 @@ public class BuilderWithViewTest extends BaseMapTest
         final String json = aposToQuotes("{'x':5,'y':10}");
         ValueClassXY resultX = MAPPER.readerFor(ValueClassXY.class)
                 .withView(ViewX.class)
-                .readValue(json);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(6, resultX._x);
         assertEquals(1, resultX._y);
 
         ValueClassXY resultY = MAPPER.readerFor(ValueClassXY.class)
                 .withView(ViewY.class)
-                .readValue(json);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(1, resultY._x);
         assertEquals(11, resultY._y);
     }
@@ -101,13 +101,13 @@ public class BuilderWithViewTest extends BaseMapTest
         final String json = aposToQuotes("{'x':5,'y':10,'bogus':false}");
         CreatorValueXY resultX = MAPPER.readerFor(CreatorValueXY.class)
                 .withView(ViewX.class)
-                .readValue(json);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(5, resultX._x);
         assertEquals(0, resultX._y);
 
         CreatorValueXY resultY = MAPPER.readerFor(CreatorValueXY.class)
                 .withView(ViewY.class)
-                .readValue(json);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(0, resultY._x);
         assertEquals(10, resultY._y);
     }

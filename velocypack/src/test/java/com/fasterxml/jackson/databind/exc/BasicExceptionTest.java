@@ -18,7 +18,7 @@ public class BasicExceptionTest extends BaseMapTest
     public void testBadDefinition() throws Exception
     {
         JavaType t = TypeFactory.defaultInstance().constructType(String.class);
-        JsonParser p = JSON_F.createParser("[]");
+        JsonParser p = JSON_F.createParser(com.fasterxml.jackson.VPackUtils.toBytes("[]"));
         InvalidDefinitionException e = new InvalidDefinitionException(p,
                "Testing", t);
         assertEquals("Testing", e.getOriginalMessage());
@@ -71,7 +71,7 @@ public class BasicExceptionTest extends BaseMapTest
     public void testIgnoredProperty() throws Exception
     {
         // first just construct valid instance with some variations
-        JsonParser p = JSON_F.createParser("{ }");
+        JsonParser p = JSON_F.createParser(com.fasterxml.jackson.VPackUtils.toBytes("{ }"));
         IgnoredPropertyException e = IgnoredPropertyException.from(p,
                 this, // to get class from
                 "testProp", Collections.<Object>singletonList("x"));
@@ -95,7 +95,7 @@ public class BasicExceptionTest extends BaseMapTest
 
     public void testUnrecognizedProperty() throws Exception
     {
-        JsonParser p = JSON_F.createParser("{ }");
+        JsonParser p = JSON_F.createParser(com.fasterxml.jackson.VPackUtils.toBytes("{ }"));
         UnrecognizedPropertyException e = UnrecognizedPropertyException.from(p, this,
                 "testProp", Collections.<Object>singletonList("y"));
         assertNotNull(e);

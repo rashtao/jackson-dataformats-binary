@@ -191,7 +191,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     }
 
     private void checkOrangeBox(ObjectReader reader) throws Exception {
-        Box deserOrangeBox = reader.readValue(orangeBoxJson);
+        Box deserOrangeBox = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(orangeBoxJson));
         assertEquals(orangeBox.getType(), deserOrangeBox.getType());
 
         Fruit deserOrange = deserOrangeBox.getFruit();
@@ -201,7 +201,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     }
 
     private void checkAppleBox(ObjectReader reader) throws Exception {
-        Box deserAppleBox = reader.readValue(appleBoxJson);
+        Box deserAppleBox = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(appleBoxJson));
         assertEquals(appleBox.getType(), deserAppleBox.getType());
 
         Fruit deserApple = deserAppleBox.fruit;
@@ -211,7 +211,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     }
 
     private void checkOrangeBoxEmpty(ObjectReader reader, String json) throws Exception {
-        Box deserOrangeBox = reader.readValue(json);
+        Box deserOrangeBox = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(orangeBox.getType(), deserOrangeBox.getType());
 
         Fruit deserOrange = deserOrangeBox.getFruit();
@@ -231,7 +231,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     }
 
     private void checkOrangeBoxNull(ObjectReader reader, String json) throws Exception {
-        Box deserOrangeBox = reader.readValue(json);
+        Box deserOrangeBox = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(orangeBox.getType(), deserOrangeBox.getType());
         assertNull(deserOrangeBox.getFruit());
     }

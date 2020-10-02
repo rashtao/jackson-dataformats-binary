@@ -37,7 +37,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         // [databind#381]
         final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
-        BooleanBean result = mapper.readValue(new StringReader("{\"v\":[true]}"), BooleanBean.class);
+        BooleanBean result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"v\":[true]}"), BooleanBean.class);
         assertTrue(result._v);
 
         _verifyMultiValueArrayFail("[{\"v\":[true,true]}]", BooleanBean.class);
@@ -50,7 +50,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         assertNotNull(result);
         assertFalse(result._v);
         
-        boolean[] array = mapper.readValue(new StringReader("[ [ null ] ]"), boolean[].class);
+        boolean[] array = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ [ null ] ]"), boolean[].class);
         assertNotNull(array);
         assertEquals(1, array.length);
         assertFalse(array[0]);
@@ -334,13 +334,13 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         Class<?> result = MAPPER
                     .readerFor(Class.class)
                     .with(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
-                    .readValue(quote(String.class.getName()));
+                    .readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote(String.class.getName())));
         assertEquals(String.class, result);
 
         try {
             MAPPER.readerFor(Class.class)
                 .without(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
-                .readValue("[" + quote(String.class.getName()) + "]");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("[" + quote(String.class.getName()) + "]"));
             fail("Did not throw exception when UNWRAP_SINGLE_VALUE_ARRAYS feature was disabled and attempted to read a Class array containing one element");
         } catch (MismatchedInputException e) {
             verifyException(e, "out of START_ARRAY token");
@@ -350,7 +350,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
                 Class.class);
         result = MAPPER.readerFor(Class.class)
                 .with(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
-                .readValue("[" + quote(String.class.getName()) + "]");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("[" + quote(String.class.getName()) + "]"));
         assertEquals(String.class, result);
     }
 
@@ -360,7 +360,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         final URI value = new URI("http://foo.com");
         try {
             reader.without(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
-                .readValue("[\""+value.toString()+"\"]");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("[\""+value.toString()+"\"]"));
             fail("Did not throw exception for single value array when UNWRAP_SINGLE_VALUE_ARRAYS is disabled");
         } catch (MismatchedInputException e) {
             verifyException(e, "out of START_ARRAY token");
@@ -376,14 +376,14 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         UUID uuid = UUID.fromString(uuidStr);
         try {
             NO_UNWRAPPING_READER.forType(UUID.class)
-                .readValue("[" + quote(uuidStr) + "]");
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes("[" + quote(uuidStr) + "]"));
             fail("Exception was not thrown when UNWRAP_SINGLE_VALUE_ARRAYS is disabled and attempted to read a single value array as a single element");
         } catch (MismatchedInputException e) {
             verifyException(e, "out of START_ARRAY token");
         }
         assertEquals(uuid,
                 reader.with(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS)
-                    .readValue("[" + quote(uuidStr) + "]"));
+                    .readValue(com.fasterxml.jackson.VPackUtils.toBytes("[" + quote(uuidStr) + "]")));
         _verifyMultiValueArrayFail("[" + quote(uuidStr) + "," + quote(uuidStr) + "]", UUID.class);
     }
 
@@ -395,7 +395,7 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
 
     private void _verifyMultiValueArrayFail(String input, Class<?> type) throws IOException {
         try {
-            UNWRAPPING_READER.forType(type).readValue(input);
+            UNWRAPPING_READER.forType(type).readValue(com.fasterxml.jackson.VPackUtils.toBytes(input));
             fail("Single value array didn't throw an exception when DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS is disabled");
         } catch (MismatchedInputException e) {
             verifyException(e, "Attempted to unwrap");

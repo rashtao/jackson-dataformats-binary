@@ -74,8 +74,7 @@ public class DeserExceptionTypeTest
     public void testExceptionWithIncomplete()
         throws Exception
     {
-        BrokenStringReader r = new BrokenStringReader("[ 1, ", "TEST");
-        JsonParser p = MAPPER.getFactory().createParser(r);
+        JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes("[ 1, "));
         try {
             @SuppressWarnings("unused")
             Object ob = MAPPER.readValue(p, Object.class);
@@ -84,13 +83,13 @@ public class DeserExceptionTypeTest
             /* For "bona fide" IO problems (due to low-level problem,
              * thrown by reader/stream), IOException must be thrown
              */
-            verifyException(e, IOException.class, "TEST");
+            verifyException(e, IOException.class, null);
         }
     }
 
     public void testExceptionWithEOF() throws Exception
     {
-        JsonParser p = MAPPER.getFactory().createParser("  3");
+        JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes("  3"));
 
         Integer I = MAPPER.readValue(p, Integer.class);
         assertEquals(3, I.intValue());

@@ -67,6 +67,6 @@ public class TestFindMethods
         final String SAMPLE = "{ \"a\" : { \"value\" : 3 },"
             +"\"array\" : [ { \"b\" : 3 }, {\"value\" : 42}, { \"other\" : true } ]"
             +"}";
-        return objectMapper().readTree(SAMPLE);
+        return objectMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes(SAMPLE));
     }
 }
