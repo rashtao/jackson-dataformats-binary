@@ -145,14 +145,4 @@ public class TestDefaultForScalars
         assertEquals(2, result.size());
     }
 
-    // [databind#2236]: do need type info for NaN
-    public void testDefaultTypingWithNaN() throws Exception
-    {
-        final ObjectWrapperForPoly INPUT = new ObjectWrapperForPoly(Double.POSITIVE_INFINITY);
-        final String json = com.fasterxml.jackson.VPackUtils.toJson( DEFAULT_TYPING_MAPPER.writeValueAsBytes(INPUT));
-        final ObjectWrapperForPoly result = DEFAULT_TYPING_MAPPER.readValue(json, ObjectWrapperForPoly.class);
-        assertEquals(Double.class, result.getObject().getClass());
-        assertEquals(INPUT.getObject().toString(), result.getObject().toString());
-        assertTrue(((Double) result.getObject()).isInfinite());
-    }
 }

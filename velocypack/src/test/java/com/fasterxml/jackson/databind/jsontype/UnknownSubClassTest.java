@@ -20,7 +20,7 @@ public class UnknownSubClassTest extends BaseMapTest
         ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
         BaseWrapper w = mapper.readValue(aposToQuotes
-                ("{'value':{'clazz':'com.foobar.Nothing'}}'"),
+                ("{'value':{'clazz':'com.foobar.Nothing'}}"),
                 BaseWrapper.class);
         assertNotNull(w);
     }

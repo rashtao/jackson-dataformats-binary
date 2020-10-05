@@ -3,7 +3,9 @@ package com.fasterxml.jackson.databind.jsontype;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Tests to verify that Type Id may be exposed during deserialization,
@@ -174,24 +176,19 @@ public class TestVisibleTypeId extends BaseMapTest
         assertEquals("BaseType", result.type);
     }
 
-    public void testVisibleWithWrapperArray() throws Exception
-    {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new WrapperArrayBean()));
-        // just default behavior:
-        assertEquals("[\"ArrayType\",{\"a\":1}]", json);
-        // but then expect to read it back
-        WrapperArrayBean result = MAPPER.readValue(json, WrapperArrayBean.class);
+    public void testVisibleWithWrapperArray() throws Exception {
+        byte[] bytes = MAPPER.writeValueAsBytes(new WrapperArrayBean());
+        WrapperArrayBean result = MAPPER.readValue(bytes, WrapperArrayBean.class);
         assertEquals("ArrayType", result.type);
         assertEquals(1, result.a);
     }
 
-    public void testVisibleWithWrapperObject() throws Exception
-    {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new WrapperObjectBean()));
-        assertEquals("{\"ObjectType\":{\"a\":2}}", json);
-        // but then expect to read it back
-        WrapperObjectBean result = MAPPER.readValue(json, WrapperObjectBean.class);
+    public void testVisibleWithWrapperObject() throws Exception {
+        byte[] bytes = MAPPER.writeValueAsBytes(new WrapperObjectBean());
+        WrapperObjectBean result = MAPPER.readValue(bytes, WrapperObjectBean.class);
         assertEquals("ObjectType", result.type);
+        assertEquals(2, result.a);
+
     }
 
     public void testTypeIdFromProperty() throws Exception
