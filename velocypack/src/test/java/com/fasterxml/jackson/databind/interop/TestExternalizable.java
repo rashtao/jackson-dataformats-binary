@@ -179,43 +179,6 @@ public class TestExternalizable extends BaseMapTest
         }
     }
     
-    @SuppressWarnings("unused")
-    public void testSerializeAsExternalizable() throws Exception
-    {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        ObjectOutputStream obs = new ObjectOutputStream(bytes);
-        final MyPojo input = new MyPojo(13, "Foobar", new int[] { 1, 2, 3 } );
-        obs.writeObject(input);
-        obs.close();
-        byte[] ser = bytes.toByteArray();
-
-        // Ok: just verify it contains stuff it should
-        byte[] json = MapperHolder.mapper().writeValueAsBytes(input);
-
-        int ix = indexOf(ser, json);
-        if (ix < 0) {
-            fail("Serialization ("+ser.length+") does NOT contain JSON (of "+json.length+")");
-        }
-        
-        // Sanity check:
-        if (false) {
-            bytes = new ByteArrayOutputStream();
-            obs = new ObjectOutputStream(bytes);
-            MyPojoNative p = new MyPojoNative(13, "Foobar", new int[] { 1, 2, 3 } );
-            obs.writeObject(p);
-            obs.close();
-            System.out.println("Native size: "+bytes.size()+", vs JSON: "+ser.length);
-        }
-        
-        // then read back!
-        ObjectInputStream ins = new ObjectInputStream(new ByteArrayInputStream(ser));
-        MyPojo output = (MyPojo) ins.readObject();
-        ins.close();
-        assertNotNull(output);
-        
-        assertEquals(input, output);
-    }
-
     /*
     /**********************************************************
     /* Helper methods

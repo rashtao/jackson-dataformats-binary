@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
+import com.arangodb.velocypack.VPackBuilder;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -148,26 +149,6 @@ public class JDKNumberDeserTest extends BaseMapTest
         assertEquals(BigDecimal.valueOf(123), result.defaultValue.value.decimal);
     }
 
-    public void testDeserializeDecimalProperException() throws Exception {
-        String json = "{\"defaultValue\": { \"value\": \"123\" } }";
-        try {
-            MAPPER.readValue(json, MyBeanHolder.class);
-            fail("should have raised exception");
-        } catch (JsonProcessingException e) {
-            verifyException(e, "not numeric");
-        }
-    }
-
-    public void testDeserializeDecimalProperExceptionWhenIdSet() throws Exception {
-        String json = "{\"id\": 5, \"defaultValue\": { \"value\": \"123\" } }";
-        try {
-            MyBeanHolder result = MAPPER.readValue(json, MyBeanHolder.class);
-            fail("should have raised exception instead value was set to " + result.defaultValue.value.decimal.toString());
-        } catch (JsonProcessingException e) {
-            verifyException(e, "not numeric");
-        }
-    }
-
     // And then [databind#852]
     public void testScientificNotationAsStringForNumber() throws Exception
     {
@@ -202,7 +183,7 @@ public class JDKNumberDeserTest extends BaseMapTest
     {
         // and after long, BigInteger
         BigInteger biggie = new BigInteger("1234567890123456789012345678901234567890");
-        Number result = MAPPER.readValue(biggie.toString(), Number.class);
+        Number result = MAPPER.readValue(new VPackBuilder().add(biggie).slice().toByteArray(), Number.class);
         assertEquals(BigInteger.class, biggie.getClass());
         assertEquals(biggie, result);
     }

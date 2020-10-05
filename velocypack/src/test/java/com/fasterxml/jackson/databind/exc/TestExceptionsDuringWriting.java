@@ -54,14 +54,13 @@ public class TestExceptionsDuringWriting
         module.addSerializer(Bean.class, new SerializerWithErrors());
         mapper.registerModule(module);
         try {
-            StringWriter sw = new StringWriter();
             /* And just to make things more interesting, let's create
              * a nested data struct...
              */
             Bean[] b = { new Bean() };
             List<Bean[]> l = new ArrayList<Bean[]>();
             l.add(b);
-            mapper.writeValue(sw, l);
+            mapper.writeValueAsBytes(l);
             fail("Should have gotten an exception");
         } catch (IOException e) {
             // should contain original message somewhere
