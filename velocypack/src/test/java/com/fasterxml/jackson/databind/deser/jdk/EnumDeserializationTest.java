@@ -225,23 +225,6 @@ public class EnumDeserializationTest
 
     public void testSimple() throws Exception
     {
-        // First "good" case with Strings
-        String JSON = "\"OK\" \"RULES\"  null";
-        // multiple main-level mappings, need explicit parser:
-        JsonParser jp = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-
-        assertEquals(TestEnum.OK, MAPPER.readValue(jp, TestEnum.class));
-        assertEquals(TestEnum.RULES, MAPPER.readValue(jp, TestEnum.class));
-
-        // should be ok; nulls are typeless; handled by mapper, not by deserializer
-        assertNull(MAPPER.readValue(jp, TestEnum.class));
-
-        // and no more content beyond that...
-        assertFalse(jp.hasCurrentToken());
-
-        // Then alternative with index (0 means first entry)
-        assertEquals(TestEnum.JACKSON, MAPPER.readValue(" 0 ", TestEnum.class));
-
         // Then error case: unrecognized value
         try {
             /*Object result =*/ MAPPER.readValue("\"NO-SUCH-VALUE\"", TestEnum.class);
@@ -249,7 +232,6 @@ public class EnumDeserializationTest
         } catch (MismatchedInputException jex) {
             verifyException(jex, "not one of the values accepted for Enum class");
         }
-        jp.close();
     }
 
     /**

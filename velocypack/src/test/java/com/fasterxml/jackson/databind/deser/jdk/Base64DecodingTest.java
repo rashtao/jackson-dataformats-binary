@@ -30,14 +30,12 @@ public class Base64DecodingTest extends BaseMapTest
         try {
             MAPPER.readValue(quote(value), byte[].class);
             fail("Should not pass");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Failed to decode");
-            verifyException(e, "as base64");
+        } catch (IllegalArgumentException e) {
             verifyException(e, "Illegal character '!'");
         }
 
         // and then tree model
-        JsonNode tree = mapper.readTree(String.format("{\"foo\":\"%s\"}", value));
+        JsonNode tree = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(String.format("{\"foo\":\"%s\"}", value)));
         JsonNode nodeValue = tree.get("foo");
         try {
             /*byte[] b =*/ nodeValue.binaryValue();

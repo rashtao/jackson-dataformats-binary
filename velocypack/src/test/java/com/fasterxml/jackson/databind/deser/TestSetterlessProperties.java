@@ -121,7 +121,7 @@ public class TestSetterlessProperties
         ObjectMapper m = jsonMapperBuilder()
                 .configure(MapperFeature.USE_GETTERS_AS_SETTERS, true)
                 .build();
-        Dual value = m.readValue("{\"list\":[1,2,3]}, valueType)", Dual.class);
+        Dual value = m.readValue("{\"list\":[1,2,3]}", Dual.class);
         assertNotNull(value);
         assertEquals(3, value.values.size());
     }

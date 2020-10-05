@@ -1,7 +1,9 @@
 package com.fasterxml.jackson.databind.deser.dos;
 
-import com.fasterxml.jackson.core.exc.InputCoercionException;
-import com.fasterxml.jackson.databind.*;
+import com.arangodb.velocypack.VPackBuilder;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 // for [databind#2157]
 public class HugeIntegerCoerceTest extends BaseMapTest
@@ -22,13 +24,14 @@ public class HugeIntegerCoerceTest extends BaseMapTest
     {
         // Note: due to [jackson-core#488], fix verified with streaming over multiple
         // parser types. Here we focus on databind-level
-        
+
         try {
-            /*ABC value =*/ MAPPER.readValue(BIG_POS_INTEGER, ABC.class);
+            byte[] bytes = new VPackBuilder().add(BIG_POS_INTEGER).slice().toByteArray();
+            /*ABC value =*/
+            MAPPER.readValue(bytes, ABC.class);
             fail("Should not pass");
-        } catch (InputCoercionException e) {
-            verifyException(e, "out of range of int");
-            verifyException(e, "Integer with "+BIG_NUM_LEN+" digits");
+        } catch (InvalidFormatException e) {
+            verifyException(e, "Cannot deserialize value of type");
         }
     }    
 }
