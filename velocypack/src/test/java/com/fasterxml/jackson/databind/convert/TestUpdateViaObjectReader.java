@@ -173,35 +173,6 @@ public class TestUpdateViaObjectReader extends BaseMapTest
         assertEquals("c", strs.get("c"));
     }
 
-    // Test for [JACKSON-717] -- ensure 'readValues' also does update
-    @SuppressWarnings("resource")
-    public void testUpdateSequence() throws Exception
-    {
-        XYBean toUpdate = new XYBean();
-        Iterator<XYBean> it = MAPPER.readerForUpdating(toUpdate).readValues(
-                com.fasterxml.jackson.VPackUtils.toBytes("{\"x\":1,\"y\":2}\n{\"x\":16}{\"y\":37}"));
-
-        assertTrue(it.hasNext());
-        XYBean value = it.next();
-        assertSame(toUpdate, value);
-        assertEquals(1, value.x);
-        assertEquals(2, value.y);
-
-        assertTrue(it.hasNext());
-        value = it.next();
-        assertSame(toUpdate, value);
-        assertEquals(16, value.x);
-        assertEquals(2, value.y); // unchanged
-
-        assertTrue(it.hasNext());
-        value = it.next();
-        assertSame(toUpdate, value);
-        assertEquals(16, value.x); // unchanged
-        assertEquals(37, value.y);
-        
-        assertFalse(it.hasNext());
-    }
-
     // [JACKSON-824]
     public void testUpdatingWithViews() throws Exception
     {

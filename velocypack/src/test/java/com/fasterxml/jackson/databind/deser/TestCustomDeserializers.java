@@ -437,7 +437,7 @@ public class TestCustomDeserializers
     // [#631]: "current value" access
     public void testCurrentValueAccess() throws Exception
     {
-        Issue631Bean bean = MAPPER.readValue(aposToQuotes("{'prop':'stuff'}"),
+        Issue631Bean bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'prop':'stuff'}")),
                 Issue631Bean.class);
         assertNotNull(bean);
         assertEquals("prop/Issue631Bean", bean.prop);
