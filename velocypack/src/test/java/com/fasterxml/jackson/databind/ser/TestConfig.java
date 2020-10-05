@@ -106,17 +106,6 @@ public class TestConfig
         assertNotNull(m.getSerializationConfig().toString()); // ditto
     }
 
-    public void testIndentation() throws Exception
-    {
-        Map<String,Integer> map = new HashMap<String,Integer>();
-        map.put("a", Integer.valueOf(2));
-        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer().with(SerializationFeature.INDENT_OUTPUT)
-                .writeValueAsBytes(map));
-        // 02-Jun-2009, tatu: not really a clean way but...
-        String lf = getLF();
-        assertEquals("{"+lf+"  \"a\" : 2"+lf+"}", result);
-    }
-
     public void testAnnotationsDisabled() throws Exception
     {
         // first: verify that annotation introspection is enabled by default
@@ -157,33 +146,6 @@ public class TestConfig
         }
         prov.flushCachedSerializers();
         assertEquals(0, prov.cachedSerializersCount());
-    }
-
-    // Test for [Issue#12]
-    public void testIndentWithPassedGenerator() throws Exception
-    {
-        Indentable input = new Indentable();
-        assertEquals("{\"a\":3}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
-        String LF = getLF();
-        String INDENTED = "{"+LF+"  \"a\" : 3"+LF+"}";
-        final ObjectWriter indentWriter = MAPPER.writer().with(SerializationFeature.INDENT_OUTPUT);
-        assertEquals(INDENTED, com.fasterxml.jackson.VPackUtils.toJson( indentWriter.writeValueAsBytes(input)));
-
-        // [Issue#12]
-        StringWriter sw = new StringWriter();
-        JsonGenerator jgen = MAPPER.getFactory().createGenerator(sw);
-        indentWriter.writeValue(jgen, input);
-        jgen.close();
-        assertEquals(INDENTED, sw.toString());
-
-        // and also with ObjectMapper itself
-        sw = new StringWriter();
-        ObjectMapper m2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        m2.enable(SerializationFeature.INDENT_OUTPUT);
-        jgen = m2.getFactory().createGenerator(sw);
-        m2.writeValue(jgen, input);
-        jgen.close();
-        assertEquals(INDENTED, sw.toString());
     }
 
     public void testNoAccessOverrides() throws Exception

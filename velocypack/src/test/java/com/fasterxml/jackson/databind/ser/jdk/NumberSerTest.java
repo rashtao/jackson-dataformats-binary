@@ -88,9 +88,6 @@ public class NumberSerTest extends BaseMapTest
         };
         for (double d : values) {
             String expected = String.valueOf(d);
-            if (Double.isNaN(d) || Double.isInfinite(d)) {
-                expected = "\""+d+"\"";
-            }
             assertEquals(expected, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(Double.valueOf(d))));
         }
     }

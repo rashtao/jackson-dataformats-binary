@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.Base64Variants;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.Assert.*;
+import java.text.DecimalFormat;
+
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * Unit tests for verifying serialization of simple basic non-structured
@@ -42,23 +44,23 @@ public class TestSimpleTypes
     }
 
     // as per [Issue#42], allow Base64 variant use as well
-    public void testBase64Variants() throws Exception
-    {
+    public void testBase64Variants() throws Exception {
         final byte[] INPUT = "abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqrstuvwxyz1234567890X".getBytes("UTF-8");
-        
+
         // default encoding is "MIME, no linefeeds", so:
-        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT)));
+        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(INPUT)));
         assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writer(Base64Variants.MIME_NO_LINEFEEDS).writeValueAsBytes(INPUT)));
 
         // but others should be slightly different
-        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1\\ndnd4eXoxMjM0NTY3ODkwWA=="),
-                com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writer(Base64Variants.MIME).writeValueAsBytes(INPUT)));
+        assertEquals("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1\\ndnd4eXoxMjM0NTY3ODkwWA==",
+                MAPPER.readValue(MAPPER.writer(Base64Variants.MIME).writeValueAsBytes(INPUT), String.class));
         assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA"), // no padding or LF
                 com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writer(Base64Variants.MODIFIED_FOR_URL).writeValueAsBytes(INPUT)));
         // PEM mandates 64 char lines:
-        assertEquals(quote("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamts\\nbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA=="), com.fasterxml.jackson.VPackUtils.toJson(
-                MAPPER.writer(Base64Variants.PEM).writeValueAsBytes(INPUT)));
+        assertEquals("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwYWJjZGVmZ2hpamts\\nbW5vcHFyc3R1dnd4eXoxMjM0NTY3ODkwWA==",
+                MAPPER.readValue(MAPPER.writer(Base64Variants.PEM).writeValueAsBytes(INPUT), String.class)
+        );
     }
     
     public void testShortArray() throws Exception
@@ -78,24 +80,28 @@ public class TestSimpleTypes
      * conversions though, to retain accuracy and round-trippability.
      * But still...
      */
-    public void testFloat() throws Exception
-    {
-        double[] values = new double[] {
-            0.0, 1.0, 0.1, -37.01, 999.99, 0.3, 33.3, Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY
+    public void testFloat() throws Exception {
+        double[] values = new double[]{
+                0.0, 1.0, 0.1, -37.01, 999.99, 0.3, 33.3, Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY
         };
         for (double d : values) {
-           float f = (float) d;
-    	   String expected = String.valueOf(f);
-           if (Float.isNaN(f) || Float.isInfinite(f)) {
-               expected = "\""+expected+"\"";
-       	   }
-           assertEquals(expected,serializeAsString(MAPPER, Float.valueOf(f)));
+            float f = (float) d;
+            String expected = String.valueOf(f);
+
+            String actual = serializeAsString(MAPPER, roundTwoDecimals(f));
+            assertEquals(expected, actual);
         }
     }
 
-    public void testClass() throws Exception
-    {
-        String result = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(java.util.List.class));
+    double roundTwoDecimals(float f) {
+        if (Float.isNaN(f) || Float.isInfinite(f))
+            return f;
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return Double.parseDouble(twoDForm.format(f));
+    }
+
+    public void testClass() throws Exception {
+        String result = com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(java.util.List.class));
         assertEquals("\"java.util.List\"", result);
     }
 }

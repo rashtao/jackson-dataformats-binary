@@ -28,10 +28,4 @@ public class JSONPObjectTest extends BaseMapTest {
     assertFalse(valueAsString.contains("\u2029"));
   }
 
-  public void testU2030NotEscaped() throws IOException {
-    String containsU2030 = String.format("This string contains %c char", '\u2030');
-    JSONPObject jsonpObject = new JSONPObject(CALLBACK, containsU2030);
-    String valueAsString = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(jsonpObject));
-    assertTrue(valueAsString.contains("\u2030"));
-  }
 }

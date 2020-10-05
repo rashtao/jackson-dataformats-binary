@@ -114,9 +114,9 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     private static final Orange orange = new Orange("Orange", "orange");
     private static final Box orangeBox = new Box("orange", orange);
     private static final String orangeBoxJson = "{\"type\":\"orange\",\"fruit\":{\"name\":\"Orange\",\"color\":\"orange\"}}";
-    private static final String orangeBoxNullJson = "{\"type\":\"orange\",\"fruit\":null}}";
-    private static final String orangeBoxEmptyJson = "{\"type\":\"orange\",\"fruit\":{}}}";
-    private static final String orangeBoxMissingJson = "{\"type\":\"orange\"}}";
+    private static final String orangeBoxNullJson = "{\"type\":\"orange\",\"fruit\":null}";
+    private static final String orangeBoxEmptyJson = "{\"type\":\"orange\",\"fruit\":{}}";
+    private static final String orangeBoxMissingJson = "{\"type\":\"orange\"}";
 
     private static final Apple apple = new Apple("Apple", 16);
     private static Box appleBox = new Box("apple", apple);
@@ -221,7 +221,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     }
 
     private void checkAppleBoxEmpty(ObjectReader reader, String json) throws Exception {
-        Box deserAppleBox = reader.readValue(json);
+        Box deserAppleBox = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(appleBox.getType(), deserAppleBox.getType());
 
         Fruit deserApple = deserAppleBox.fruit;
@@ -237,7 +237,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     }
 
     private void checkAppleBoxNull(ObjectReader reader, String json) throws Exception {
-        Box deserAppleBox = reader.readValue(json);
+        Box deserAppleBox = reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
         assertEquals(appleBox.getType(), deserAppleBox.getType());
         assertNull(deserAppleBox.getFruit());
     }
@@ -245,6 +245,6 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     private void checkBoxJsonMappingException(ObjectReader reader, String json) throws Exception {
         thrown.expect(JsonMappingException.class);
         thrown.expectMessage("Missing property 'fruit' for external type id 'type'");
-        reader.readValue(json);
+        reader.readValue(com.fasterxml.jackson.VPackUtils.toBytes(json));
     }
 }    

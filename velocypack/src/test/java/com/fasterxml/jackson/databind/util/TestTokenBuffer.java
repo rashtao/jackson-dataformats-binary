@@ -32,7 +32,7 @@ public class TestTokenBuffer extends BaseMapTest
         TokenBuffer buf;
 
         buf = new TokenBuffer(MAPPER, false);
-        assertEquals(MAPPER.version(), buf.version());
+        assertEquals(MAPPER.version().toString(), buf.version().toString());
         assertSame(MAPPER, buf.getCodec());
         assertNotNull(buf.getOutputContext());
         assertFalse(buf.isClosed());
@@ -398,63 +398,6 @@ public class TestTokenBuffer extends BaseMapTest
     /**********************************************************
      */
 
-    // for [databind#984]: ensure output context handling identical
-    public void testOutputContext() throws IOException
-    {
-        TokenBuffer buf = new TokenBuffer(null, false); // no ObjectCodec
-        StringWriter w = new StringWriter();
-        JsonGenerator gen = MAPPER.getFactory().createGenerator(w);
- 
-        // test content: [{"a":1,"b":{"c":2}},{"a":2,"b":{"c":3}}]
-
-        buf.writeStartArray();
-        gen.writeStartArray();
-        _verifyOutputContext(buf, gen);
-        
-        buf.writeStartObject();
-        gen.writeStartObject();
-        _verifyOutputContext(buf, gen);
-        
-        buf.writeFieldName("a");
-        gen.writeFieldName("a");
-        _verifyOutputContext(buf, gen);
-
-        buf.writeNumber(1);
-        gen.writeNumber(1);
-        _verifyOutputContext(buf, gen);
-
-        buf.writeFieldName("b");
-        gen.writeFieldName("b");
-        _verifyOutputContext(buf, gen);
-
-        buf.writeStartObject();
-        gen.writeStartObject();
-        _verifyOutputContext(buf, gen);
-        
-        buf.writeFieldName("c");
-        gen.writeFieldName("c");
-        _verifyOutputContext(buf, gen);
-
-        buf.writeNumber(2);
-        gen.writeNumber(2);
-        _verifyOutputContext(buf, gen);
-
-        buf.writeEndObject();
-        gen.writeEndObject();
-        _verifyOutputContext(buf, gen);
-
-        buf.writeEndObject();
-        gen.writeEndObject();
-        _verifyOutputContext(buf, gen);
-
-        buf.writeEndArray();
-        gen.writeEndArray();
-        _verifyOutputContext(buf, gen);
-        
-        buf.close();
-        gen.close();
-    }
-
     private void _verifyOutputContext(JsonGenerator gen1, JsonGenerator gen2)
     {
         _verifyOutputContext(gen1.getOutputContext(), gen2.getOutputContext());
@@ -509,39 +452,6 @@ public class TestTokenBuffer extends BaseMapTest
         buf.writeString("cval");
         buf.writeEndObject();
         buf.writeEndObject();
-        buf.close();
-    }
-
-    public void testBasicSerialize() throws IOException
-    {
-        TokenBuffer buf;
-
-        // let's see how empty works...
-        buf = new TokenBuffer(MAPPER, false);
-        assertEquals("", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
-        buf.close();
-        
-        buf = new TokenBuffer(MAPPER, false);
-        buf.writeStartArray();
-        buf.writeBoolean(true);
-        buf.writeBoolean(false);
-        long l = 1L + Integer.MAX_VALUE;
-        buf.writeNumber(l);
-        buf.writeNumber((short) 4);
-        buf.writeNumber(0.5);
-        buf.writeEndArray();
-        assertEquals(aposToQuotes("[true,false,"+l+",4,0.5]"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
-        buf.close();
-
-        buf = new TokenBuffer(MAPPER, false);
-        buf.writeStartObject();
-        buf.writeFieldName(new SerializedString("foo"));
-        buf.writeNull();
-        buf.writeFieldName("bar");
-        buf.writeNumber(BigInteger.valueOf(123));
-        buf.writeFieldName("dec");
-        buf.writeNumber(BigDecimal.valueOf(5).movePointLeft(2));
-        assertEquals(aposToQuotes("{'foo':null,'bar':123,'dec':0.05}"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
         buf.close();
     }
 
@@ -631,24 +541,6 @@ public class TestTokenBuffer extends BaseMapTest
         buf2.close();
         buf3.close();
         buf4.close();
-    }
-
-    // [databind#743]
-    public void testRawValues() throws Exception
-    {
-        final String RAW = "{\"a\":1}";
-        TokenBuffer buf = new TokenBuffer(null, false);
-        buf.writeRawValue(RAW);
-        // first: raw value won't be transformed in any way:
-        JsonParser p = buf.asParser();
-        assertToken(JsonToken.VALUE_EMBEDDED_OBJECT, p.nextToken());
-        assertEquals(RawValue.class, p.getEmbeddedObject().getClass());
-        assertNull(p.nextToken());
-        p.close();
-        buf.close();
-
-        // then verify it would be serialized just fine
-        assertEquals(RAW, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(buf)));
     }
 
     // [databind#1730]

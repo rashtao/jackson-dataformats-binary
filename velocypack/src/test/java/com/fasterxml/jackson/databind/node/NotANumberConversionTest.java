@@ -33,7 +33,7 @@ public class NotANumberConversionTest extends BaseMapTest
     public void testBigDecimalWithoutNaN() throws Exception
     {
         BigDecimal input = new BigDecimal(Double.MIN_VALUE).divide(new BigDecimal(10L));
-        JsonNode tree = m.readTree(com.fasterxml.jackson.VPackUtils.toBytes(input.toString()));
+        JsonNode tree = m.readTree(m.writeValueAsBytes(input));
         assertTrue(tree.isBigDecimal());
         BigDecimal output = tree.decimalValue();
         assertEquals(input, output);

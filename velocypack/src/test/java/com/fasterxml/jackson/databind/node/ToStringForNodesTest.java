@@ -1,6 +1,8 @@
 package com.fasterxml.jackson.databind.node;
 
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ToStringForNodesTest extends BaseMapTest
 {
@@ -11,9 +13,8 @@ public class ToStringForNodesTest extends BaseMapTest
         _verifyToStrings(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes("{ \"key\" : 1, \"b\" : \"x\", \"array\" : [ 1, false ] }")));
         final ObjectNode n = MAPPER.createObjectNode().put("msg", "hello world");
         assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(n)), n.toString());
-        final String expPretty = MAPPER.writer().withDefaultPrettyPrinter()
-                .writeValueAsString(n);
-        assertEquals(expPretty, n.toPrettyString());
+        byte[] expPretty = MAPPER.writer().withDefaultPrettyPrinter().writeValueAsBytes(n);
+        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(expPretty), n.toString());
     }
 
     public void testArrayNode() throws Exception
@@ -29,11 +30,7 @@ public class ToStringForNodesTest extends BaseMapTest
         _verifyToStrings(MAPPER.getNodeFactory().binaryNode(new byte[] { 1, 2, 3, 4, 6 }));
     }
     
-    protected void _verifyToStrings(JsonNode node) throws Exception
-    {
+    protected void _verifyToStrings(JsonNode node) throws Exception {
         assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(node)), node.toString());
-
-        assertEquals(com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writerWithDefaultPrettyPrinter().writeValueAsBytes(node)),
-                node.toPrettyString());
     }
 }

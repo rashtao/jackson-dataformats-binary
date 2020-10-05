@@ -1,11 +1,13 @@
 package com.fasterxml.jackson.databind.ser;
 
-import java.io.*;
-import java.util.*;
-
 import com.fasterxml.jackson.core.JsonGenerator;
-
 import com.fasterxml.jackson.databind.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.*;
 
 /**
  * Unit tests for checking handling of some of {@link MapperFeature}s
@@ -72,54 +74,6 @@ public class SerializationFeaturesTest
         // new feature: serialize as JSON array:
         m.configure(SerializationFeature.WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS, true);
         assertEquals("[\"a\",\"b\",\"c\"]", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(chars)));
-    }
-
-    // Test for [JACKSON-401]
-    public void testFlushingAutomatic() throws IOException
-    {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        assertTrue(mapper.getSerializationConfig().isEnabled(SerializationFeature.FLUSH_AFTER_WRITE_VALUE));
-        // default is to flush after writeValue()
-        StringWriter sw = new StringWriter();
-        JsonGenerator g = mapper.getFactory().createGenerator(sw);
-        mapper.writeValue(g, Integer.valueOf(13));
-        assertEquals("13", sw.toString());
-        g.close();
-
-        // ditto with ObjectWriter
-        sw = new StringWriter();
-        g = mapper.getFactory().createGenerator(sw);
-        ObjectWriter ow = mapper.writer();
-        ow.writeValue(g, Integer.valueOf(99));
-        assertEquals("99", sw.toString());
-        g.close();
-    }
-
-    public void testFlushingNotAutomatic() throws IOException
-    {
-        // but should not occur if configured otherwise
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        mapper.configure(SerializationFeature.FLUSH_AFTER_WRITE_VALUE, false);
-        StringWriter sw = new StringWriter();
-        JsonGenerator g = mapper.getFactory().createGenerator(sw);
-
-        mapper.writeValue(g, Integer.valueOf(13));
-        // no flushing now:
-        assertEquals("", sw.toString());
-        // except when actually flushing
-        g.flush();
-        assertEquals("13", sw.toString());
-        g.close();
-        // Also, same should happen with ObjectWriter
-        sw = new StringWriter();
-        g = mapper.getFactory().createGenerator(sw);
-        ObjectWriter ow = mapper.writer();
-        ow.writeValue(g, Integer.valueOf(99));
-        assertEquals("", sw.toString());
-        // except when actually flushing
-        g.flush();
-        assertEquals("99", sw.toString());
-        g.close();
     }
 
     public void testSingleElementCollections() throws IOException

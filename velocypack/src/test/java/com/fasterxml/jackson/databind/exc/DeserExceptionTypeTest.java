@@ -70,23 +70,6 @@ public class DeserExceptionTypeTest
         }
     }
 
-    @SuppressWarnings("resource")
-    public void testExceptionWithIncomplete()
-        throws Exception
-    {
-        JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes("[ 1, "));
-        try {
-            @SuppressWarnings("unused")
-            Object ob = MAPPER.readValue(p, Object.class);
-            fail("Should have gotten an exception");
-        } catch (IOException e) {
-            /* For "bona fide" IO problems (due to low-level problem,
-             * thrown by reader/stream), IOException must be thrown
-             */
-            verifyException(e, IOException.class, null);
-        }
-    }
-
     public void testExceptionWithEOF() throws Exception
     {
         JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes("  3"));

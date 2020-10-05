@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.exc;
 
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +37,7 @@ public class BasicExceptionTest extends BaseMapTest
         assertNotNull(e);
         
         // and the other constructor too
-        JsonGenerator g = JSON_F.createGenerator(new StringWriter());
+        JsonGenerator g = JSON_F.createGenerator(new ByteArrayOutputStream());
         e = new InvalidDefinitionException(p,
                 "Testing", t);
         assertEquals("Testing", e.getOriginalMessage());
@@ -112,26 +113,6 @@ public class BasicExceptionTest extends BaseMapTest
         p.close();
     }
 
-    // [databind#2128]: ensure Location added once and only once
-    // [databind#2482]: ensure Location is the original one
-    public void testLocationAddition() throws Exception
-    {
-        String problemJson = "{\n\t\"userList\" : [\n\t{\n\t user : \"1\"\n\t},\n\t{\n\t \"user\" : \"2\"\n\t}\n\t]\n}";
-        try {
-            MAPPER.readValue(problemJson, Users.class);
-            fail("Should not pass");
-        } catch (JsonMappingException e) { // becomes "generic" due to wrapping for passing path info
-            String msg = e.getMessage();
-            String[] str = msg.split(" at \\[");
-            if (str.length != 2) {
-                fail("Should only get one 'at [' marker, got "+(str.length-1)+", source: "+msg);
-            }
-            JsonLocation loc = e.getLocation();
-//          String expectedLocation = "line: 4, column: 4";
-            assertEquals(4, loc.getLineNr());
-            assertEquals(4, loc.getColumnNr());
-        }
-    }
     static class User {
         public String user;
     }

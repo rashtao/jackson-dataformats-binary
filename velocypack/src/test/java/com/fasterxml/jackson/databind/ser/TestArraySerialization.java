@@ -1,7 +1,10 @@
 package com.fasterxml.jackson.databind.ser;
 
-import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestArraySerialization
     extends BaseMapTest
@@ -76,18 +79,20 @@ public class TestArraySerialization
         assertEquals("[\"a\",\"\\\"foo\\\"\",null]", com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writeValueAsBytes(new String[] { "a", "\"foo\"", null })));
         assertEquals("[]", com.fasterxml.jackson.VPackUtils.toJson(
-                MAPPER.writeValueAsBytes(new String[] { })));
+                MAPPER.writeValueAsBytes(new String[]{})));
     }
 
-    public void testDoubleArray() throws Exception
-    {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new double[] { 1.01, 2.0, -7, Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY }));
-        assertEquals("[1.01,2.0,-7.0,\"NaN\",\"-Infinity\",\"Infinity\"]", json);
+    public void testDoubleArray() throws Exception {
+        String json = com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(new double[]{1.01, 2.0, -7, Double.NaN, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY}));
+        assertEquals("[1.01,2.0,-7.0,NaN,-Infinity,Infinity]", json);
     }
 
-    public void testFloatArray() throws Exception
-    {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new float[] { 1.01f, 2.0f, -7f, Float.NaN, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY }));
-        assertEquals("[1.01,2.0,-7.0,\"NaN\",\"-Infinity\",\"Infinity\"]", json);
+    public void testFloatArray() throws Exception {
+        float[] floatArray = new float[]{1.01f, 2.0f, -7f, Float.NaN, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY};
+        byte[] bytes = MAPPER.writeValueAsBytes(floatArray);
+        float[] decoded = MAPPER.readValue(bytes, float[].class);
+        for (int i = 0; i < floatArray.length; i++) {
+            assertEquals(floatArray[i], decoded[i]);
+        }
     }
 }

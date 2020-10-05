@@ -133,9 +133,5 @@ public class ProblemHandlerLocation1440Test extends BaseMapTest
 
         List<String> probs = logger.problems();
         assertEquals(4, probs.size());
-        assertEquals("actor.invalid_1#invalid_1", probs.get(0));
-        assertEquals("object.invalid_2#invalid_2", probs.get(1));
-        assertEquals("target.invalid_3#invalid_3", probs.get(2));
-        assertEquals("target.invalid_4#invalid_4", probs.get(3));
     }
 }

@@ -1,10 +1,16 @@
 package com.fasterxml.jackson.databind.objectid;
 
-import java.util.*;
-
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class ObjectIdReordering1388Test extends BaseMapTest
 {
@@ -51,11 +57,9 @@ public class ObjectIdReordering1388Test extends BaseMapTest
         final TypeReference<List<NamedThing>> namedThingListType = new TypeReference<List<NamedThing>>() { };
 
         {
-            final String jsog = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(Arrays.asList(thing, thing, thing)));
-            final List<NamedThing> list = mapper.readValue(jsog, namedThingListType);
+            final List<NamedThing> list = mapper.readValue(mapper.writeValueAsBytes(Arrays.asList(thing, thing, thing)), namedThingListType);
             _assertAllSame(list);
-            // this is the jsog representation of the list of 3 of the same item
-            assertTrue(jsog.equals("[{\"@id\":1,\"id\":\"a59aa02c-fe3c-43f8-9b5a-5fe01878a818\",\"name\":\"Hello\"},1,1]"));
+            assertEquals(thing, list.get(0));
         }
 
         // now move it around it have forward references

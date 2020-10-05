@@ -246,13 +246,6 @@ public class TestCustomSerializers extends BaseMapTest
         assertEquals("{\"x\":3,\"y\":7}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Immutable())));
     }
 
-    // [databind#215]: Allow registering CharacterEscapes via ObjectWriter
-    public void testCustomEscapes() throws Exception
-    {
-        assertEquals(quote("foo\\u0062\\Ar"), com.fasterxml.jackson.VPackUtils.toJson(
-                MAPPER.writer(new CustomEscapes()).writeValueAsBytes("foobar")));
-    }
-    
     public void testNumberSubclass() throws Exception
     {
         assertEquals(aposToQuotes("{'x':42}"), com.fasterxml.jackson.VPackUtils.toJson(

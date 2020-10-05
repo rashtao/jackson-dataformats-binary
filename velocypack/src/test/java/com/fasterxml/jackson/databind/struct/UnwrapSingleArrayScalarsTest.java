@@ -5,6 +5,8 @@ import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
@@ -188,13 +190,13 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         }
 
         try {
-            mapper.readValue("['d']", Character.class);
+            mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("['d']")), Character.class);
             fail("Single value array didn't throw an exception when DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS is disabled");
         } catch (MismatchedInputException exp) {
             //Exception was thrown correctly
         }
         try {
-            mapper.readValue("['d']", Character.TYPE);
+            mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("['d']")), Character.TYPE);
             fail("Single value array didn't throw an exception when DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS is disabled");
         } catch (MismatchedInputException exp) {
             //Exception was thrown correctly
@@ -306,11 +308,11 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         BigInteger value = new BigInteger("-1234567890123456789012345567809");
-        BigInteger result = mapper.readValue(value.toString(), BigInteger.class);
+        BigInteger result = mapper.readValue(MAPPER.writeValueAsBytes(value), BigInteger.class);
         assertEquals(value, result);
 
         try {
-            mapper.readValue("[" + value.toString() + "]", BigInteger.class);
+            mapper.readValue(MAPPER.writeValueAsBytes(Collections.singletonList(value)), BigInteger.class);
             fail("Exception was not thrown when attempting to read a single value array of BigInteger when UNWRAP_SINGLE_VALUE_ARRAYS feature is disabled");
         } catch (MismatchedInputException exp) {
             verifyException(exp, "Cannot deserialize");
@@ -318,11 +320,11 @@ public class UnwrapSingleArrayScalarsTest extends BaseMapTest
         }
         
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
-        result = mapper.readValue("[" + value.toString() + "]", BigInteger.class);
+        result = mapper.readValue(MAPPER.writeValueAsBytes(Collections.singletonList(value)), BigInteger.class);
         assertEquals(value, result);
         
         try {
-            mapper.readValue("[" + value.toString() + "," + value.toString() + "]", BigInteger.class);
+            mapper.readValue(MAPPER.writeValueAsBytes(Arrays.asList(value, value)), BigInteger.class);
             fail("Exception was not thrown when attempting to read a multi-value array of BigInteger when UNWRAP_SINGLE_VALUE_ARRAYS feature is enabled");
         } catch (MismatchedInputException exp) {
             verifyException(exp, "Attempted to unwrap");

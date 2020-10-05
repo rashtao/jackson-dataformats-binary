@@ -166,7 +166,7 @@ public class TestMixinSerWithViews
       Object object = new ComplexTestData();
       String json = com.fasterxml.jackson.VPackUtils.toJson( objectWriter.writeValueAsBytes(object));
       assertTrue( json.indexOf( "nameHidden" ) == -1 );
-      assertTrue( json.indexOf( "\"name\" : \"shown\"" ) > 0 );
+      assertTrue( json.indexOf( "\"name\":\"shown\"" ) > 0 );
     }    
 
     public void testIssue560() throws Exception

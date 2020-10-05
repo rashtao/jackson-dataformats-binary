@@ -181,7 +181,7 @@ public class ReadValuesTest extends BaseMapTest
 
     public void testRootArraysWithParser() throws Exception
     {
-        final String JSON = "[1][3]";
+        final String JSON = "[1]";
         JsonParser jp = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
 
         // NOTE: We must point JsonParser to the first element; if we tried to

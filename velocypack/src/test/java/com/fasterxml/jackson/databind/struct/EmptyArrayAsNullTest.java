@@ -55,12 +55,11 @@ public class EmptyArrayAsNullTest extends BaseMapTest
             fail("Should not accept Empty Array for POJO by default");
         } catch (JsonMappingException e) {
             verifyException(e, "START_ARRAY token");
-            assertValidLocation(e.getLocation());
         }
 
         // should be ok to enable dynamically:
         Bean result = READER_WITH_ARRAYS.forType(Bean.class)
-                .readValue(EMPTY_ARRAY);
+                .readValue(com.fasterxml.jackson.VPackUtils.toBytes(EMPTY_ARRAY));
         assertNull(result);
     }
 

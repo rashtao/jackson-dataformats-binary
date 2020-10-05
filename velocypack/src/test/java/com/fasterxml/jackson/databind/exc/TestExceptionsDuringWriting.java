@@ -74,24 +74,6 @@ public class TestExceptionsDuringWriting
         }
     }
 
-    /**
-     * Unit test for verifying that regular IOExceptions are not wrapped
-     * but are passed through as is.
-     */
-    @SuppressWarnings("resource")
-    public void testExceptionWithSimpleMapper()
-        throws Exception
-    {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
-        try {
-            BrokenStringWriter sw = new BrokenStringWriter("TEST");
-            mapper.writeValue(sw, createLongObject());
-            fail("Should have gotten an exception");
-        } catch (IOException e) {
-            verifyException(e, IOException.class, "TEST");
-        }
-    }
-
     @SuppressWarnings("resource")
     public void testExceptionWithMapperAndGenerator()
         throws Exception
