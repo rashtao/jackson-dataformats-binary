@@ -87,7 +87,7 @@ public class ExternalTypeIdWithCreatorTest extends BaseMapTest
 
     // [databind#1198]
     public void testFails() throws Exception {
-        String json = "{ \"name\": \"foo\", \"attack\":\"right\" } }";
+        String json = "{ \"name\": \"foo\", \"attack\":\"right\" }";
 
         Character character = MAPPER.readValue(json, Character.class);
 
@@ -98,7 +98,7 @@ public class ExternalTypeIdWithCreatorTest extends BaseMapTest
 
     // [databind#1198]
     public void testWorks() throws Exception {
-        String json = "{ \"name\": \"foo\", \"preferredAttack\": \"KICK\", \"attack\":\"right\" } }";
+        String json = "{ \"name\": \"foo\", \"preferredAttack\": \"KICK\", \"attack\":\"right\" }";
 
         Character character = MAPPER.readValue(json, Character.class);
 

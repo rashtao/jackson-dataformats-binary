@@ -1,5 +1,6 @@
 package com.fasterxml.jackson.databind.node;
 
+import com.arangodb.velocypack.VPackSlice;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -94,14 +95,6 @@ public class TestJsonNode extends NodeTestBase
         assertNodeNumbersForNonNumeric(n);
         // but if wrapping actual number, use it
         assertNodeNumbers(new POJONode(Integer.valueOf(123)), 123, 123.0);
-    }
-
-    // [databind#743]
-    public void testRawValue() throws Exception {
-        ObjectNode root = MAPPER.createObjectNode();
-        root.putRawValue("a", new RawValue(new SerializedString("[1, 2, 3]")));
-        byte[] bytes = MAPPER.writeValueAsBytes(root);
-        assertEquals("{\"a\":[1, 2, 3]}", com.fasterxml.jackson.VPackUtils.toJson(bytes));
     }
 
     // [databind#790]

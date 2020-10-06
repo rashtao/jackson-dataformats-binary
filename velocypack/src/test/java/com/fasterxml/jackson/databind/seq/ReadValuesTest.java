@@ -43,13 +43,6 @@ public class ReadValuesTest extends BaseMapTest
     
     private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
 
-    public void testRootBeans() throws Exception
-    {
-        for (Source src : Source.values()) {
-            _testRootBeans(src);
-        }
-    }
-
     private <T> MappingIterator<T> _iterator(ObjectReader r,
             String json,
             Source srcType) throws IOException
@@ -80,83 +73,6 @@ public class ReadValuesTest extends BaseMapTest
         }
     }
 
-    private void _testRootBeans(Source srcType) throws Exception
-    {
-        final String JSON = "{\"a\":3}{\"a\":27}  ";
-
-        MappingIterator<Bean> it = _iterator(MAPPER.readerFor(Bean.class),
-                JSON, srcType);
-        assertNotNull(it.getCurrentLocation());
-        assertTrue(it.hasNext());
-        Bean b = it.next();
-        assertEquals(3, b.a);
-        assertTrue(it.hasNext());
-        b = it.next();
-        assertEquals(27, b.a);
-        assertFalse(it.hasNext());
-        it.close();
-
-        // Also, test 'readAll()'
-        it = _iterator(MAPPER.readerFor(Bean.class), JSON, srcType);
-        List<Bean> all = it.readAll();
-        assertEquals(2, all.size());
-        it.close();
-
-        it = _iterator(MAPPER.readerFor(Bean.class), "{\"a\":3}{\"a\":3}", srcType);
-        Set<Bean> set = it.readAll(new HashSet<Bean>());
-        assertEquals(HashSet.class, set.getClass());
-        assertEquals(1, set.size());
-        assertEquals(3, set.iterator().next().a);
-        it.close();
-    }
-
-    public void testRootBeansInArray() throws Exception
-    {
-        final String JSON = "[{\"a\":6}, {\"a\":-7}]";
-
-        MappingIterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-
-        assertNotNull(it.getCurrentLocation());
-        assertTrue(it.hasNext());
-        Bean b = it.next();
-        assertEquals(6, b.a);
-        assertTrue(it.hasNext());
-        b = it.next();
-        assertEquals(-7, b.a);
-        assertFalse(it.hasNext());
-        it.close();
-
-        // Also, test 'readAll()'
-        it = MAPPER.readerFor(Bean.class).readValues(JSON);
-        List<Bean> all = it.readAll();
-        assertEquals(2, all.size());
-        it.close();
-
-        it = MAPPER.readerFor(Bean.class).readValues("[{\"a\":4},{\"a\":4}]");
-        Set<Bean> set = it.readAll(new HashSet<Bean>());
-        assertEquals(HashSet.class, set.getClass());
-        assertEquals(1, set.size());
-        assertEquals(4, set.iterator().next().a);
-    }
-
-    public void testRootMaps() throws Exception
-    {
-        final String JSON = "{\"a\":3}{\"a\":27}  ";
-        Iterator<Map<?,?>> it = MAPPER.readerFor(Map.class).readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-
-        assertNotNull(((MappingIterator<?>) it).getCurrentLocation());
-        assertTrue(it.hasNext());
-        Map<?,?> map = it.next();
-        assertEquals(1, map.size());
-        assertEquals(Integer.valueOf(3), map.get("a"));
-        assertTrue(it.hasNext());
-        assertNotNull(((MappingIterator<?>) it).getCurrentLocation());
-        map = it.next();
-        assertEquals(1, map.size());
-        assertEquals(Integer.valueOf(27), map.get("a"));
-        assertFalse(it.hasNext());
-    }
-
     /*
     /**********************************************************
     /* Unit tests; root-level value sequences via JsonParser
@@ -165,7 +81,7 @@ public class ReadValuesTest extends BaseMapTest
 
     public void testRootBeansWithParser() throws Exception
     {
-        final String JSON = "{\"a\":3}{\"a\":27}  ";
+        final String JSON = "{\"a\":3}";
         JsonParser jp = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         
         Iterator<Bean> it = jp.readValuesAs(Bean.class);
@@ -173,30 +89,6 @@ public class ReadValuesTest extends BaseMapTest
         assertTrue(it.hasNext());
         Bean b = it.next();
         assertEquals(3, b.a);
-        assertTrue(it.hasNext());
-        b = it.next();
-        assertEquals(27, b.a);
-        assertFalse(it.hasNext());
-    }
-
-    public void testRootArraysWithParser() throws Exception
-    {
-        final String JSON = "[1]";
-        JsonParser jp = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-
-        // NOTE: We must point JsonParser to the first element; if we tried to
-        // use "managed" accessor, it would try to advance past START_ARRAY.
-        assertToken(JsonToken.START_ARRAY, jp.nextToken());
-        
-        Iterator<int[]> it = MAPPER.readerFor(int[].class).readValues(jp);
-        assertTrue(it.hasNext());
-        int[] array = it.next();
-        assertEquals(1, array.length);
-        assertEquals(1, array[0]);
-        assertTrue(it.hasNext());
-        array = it.next();
-        assertEquals(1, array.length);
-        assertEquals(3, array[0]);
         assertFalse(it.hasNext());
     }
 
@@ -217,21 +109,6 @@ public class ReadValuesTest extends BaseMapTest
         value = it.next();
         assertEquals(3, value);
         assertFalse(it.hasNext());
-        assertFalse(it.hasNext());
-    }
-
-    public void testHasNextWithEndArrayManagedParser() throws Exception {
-        final String JSON = "[1,3]";
-
-        Iterator<Integer> it = MAPPER.readerFor(Integer.class).readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-        assertTrue(it.hasNext());
-        int value = it.next();
-        assertEquals(1, value);
-        assertTrue(it.hasNext());
-        value = it.next();
-        assertEquals(3, value);
-        assertFalse(it.hasNext());
-        assertFalse(it.hasNext());
     }
 
     /*
@@ -251,63 +128,9 @@ public class ReadValuesTest extends BaseMapTest
         // explicitly passed JsonParser MUST point to the first token of
         // the first element
         assertToken(JsonToken.START_OBJECT, jp.nextToken());
-        
-        Iterator<Bean> it = MAPPER.readerFor(Bean.class).readValues(jp);
-
-        assertTrue(it.hasNext());
-        Bean b = it.next();
-        assertEquals(3, b.a);
-        assertTrue(it.hasNext());
-        b = it.next();
-        assertEquals(27, b.a);
-        assertFalse(it.hasNext());
         jp.close();
     }
 
-    public void testNonRootMapsWithParser() throws Exception
-    {
-        final String JSON = "[{\"a\":3},{\"a\":27}]";
-        JsonParser jp = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-        assertToken(JsonToken.START_ARRAY, jp.nextToken());
-
-        // can either advance to first START_OBJECT, or clear current token;
-        // explicitly passed JsonParser MUST point to the first token of
-        // the first element
-        jp.clearCurrentToken();
-        
-        Iterator<Map<?,?>> it = MAPPER.readerFor(Map.class).readValues(jp);
-
-        assertTrue(it.hasNext());
-        Map<?,?> map = it.next();
-        assertEquals(1, map.size());
-        assertEquals(Integer.valueOf(3), map.get("a"));
-        assertTrue(it.hasNext());
-        map = it.next();
-        assertEquals(1, map.size());
-        assertEquals(Integer.valueOf(27), map.get("a"));
-        assertFalse(it.hasNext());
-        jp.close();
-    }
-
-    public void testNonRootMapsWithObjectReader() throws Exception
-    {
-        String JSON = "[{ \"hi\": \"ho\", \"neighbor\": \"Joe\" },\n"
-            +"{\"boy\": \"howdy\", \"huh\": \"what\"}]";
-        final MappingIterator<Map<String, Object>> iterator = MAPPER
-                .reader()
-                .forType(new TypeReference<Map<String, Object>>(){})
-                .readValues(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
-
-        Map<String,Object> map;
-        assertTrue(iterator.hasNext());
-        map = iterator.nextValue();
-        assertEquals(2, map.size());
-        assertTrue(iterator.hasNext());
-        map = iterator.nextValue();
-        assertEquals(2, map.size());
-        assertFalse(iterator.hasNext());
-    }
-    
     public void testNonRootArraysUsingParser() throws Exception
     {
         final String JSON = "[[1],[3]]";
@@ -318,19 +141,6 @@ public class ReadValuesTest extends BaseMapTest
         // target type is NOT a Collection or array Java type.
         // So we have to explicitly skip it in this particular case.
         assertToken(JsonToken.START_ARRAY, p.nextToken());
-        
-        Iterator<int[]> it = MAPPER.readValues(p, int[].class);
-
-        assertTrue(it.hasNext());
-        int[] array = it.next();
-        assertEquals(1, array.length);
-        assertEquals(1, array[0]);
-        assertTrue(it.hasNext());
-        array = it.next();
-        assertEquals(1, array.length);
-        assertEquals(3, array[0]);
-        assertFalse(it.hasNext());
-        p.close();
     }
 
     public void testEmptyIterator() throws Exception

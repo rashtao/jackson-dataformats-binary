@@ -80,23 +80,20 @@ public class TestViewSerialization
     @SuppressWarnings("unchecked")
     public void testSimple() throws IOException
     {
-        StringWriter sw = new StringWriter();
         // Ok, first, using no view whatsoever; all 3
         Bean bean = new Bean();
         Map<String,Object> map = writeAndMap(MAPPER, bean);
         assertEquals(3, map.size());
 
         // Then with "ViewA", just one property
-        sw = new StringWriter();
-        MAPPER.writerWithView(ViewA.class).writeValue(sw, bean);
-        map = MAPPER.readValue(sw.toString(), Map.class);
+        byte[] bytes = MAPPER.writerWithView(ViewA.class).writeValueAsBytes(bean);
+        map = MAPPER.readValue(bytes, Map.class);
         assertEquals(1, map.size());
         assertEquals("1", map.get("a"));
 
         // "ViewAA", 2 properties
-        sw = new StringWriter();
-        MAPPER.writerWithView(ViewAA.class).writeValue(sw, bean);
-        map = MAPPER.readValue(sw.toString(), Map.class);
+        bytes = MAPPER.writerWithView(ViewAA.class).writeValueAsBytes( bean);
+        map = MAPPER.readValue(bytes, Map.class);
         assertEquals(2, map.size());
         assertEquals("1", map.get("a"));
         assertEquals("2", map.get("aa"));
