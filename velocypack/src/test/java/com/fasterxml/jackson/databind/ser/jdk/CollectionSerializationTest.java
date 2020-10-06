@@ -1,14 +1,17 @@
 package com.fasterxml.jackson.databind.ser.jdk;
 
-import java.io.*;
-import java.util.*;
-
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+
+import java.io.IOException;
+import java.util.*;
 
 public class CollectionSerializationTest
     extends BaseMapTest
@@ -136,47 +139,24 @@ public class CollectionSerializationTest
     }
 
     @SuppressWarnings("resource")
-    public void testBigCollection() throws IOException
-    {
+    public void testBigCollection() throws IOException {
         final int COUNT = 9999;
         ArrayList<Integer> value = new ArrayList<Integer>();
         for (int i = 0; i <= COUNT; ++i) {
             value.add(i);
         }
-        // Let's test using 3 main variants...
-        for (int mode = 0; mode < 3; ++mode) {
-            JsonParser jp = null;
-            switch (mode) {
-            case 0:
-                {
-                    byte[] data = MAPPER.writeValueAsBytes(value);
-                    jp = new JsonFactory().createParser(data);
-                }
-                break;
-            case 1:
-                {
-                    StringWriter sw = new StringWriter(value.size());
-                    MAPPER.writeValue(sw, value);
-                    jp = createParserUsingReader(sw.toString());
-                }
-                break;
-            case 2:
-                {
-                    String str = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(value));
-                    jp = createParserUsingReader(str);
-                }
-                break;
-            }
 
-            // and verify
-            assertToken(JsonToken.START_ARRAY, jp.nextToken());
-            for (int i = 0; i <= COUNT; ++i) {
-                assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
-                assertEquals(i, jp.getIntValue());
-            }
-            assertToken(JsonToken.END_ARRAY, jp.nextToken());
-            jp.close();
+        byte[] data = MAPPER.writeValueAsBytes(value);
+        JsonParser jp = MAPPER.getFactory().createParser(data);
+
+        // and verify
+        assertToken(JsonToken.START_ARRAY, jp.nextToken());
+        for (int i = 0; i <= COUNT; ++i) {
+            assertEquals(JsonToken.VALUE_NUMBER_INT, jp.nextToken());
+            assertEquals(i, jp.getIntValue());
         }
+        assertToken(JsonToken.END_ARRAY, jp.nextToken());
+        jp.close();
     }
 
     public void testEnumMap() throws IOException

@@ -312,7 +312,7 @@ public class TestTokenBuffer extends BaseMapTest
     public void testWithJSONSampleDoc() throws Exception
     {
         // First, copy events from known good source (StringReader)
-        JsonParser p = createParserUsingReader(SAMPLE_DOC_JSON_SPEC);
+        JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes(SAMPLE_DOC_JSON_SPEC));
         TokenBuffer tb = new TokenBuffer(null, false);
         while (p.nextToken() != null) {
             tb.copyCurrentEvent(p);
@@ -467,7 +467,7 @@ public class TestTokenBuffer extends BaseMapTest
         TokenBuffer buf = new TokenBuffer(null, false);
         buf.writeStartArray();
         buf.writeString("test");
-        JsonParser p = createParserUsingReader("[ true, null ]");
+        JsonParser p = MAPPER.getFactory().createParser(com.fasterxml.jackson.VPackUtils.toBytes("[ true, null ]"));
         
         JsonParserSequence seq = JsonParserSequence.createFlattened(false, buf.asParser(), p);
         assertEquals(2, seq.containedParsersCount());
