@@ -1,15 +1,8 @@
 package com.fasterxml.jackson.databind.deser.validate;
 
-import java.util.*;
+import com.fasterxml.jackson.databind.*;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.BaseMapTest;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import java.util.List;
 
 /**
  * Test for validating {@link com.fasterxml.jackson.databind.DeserializationFeature#FAIL_ON_TRAILING_TOKENS}.
@@ -39,22 +32,18 @@ public class FullStreamReadTest extends BaseMapTest
 
         // by default, should be ok to read, all
         _verifyArray(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY)));
-        _verifyArray(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY_WITH_COMMENT)));
         _verifyArray(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_ARRAY)));
 
         // and also via "untyped"
         _verifyCollection(MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY), List.class));
-        _verifyCollection(MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY_WITH_COMMENT), List.class));
         _verifyCollection(MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_ARRAY), List.class));
 
         // ditto for getting `null` and some other token
 
         assertTrue(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL)).isNull());
-        assertTrue(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL_WITH_COMMENT)).isNull());
         assertTrue(MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_NULL)).isNull());
 
         assertNull(MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL), Object.class));
-        assertNull(MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL_WITH_COMMENT), Object.class));
         assertNull(MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_NULL), Object.class));
     }
 
@@ -69,45 +58,6 @@ public class FullStreamReadTest extends BaseMapTest
         _verifyArray(strict.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY)));
         _verifyCollection(strict.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY), List.class));
 
-        // but if real content exists, will fail
-        try {
-            strict.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_ARRAY));
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type START_ARRAY)");
-            verifyException(e, "value (bound as `com.fasterxml.jackson.databind.JsonNode`)");
-        }
-
-        try {
-            strict.readValue(JSON_FAIL_ARRAY, List.class);
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type START_ARRAY)");
-            verifyException(e, "value (bound as `java.util.List`)");
-        }
-
-        // others fail conditionally: will fail on comments unless enabled
-
-        try {
-            strict.readValue(JSON_OK_ARRAY_WITH_COMMENT, List.class);
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-        try {
-            strict.readTree(JSON_OK_ARRAY_WITH_COMMENT);
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-
-        ObjectReader strictWithComments = strict.reader()
-                .with(JsonReadFeature.ALLOW_JAVA_COMMENTS);
-        _verifyArray(strictWithComments.readTree(JSON_OK_ARRAY_WITH_COMMENT));
-        _verifyCollection((List<?>) strictWithComments.forType(List.class)
-                .readValue(JSON_OK_ARRAY_WITH_COMMENT));
     }
 
     public void testMapperFailOnTrailingWithNull() throws Exception
@@ -120,49 +70,6 @@ public class FullStreamReadTest extends BaseMapTest
         assertNotNull(n);
         assertTrue(n.isNull());
 
-        // but if real content exists, will fail
-        try {
-            strict.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_NULL));
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type VALUE_FALSE)");
-            verifyException(e, "value (bound as `com.fasterxml.jackson.databind.JsonNode`)");
-        }
-
-        try {
-            strict.readValue(JSON_FAIL_NULL, List.class);
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type VALUE_FALSE)");
-            verifyException(e, "value (bound as `java.util.List`)");
-        }
-
-        // others fail conditionally: will fail on comments unless enabled
-
-        try {
-            strict.readValue(JSON_OK_NULL_WITH_COMMENT, Object.class);
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-        try {
-            strict.readTree(JSON_OK_NULL_WITH_COMMENT);
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-
-        ObjectReader strictWithComments = strict.reader()
-                .with(JsonReadFeature.ALLOW_JAVA_COMMENTS);
-        n = strictWithComments.readTree(JSON_OK_NULL);
-        assertNotNull(n);
-        assertTrue(n.isNull());
-
-        Object ob = strictWithComments.forType(List.class)
-                .readValue(JSON_OK_NULL_WITH_COMMENT);
-        assertNull(ob);
     }
     
     public void testReaderAcceptTrailing() throws Exception
@@ -171,11 +78,9 @@ public class FullStreamReadTest extends BaseMapTest
         assertFalse(R.isEnabled(DeserializationFeature.FAIL_ON_TRAILING_TOKENS));
 
         _verifyArray(R.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY)));
-        _verifyArray(R.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY_WITH_COMMENT)));
         _verifyArray(R.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_ARRAY)));
         ObjectReader rColl = R.forType(List.class);
         _verifyCollection((List<?>)rColl.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY)));
-        _verifyCollection((List<?>)rColl.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY_WITH_COMMENT)));
         _verifyCollection((List<?>)rColl.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_ARRAY)));
     }
 
@@ -185,56 +90,6 @@ public class FullStreamReadTest extends BaseMapTest
         ObjectReader strictRForList = strictR.forType(List.class);
         _verifyArray(strictR.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY)));
         _verifyCollection((List<?>)strictRForList.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_ARRAY)));
-
-        // Will fail hard if there is a trailing token
-        try {
-            strictRForList.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_ARRAY));
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type START_ARRAY)");
-            verifyException(e, "value (bound as `java.util.List`)");
-        }
-        try {
-            strictR.readTree(JSON_FAIL_ARRAY);
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type START_ARRAY)");
-            verifyException(e, "value (bound as `com.fasterxml.jackson.databind.JsonNode`)");
-        }
-
-        // ... also verify that same happens with "value to update"
-        try {
-            strictR.withValueToUpdate(new ArrayList<Object>())
-                .readValue(JSON_FAIL_ARRAY);
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type START_ARRAY)");
-            verifyException(e, "value (bound as `java.util.ArrayList`)");
-        }
-
-        // others conditionally: will fail on comments unless enabled
-
-        try {
-            strictRForList.readValue(JSON_OK_ARRAY_WITH_COMMENT);
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-        try {
-            strictR.readTree(JSON_OK_ARRAY_WITH_COMMENT);
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-
-        // but works if comments enabled etc
-
-        ObjectReader strictRWithComments = strictR.with(JsonReadFeature.ALLOW_JAVA_COMMENTS);
-        
-        _verifyCollection((List<?>)strictRWithComments.forType(List.class).readValue(JSON_OK_ARRAY_WITH_COMMENT));
-        _verifyArray(strictRWithComments.readTree(JSON_OK_ARRAY_WITH_COMMENT));
     }
 
     public void testReaderFailOnTrailingWithNull() throws Exception
@@ -243,46 +98,6 @@ public class FullStreamReadTest extends BaseMapTest
         ObjectReader strictRForList = strictR.forType(List.class);
         JsonNode n = strictR.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL));
         assertTrue(n.isNull());
-
-        // Will fail hard if there is a trailing token
-        try {
-            strictRForList.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_NULL));
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type VALUE_FALSE)");
-            verifyException(e, "value (bound as `java.util.List`)");
-        }
-
-        try {
-            strictR.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_FAIL_NULL));
-            fail("Should not have passed");
-        } catch (MismatchedInputException e) {
-            verifyException(e, "Trailing token (of type VALUE_FALSE)");
-            verifyException(e, "value (bound as `com.fasterxml.jackson.databind.JsonNode`)");
-        }
-
-        // others conditionally: will fail on comments unless enabled
-
-        try {
-            strictRForList.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL_WITH_COMMENT));
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-        try {
-            strictR.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL_WITH_COMMENT));
-            fail("Should not have passed");
-        } catch (JsonParseException e) {
-            verifyException(e, "Unexpected character");
-            verifyException(e, "maybe a (non-standard) comment");
-        }
-
-        // but works if comments enabled etc
-
-        ObjectReader strictRWithComments = strictR.with(JsonReadFeature.ALLOW_JAVA_COMMENTS);
-        Object ob = strictRWithComments.forType(List.class).readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON_OK_NULL_WITH_COMMENT));
-        assertNull(ob);
     }
     
     private void _verifyArray(JsonNode n) throws Exception

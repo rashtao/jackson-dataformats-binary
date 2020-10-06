@@ -1,6 +1,11 @@
 package com.fasterxml.jackson.databind.ser.jdk;
 
-import java.io.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -8,10 +13,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Pattern;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
 
 /**
  * Unit tests for JDK types not covered by other tests (i.e. things
@@ -139,47 +140,6 @@ public class JDKTypeSerializationTest
         String exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT_BYTES));
         ByteBuffer bbuf = ByteBuffer.wrap(INPUT_BYTES);
         assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bbuf)));
-
-        // so far so good, but must ensure Native buffers also work:
-        ByteBuffer bbuf2 = ByteBuffer.allocateDirect(5);
-        bbuf2.put(INPUT_BYTES);
-        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bbuf2)));
-    }
-
-    // [databind#1662]: Sliced ByteBuffers
-    public void testSlicedByteBuffer() throws IOException
-    {
-        final byte[] INPUT_BYTES = new byte[] { 1, 2, 3, 4, 5 };
-        ByteBuffer bbuf = ByteBuffer.wrap(INPUT_BYTES);
-
-        bbuf.position(2);
-        ByteBuffer slicedBuf = bbuf.slice();
-
-        assertEquals(MAPPER.writeValueAsBytes(new byte[] { 3, 4, 5 }),
-                MAPPER.writeValueAsBytes(slicedBuf));
-
-        // but how about offset within?
-        slicedBuf.position(1);
-        assertEquals(MAPPER.writeValueAsBytes(new byte[] { 4, 5 }),
-                MAPPER.writeValueAsBytes(slicedBuf));
-    }
-
-    // [databind#2602]: Need to consider position()
-    public void testDuplicatedByteBufferWithCustomPosition() throws IOException
-    {
-        final byte[] INPUT_BYTES = new byte[] { 1, 2, 3, 4, 5 };
-
-        String exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new byte[] { 3, 4, 5 }));
-        ByteBuffer bbuf = ByteBuffer.wrap(INPUT_BYTES);
-        bbuf.position(2);
-        ByteBuffer duplicated = bbuf.duplicate();
-        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(duplicated)));
-
-        // also check differently constructed bytebuffer (noting that
-        // offset given is the _position_ to use, NOT array offset
-        exp = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new byte[] { 2, 3, 4 }));
-        bbuf = ByteBuffer.wrap(INPUT_BYTES, 1, 3);
-        assertEquals(exp, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bbuf.duplicate())));
     }
 
     // Verify that efficient UUID codec won't mess things up:
@@ -195,8 +155,8 @@ public class JDKTypeSerializationTest
                 "00000007-0000-0000-0000-000000000000"
         }) {
             UUID uuid = UUID.fromString(value);
-            String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(uuid));
-            assertEquals(quote(uuid.toString()), json);
+            String v = MAPPER.readValue(MAPPER.writeValueAsBytes(uuid), UUID.class).toString();
+            assertEquals(uuid.toString(), v);
 
             // Also, wrt [#362], should convert cleanly
             String str = MAPPER.convertValue(uuid, String.class);
@@ -211,8 +171,8 @@ public class JDKTypeSerializationTest
         for (int i = 0; i < chars.length(); ++i) {
             String value = TEMPL.replace('0', chars.charAt(i));
             UUID uuid = UUID.fromString(value);
-            String json = com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(uuid));
-            assertEquals(quote(uuid.toString()), json);
+            String v = MAPPER.readValue(MAPPER.writeValueAsBytes(uuid), UUID.class).toString();
+            assertEquals(uuid.toString(), v);
         }
     }
 
