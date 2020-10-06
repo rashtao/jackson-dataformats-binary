@@ -231,6 +231,7 @@ public class VelocypackParser extends ParserMinimalBase {
             return _currToken;
         }
         if (currentCompoundValue.isEmpty()) {
+            close();
             return null;
         }
         if (currentCompoundValue.getLast() == JsonToken.START_OBJECT && !objectIterators.isEmpty()) {
