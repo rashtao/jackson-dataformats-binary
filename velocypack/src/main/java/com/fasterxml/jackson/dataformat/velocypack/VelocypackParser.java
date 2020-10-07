@@ -214,6 +214,10 @@ public class VelocypackParser extends ParserMinimalBase {
 
     @Override
     public JsonToken nextToken() {
+        // ignore clear token
+        if(_currToken == null && _lastClearedToken != null && !currentCompoundValue.isEmpty()){
+            _currToken = _lastClearedToken;
+        }
         if (beforeFirstToken && _currToken == null) {
             beforeFirstToken = false;
             _currToken = getToken(currentValue.getType(), currentValue);

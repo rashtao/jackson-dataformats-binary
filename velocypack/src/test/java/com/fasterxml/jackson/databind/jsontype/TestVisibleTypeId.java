@@ -178,6 +178,7 @@ public class TestVisibleTypeId extends BaseMapTest
 
     public void testVisibleWithWrapperArray() throws Exception {
         byte[] bytes = MAPPER.writeValueAsBytes(new WrapperArrayBean());
+        assertEquals("[\"ArrayType\",{\"a\":1}]", com.fasterxml.jackson.VPackUtils.toJson(bytes));
         WrapperArrayBean result = MAPPER.readValue(bytes, WrapperArrayBean.class);
         assertEquals("ArrayType", result.type);
         assertEquals(1, result.a);
@@ -185,6 +186,7 @@ public class TestVisibleTypeId extends BaseMapTest
 
     public void testVisibleWithWrapperObject() throws Exception {
         byte[] bytes = MAPPER.writeValueAsBytes(new WrapperObjectBean());
+        assertEquals("{\"ObjectType\":{\"a\":2}}", com.fasterxml.jackson.VPackUtils.toJson(bytes));
         WrapperObjectBean result = MAPPER.readValue(bytes, WrapperObjectBean.class);
         assertEquals("ObjectType", result.type);
         assertEquals(2, result.a);
