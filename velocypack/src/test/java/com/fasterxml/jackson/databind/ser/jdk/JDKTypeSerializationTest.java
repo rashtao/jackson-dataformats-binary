@@ -49,10 +49,10 @@ public class JDKTypeSerializationTest
 
         mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
         Map<String, Object> map = new HashMap<String, Object>();
-        String PI_STR = "3.00000000";
+        String PI_STR = "3.00000001";
         map.put("pi", new BigDecimal(PI_STR));
         String str = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
-        assertEquals("{\"pi\":3.00000000}", str);
+        assertEquals("{\"pi\":3.00000001}", str);
     }
 
     public void testFile() throws IOException

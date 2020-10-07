@@ -173,7 +173,11 @@ public class VelocypackGenerator extends GeneratorBase {
     @Override
     public void writeNumber(BigInteger bigInteger) throws IOException {
         try {
-            builder.add(attribute, bigInteger);
+            try {
+                builder.add(attribute, bigInteger.longValueExact());
+            } catch (ArithmeticException e) {
+                builder.add(attribute, bigInteger);
+            }
             attribute = null;
         } catch (final VPackBuilderException e) {
             throw new IOException(e);
@@ -203,7 +207,12 @@ public class VelocypackGenerator extends GeneratorBase {
     @Override
     public void writeNumber(BigDecimal bigDecimal) throws IOException {
         try {
-            builder.add(attribute, bigDecimal);
+            double doubleValue = bigDecimal.doubleValue();
+            if (BigDecimal.valueOf(doubleValue).compareTo(bigDecimal) == 0) {
+                builder.add(attribute, doubleValue);
+            } else {
+                builder.add(attribute, bigDecimal);
+            }
             attribute = null;
         } catch (final VPackBuilderException e) {
             throw new IOException(e);
@@ -212,7 +221,12 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public void writeNumber(String s) throws IOException {
-
+        BigInteger bi = new BigInteger(s);
+        if (bi.toString().equals(s)) {
+            writeNumber(bi);
+        } else {
+            writeNumber(new BigDecimal(s));
+        }
     }
 
     @Override

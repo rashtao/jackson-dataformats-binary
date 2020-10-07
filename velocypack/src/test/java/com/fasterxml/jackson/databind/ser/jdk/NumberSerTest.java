@@ -1,15 +1,14 @@
 package com.fasterxml.jackson.databind.ser.jdk;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Unit tests for verifying serialization of simple basic non-structured
@@ -103,7 +102,12 @@ public class NumberSerTest extends BaseMapTest
 
         for (BigInteger value : values) {
             String expected = value.toString();
-            assertEquals(expected, com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(value)));
+            try {
+                long ignored = value.longValueExact();
+            } catch (ArithmeticException e) {
+                expected = quote(expected);
+            }
+            assertEquals(expected, com.fasterxml.jackson.VPackUtils.toJson(MAPPER.writeValueAsBytes(value)));
         }
     }
 
