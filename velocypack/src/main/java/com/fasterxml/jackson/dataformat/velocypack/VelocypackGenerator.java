@@ -113,27 +113,22 @@ public class VelocypackGenerator extends GeneratorBase {
 
     @Override
     public void writeRaw(String s) throws IOException {
-
+        throw new UnsupportedOperationException("writeRaw is not supported");
     }
 
     @Override
     public void writeRaw(String s, int i, int i1) throws IOException {
-
+        throw new UnsupportedOperationException("writeRaw is not supported");
     }
 
     @Override
     public void writeRaw(char[] chars, int i, int i1) throws IOException {
-
+        throw new UnsupportedOperationException("writeRaw is not supported");
     }
 
     @Override
     public void writeRaw(char c) throws IOException {
-        try {
-            builder.add(attribute, c);
-            attribute = null;
-        } catch (final VPackBuilderException e) {
-            throw new IOException(e);
-        }
+        throw new UnsupportedOperationException("writeRaw is not supported");
     }
 
     @Override
