@@ -238,9 +238,7 @@ public class TestCustomDeserializers
         @Override
         public Object deserialize(JsonParser p, DeserializationContext ctxt)
                 throws IOException {
-            Object parent = p.getCurrentValue();
-            String desc = (parent == null) ? "NULL" : parent.getClass().getSimpleName();
-            return "prop/"+ desc;
+            return "prop/"+ p.getClass().getSimpleName();
         }
     }
 
@@ -440,7 +438,7 @@ public class TestCustomDeserializers
         Issue631Bean bean = MAPPER.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'prop':'stuff'}")),
                 Issue631Bean.class);
         assertNotNull(bean);
-        assertEquals("prop/Issue631Bean", bean.prop);
+        assertEquals("prop/VelocypackParser", bean.prop);
     }
 
     public void testCustomStringDeser() throws Exception
