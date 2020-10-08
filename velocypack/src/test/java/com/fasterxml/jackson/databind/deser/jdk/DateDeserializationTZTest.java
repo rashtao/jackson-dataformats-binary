@@ -1,5 +1,12 @@
 package com.fasterxml.jackson.databind.deser.jdk;
 
+import com.arangodb.velocypack.VPackBuilder;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -7,12 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.BaseMapTest;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 /**
  * Additional `java.util.Date` deserialization tests for cases where `ObjectMapper`
@@ -552,12 +553,20 @@ public class DateDeserializationTZTest
     }
 
     private static <T> T read(ObjectMapper mapper, Object input, Class<T> type) throws Exception {
-        // Construct the json representation from the input
-        String json = input.toString();
-        if( !(input instanceof Number) ) {
-            json = "\""+json+"\"";
+        VPackBuilder vb = new VPackBuilder();
+        if (input instanceof BigInteger) {
+            vb.add((BigInteger) input);
+        } else if (input instanceof Long) {
+            vb.add((Long) input);
+        } else if (input instanceof Double) {
+            vb.add((Double) input);
+        } else if (input instanceof String) {
+            vb.add((String) input);
+        } else {
+            throw new UnsupportedOperationException(input.getClass().getCanonicalName());
         }
+
         // Deserialize using the supplied ObjectMapper
-        return (T) mapper.readValue(json, type);
+        return (T) mapper.readValue(vb.slice().getBuffer(), type);
     }
 }
