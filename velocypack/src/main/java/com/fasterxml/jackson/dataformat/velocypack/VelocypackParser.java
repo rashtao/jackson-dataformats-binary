@@ -385,8 +385,6 @@ public class VelocypackParser extends ParserMinimalBase {
                 return currentValue.getAsBigInteger();
             case DOUBLE:
                 return currentValue.getAsDouble();
-            case STRING:
-                throw new UnsupportedOperationException("NOT IMPLEMENTED: String should decode either to BigInteger or BigDecimal");
             default:
                 throw new UnsupportedOperationException("Cannot get number from " + currentValue.getType());
         }
@@ -413,8 +411,6 @@ public class VelocypackParser extends ParserMinimalBase {
             case DOUBLE:
                 type = NumberType.DOUBLE;
                 break;
-            case STRING:
-                throw new UnsupportedOperationException("NOT IMPLEMENTED: String should decode either to BigInteger or BigDecimal");
             default:
                 type = null;
                 break;

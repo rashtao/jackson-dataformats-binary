@@ -1,18 +1,19 @@
 package com.fasterxml.jackson.databind.node;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.*;
-
-import static org.junit.Assert.*;
-
-import com.fasterxml.jackson.annotation.*;
-
-import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonParser.NumberType;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.exc.InputCoercionException;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.BaseMapTest;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
+import java.io.IOException;
+import java.util.List;
+
+import static org.junit.Assert.assertArrayEquals;
 
 public class TestTreeTraversingParser
     extends BaseMapTest
@@ -313,49 +314,10 @@ public class TestTreeTraversingParser
 
     public void testNumberOverflowLong() throws IOException
     {
-        final BigInteger tooBig = BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE);
-        try (final JsonParser p = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes("[ "+tooBig+" ]")).traverse()) {
-            assertToken(JsonToken.START_ARRAY, p.nextToken());
-            assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
-            assertEquals(NumberType.BIG_INTEGER, p.getNumberType());
-            try {
-                p.getLongValue();
-                fail("Expected failure for `long` overflow");
-            } catch (InputCoercionException e) {
-                verifyException(e, "Numeric value ("+tooBig+") out of range of long");
-            }
-        }
-        try (final JsonParser p = MAPPER.readTree("{ \"value\" : "+tooBig+" }").traverse()) {
-            assertToken(JsonToken.START_OBJECT, p.nextToken());
-            assertToken(JsonToken.FIELD_NAME, p.nextToken());
-            assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
-            assertEquals(NumberType.BIG_INTEGER, p.getNumberType());
-            try {
-                p.getLongValue();
-                fail("Expected failure for `long` overflow");
-            } catch (InputCoercionException e) {
-                verifyException(e, "Numeric value ("+tooBig+") out of range of long");
-            }
-        }
-        // But also from floating-point
-        final String tooBig2 = "1.0e30";
-        try (final JsonParser p = MAPPER.readTree("[ "+tooBig2+" ]").traverse()) {
-            assertToken(JsonToken.START_ARRAY, p.nextToken());
-            assertToken(JsonToken.VALUE_NUMBER_FLOAT, p.nextToken());
-            assertEquals(NumberType.DOUBLE, p.getNumberType());
-            try {
-                p.getLongValue();
-                fail("Expected failure for `long` overflow");
-            } catch (InputCoercionException e) {
-                verifyException(e, "Numeric value ("+tooBig2+") out of range of long");
-            }
-        }
-
-        // Plus, wrt [databind#2393], NON-failing cases
         final long[] okValues = new long[] { 1L+Integer.MAX_VALUE, -1L + Integer.MIN_VALUE,
                 Long.MAX_VALUE, Long.MIN_VALUE };
         for (long okValue : okValues) {
-            try (final JsonParser p = MAPPER.readTree("{ \"value\" : "+okValue+" }").traverse()) {
+            try (final JsonParser p = MAPPER.readTree(com.fasterxml.jackson.VPackUtils.toBytes("{ \"value\" : "+okValue+" }")).traverse()) {
                 assertToken(JsonToken.START_OBJECT, p.nextToken());
                 assertToken(JsonToken.FIELD_NAME, p.nextToken());
                 assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());

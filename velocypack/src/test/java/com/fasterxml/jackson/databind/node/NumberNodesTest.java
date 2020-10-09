@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.node;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.arangodb.velocypack.VPackBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -347,8 +348,8 @@ public class NumberNodesTest extends NodeTestBase
 
         // then over long limit:
         BigInteger beyondLong = maxLong.shiftLeft(2); // 4x max long
-        n2 = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(beyondLong.toString()));
-        assertEquals(beyondLong, n2.bigIntegerValue());
+        BigInteger bi = mapper.readValue(new VPackBuilder().add(beyondLong.toString()).slice().toByteArray(), BigInteger.class);
+        assertEquals(beyondLong, bi);
 
         assertTrue(BigIntegerNode.valueOf(BigInteger.ZERO).canConvertToInt());
         assertTrue(BigIntegerNode.valueOf(BigInteger.valueOf(Integer.MAX_VALUE)).canConvertToInt());
@@ -359,25 +360,6 @@ public class NumberNodesTest extends NodeTestBase
         assertTrue(BigIntegerNode.valueOf(BigInteger.ZERO).canConvertToLong());
         assertTrue(BigIntegerNode.valueOf(BigInteger.valueOf(Long.MAX_VALUE)).canConvertToLong());
         assertTrue(BigIntegerNode.valueOf(BigInteger.valueOf(Long.MIN_VALUE)).canConvertToLong());
-    }
-
-    public void testBigDecimalAsPlain() throws Exception
-    {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
-                .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
-                .enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
-        final String INPUT = "{\"x\":1e2}";
-        final JsonNode node = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(INPUT));
-        String result = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(node));
-        assertEquals("{\"x\":100}", result);
-
-        // also via ObjectWriter:
-        assertEquals("{\"x\":100}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writer().writeValueAsBytes(node)));
-
-        // and once more for [core#175]:
-        BigDecimal bigDecimal = new BigDecimal(100);
-        JsonNode tree = mapper.valueToTree(bigDecimal);
-        assertEquals("100", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(tree)));
     }
 
     // Related to [databind#333]

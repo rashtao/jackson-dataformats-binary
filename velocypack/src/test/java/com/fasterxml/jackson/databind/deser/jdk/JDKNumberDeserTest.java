@@ -181,9 +181,9 @@ public class JDKNumberDeserTest extends BaseMapTest
 
     public void testBigIntAsNumber() throws Exception
     {
-        // and after long, BigInteger
+        ObjectReader r = MAPPER.reader(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
         BigInteger biggie = new BigInteger("1234567890123456789012345678901234567890");
-        Number result = MAPPER.readValue(new VPackBuilder().add(biggie).slice().toByteArray(), Number.class);
+        Number result = r.forType(Number.class).readValue(new VPackBuilder().add(biggie).slice().toByteArray());
         assertEquals(BigInteger.class, biggie.getClass());
         assertEquals(biggie, result);
     }
