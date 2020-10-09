@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.type;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for more complicated type definitions where type name
@@ -33,7 +34,7 @@ public class TypeAliasesTest
     public void testAliasResolutionIssue743() throws Exception
     {
         String s3 = "{\"dataObj\" : [ \"one\", \"two\", \"three\" ] }";
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
    
         Child.ChildData d = m.readValue(s3, Child.ChildData.class);
         assertNotNull(d.dataObj);

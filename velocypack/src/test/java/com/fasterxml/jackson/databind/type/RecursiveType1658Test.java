@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class RecursiveType1658Test extends BaseMapTest
 {
@@ -30,7 +31,7 @@ public class RecursiveType1658Test extends BaseMapTest
     public void testRecursive1658() throws Exception
     {
         Tree<String> t = new Tree<String>(Arrays.asList("hello", "world"));
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
 
         final TypeResolverBuilder<?> typer = new StdTypeResolverBuilder()
                 .init(JsonTypeInfo.Id.CLASS, null)

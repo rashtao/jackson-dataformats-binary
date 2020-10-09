@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestAutoDetect
     extends BaseMapTest
@@ -41,17 +41,17 @@ public class TestAutoDetect
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testPrivateCtor() throws Exception
     {
         // first, default settings, with which construction works ok
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         PrivateBean bean = m.readValue("\"abc\"", PrivateBean.class);
         assertEquals("abc", bean.a);
 
         // then by increasing visibility requirement:
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        m = new TestVelocypackMapper();
         VisibilityChecker<?> vc = m.getVisibilityChecker();
         vc = vc.withCreatorVisibility(JsonAutoDetect.Visibility.PUBLIC_ONLY);
         m.setVisibility(vc);
@@ -71,7 +71,7 @@ public class TestAutoDetect
         assertEquals(aposToQuotes("{'field':2,'value':3}"), com.fasterxml.jackson.VPackUtils.toJson(
                 MAPPER.writeValueAsBytes(input)));
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Feature1347SerBean.class)
             .setVisibility(JsonAutoDetect.Value.construct(PropertyAccessor.GETTER,
                             Visibility.NONE));
@@ -94,7 +94,7 @@ public class TestAutoDetect
         }
 
         // but when instructed to ignore setter, should work
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Feature1347DeserBean.class)
             .setVisibility(JsonAutoDetect.Value.construct(PropertyAccessor.SETTER,
                         Visibility.NONE));

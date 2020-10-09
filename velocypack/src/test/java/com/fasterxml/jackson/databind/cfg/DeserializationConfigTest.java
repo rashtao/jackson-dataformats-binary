@@ -6,14 +6,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class DeserializationConfigTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testFeatureDefaults()
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         DeserializationConfig cfg = m.getDeserializationConfig();
 
         // Expected defaults:
@@ -97,7 +98,7 @@ public class DeserializationConfigTest extends BaseMapTest
 
     public void testOverrideIntrospectors()
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         DeserializationConfig cfg = m.getDeserializationConfig();
         // and finally, ensure we could override introspectors
         cfg = cfg.with((ClassIntrospector) null); // no way to verify tho

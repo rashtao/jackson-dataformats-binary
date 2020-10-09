@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ReferentialWithObjectIdTest extends BaseMapTest
 {
@@ -31,7 +32,7 @@ public class ReferentialWithObjectIdTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testAtomicWithObjectId() throws Exception
     {

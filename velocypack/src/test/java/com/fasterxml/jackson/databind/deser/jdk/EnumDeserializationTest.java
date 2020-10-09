@@ -15,8 +15,8 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class EnumDeserializationTest
@@ -221,7 +221,7 @@ public class EnumDeserializationTest
     /**********************************************************
      */
 
-    protected final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    protected final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimple() throws Exception
     {
@@ -267,7 +267,7 @@ public class EnumDeserializationTest
     public void testToStringEnums() throws Exception
     {
         // can't reuse global one due to reconfig
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
         LowerCaseEnum value = m.readValue("\"c\"", LowerCaseEnum.class);
         assertEquals(LowerCaseEnum.C, value);
@@ -387,7 +387,7 @@ public class EnumDeserializationTest
     // [databind#141]: allow mapping of empty String into null
     public void testEnumsWithEmpty() throws Exception
     {
-       final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+       final ObjectMapper mapper = new TestVelocypackMapper();
        mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
        TestEnum result = mapper.readValue("\"\"", TestEnum.class);
        assertNull(result);
@@ -395,7 +395,7 @@ public class EnumDeserializationTest
 
     public void testGenericEnumDeserialization() throws Exception
     {
-       final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+       final ObjectMapper mapper = new TestVelocypackMapper();
        SimpleModule module = new SimpleModule("foobar");
        module.addDeserializer(Enum.class, new LcEnumDeserializer());
        mapper.registerModule(module);
@@ -437,7 +437,7 @@ public class EnumDeserializationTest
 
         // [databind#1690]: unless prevented
         try {
-            en = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+            en = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                     .configure(MapperFeature.ALLOW_COERCION_OF_SCALARS, false)
                     .build()
                     .readerFor(TestEnum.class)
@@ -485,7 +485,7 @@ public class EnumDeserializationTest
     }
     
     public void testEnumWithDefaultAnnotation() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
         EnumWithDefaultAnno myEnum = mapper.readValue("\"foo\"", EnumWithDefaultAnno.class);
@@ -493,7 +493,7 @@ public class EnumDeserializationTest
     }
 
     public void testEnumWithDefaultAnnotationUsingIndexInBound1() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
         EnumWithDefaultAnno myEnum = mapper.readValue("1", EnumWithDefaultAnno.class);
@@ -501,7 +501,7 @@ public class EnumDeserializationTest
     }
 
     public void testEnumWithDefaultAnnotationUsingIndexInBound2() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
         EnumWithDefaultAnno myEnum = mapper.readValue("2", EnumWithDefaultAnno.class);
@@ -509,7 +509,7 @@ public class EnumDeserializationTest
     }
 
     public void testEnumWithDefaultAnnotationUsingIndexSameAsLength() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
         EnumWithDefaultAnno myEnum = mapper.readValue("3", EnumWithDefaultAnno.class);
@@ -517,7 +517,7 @@ public class EnumDeserializationTest
     }
 
     public void testEnumWithDefaultAnnotationUsingIndexOutOfBound() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
         EnumWithDefaultAnno myEnum = mapper.readValue("4", EnumWithDefaultAnno.class);
@@ -525,7 +525,7 @@ public class EnumDeserializationTest
     }
 
     public void testEnumWithDefaultAnnotationWithConstructor() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
 
         EnumWithDefaultAnnoAndConstructor myEnum = mapper.readValue("\"foo\"", EnumWithDefaultAnnoAndConstructor.class);

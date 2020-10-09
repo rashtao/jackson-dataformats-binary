@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Separate tests for verifying that "type name" type id mechanism
@@ -43,7 +44,7 @@ public class TestTypeNames extends BaseMapTest
 
     public void testBaseTypeId1616() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Collection<NamedType> subtypes = new StdSubtypeResolver().collectAndResolveSubtypesByTypeId(
                 mapper.getDeserializationConfig(),
                 // note: `null` is fine here as `AnnotatedMember`:

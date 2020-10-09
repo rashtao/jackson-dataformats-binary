@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tests use of basic Annotations for
@@ -123,7 +124,7 @@ public class TestBasicAnnotations
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSimpleSetter() throws Exception
     {
@@ -205,7 +206,7 @@ public class TestBasicAnnotations
 
     public void testEnumsWhenDisabled() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         assertEquals(Alpha.B, m.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("B")), Alpha.class));
 
         m = jsonMapperBuilder()

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#1392] (regression in 2.7 due to separation of array-delegating creator)
 public class ArrayDelegatorCreatorForCollectionTest extends BaseMapTest
@@ -20,7 +21,7 @@ public class ArrayDelegatorCreatorForCollectionTest extends BaseMapTest
 
     public void testUnmodifiable() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Class<?> unmodSetType = Collections.unmodifiableSet(Collections.<String>emptySet()).getClass();
         mapper.addMixIn(unmodSetType, UnmodifiableSetMixin.class);
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,

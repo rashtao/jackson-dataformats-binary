@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestCreatorWithNamingStrategy556
     extends BaseMapTest
@@ -57,7 +58,7 @@ public class TestCreatorWithNamingStrategy556
         }
     }
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+    private final ObjectMapper MAPPER = new TestVelocypackMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
             ;
     {

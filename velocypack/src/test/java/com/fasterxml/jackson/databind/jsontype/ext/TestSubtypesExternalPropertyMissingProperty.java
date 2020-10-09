@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import com.fasterxml.jackson.databind.*;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -95,7 +96,7 @@ public class TestSubtypesExternalPropertyMissingProperty
         }
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /*
     /**********************************************************

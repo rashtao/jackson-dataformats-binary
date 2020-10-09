@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // For [databind#936], losing parametric type information it seems
 public class PolymorphicList036Test extends BaseMapTest
@@ -88,7 +89,7 @@ public class PolymorphicList036Test extends BaseMapTest
         }
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testPolymorphicWithOverride() throws Exception
     {

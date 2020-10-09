@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class AbstractTypeMapping1186Test extends BaseMapTest
 {
@@ -34,7 +35,7 @@ public class AbstractTypeMapping1186Test extends BaseMapTest
 
     public void testDeserializeMyContainer() throws Exception {
         SimpleModule module = new SimpleModule().addAbstractTypeMapping(IContainer.class, MyContainer.class);
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().registerModule(module);
+        final ObjectMapper mapper = new TestVelocypackMapper().registerModule(module);
         String json = "{\"ts\": [ { \"msg\": \"hello\"} ] }";
         final Object o = mapper.readValue(json,
                 mapper.getTypeFactory().constructParametricType(IContainer.class, MyObject.class));

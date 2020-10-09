@@ -1,10 +1,11 @@
 package com.fasterxml.jackson.databind;
 
 import com.fasterxml.jackson.databind.testutil.MediaItem;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class RoundtripTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testMedaItemRoundtrip() throws Exception
     {

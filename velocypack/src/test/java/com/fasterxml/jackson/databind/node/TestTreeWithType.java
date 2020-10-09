@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestTreeWithType extends BaseMapTest
 {
@@ -57,7 +58,7 @@ public class TestTreeWithType extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testValueAsStringWithoutDefaultTyping() throws Exception {
 

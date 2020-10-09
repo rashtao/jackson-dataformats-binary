@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.deser.creators;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestPolymorphicDelegating extends BaseMapTest
 {
@@ -42,7 +43,7 @@ public class TestPolymorphicDelegating extends BaseMapTest
     public void testAbstractDelegateWithCreator() throws Exception
     {
         Issue580Bean input = new Issue580Bean(new Issue580Impl(13));
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
 
         Issue580Bean result = mapper.readValue(json, Issue580Bean.class);

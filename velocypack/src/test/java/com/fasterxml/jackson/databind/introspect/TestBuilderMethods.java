@@ -3,9 +3,7 @@ package com.fasterxml.jackson.databind.introspect;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.introspect.BasicClassIntrospector;
-import com.fasterxml.jackson.databind.introspect.POJOPropertiesCollector;
-import com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestBuilderMethods extends BaseMapTest
 {
@@ -25,7 +23,7 @@ public class TestBuilderMethods extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper mapper = new TestVelocypackMapper();
     
     public void testSimple()
     {

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.core.io.SerializedString;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackFactory;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
@@ -79,7 +80,7 @@ public class MapperViaParserTest  extends BaseMapTest
     public void testPojoReading() throws IOException
     {
         VelocypackFactory jf = new VelocypackFactory();
-        VelocypackMapper mapper = new VelocypackMapper(jf);
+        VelocypackMapper mapper = new TestVelocypackMapper(jf);
         jf.setCodec(mapper);
         final String JSON = "{ \"x\" : 9 }";
         JsonParser jp = jf.createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
@@ -102,7 +103,7 @@ public class MapperViaParserTest  extends BaseMapTest
      */
     public void testIncrementalPojoReading() throws IOException {
         VelocypackFactory jf = new VelocypackFactory();
-        VelocypackMapper mapper = new VelocypackMapper(jf);
+        VelocypackMapper mapper = new TestVelocypackMapper(jf);
         jf.setCodec(mapper);
         final String JSON = "[ 1, true, null, \"abc\" ]";
         JsonParser p = jf.createParser(com.fasterxml.jackson.VPackUtils.toBytes(JSON));

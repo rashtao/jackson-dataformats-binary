@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tests use of @JsonClass Annotation
@@ -241,7 +242,7 @@ public class TestJsonSerialize
 
     public void testWithIsGetter() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setVisibility(PropertyAccessor.GETTER, Visibility.NONE)
         .setVisibility(PropertyAccessor.FIELD, Visibility.ANY)
         .setVisibility(PropertyAccessor.CREATOR, Visibility.NONE)

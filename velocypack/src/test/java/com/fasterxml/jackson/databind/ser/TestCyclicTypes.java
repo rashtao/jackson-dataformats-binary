@@ -4,6 +4,7 @@ import java.util.*;
 
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Simple unit tests to verify that it is possible to handle
@@ -46,7 +47,7 @@ public class TestCyclicTypes
     {
         Bean last = new Bean(null, "last");
         Bean first = new Bean(last, "first");
-        Map<String,Object> map = writeAndMap(new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper(), first);
+        Map<String,Object> map = writeAndMap(new TestVelocypackMapper(), first);
 
         assertEquals(2, map.size());
         assertEquals("first", map.get("name"));
@@ -67,7 +68,7 @@ public class TestCyclicTypes
         Bean selfRef = new Bean(null, "self-refs");
         Bean first = new Bean(selfRef, "first");
         selfRef.assignNext(selfRef);
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Bean[] wrapper = new Bean[] { first };
         try {
             writeAndMap(m, wrapper);

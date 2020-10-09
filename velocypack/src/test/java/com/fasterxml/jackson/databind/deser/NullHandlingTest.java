@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class NullHandlingTest extends BaseMapTest
 {
@@ -94,7 +95,7 @@ public class NullHandlingTest extends BaseMapTest
     }  
     
     public void testAnySetterNulls() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);
@@ -120,7 +121,7 @@ public class NullHandlingTest extends BaseMapTest
 
     public void testCustomRootNulls() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);
@@ -140,7 +141,7 @@ public class NullHandlingTest extends BaseMapTest
     // [databind#407]
     public void testListOfNulls() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);
@@ -165,7 +166,7 @@ public class NullHandlingTest extends BaseMapTest
     // Test for [#407]
     public void testMapOfNulls() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(String.class, new FunnyNullDeserializer());
         mapper.registerModule(module);

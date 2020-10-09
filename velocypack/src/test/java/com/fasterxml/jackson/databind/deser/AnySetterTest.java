@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that {@link JsonAnySetter} annotation
@@ -221,7 +222,7 @@ public class AnySetterTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSimpleMapImitation() throws Exception
     {
@@ -273,14 +274,14 @@ public class AnySetterTest
 
     public void testIgnored() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         _testIgnorals(mapper);
     }
 
     public void testIgnoredPart2() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         _testIgnorals(mapper);
     }
@@ -335,7 +336,7 @@ public class AnySetterTest
     // [databind#1035]
     public void testGenericAnySetter() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
 
         Map<String, Integer> stringGenericMap = new HashMap<String, Integer>();
         stringGenericMap.put("testStringKey", 5);

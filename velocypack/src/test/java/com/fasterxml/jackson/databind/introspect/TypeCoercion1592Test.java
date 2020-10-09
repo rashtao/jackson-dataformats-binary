@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.*;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // [databind#1592]: allow "coercion" between primitive/wrapper (mostly just ignoring)
 public class TypeCoercion1592Test extends BaseMapTest
@@ -23,7 +24,7 @@ public class TypeCoercion1592Test extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testTypeCoercion1592() throws Exception
     {

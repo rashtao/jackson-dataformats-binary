@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class EnumValuesTest extends BaseMapTest
 {
@@ -22,7 +23,7 @@ public class EnumValuesTest extends BaseMapTest
         public String toString() { return desc; }
     }
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     @SuppressWarnings("unchecked")
     public void testConstructFromName() {

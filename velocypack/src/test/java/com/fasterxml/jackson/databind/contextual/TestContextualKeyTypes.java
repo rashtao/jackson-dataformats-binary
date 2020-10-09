@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.deser.ContextualKeyDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests to ensure that we can do contextual key serializers and
@@ -90,7 +91,7 @@ public class TestContextualKeyTypes extends BaseMapTest
 
     public void testSimpleKeySer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addKeySerializer(String.class, new ContextualKeySerializer("prefix"));
         mapper.registerModule(module);
@@ -109,7 +110,7 @@ public class TestContextualKeyTypes extends BaseMapTest
 
     public void testSimpleKeyDeser() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addKeyDeserializer(String.class, new ContextualDeser("???"));
         mapper.registerModule(module);

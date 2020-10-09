@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tests use of Annotations for
@@ -162,7 +163,7 @@ public class TestAnnotations
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSimpleGetter() throws Exception
     {
@@ -234,7 +235,7 @@ public class TestAnnotations
 
     public void testGettersWithoutSetters() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         GettersWithoutSetters bean = new GettersWithoutSetters(123);
         assertFalse(m.isEnabled(MapperFeature.REQUIRE_SETTERS_FOR_GETTERS));
     

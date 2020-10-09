@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestObjectIdWithEquals extends BaseMapTest
 {
@@ -80,7 +81,7 @@ public class TestObjectIdWithEquals extends BaseMapTest
 
     public void testSimpleEquals() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         // Verify default state too
         assertFalse(mapper.isEnabled(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID));
         mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID);
@@ -123,7 +124,7 @@ public class TestObjectIdWithEquals extends BaseMapTest
 //        Element[] input = new Element[] { element, element2 };
         List<Element> input = Arrays.asList(element, element2);
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID);
 
 //        String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));

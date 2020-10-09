@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Tests for [#81]
 public class TestUnwrappedWithTypeInfo extends BaseMapTest
@@ -57,7 +58,7 @@ public class TestUnwrappedWithTypeInfo extends BaseMapTest
 	    inner.setP2("202");
 	    outer.setInner(inner);
 
-	    ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+	    ObjectMapper mapper = new TestVelocypackMapper();
 
 	    try {
 	        mapper.writeValueAsBytes(outer);
@@ -76,7 +77,7 @@ public class TestUnwrappedWithTypeInfo extends BaseMapTest
 		inner.setP2("202");
 		outer.setInner(inner);
 
-		ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+		ObjectMapper mapper = new TestVelocypackMapper();
 		mapper = mapper.disable(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS);
 
 		String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(outer));

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit test to verify handling of Object Id deserialization
@@ -221,7 +222,7 @@ public class TestObjectIdSerialization extends BaseMapTest
     // [databind#370]
     public void testEmptyObjectWithId() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyObject()));
         assertEquals(aposToQuotes("{'@id':1}"), json);
     }    

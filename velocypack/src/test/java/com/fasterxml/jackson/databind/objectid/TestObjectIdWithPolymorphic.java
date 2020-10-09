@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestObjectIdWithPolymorphic extends BaseMapTest
 {
@@ -106,7 +107,7 @@ public class TestObjectIdWithPolymorphic extends BaseMapTest
     /*****************************************************
      */
 
-    private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper mapper = new TestVelocypackMapper();
 
     public void testPolymorphicRoundtrip() throws Exception
     {
@@ -132,7 +133,7 @@ public class TestObjectIdWithPolymorphic extends BaseMapTest
 
     public void testIssue811() throws Exception
     {
-        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper om = new TestVelocypackMapper();
         om.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
         om.enable(SerializationFeature.INDENT_OUTPUT);
         om.activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,

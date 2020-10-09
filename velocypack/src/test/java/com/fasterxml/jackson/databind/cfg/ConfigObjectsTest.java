@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.*;
 
 import com.fasterxml.jackson.databind.jsontype.SubtypeResolver;
 import com.fasterxml.jackson.databind.jsontype.impl.StdSubtypeResolver;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ConfigObjectsTest extends BaseMapTest
 {
@@ -12,7 +13,7 @@ public class ConfigObjectsTest extends BaseMapTest
 
     public void testSubtypeResolver() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SubtypeResolver res = mapper.getSubtypeResolver();
         assertTrue(res instanceof StdSubtypeResolver);
 

@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that simple exceptions can be serialized.
@@ -42,7 +43,7 @@ public class ExceptionSerializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimple() throws Exception
     {
@@ -96,7 +97,7 @@ public class ExceptionSerializationTest
         assertNotNull(result.get("bogus2"));
 
         // and then also remova second property with config overrides
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(ExceptionWithIgnoral.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("bogus2"));
         String json2 = com.fasterxml.jackson.VPackUtils.toJson( mapper

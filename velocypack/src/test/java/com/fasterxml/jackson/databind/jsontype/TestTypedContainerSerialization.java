@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.jsontype;
 
 import java.util.*;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Assert;
 
 
@@ -98,7 +99,7 @@ public class TestTypedContainerSerialization
     static class Issue508A { }
     static class Issue508B extends Issue508A { }
 
-    private final static ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper mapper = new TestVelocypackMapper();
 
     /*
     /**********************************************************

@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Simple tests to verify that the {@link TypeFactory} constructs
@@ -480,7 +481,7 @@ public class TestTypeFactory
      */
     public void testSneakyBeanProperties() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         StringLongMapBean bean = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"value\":{\"a\":123}}"), StringLongMapBean.class);
         assertNotNull(bean);
         Map<String,Long> map = bean.value;
@@ -497,7 +498,7 @@ public class TestTypeFactory
 
     public void testSneakySelfRefs() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SneakyBean2()));
         assertEquals("{\"foobar\":null}", json);
     }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -140,7 +141,7 @@ public class TestArrayDeserialization
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testUntypedArray() throws Exception
     {
@@ -187,7 +188,7 @@ public class TestArrayDeserialization
 
     // [JACKSON-620]: allow "" to mean 'null' for Arrays, List and Maps
     public void testFromEmptyString() throws Exception {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         assertNull(m.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("")), Object[].class));
         assertNull(m.readValue(com.fasterxml.jackson.VPackUtils.toBytes(quote("")), String[].class));
@@ -197,7 +198,7 @@ public class TestArrayDeserialization
     // [JACKSON-620]: allow "" to mean 'null' for Arrays, List and Maps
     public void testFromEmptyString2() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         m.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         Product p = m.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"thelist\":\"\"}"), Product.class);
@@ -571,7 +572,7 @@ public class TestArrayDeserialization
      */
 
     public void testCustomDeserializers() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule testModule = new SimpleModule("test", Version.unknownVersion());
         testModule.addDeserializer(NonDeserializable[].class, new CustomNonDeserArrayDeserializer());
         mapper.registerModule(testModule);

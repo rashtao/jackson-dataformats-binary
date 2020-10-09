@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for checking that alternative settings for
@@ -200,7 +201,7 @@ public class JsonIncludeTest
     /**********************************************************
      */
 
-    final private ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final private ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testGlobal() throws IOException
     {
@@ -281,7 +282,7 @@ public class JsonIncludeTest
     public void testEmptyInclusionScalars() throws IOException
     {
         ObjectMapper defMapper = MAPPER;
-        ObjectMapper inclMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        ObjectMapper inclMapper = new TestVelocypackMapper().setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         // First, Strings
         StringWrapper str = new StringWrapper("");
@@ -309,7 +310,7 @@ public class JsonIncludeTest
     // [databind#1351], [databind#1417]
     public void testIssue1351() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         assertEquals(aposToQuotes("{}"), com.fasterxml.jackson.VPackUtils.toJson(
                 mapper.writeValueAsBytes(new Issue1351Bean(null, (double) 0))));

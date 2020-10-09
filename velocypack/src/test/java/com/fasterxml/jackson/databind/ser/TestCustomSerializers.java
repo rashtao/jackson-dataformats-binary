@@ -1,11 +1,11 @@
 package com.fasterxml.jackson.databind.ser;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.w3c.dom.Element;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -191,11 +191,11 @@ public class TestCustomSerializers extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testCustomization() throws Exception
     {
-        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper objectMapper = new TestVelocypackMapper();
         objectMapper.addMixIn(Element.class, ElementMixin.class);
         Element element = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument().createElement("el");
         byte[] bytes = objectMapper.writeValueAsBytes(element);
@@ -205,7 +205,7 @@ public class TestCustomSerializers extends BaseMapTest
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public void testCustomLists() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         JsonSerializer<?> ser = new CollectionSerializer(null, false, null, null);
         final JsonSerializer<Object> collectionSerializer = (JsonSerializer<Object>) ser;
@@ -229,7 +229,7 @@ public class TestCustomSerializers extends BaseMapTest
     // [databind#87]: delegating serializer
     public void testDelegating() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(new StdDelegatingSerializer(Immutable.class,
                 new StdConverter<Immutable, Map<String,Integer>>() {
@@ -269,7 +269,7 @@ public class TestCustomSerializers extends BaseMapTest
         
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addSerializer(String.class, new UCStringSerializer());
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper mapper = new TestVelocypackMapper()
                 .registerModule(module);
 
         assertEquals(quote("FOOBAR"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes("foobar")));

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test to check that customizations work as expected.
@@ -99,7 +100,7 @@ public class TestCustomFactory
     public void testCustomBeanDeserializer() throws Exception
     {
 
-        final ObjectMapper map = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper map = new TestVelocypackMapper();
         String json = "{\"beans\":[{\"c\":{\"a\":10,\"b\":20},\"d\":\"hello, tatu\"}]}";
         TestBeans beans = map.readValue(json, TestBeans.class);
 

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for "POJO as array" feature using Builder-style
@@ -102,7 +103,7 @@ public class TestPOJOAsArrayWithBuilder extends BaseMapTest
     /*****************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimpleBuilder() throws Exception
     {

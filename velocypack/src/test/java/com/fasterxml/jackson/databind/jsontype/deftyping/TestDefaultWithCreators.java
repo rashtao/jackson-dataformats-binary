@@ -67,7 +67,7 @@ public class TestDefaultWithCreators
 
     public void testWithCreators() throws Exception
     {
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL)
                 .build();
@@ -87,7 +87,7 @@ public class TestDefaultWithCreators
     public void testWithCreatorAndJsonValue() throws Exception
     {
         final byte[] BYTES = new byte[] { 1, 2, 3, 4, 5 };
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
                 .build();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean1385Wrapper(

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestDefaultForArrays extends BaseMapTest
 {
@@ -73,7 +74,7 @@ public class TestDefaultForArrays extends BaseMapTest
 
     public void testNodeInArray() throws Exception
     {
-        JsonNode node = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":3}"));
+        JsonNode node = new TestVelocypackMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":3}"));
         ObjectMapper m = jsonMapperBuilder()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                         DefaultTyping.JAVA_LANG_OBJECT)
@@ -90,13 +91,13 @@ public class TestDefaultForArrays extends BaseMapTest
     public void testNodeInEmptyArray() throws Exception {
         Map<String, List<String>> outerMap = new HashMap<String, List<String>>();
         outerMap.put("inner", new ArrayList<String>());
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+        ObjectMapper m = new TestVelocypackMapper().disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
         JsonNode tree = m.convertValue(outerMap, JsonNode.class);
         
         String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(tree));
         assertEquals("{}", json);
         
-        JsonNode node = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":[]}"));
+        JsonNode node = new TestVelocypackMapper().readTree(com.fasterxml.jackson.VPackUtils.toBytes("{\"a\":[]}"));
 
         m = jsonMapperBuilder()
                 .disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
@@ -134,7 +135,7 @@ public class TestDefaultForArrays extends BaseMapTest
 
     public void testArrayTypingForPrimitiveArrays() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 DefaultTyping.NON_CONCRETE_AND_ARRAYS);
         _testArrayTypingForPrimitiveArrays(m, new int[] { 1, 2, 3 });

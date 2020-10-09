@@ -43,7 +43,7 @@ public class MapInclusion2573Test extends BaseMapTest
     public void test2572MapDefault() throws Exception
     {
                 
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .defaultPropertyInclusion(BOTH_NON_NULL)
                 .build();
         assertEquals(aposToQuotes("{'Speed':100}"), com.fasterxml.jackson.VPackUtils.toJson(
@@ -55,7 +55,7 @@ public class MapInclusion2573Test extends BaseMapTest
     // [databind#2572]
     public void test2572MapOverrideUseDefaults() throws Exception
     {
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .defaultPropertyInclusion(BOTH_NON_NULL)
                 .build();
         mapper.configOverride(Map.class)
@@ -70,7 +70,7 @@ public class MapInclusion2573Test extends BaseMapTest
     // [databind#2572]
     public void test2572MapOverrideInclAlways() throws Exception
     {
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .defaultPropertyInclusion(BOTH_NON_NULL)
                 .build();
         mapper.configOverride(Map.class)

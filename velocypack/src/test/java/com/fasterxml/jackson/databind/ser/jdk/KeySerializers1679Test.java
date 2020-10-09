@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.ser.jdk;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class KeySerializers1679Test extends BaseMapTest
 {
@@ -12,7 +13,7 @@ public class KeySerializers1679Test extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#1679]
     public void testRecursion1679() throws Exception

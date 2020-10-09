@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class BigDecimalAsString2519Test extends BaseMapTest
 {
@@ -20,7 +21,7 @@ public class BigDecimalAsString2519Test extends BaseMapTest
     {
         Bean2519Typed foo = new Bean2519Typed();
         foo.values.add(new BigDecimal("2.34"));
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(BigDecimal.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));
@@ -31,7 +32,7 @@ public class BigDecimalAsString2519Test extends BaseMapTest
     {
         Bean2519Untyped foo = new Bean2519Untyped();
         foo.values.add(new BigDecimal("2.34"));
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(BigDecimal.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(foo));

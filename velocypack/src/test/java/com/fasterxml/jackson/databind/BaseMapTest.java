@@ -9,11 +9,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import com.fasterxml.jackson.core.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
 public abstract class BaseMapTest
@@ -235,12 +234,12 @@ public abstract class BaseMapTest
 
     // @since 2.10
     protected static ObjectMapper newJsonMapper() {
-        return new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        return new TestVelocypackMapper();
     }
 
     // @since 2.10
-    protected static VelocypackMapper.Builder jsonMapperBuilder() {
-        return VelocypackMapper.builder();
+    protected static TestVelocypackMapper.Builder jsonMapperBuilder() {
+        return TestVelocypackMapper.testBuilder();
     }
 
     // @since 2.7

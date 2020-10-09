@@ -12,9 +12,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
 {
@@ -168,11 +168,11 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testPropertyWithSubtypes() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         // must register subtypes
         mapper.registerSubtypes(SubB.class, SubC.class, SubD.class);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new PropertyBean(new SubC())));
@@ -183,7 +183,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
     // also works via modules
     public void testSubtypesViaModule() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule();
         module.registerSubtypes(SubB.class, SubC.class, SubD.class);
         mapper.registerModule(module);
@@ -192,7 +192,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         assertSame(SubC.class, result.value.getClass());
 
         // and as per [databind#1653]:
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         module = new SimpleModule();
         List<Class<?>> l = new ArrayList<>();
         l.add(SubB.class);
@@ -212,7 +212,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         assertEquals("{\"@type\":\"TypeB\",\"b\":1}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(bean)));
 
         // but we can override type name here too
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerSubtypes(new NamedType(SubB.class, "typeB"));
         assertEquals("{\"@type\":\"typeB\",\"b\":1}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(bean)));
 
@@ -222,7 +222,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
 
     public void testDeserializationNonNamed() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerSubtypes(SubC.class);
 
         // default name should be unqualified class name
@@ -233,7 +233,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
 
     public void testDeserializatioNamed() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerSubtypes(SubB.class);
         mapper.registerSubtypes(new NamedType(SubD.class, "TypeD"));
 
@@ -251,18 +251,18 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
     public void testEmptyBean() throws Exception
     {
         // First, with annotations
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyBean()));
         assertEquals("{\"@type\":\"TestSubtypes$EmptyBean\"}", json);
 
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new EmptyBean()));
         assertEquals("{\"@type\":\"TestSubtypes$EmptyBean\"}", json);
 
         // and then with defaults
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -305,7 +305,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
         }
 
         // but then succeed when we register default impl
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addAbstractTypeMapping(SuperTypeWithoutDefault.class, DefaultImpl505.class);
         mapper.registerModule(module);
@@ -321,7 +321,7 @@ public class TestSubtypes extends com.fasterxml.jackson.databind.BaseMapTest
     }
 
     public void testErrorMessage() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         try {
             mapper.readValue("{ \"type\": \"z\"}", BaseX.class);
             fail("Should have failed");

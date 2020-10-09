@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class EnumAltIdTest extends BaseMapTest
 {
@@ -40,7 +41,7 @@ public class EnumAltIdTest extends BaseMapTest
     /**********************************************************
      */
 
-    protected final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    protected final ObjectMapper MAPPER = new TestVelocypackMapper();
     protected final ObjectMapper MAPPER_IGNORE_CASE = jsonMapperBuilder()
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
             .build();

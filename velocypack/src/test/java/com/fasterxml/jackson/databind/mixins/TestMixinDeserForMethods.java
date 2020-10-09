@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestMixinDeserForMethods
     extends BaseMapTest
@@ -44,7 +45,7 @@ public class TestMixinDeserForMethods
      */
     public void testWithAnySetter() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(BaseClass.class, MixIn.class);
         BaseClass result = m.readValue("{ \"a\" : 3, \"b\" : true }", BaseClass.class);
         assertNotNull(result);

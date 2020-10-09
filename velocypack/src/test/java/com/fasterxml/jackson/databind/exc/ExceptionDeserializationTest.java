@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that simple exceptions can be deserialized.
@@ -51,7 +52,7 @@ public class ExceptionDeserializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testIOException() throws IOException
     {
@@ -75,7 +76,7 @@ public class ExceptionDeserializationTest
 
     public void testWithNullMessage() throws IOException
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new IOException((String) null)));
         IOException result = mapper.readValue(json, IOException.class);
@@ -98,7 +99,7 @@ public class ExceptionDeserializationTest
     
     // [databind#381]
     public void testSingleValueArrayDeserialization() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         final IOException exp;
         try {
@@ -142,7 +143,7 @@ public class ExceptionDeserializationTest
     }
 
     public void testSingleValueArrayDeserializationException() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         
         final IOException exp;

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying serialization of simple basic non-structured
@@ -173,7 +174,7 @@ public class TestEnumSerialization
     public void testEnumsWithJsonValueUsingMixin() throws Exception
     {
         // can't share, as new mix-ins are added
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(TestEnum.class, ToStringMixin.class);
         assertEquals("\"b\"", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(TestEnum.B)));
     }
@@ -198,7 +199,7 @@ public class TestEnumSerialization
 
     public void testToStringEnum() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
         assertEquals("\"b\"", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(LowerCaseEnum.B)));
 
@@ -210,7 +211,7 @@ public class TestEnumSerialization
 
     public void testToStringEnumWithEnumMap() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         EnumMap<LowerCaseEnum,String> enums = new EnumMap<LowerCaseEnum,String>(LowerCaseEnum.class);
         enums.put(LowerCaseEnum.C, "value");
@@ -220,7 +221,7 @@ public class TestEnumSerialization
     public void testAsIndex() throws Exception
     {
         // By default, serialize using name
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         assertFalse(m.isEnabled(SerializationFeature.WRITE_ENUMS_USING_INDEX));
         assertEquals(quote("B"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(TestEnum.B)));
 
@@ -240,7 +241,7 @@ public class TestEnumSerialization
     public void testGenericEnumSerializer() throws Exception
     {
         // By default, serialize using name
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("foobar");
         module.addSerializer(Enum.class, new LowerCasingEnumSerializer());
         m.registerModule(module);
@@ -257,7 +258,7 @@ public class TestEnumSerialization
     }
     
     public void testEnumMapSerDisableToString() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         ObjectWriter w = mapper.writer().without(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         EnumMap<LC749Enum, String> m = new EnumMap<LC749Enum, String>(LC749Enum.class);
         m.put(LC749Enum.A, "value");
@@ -265,7 +266,7 @@ public class TestEnumSerialization
     }
 
     public void testEnumMapSerEnableToString() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         ObjectWriter w = mapper.writer().with(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         EnumMap<LC749Enum, String> m = new EnumMap<LC749Enum, String>(LC749Enum.class);
         m.put(LC749Enum.A, "value");

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ser.*;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.ser.std.MapProperty;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class TestMapFiltering extends BaseMapTest
@@ -239,14 +240,14 @@ public class TestMapFiltering extends BaseMapTest
     @SuppressWarnings("deprecation")
     public void testMapNullSerialization() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Map<String,String> map = new HashMap<String,String>();
         map.put("a", null);
         // by default, should output null-valued entries:
         assertEquals("{\"a\":null}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map)));
         // but not if explicitly asked not to (note: config value is dynamic here)
 
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();        
+        m = new TestVelocypackMapper();
         m.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
         assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(map)));
     }
@@ -271,7 +272,7 @@ public class TestMapFiltering extends BaseMapTest
     public void testMapViaGlobalNonEmpty() throws Exception
     {
         // basic Map<String,String> subclass:
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setDefaultPropertyInclusion(JsonInclude.Value.empty()
                 .withContentInclusion(JsonInclude.Include.NON_EMPTY));
         assertEquals(aposToQuotes("{'a':'b'}"), com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(
@@ -284,7 +285,7 @@ public class TestMapFiltering extends BaseMapTest
     public void testMapViaTypeOverride() throws Exception
     {
         // basic Map<String,String> subclass:
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Map.class)
             .setInclude(JsonInclude.Value.empty()
                 .withContentInclusion(JsonInclude.Include.NON_EMPTY));

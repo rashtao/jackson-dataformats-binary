@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class TestGenericCollectionDeser
@@ -43,7 +44,7 @@ public class TestGenericCollectionDeser
      */
     public void testListSubClass() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         ListSubClass result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ \"123\" ]"), ListSubClass.class);
         assertEquals(1, result.size());
         Object value = result.get(0);
@@ -61,7 +62,7 @@ public class TestGenericCollectionDeser
     // Verifying that sub-classing works ok wrt generics information
     public void testAnnotatedLStringist() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         AnnotatedStringList result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ \"...\" ]"), AnnotatedStringList.class);
         assertEquals(1, result.size());
         Object ob = result.get(0);
@@ -71,7 +72,7 @@ public class TestGenericCollectionDeser
 
     public void testAnnotatedBooleanList() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         AnnotatedBooleanList result = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("[ false ]"), AnnotatedBooleanList.class);
         assertEquals(1, result.size());
         Object ob = result.get(0);

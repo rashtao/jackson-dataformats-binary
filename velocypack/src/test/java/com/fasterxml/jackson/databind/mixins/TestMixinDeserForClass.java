@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestMixinDeserForClass
     extends BaseMapTest
@@ -52,14 +53,14 @@ public class TestMixinDeserForClass
 
     public void testClassMixInsTopLevel() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // First: test default behavior: should use setter
         LeafClass result = m.readValue("{\"a\":\"value\"}", LeafClass.class);
         assertEquals("XXXvalue", result.a);
 
         // Then with leaf-level mix-in; without (method) auto-detect,
         // should use field
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        m = new TestVelocypackMapper();
         m.addMixIn(LeafClass.class, MixIn.class);
         result = m.readValue("{\"a\":\"value\"}", LeafClass.class);
         assertEquals("value", result.a);
@@ -69,7 +70,7 @@ public class TestMixinDeserForClass
     // when deserializing leaf (but will if deserializing base class)
     public void testClassMixInsMidLevel() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(BaseClass.class, MixIn.class);
         {
             BaseClass result = m.readValue("{\"a\":\"value\"}", BaseClass.class);
@@ -88,7 +89,7 @@ public class TestMixinDeserForClass
      */
     public void testClassMixInsForObjectClass() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(Object.class, MixIn.class);
         // will be seen for BaseClass
         {
@@ -106,7 +107,7 @@ public class TestMixinDeserForClass
     // [databind#1990]: can apply mix-in to `Object#hashCode()` to force serialization
     public void testHashCodeViaObject() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper mapper = new TestVelocypackMapper()
                 .addMixIn(Object.class, HashCodeMixIn.class);
 
         // First, with something that overrides hashCode()

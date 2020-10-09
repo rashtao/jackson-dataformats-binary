@@ -3,11 +3,12 @@ package com.fasterxml.jackson.databind.interop;
 import java.lang.reflect.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // mostly for [Issue#57]
 public class TestJDKProxy extends BaseMapTest
 {
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public interface IPlanet {
         String getName();

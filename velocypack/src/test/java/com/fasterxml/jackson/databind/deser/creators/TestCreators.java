@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that it is possible to annotate
@@ -297,7 +298,7 @@ public class TestCreators
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSimpleConstructor() throws Exception
     {
@@ -436,7 +437,7 @@ public class TestCreators
 
     public void testFactoryCreatorWithMixin() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(CreatorBean.class, MixIn.class);
         CreatorBean bean = m.readValue
             ("{ \"a\" : \"xyz\", \"x\" : 12 }", CreatorBean.class);
@@ -446,7 +447,7 @@ public class TestCreators
 
     public void testFactoryCreatorWithRenamingMixin() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(FactoryBean.class, FactoryBeanMixIn.class);
         // override changes property name from "f" to "mixed"
         FactoryBean bean = m.readValue("{ \"mixed\" :  20.5 }", FactoryBean.class);

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class AnyGetterTest extends BaseMapTest
 {
@@ -137,7 +138,7 @@ public class AnyGetterTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSimpleAnyBean() throws Exception
     {
@@ -153,13 +154,13 @@ public class AnyGetterTest extends BaseMapTest
         ObjectMapper m;
 
         // First, with normal fail settings:
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        m = new TestVelocypackMapper();
         m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, true);
         String json = serializeAsString(m, new AnyOnlyBean());
         assertEquals("{\"a\":3}", json);
 
         // then without fail
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        m = new TestVelocypackMapper();
         m.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         json = serializeAsString(m, new AnyOnlyBean());
         assertEquals("{\"a\":3}", json);
@@ -190,7 +191,7 @@ public class AnyGetterTest extends BaseMapTest
     // [databind#1124]
     public void testAnyGetterWithValueSerializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Bean1124 input = new Bean1124();
         input.addAdditionalProperty("key", "value");
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));

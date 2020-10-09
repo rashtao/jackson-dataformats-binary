@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.introspect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests Scala-style JVM naming patterns for properties.
@@ -184,7 +185,7 @@ public class TestScalaLikeImplicitProperties extends BaseMapTest
     
     private ObjectMapper manglingMapper()
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setAnnotationIntrospector(new NameMangler());
         return m;
     }

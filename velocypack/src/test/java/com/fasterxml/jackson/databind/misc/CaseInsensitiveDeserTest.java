@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class CaseInsensitiveDeserTest extends BaseMapTest
 {
@@ -99,7 +100,7 @@ public class CaseInsensitiveDeserTest extends BaseMapTest
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     private final ObjectMapper INSENSITIVE_MAPPER = jsonMapperBuilder()
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
             .build();
@@ -110,7 +111,7 @@ public class CaseInsensitiveDeserTest extends BaseMapTest
         final String JSON = "{\"Value1\" : {\"nAme\" : \"fruit\", \"vALUe\" : \"apple\"}, \"valUE2\" : {\"NAME\" : \"color\", \"value\" : \"red\"}}";
         
         // first, verify default settings which do not accept improper case
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertFalse(mapper.isEnabled(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES));
         try {
             mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(JSON), Issue476Bean.class);
@@ -159,7 +160,7 @@ public class CaseInsensitiveDeserTest extends BaseMapTest
     // And allow config overrides too
     public void testCaseInsensitiveWithClassFormat() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Role.class)
             .setFormat(JsonFormat.Value.empty()
                     .withFeature(JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES));

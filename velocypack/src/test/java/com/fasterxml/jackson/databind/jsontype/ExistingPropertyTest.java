@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ExistingPropertyTest extends BaseMapTest
 {
@@ -228,7 +229,7 @@ public class ExistingPropertyTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /**
      * Fruits - serialization tests for simple property on sub-classes

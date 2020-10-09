@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * @author Ryan Heaton
@@ -119,7 +120,7 @@ public class TestGenerateJsonSchema
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     /**
      * tests generating json-schema stuff.
@@ -184,7 +185,7 @@ public class TestGenerateJsonSchema
         .addFilter("filteredBean", SimpleBeanPropertyFilter.filterOutAllExcept(new String[]{"obvious"}));
 
     public void testGeneratingJsonSchemaWithFilters() throws Exception {
-    	ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    	ObjectMapper mapper = new TestVelocypackMapper();
     	mapper.setFilters(secretFilterProvider);
     	JsonSchema schema = mapper.generateJsonSchema(FilteredBean.class);
     	JsonNode node = schema.getSchemaNode().get("properties");

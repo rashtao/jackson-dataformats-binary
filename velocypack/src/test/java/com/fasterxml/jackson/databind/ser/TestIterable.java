@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestIterable extends BaseMapTest
 {
@@ -110,7 +111,7 @@ public class TestIterable extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     private final ObjectMapper STATIC_MAPPER = jsonMapperBuilder()
             .enable(MapperFeature.USE_STATIC_TYPING)

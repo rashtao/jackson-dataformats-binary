@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -131,7 +132,7 @@ public class NumberSerTest extends BaseMapTest
 
     public void testConfigOverridesForNumbers() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Integer.TYPE) // for `int`
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.STRING));
         mapper.configOverride(Double.TYPE) // for `double`

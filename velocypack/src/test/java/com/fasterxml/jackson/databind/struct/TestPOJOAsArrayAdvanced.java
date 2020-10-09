@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.struct;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestPOJOAsArrayAdvanced extends BaseMapTest
 {
@@ -83,7 +84,7 @@ public class TestPOJOAsArrayAdvanced extends BaseMapTest
     /*****************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testWithView() throws Exception
     {

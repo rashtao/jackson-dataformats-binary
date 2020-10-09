@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class CollectionDeserTest
@@ -84,7 +85,7 @@ public class CollectionDeserTest
     /**********************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testUntypedList() throws Exception
     {
@@ -148,7 +149,7 @@ public class CollectionDeserTest
     public void testImplicitArrays() throws Exception
     {
         // can't share mapper, custom configs (could create ObjectWriter tho)
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         // first with simple scalar types (numbers), with collections
@@ -271,7 +272,7 @@ public class CollectionDeserTest
     // for [databind#828]
     public void testWrapExceptions() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.WRAP_EXCEPTIONS);
 
         try {
@@ -282,7 +283,7 @@ public class CollectionDeserTest
             fail("The RuntimeException should have been wrapped with a JsonMappingException.");
         }
 
-        ObjectMapper mapperNoWrap = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapperNoWrap = new TestVelocypackMapper();
         mapperNoWrap.disable(DeserializationFeature.WRAP_EXCEPTIONS);
 
         try {

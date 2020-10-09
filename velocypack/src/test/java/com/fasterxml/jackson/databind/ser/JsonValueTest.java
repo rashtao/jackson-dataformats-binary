@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tests functioning of {@link JsonValue}
@@ -199,7 +200,7 @@ public class JsonValueTest
     /*********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSimpleMethodJsonValue() throws Exception
     {
@@ -289,7 +290,7 @@ public class JsonValueTest
         assertEquals(quote("value"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(INPUT)));
 
         // but custom serializer should override it
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule()
             .addSerializer(Bean838.class, new Bean838Serializer())
             );

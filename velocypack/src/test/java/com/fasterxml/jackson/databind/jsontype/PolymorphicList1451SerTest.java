@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class PolymorphicList1451SerTest extends BaseMapTest
 {
@@ -19,7 +20,7 @@ public class PolymorphicList1451SerTest extends BaseMapTest
     private final String CLASS_NAME = getClass().getSimpleName();
 
     public void testCollectionWithTypeInfo() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper mapper = new TestVelocypackMapper()
                 .disable(SerializationFeature.EAGER_SERIALIZER_FETCH)
 //                .disable(DeserializationFeature.EAGER_DESERIALIZER_FETCH)
                 ;

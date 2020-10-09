@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.deser.ValueInstantiator;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests to exercise handler methods of {@link DeserializationProblemHandler}.
@@ -264,7 +265,7 @@ public class ProblemHandlerTest extends BaseMapTest
         assertEquals(SingleValuedEnum.A, result);
 
         // also, write [databind#1629] try this
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        mapper = new TestVelocypackMapper()
                 .addHandler(new WeirdStringHandler(null));
         UUID result2 = mapper.readValue(quote("not a uuid!"), UUID.class);
         assertNull(result2);

@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying JSON view functionality: ability to declaratively
@@ -178,7 +179,7 @@ public class TestViewSerialization
     // [JACKSON-868]
     public void test868() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithView(OtherView.class).writeValueAsBytes(new Foo()));
         assertEquals(json, "{}");

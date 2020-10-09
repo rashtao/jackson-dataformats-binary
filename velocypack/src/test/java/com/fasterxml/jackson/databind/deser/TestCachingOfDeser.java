@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class TestCachingOfDeser extends BaseMapTest
@@ -60,7 +61,7 @@ public class TestCachingOfDeser extends BaseMapTest
     public void testCustomMapCaching1() throws Exception
     {
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         TestMapWithCustom mapC = mapper.readValue(MAP_INPUT, TestMapWithCustom.class);
         TestMapNoCustom mapStd = mapper.readValue(MAP_INPUT, TestMapNoCustom.class);
 
@@ -73,7 +74,7 @@ public class TestCachingOfDeser extends BaseMapTest
     // And then standard first, custom next
     public void testCustomMapCaching2() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         TestMapNoCustom mapStd = mapper.readValue(MAP_INPUT, TestMapNoCustom.class);
         TestMapWithCustom mapC = mapper.readValue(MAP_INPUT, TestMapWithCustom.class);
 
@@ -85,7 +86,7 @@ public class TestCachingOfDeser extends BaseMapTest
 
     // Ok: first, use custom-annotated instance first, then standard
     public void testCustomListCaching1() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         TestListWithCustom listC = mapper.readValue(LIST_INPUT, TestListWithCustom.class);
         TestListNoCustom listStd = mapper.readValue(LIST_INPUT, TestListNoCustom.class);
 
@@ -97,7 +98,7 @@ public class TestCachingOfDeser extends BaseMapTest
 
     // First custom-annotated, then standard
     public void testCustomListCaching2() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         TestListNoCustom listStd = mapper.readValue(LIST_INPUT, TestListNoCustom.class);
         TestListWithCustom listC = mapper.readValue(LIST_INPUT, TestListWithCustom.class);
 

@@ -5,6 +5,7 @@ import java.beans.ConstructorProperties;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#1367]
 public class CreatorWithObjectIdTest
@@ -42,7 +43,7 @@ public class CreatorWithObjectIdTest
     {
         A a = new A("123", "A");
 
-        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper om = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes(a));
         A deser = om.readValue(json, A.class);
         assertEquals(a.name, deser.name);

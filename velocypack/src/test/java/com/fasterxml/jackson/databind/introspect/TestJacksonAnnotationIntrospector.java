@@ -1,7 +1,6 @@
 package com.fasterxml.jackson.databind.introspect;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 import javax.xml.namespace.QName;
@@ -13,11 +12,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.*;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class TestJacksonAnnotationIntrospector
@@ -157,7 +155,7 @@ public class TestJacksonAnnotationIntrospector
      */
     public void testSerializeDeserializeWithJaxbAnnotations() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         JacksonExample ex = new JacksonExample();
         QName qname = new QName("urn:hi", "hello");
@@ -179,7 +177,7 @@ public class TestJacksonAnnotationIntrospector
 
     public void testJsonTypeResolver() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JacksonAnnotationIntrospector ai = new JacksonAnnotationIntrospector();
         AnnotatedClass ac = AnnotatedClassResolver.resolveWithoutSuperTypes(mapper.getSerializationConfig(),
                 TypeResolverBean.class);
@@ -191,7 +189,7 @@ public class TestJacksonAnnotationIntrospector
 
     public void testEnumHandling() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setAnnotationIntrospector(new LcEnumIntrospector());
         assertEquals("\"value1\"", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(EnumExample.VALUE1)));
         EnumExample result = mapper.readValue(quote("value1"), EnumExample.class);

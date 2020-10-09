@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.deser;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests for checking that static methods are not recognized as accessors
@@ -28,7 +29,7 @@ public class TestStatics
 
     public void testSimpleIgnore() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // should not care about static setter...
         Bean result = m.readValue("{ \"x\":3}", Bean.class);
         assertEquals(3, result._x);

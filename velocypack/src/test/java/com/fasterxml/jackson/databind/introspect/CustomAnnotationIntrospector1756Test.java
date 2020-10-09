@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class CustomAnnotationIntrospector1756Test extends BaseMapTest
@@ -108,7 +109,7 @@ public class CustomAnnotationIntrospector1756Test extends BaseMapTest
     {
         Issue1756Module m = new Issue1756Module();
         m.addAbstractTypeMapping(Foobar.class, FoobarImpl.class);
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
             .registerModule(m);
 
         final Foobar foobar = mapper.readValue(aposToQuotes("{'bar':'bar', 'foo':'foo'}"),

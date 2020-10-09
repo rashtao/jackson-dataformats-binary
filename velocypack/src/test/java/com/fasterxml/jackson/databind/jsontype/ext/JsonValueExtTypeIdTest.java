@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class JsonValueExtTypeIdTest extends BaseMapTest
@@ -64,7 +65,7 @@ public class JsonValueExtTypeIdTest extends BaseMapTest
         }
     }
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testDoubleMetadata() throws IOException {
         DoubleMetadata doub = new DoubleMetadata();

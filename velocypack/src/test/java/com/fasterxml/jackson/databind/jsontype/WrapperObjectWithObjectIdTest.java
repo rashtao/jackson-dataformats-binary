@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Test for [databind#1051], issue with combination of Type and Object ids,
 // if (but only if) `JsonTypeInfo.As.WRAPPER_OBJECT` used.
@@ -73,7 +74,7 @@ public class WrapperObjectWithObjectIdTest extends BaseMapTest
         comp.addComputer(new DesktopComputer("computer-2", "Pattaya"));
         comp.addComputer(new LaptopComputer("computer-3", "Apple"));
 
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
 
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsBytes(comp));

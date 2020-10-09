@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.type.TypeModifier;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.lang.reflect.Type;
 
@@ -46,7 +47,7 @@ public class TestTypeModifierNameResolution extends BaseMapTest
 	// Expect that the TypeModifier kicks in when the type id is written.
 	public void testTypeModiferNameResolution() throws Exception
 	{
-		ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+		ObjectMapper mapper = new TestVelocypackMapper();
 		mapper.setTypeFactory(mapper.getTypeFactory().withModifier(new CustomTypeModifier()));
 		mapper.addMixIn(MyType.class, Mixin.class);
 

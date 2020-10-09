@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestGenericTypes extends BaseMapTest
 {
@@ -106,7 +107,7 @@ public class TestGenericTypes extends BaseMapTest
     /**********************************************************
      */
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     @SuppressWarnings("unchecked")
     public void testIssue468a() throws Exception

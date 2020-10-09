@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for checking that alternative settings for
@@ -33,7 +34,7 @@ public class JsonInclude1327Test
 
     // for [databind#1327]
     public void testClassDefaultsForEmpty() throws Exception {
-        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper om = new TestVelocypackMapper();
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         final String jsonString = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes(new Issue1327BeanEmpty()));
@@ -44,7 +45,7 @@ public class JsonInclude1327Test
     }
 
     public void testClassDefaultsForAlways() throws Exception {
-        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper om = new TestVelocypackMapper();
         om.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         final String jsonString = com.fasterxml.jackson.VPackUtils.toJson( om.writeValueAsBytes(new Issue1327BeanAlways()));

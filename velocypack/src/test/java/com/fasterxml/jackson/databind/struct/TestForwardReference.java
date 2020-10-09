@@ -8,13 +8,14 @@ import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test for testing forward reference handling
  */
 public class TestForwardReference extends BaseMapTest {
 
-	private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+	private final ObjectMapper MAPPER = new TestVelocypackMapper()
 			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 			.enable(SerializationFeature.INDENT_OUTPUT)
 			.setSerializationInclusion(JsonInclude.Include.NON_NULL);

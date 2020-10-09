@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.jsontype;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestPolymorphicWithDefaultImpl1565 extends BaseMapTest
 {
@@ -73,7 +74,7 @@ public class TestPolymorphicWithDefaultImpl1565 extends BaseMapTest
     /**********************************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#1565]
     public void testIncompatibleDefaultImpl1565() throws Exception

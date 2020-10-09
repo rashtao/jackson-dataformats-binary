@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests for verifying that bean property filtering using JsonFilter
@@ -57,7 +58,7 @@ public class TestJsonFilter extends BaseMapTest
         FilterProvider prov = new SimpleFilterProvider().addFilter("checkSiblingContextFilter",
                 new CheckSiblingContextFilter());
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setFilterProvider(prov);
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.valueToTree(new CheckSiblingContextBean());
@@ -110,7 +111,7 @@ public class TestJsonFilter extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimpleInclusionFilter() throws Exception
     {
@@ -119,7 +120,7 @@ public class TestJsonFilter extends BaseMapTest
         assertEquals("{\"a\":\"a\"}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writer(prov).writeValueAsBytes(new Bean())));
 
         // [JACKSON-504]: also verify it works via mapper
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setFilterProvider(prov);
         assertEquals("{\"a\":\"a\"}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean())));
     }
@@ -151,7 +152,7 @@ public class TestJsonFilter extends BaseMapTest
         
         // but when changing behavior, should work difference
         SimpleFilterProvider fp = new SimpleFilterProvider().setFailOnUnknownId(false);
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setFilterProvider(fp);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Bean()));
         assertEquals("{\"a\":\"a\",\"b\":\"b\"}", json);
@@ -167,7 +168,7 @@ public class TestJsonFilter extends BaseMapTest
     // [Issue#89] combining @JsonIgnore, @JsonProperty
     public void testIssue89() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Pod pod = new Pod();
         pod.username = "Bob";
         pod.userPassword = "s3cr3t!";

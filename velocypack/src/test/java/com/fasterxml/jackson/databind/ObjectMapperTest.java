@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackFactory;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
@@ -59,7 +60,7 @@ public class ObjectMapperTest extends BaseMapTest
     @SuppressWarnings("serial")
     static class NoCopyMapper extends ObjectMapper { }
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /*
     /**********************************************************
@@ -75,12 +76,12 @@ public class ObjectMapperTest extends BaseMapTest
     public void testGeneratorFeatures()
     {
         // and also for mapper
-        VelocypackMapper mapper = new VelocypackMapper();
+        VelocypackMapper mapper = new TestVelocypackMapper();
         assertTrue(mapper.isEnabled(JsonGenerator.Feature.AUTO_CLOSE_TARGET));
         assertTrue(mapper.isEnabled(StreamWriteFeature.AUTO_CLOSE_TARGET));
 //        assertFalse(mapper.isEnabled(JsonWriteFeature.ESCAPE_NON_ASCII));
 //        assertTrue(mapper.isEnabled(JsonWriteFeature.WRITE_NAN_AS_STRINGS));
-        mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .disable(StreamWriteFeature.FLUSH_PASSED_TO_STREAM)
 //                .disable(JsonWriteFeature.WRITE_NAN_AS_STRINGS)
                 .build();
@@ -91,7 +92,7 @@ public class ObjectMapperTest extends BaseMapTest
     public void testParserFeatures()
     {
         // and also for mapper
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
 
         assertTrue(mapper.isEnabled(JsonParser.Feature.AUTO_CLOSE_SOURCE));
         assertTrue(mapper.isEnabled(StreamReadFeature.AUTO_CLOSE_SOURCE));
@@ -112,7 +113,7 @@ public class ObjectMapperTest extends BaseMapTest
     // [databind#28]: ObjectMapper.copy()
     public void testCopy() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         assertTrue(m.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
         m.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         assertFalse(m.isEnabled(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES));
@@ -163,7 +164,7 @@ public class ObjectMapperTest extends BaseMapTest
     // [databind#1580]
     public void testCopyOfConfigOverrides() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         SerializationConfig config = m.getSerializationConfig();
         assertEquals(JsonInclude.Value.empty(), config.getDefaultPropertyInclusion());
         assertEquals(JsonSetter.Value.empty(), config.getDefaultSetterInfo());
@@ -193,7 +194,7 @@ public class ObjectMapperTest extends BaseMapTest
 
     public void testAnnotationIntrospectorCopyin() 
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setAnnotationIntrospector(new MyAnnotationIntrospector());
         assertEquals(MyAnnotationIntrospector.class,
                 m.getDeserializationConfig().getAnnotationIntrospector().getClass());
@@ -213,7 +214,7 @@ public class ObjectMapperTest extends BaseMapTest
 
     public void testProps()
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // should have default factory
         assertNotNull(m.getNodeFactory());
         JsonNodeFactory nf = new JsonNodeFactory(true);
@@ -225,7 +226,7 @@ public class ObjectMapperTest extends BaseMapTest
     // Test to ensure that we can check property ordering defaults...
     public void testConfigForPropertySorting() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         
         // sort-alphabetically is disabled by default:
         assertFalse(m.isEnabled(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY));
@@ -255,14 +256,14 @@ public class ObjectMapperTest extends BaseMapTest
 
         // and then explicit factory, which should also be implicitly linked
         VelocypackFactory f = new VelocypackFactory();
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper(f);
+        ObjectMapper m = new TestVelocypackMapper(f);
         assertSame(f, m.getFactory());
         assertSame(m, f.getCodec());
     }
 
     public void testProviderConfig() throws Exception   
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         final String JSON = "{ \"x\" : 3 }";
 
         assertEquals(0, m._deserializationContext._cache.cachedDeserializersCount());
@@ -275,7 +276,7 @@ public class ObjectMapperTest extends BaseMapTest
         assertEquals(0, m._deserializationContext._cache.cachedDeserializersCount());
 
         // 07-Nov-2014, tatu: As per [databind#604] verify that Maps also get cached
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        m = new TestVelocypackMapper();
         List<?> stuff = m.readValue(toBytes("[ ]"), List.class);
         assertNotNull(stuff);
         // may look odd, but due to "Untyped" deserializer thing, we actually have
@@ -285,7 +286,7 @@ public class ObjectMapperTest extends BaseMapTest
 
     // For [databind#689]
     public void testCustomDefaultPrettyPrinter() throws Exception {
-        final ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper m = new TestVelocypackMapper();
         final int[] input = new int[]{1, 2};
 
         // without anything else, compact:
@@ -295,13 +296,13 @@ public class ObjectMapperTest extends BaseMapTest
     // For [databind#703], [databind#978]
     public void testNonSerializabilityOfObject()
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         assertFalse(m.canSerialize(Object.class));
         // but this used to pass, incorrectly, second time around
         assertFalse(m.canSerialize(Object.class));
 
         // [databind#978]: Different answer if empty Beans ARE allowed
-        m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        m = new TestVelocypackMapper();
         m.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         assertTrue(m.canSerialize(Object.class));
         assertTrue(MAPPER.writer().without(SerializationFeature.FAIL_ON_EMPTY_BEANS)
@@ -325,7 +326,7 @@ public class ObjectMapperTest extends BaseMapTest
     public void testSerializerProviderAccess() throws Exception
     {
         // ensure we have "fresh" instance, just in case
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JsonSerializer<?> ser = mapper.getSerializerProviderInstance()
                 .findValueSerializer(Bean.class);
         assertNotNull(ser);
@@ -336,7 +337,7 @@ public class ObjectMapperTest extends BaseMapTest
     public void testCopyOfParserFeatures() throws Exception
     {
         // ensure we have "fresh" instance to start with
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertFalse(mapper.isEnabled(JsonParser.Feature.IGNORE_UNDEFINED));
         mapper.configure(JsonParser.Feature.IGNORE_UNDEFINED, true);
         assertTrue(mapper.isEnabled(JsonParser.Feature.IGNORE_UNDEFINED));

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class TestMapSerialization extends BaseMapTest
@@ -138,7 +139,7 @@ public class TestMapSerialization extends BaseMapTest
     // sort Map entries by key
     public void testOrderByKey() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         assertFalse(m.isEnabled(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS));
         LinkedHashMap<String,Integer> map = new LinkedHashMap<String,Integer>();
         map.put("b", 3);
@@ -187,7 +188,7 @@ public class TestMapSerialization extends BaseMapTest
         assertEquals(aposToQuotes("[{'answer':42}]"), json);
 
         // and maybe with bit of extra typing?
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().activateDefaultTyping(NoCheckSubTypeValidator.instance,
+        ObjectMapper mapper = new TestVelocypackMapper().activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 DefaultTyping.NON_FINAL);
         json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         assertEquals(aposToQuotes("['"+StringIntMapEntry.class.getName()+"',{'answer':42}]"),
@@ -219,7 +220,7 @@ public class TestMapSerialization extends BaseMapTest
         Map<String, String> map = new HashMap<String, String>();
         map.put("NULL", null);
     
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.addMixIn(Object.class, Mixin691.class);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
         assertEquals("{\"@class\":\"java.util.HashMap\",\"NULL\":null}", json);

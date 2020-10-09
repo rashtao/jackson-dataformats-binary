@@ -6,6 +6,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Assert;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -158,7 +159,7 @@ public class TestConversions extends BaseMapTest
     public void testTreeToValue() throws Exception
     {
         String JSON = "{\"leaf\":{\"value\":13}}";
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.addMixIn(Leaf.class, LeafMixIn.class);
         JsonNode root = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(JSON));
         // Ok, try converting to bean using two mechanisms
@@ -256,7 +257,7 @@ public class TestConversions extends BaseMapTest
     // [databind#232]
     public void testBigDecimalAsPlainStringTreeConversion() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
         Map<String, Object> map = new HashMap<String, Object>();
         String PI_STR = "3.00000000";

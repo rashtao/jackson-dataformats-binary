@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestViewDeserialization extends BaseMapTest
 {
@@ -59,7 +60,7 @@ public class TestViewDeserialization extends BaseMapTest
     /************************************************************************ 
      */
 
-    private final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper mapper = new TestVelocypackMapper();
     
     public void testSimple() throws Exception
     {

@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for those Jackson types we want to ensure can be serialized.
@@ -17,7 +18,7 @@ public class TestJacksonTypes
     {
         File f = new File("/tmp/test.json");
         JsonLocation loc = new JsonLocation(f, -1, 100, 13);
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Map<String,Object> result = writeAndMap(mapper, loc);
         assertEquals(5, result.size());
         assertEquals(f.getAbsolutePath(), result.get("sourceRef"));

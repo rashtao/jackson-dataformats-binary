@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestContextualWithAnnDeserializer extends BaseMapTest
 {
@@ -68,7 +69,7 @@ public class TestContextualWithAnnDeserializer extends BaseMapTest
     // ensure that direct associations also work
     public void testAnnotatedContextual() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         AnnotatedContextualClassBean bean = mapper.readValue(
                 "{\"value\":\"a\"}",
               AnnotatedContextualClassBean.class);

@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.objectid;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestObjectIdWithInjectables538 extends BaseMapTest
 {
@@ -29,7 +30,7 @@ public class TestObjectIdWithInjectables538 extends BaseMapTest
     /*****************************************************
      */
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testWithInjectables538() throws Exception
     {

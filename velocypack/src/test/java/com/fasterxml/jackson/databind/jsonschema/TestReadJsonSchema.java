@@ -3,7 +3,7 @@ package com.fasterxml.jackson.databind.jsonschema;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Trivial test to ensure <code>JsonSchema</code> can be also deserialized
@@ -50,7 +50,7 @@ public class TestReadJsonSchema
      */
     public void testDeserializeSimple() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JsonSchema schema = mapper.generateJsonSchema(Schemable.class);
         assertNotNull(schema);
 

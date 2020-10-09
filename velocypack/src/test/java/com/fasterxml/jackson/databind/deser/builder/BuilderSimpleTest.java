@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.introspect.NopAnnotationIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class BuilderSimpleTest extends BaseMapTest
 {
@@ -276,7 +277,7 @@ public class BuilderSimpleTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimple() throws Exception
     {
@@ -306,7 +307,7 @@ public class BuilderSimpleTest extends BaseMapTest
         }
 
         // but with config overrides should pass
-        ObjectMapper ignorantMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper ignorantMapper = new TestVelocypackMapper();
         ignorantMapper.configOverride(SimpleBuilderXY.class)
                 .setIgnorals(JsonIgnoreProperties.Value.forIgnoreUnknown(true));
         o = ignorantMapper.readValue(json, ValueClassXY.class);

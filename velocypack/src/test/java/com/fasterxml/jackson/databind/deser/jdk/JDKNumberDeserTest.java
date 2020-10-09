@@ -1,7 +1,6 @@
 package com.fasterxml.jackson.databind.deser.jdk;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
@@ -12,6 +11,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class JDKNumberDeserTest extends BaseMapTest
 {
@@ -60,7 +60,7 @@ public class JDKNumberDeserTest extends BaseMapTest
     /**********************************************************************
      */
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testNaN() throws Exception
     {

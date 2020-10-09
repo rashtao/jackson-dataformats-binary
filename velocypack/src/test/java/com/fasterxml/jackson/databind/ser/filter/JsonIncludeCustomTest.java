@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Tests for [databind#888]
 public class JsonIncludeCustomTest extends BaseMapTest
@@ -65,7 +66,7 @@ public class JsonIncludeCustomTest extends BaseMapTest
     /**********************************************************
      */
 
-    final private ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final private ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimpleCustomFilter() throws Exception
     {

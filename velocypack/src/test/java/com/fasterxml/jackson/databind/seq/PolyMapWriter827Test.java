@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Assert;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -33,7 +34,7 @@ public class PolyMapWriter827Test extends BaseMapTest
 
     public void testPolyCustomKeySerializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL);
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class EnumDefaultReadTest extends BaseMapTest
 {
@@ -58,7 +59,7 @@ public class EnumDefaultReadTest extends BaseMapTest
     /* Test methods
     /**********************************************************
      */
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testWithoutCustomFeatures() throws Exception
     {

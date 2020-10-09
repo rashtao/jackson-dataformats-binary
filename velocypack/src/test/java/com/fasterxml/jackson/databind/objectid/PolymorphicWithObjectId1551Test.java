@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class PolymorphicWithObjectId1551Test extends BaseMapTest
 {
@@ -42,7 +43,7 @@ public class PolymorphicWithObjectId1551Test extends BaseMapTest
         VehicleOwnerViaProp v2 = new VehicleOwnerViaProp();
         v2.ownedVehicle = c;
 
-        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper objectMapper = new TestVelocypackMapper();
         String serialized = com.fasterxml.jackson.VPackUtils.toJson( objectMapper.writer()
                 .writeValueAsBytes(new VehicleOwnerViaProp[] { v1, v2 }));
         // 02-May-2017, tatu: Not possible to support as of Jackson 2.8 at least, so:
@@ -63,7 +64,7 @@ public class PolymorphicWithObjectId1551Test extends BaseMapTest
         VehicleOwnerBroken v2 = new VehicleOwnerBroken();
         v2.ownedVehicle = c;
 
-        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper objectMapper = new TestVelocypackMapper();
         try {
             objectMapper.writer()
                 .writeValueAsBytes(new VehicleOwnerBroken[] { v1, v2 });

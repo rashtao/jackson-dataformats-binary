@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -135,7 +136,7 @@ public class TestPropertyCreatorSubtypesExternalPropertyMissingProperty
     private final ObjectReader BOX_READER_FAIL;
 
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         BOX_READER_PASS = mapper.readerFor(Box.class)
             .without(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY);
         BOX_READER_FAIL = mapper.readerFor(Box.class)

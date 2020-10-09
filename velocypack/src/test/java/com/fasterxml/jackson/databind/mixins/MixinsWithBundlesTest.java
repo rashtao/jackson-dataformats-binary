@@ -5,6 +5,7 @@ import java.lang.annotation.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#771]
 public class MixinsWithBundlesTest extends BaseMapTest
@@ -36,7 +37,7 @@ public class MixinsWithBundlesTest extends BaseMapTest
     }    
     public void testMixinWithBundles() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().addMixIn(Foo.class, FooMixin.class);
+        ObjectMapper mapper = new TestVelocypackMapper().addMixIn(Foo.class, FooMixin.class);
         String result = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Foo("result")));
         assertEquals("{\"bar\":\"result\"}", result);
     }

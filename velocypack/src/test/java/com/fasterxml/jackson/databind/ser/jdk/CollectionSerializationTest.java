@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.io.IOException;
 import java.util.*;
@@ -89,7 +90,7 @@ public class CollectionSerializationTest
     /**********************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testCollections() throws IOException
     {
@@ -240,7 +241,7 @@ public class CollectionSerializationTest
         assertEquals("{\"empty\":[]}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(array)));
 
         // note: value of setting may be cached when constructing serializer, need a new instance
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, false);
         assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(list)));
         assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(array)));

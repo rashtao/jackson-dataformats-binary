@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Tests for [databind#1456]: resolution using methods deprecated
 // in 2.7, but used to work in 2.6
@@ -22,7 +23,7 @@ public class DeprecatedConstructType1456Test extends BaseMapTest
 
     public static class ImplEntity extends BaseEntity {}
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     @SuppressWarnings("deprecation")
     public void testGenericResolutionUsingDeprecated() throws Exception

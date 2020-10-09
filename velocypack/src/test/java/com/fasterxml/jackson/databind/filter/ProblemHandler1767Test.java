@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.filter;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ProblemHandler1767Test extends BaseMapTest
 {
@@ -35,7 +36,7 @@ public class ProblemHandler1767Test extends BaseMapTest
     }
 
     public void testPrimitivePropertyWithHandler() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.addHandler(new IntHandler());
         TestBean result = mapper.readValue(aposToQuotes("{'a': 'not-a-number'}"), TestBean.class);
         assertNotNull(result);

@@ -3,7 +3,7 @@ package com.fasterxml.jackson.databind.ser;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestSerializerProvider
     extends com.fasterxml.jackson.databind.BaseMapTest
@@ -17,7 +17,7 @@ public class TestSerializerProvider
     
     public void testFindExplicit() throws JsonMappingException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SerializationConfig config = mapper.getSerializationConfig();
         SerializerFactory f = new BeanSerializerFactory(null);
         DefaultSerializerProvider prov = new DefaultSerializerProvider.Impl().createInstance(config, f);

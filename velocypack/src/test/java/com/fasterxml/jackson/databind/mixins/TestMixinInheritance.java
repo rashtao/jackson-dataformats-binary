@@ -6,6 +6,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestMixinInheritance
     extends BaseMapTest
@@ -50,7 +51,7 @@ public class TestMixinInheritance
     
     public void testMixinFieldInheritance() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.addMixIn(Beano.class, BeanoMixinSub.class);
         Map<String,Object> result;
         result = writeAndMap(mapper, new Beano());
@@ -63,7 +64,7 @@ public class TestMixinInheritance
 
     public void testMixinMethodInheritance() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.addMixIn(Beano2.class, BeanoMixinSub2.class);
         Map<String,Object> result;
         result = writeAndMap(mapper, new Beano2());

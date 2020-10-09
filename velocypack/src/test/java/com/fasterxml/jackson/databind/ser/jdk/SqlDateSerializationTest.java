@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Tests for `java.sql.Date`, `java.sql.Time` and `java.sql.Timestamp`
 public class SqlDateSerializationTest extends BaseMapTest
@@ -35,7 +36,7 @@ public class SqlDateSerializationTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     @SuppressWarnings("deprecation")
     public void testSqlDate() throws IOException
@@ -85,7 +86,7 @@ public class SqlDateSerializationTest extends BaseMapTest
     
     public void testPatternWithSqlDate() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         // `java.sql.Date` applies system default zone (and not UTC)
         mapper.setTimeZone(TimeZone.getDefault());
 

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.ArrayType;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class TestBeanDeserializer extends BaseMapTest
@@ -322,7 +323,7 @@ public class TestBeanDeserializer extends BaseMapTest
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /**
      * Test to verify details of how trying to deserialize into
@@ -340,7 +341,7 @@ public class TestBeanDeserializer extends BaseMapTest
     }    
     public void testPropertyRemoval() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new ModuleImpl(new RemovingModifier("a")));
         Bean bean = mapper.readValue("{\"b\":\"2\"}", Bean.class);
         assertEquals("2", bean.b);
@@ -350,7 +351,7 @@ public class TestBeanDeserializer extends BaseMapTest
 
     public void testDeserializerReplacement() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new ModuleImpl(new ReplacingModifier(new BogusBeanDeserializer("foo", "bar"))));
         Bean bean = mapper.readValue("{\"a\":\"xyz\"}", Bean.class);
         // custom deserializer always produces instance like this:
@@ -362,7 +363,7 @@ public class TestBeanDeserializer extends BaseMapTest
     {
         final String JSON = "{\"value1\" : {\"name\" : \"fruit\", \"value\" : \"apple\"}, \"value2\" : {\"name\" : \"color\", \"value\" : \"red\"}}";
         
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new Issue476Module());
         mapper.readValue(JSON, Issue476Bean.class);
 
@@ -390,7 +391,7 @@ public class TestBeanDeserializer extends BaseMapTest
     // [databind#120]
     public void testModifyArrayDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setDeserializerModifier(new ArrayDeserializerModifier()));
         Object[] result = mapper.readValue("[1,2]", Object[].class);
@@ -400,7 +401,7 @@ public class TestBeanDeserializer extends BaseMapTest
 
     public void testModifyCollectionDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setDeserializerModifier(new CollectionDeserializerModifier())
         );
@@ -411,7 +412,7 @@ public class TestBeanDeserializer extends BaseMapTest
 
     public void testModifyMapDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setDeserializerModifier(new MapDeserializerModifier())
         );
@@ -422,7 +423,7 @@ public class TestBeanDeserializer extends BaseMapTest
 
     public void testModifyEnumDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setDeserializerModifier(new EnumDeserializerModifier())
         );
@@ -432,7 +433,7 @@ public class TestBeanDeserializer extends BaseMapTest
 
     public void testModifyKeyDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setDeserializerModifier(new KeyDeserializerModifier())
         );
@@ -447,7 +448,7 @@ public class TestBeanDeserializer extends BaseMapTest
      */
     public void testModifyStdScalarDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new SimpleModule("test")
             .setDeserializerModifier(new BeanDeserializerModifier() {
                         @Override
@@ -464,7 +465,7 @@ public class TestBeanDeserializer extends BaseMapTest
     }
 
     public void testAddOrReplacePropertyIsUsedOnDeserialization() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new Issue1912Module());
 
         Issue1912Bean result = mapper.readValue("{\"subBean\": {\"a\":\"foo\"}}", Issue1912Bean.class);

@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.struct;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestUnwrappedWithPrefix extends BaseMapTest
 {
@@ -144,7 +145,7 @@ public class TestUnwrappedWithPrefix extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testPrefixedUnwrappingSerialize() throws Exception
     {

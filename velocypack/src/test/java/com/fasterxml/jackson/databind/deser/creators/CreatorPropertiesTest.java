@@ -4,6 +4,7 @@ import java.beans.ConstructorProperties;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class CreatorPropertiesTest extends BaseMapTest
 {
@@ -64,7 +65,7 @@ public class CreatorPropertiesTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#905]
     public void testCreatorPropertiesAnnotation() throws Exception

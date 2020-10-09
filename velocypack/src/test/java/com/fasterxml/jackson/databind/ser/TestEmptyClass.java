@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestEmptyClass
     extends BaseMapTest
@@ -54,7 +55,7 @@ public class TestEmptyClass
     /**********************************************************
      */
 
-    protected final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    protected final ObjectMapper mapper = new TestVelocypackMapper();
     
     /**
      * Test to check that [JACKSON-201] works if there is a recognized
@@ -73,7 +74,7 @@ public class TestEmptyClass
         assertEquals("{}", serializeAsString(mapper, new EmptyWithAnno()));
 
         // Including class annotation through mix-ins
-        ObjectMapper m2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m2 = new TestVelocypackMapper();
         m2.addMixIn(Empty.class, EmptyWithAnno.class);
         assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( m2.writeValueAsBytes(new Empty())));
     }

@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.deser.std.EnumDeserializer;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class EnumCreatorTest extends BaseMapTest
 {
@@ -191,7 +192,7 @@ public class EnumCreatorTest extends BaseMapTest
     /**********************************************************
      */
 
-    protected final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    protected final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testCreatorEnums() throws Exception {
         EnumWithCreator value = MAPPER.readValue("\"enumA\"", EnumWithCreator.class);
@@ -232,7 +233,7 @@ public class EnumCreatorTest extends BaseMapTest
     }
     
     public void testJsonCreatorDelagateWithEnum() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         
         EnumWithDelegateModeJsonCreator type1 = mapper.readValue("{\"name\":\"TEST1\", \"description\":\"TEST\"}", EnumWithDelegateModeJsonCreator.class);
         assertSame(EnumWithDelegateModeJsonCreator.TEST1, type1);
@@ -263,7 +264,7 @@ public class EnumCreatorTest extends BaseMapTest
     // [databind#745]
     public void testDeserializerForCreatorWithEnumMaps() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new DelegatingDeserializersModule());
         EnumMap<EnumWithCreator,String> value = mapper.readValue("{\"enumA\":\"value\"}",
                 new TypeReference<EnumMap<EnumWithCreator,String>>() {});
@@ -287,7 +288,7 @@ public class EnumCreatorTest extends BaseMapTest
     // for [databind#1291]
     public void testEnumCreators1291() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(Enum1291.V2));
         Enum1291 result = mapper.readValue(json, Enum1291.class);
         assertSame(Enum1291.V2, result);

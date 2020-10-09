@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests to verify that annotations are shared and merged between members
@@ -62,13 +63,13 @@ public class TestAnnotationMerging extends BaseMapTest
 
     public void testSharedNames() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertEquals("{\"x\":6}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SharedName(6))));
     }
 
     public void testSharedNamesFromGetterToSetter() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SharedName2()));
         assertEquals("{\"x\":1}", json);
         SharedName2 result = mapper.readValue(json, SharedName2.class);
@@ -77,7 +78,7 @@ public class TestAnnotationMerging extends BaseMapTest
     
     public void testSharedTypeInfo() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Wrapper(13L)));
         Wrapper result = mapper.readValue(json, Wrapper.class);
         assertEquals(Long.class, result.value.getClass());
@@ -85,7 +86,7 @@ public class TestAnnotationMerging extends BaseMapTest
 
     public void testSharedTypeInfoWithCtor() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new TypeWrapper(13L)));
         TypeWrapper result = mapper.readValue(json, TypeWrapper.class);
         assertEquals(Long.class, result.value.getClass());

@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests related to handling of overloaded methods.
@@ -79,7 +80,7 @@ public class TestOverloaded
     /************************************************************
     */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     /**
      * Unit test related to [JACKSON-189]
@@ -90,7 +91,7 @@ public class TestOverloaded
     {
         OverloadBean bean;
         try {
-            bean = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue("{ \"a\" : 13 }", OverloadBean.class);
+            bean = new com.fasterxml.jackson.dataformat.velocypack.TestVelocyPackMapper().readValue("{ \"a\" : 13 }", OverloadBean.class);
         } catch (JsonMappingException e) {
             fail("Did not expect an exception, got: "+e.getMessage());
             return;

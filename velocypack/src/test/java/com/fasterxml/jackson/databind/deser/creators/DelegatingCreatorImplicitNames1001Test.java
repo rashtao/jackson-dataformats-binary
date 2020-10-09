@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.AnnotatedWithParams;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
 {
@@ -68,7 +69,7 @@ public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
     // Baseline test to show how things should work
     public void testWithoutNamedParameters() throws Exception
     {
-        ObjectMapper sut = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper sut = new TestVelocypackMapper();
 
         D d = D.make("abc:def");
 
@@ -82,7 +83,7 @@ public class DelegatingCreatorImplicitNames1001Test extends BaseMapTest
     // And then case that fails with [databind#1001]
     public void testWithNamedParameters() throws Exception
     {
-        ObjectMapper sut = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper sut = new TestVelocypackMapper()
             .setAnnotationIntrospector(new CreatorNameIntrospector());
 
         D d = D.make("abc:def");

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TypeRefinementForMapTest extends BaseMapTest
 {
@@ -105,7 +106,7 @@ public class TypeRefinementForMapTest extends BaseMapTest
         String json = aposToQuotes(
 "{'id':'"+ID1+"','items':[{'id':'"+ID2+"','property':'value'}]}");
 
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Data data = m.readValue(json, Data.class);
 
         assertEquals(ID1, data.id);

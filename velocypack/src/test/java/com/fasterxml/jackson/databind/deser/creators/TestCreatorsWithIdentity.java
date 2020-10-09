@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestCreatorsWithIdentity extends BaseMapTest
 {
@@ -39,7 +40,7 @@ public class TestCreatorsWithIdentity extends BaseMapTest
 	    }
 	}
 
-	private static final ObjectMapper JSON_MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+	private static final ObjectMapper JSON_MAPPER = new TestVelocypackMapper();
 
 	public void testSimple() throws IOException
 	{

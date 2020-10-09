@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.StdConverter;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests for various conversions, especially ones using
@@ -118,7 +119,7 @@ public class TestBeanConversions
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testBeanConvert()
     {
@@ -163,7 +164,7 @@ public class TestBeanConversions
     // should work regardless of wrapping...
     public void testWrapping() throws Exception
     {
-        ObjectMapper wrappingMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper wrappingMapper = new TestVelocypackMapper();
         wrappingMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         wrappingMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
 
@@ -172,12 +173,12 @@ public class TestBeanConversions
 
         // also: ok to have mismatched settings, since as per [JACKSON-710], should
         // not actually use wrapping internally in these cases
-        wrappingMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        wrappingMapper = new TestVelocypackMapper();
         wrappingMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         wrappingMapper.disable(SerializationFeature.WRAP_ROOT_VALUE);
         _convertAndVerifyPoint(wrappingMapper);
 
-        wrappingMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        wrappingMapper = new TestVelocypackMapper();
         wrappingMapper.disable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         wrappingMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         _convertAndVerifyPoint(wrappingMapper);
@@ -248,7 +249,7 @@ public class TestBeanConversions
             verifyException(e, "no properties discovered");
         }
         
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         try {
             assertEquals("{}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(plaino)));

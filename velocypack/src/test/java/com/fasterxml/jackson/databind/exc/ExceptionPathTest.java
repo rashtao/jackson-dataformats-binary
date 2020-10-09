@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.exc;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ExceptionPathTest extends BaseMapTest
 {
@@ -24,7 +25,7 @@ public class ExceptionPathTest extends BaseMapTest
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testReferenceChainForInnerClass() throws Exception
     {

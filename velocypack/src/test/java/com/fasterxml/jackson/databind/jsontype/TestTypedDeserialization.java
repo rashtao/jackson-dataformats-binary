@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestTypedDeserialization
     extends BaseMapTest
@@ -138,7 +139,7 @@ public class TestTypedDeserialization
      */
     public void testSimpleClassAsProperty() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Animal a = m.readValue(asJSONObjectValueString("@classy", Cat.class.getName(),
                 "furColor", "tabby", "name", "Garfield"), Animal.class);
         assertNotNull(a);
@@ -151,7 +152,7 @@ public class TestTypedDeserialization
     // Test inclusion using wrapper style
     public void testTypeAsWrapper() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(Animal.class, TypeWithWrapper.class);
         String JSON = "{\".TestTypedDeserialization$Dog\" : "
             +asJSONObjectValueString(m, "name", "Scooby", "boneCount", "6")+" }";
@@ -166,7 +167,7 @@ public class TestTypedDeserialization
     // Test inclusion using 2-element array
     public void testTypeAsArray() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(Animal.class, TypeWithArray.class);
         // hmmh. Not good idea to rely on exact output, order may change. But...
         String JSON = "[\""+Dog.class.getName()+"\", "
@@ -181,7 +182,7 @@ public class TestTypedDeserialization
     // Use basic Animal as contents of a regular List
     public void testListAsArray() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // This time using PROPERTY style (default) again
         String JSON = "[\n"
             +asJSONObjectValueString(m, "@classy", Cat.class.getName(), "name", "Hello", "furColor", "white")
@@ -213,7 +214,7 @@ public class TestTypedDeserialization
 
     public void testCagedAnimal() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         String jsonCat = asJSONObjectValueString(m, "@classy", Cat.class.getName(), "name", "Nilson", "furColor", "black");
         String JSON = "{\"animal\":"+jsonCat+"}";
 
@@ -232,7 +233,7 @@ public class TestTypedDeserialization
      */
     public void testAbstractEmptyBaseClass() throws Exception
     {
-        DummyBase result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(
+        DummyBase result = new TestVelocypackMapper().readValue(
                 "[\""+DummyImpl.class.getName()+"\",{\"x\":3}]", DummyBase.class);
         assertNotNull(result);
         assertEquals(DummyImpl.class, result.getClass());
@@ -245,7 +246,7 @@ public class TestTypedDeserialization
         Issue506DateBean input = new Issue506DateBean();
         input.date = new Date(1234L);
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
 
         Issue506DateBean output = mapper.readValue(json, Issue506DateBean.class);
@@ -258,7 +259,7 @@ public class TestTypedDeserialization
         Issue506NumberBean input = new Issue506NumberBean();
         input.number = Long.valueOf(4567L);
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
 
         Issue506NumberBean output = mapper.readValue(json, Issue506NumberBean.class);
@@ -268,7 +269,7 @@ public class TestTypedDeserialization
     // [databind#2467]: Allow missing "content" for as-array deserialization
     public void testTypeAsArrayWithNullableType() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(Animal.class, TypeWithArray.class);
         Animal a = m.readValue(
                 "[\""+Fish.class.getName()+"\"]", Animal.class);
@@ -278,7 +279,7 @@ public class TestTypedDeserialization
     // [databind#2467]
     public void testTypeAsArrayWithCustomDeserializer() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(Animal.class, TypeWithArray.class);
         Animal a = m.readValue(
                 "[\""+NullAnimal.class.getName()+"\"]", Animal.class);

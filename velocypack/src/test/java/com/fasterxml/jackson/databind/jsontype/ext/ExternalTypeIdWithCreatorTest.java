@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.jsontype.ext;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ExternalTypeIdWithCreatorTest extends BaseMapTest
 {
@@ -83,7 +84,7 @@ public class ExternalTypeIdWithCreatorTest extends BaseMapTest
     /********************************************************************** 
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#1198]
     public void testFails() throws Exception {

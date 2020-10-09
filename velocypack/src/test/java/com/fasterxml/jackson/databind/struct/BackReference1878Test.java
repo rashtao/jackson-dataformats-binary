@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * @author Reda.Housni-Alaoui
@@ -21,7 +22,7 @@ public class BackReference1878Test extends BaseMapTest
         public Child a;
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testChildDeserialization() throws Exception {
         Child child = MAPPER.readValue("{\"b\": {}}", Child.class);

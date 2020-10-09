@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite verifies that static fields and methods are
@@ -46,7 +47,7 @@ public class TestStatics
 
     public void testStaticFields() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new FieldBean());
         assertEquals(1, result.size());
         assertEquals(Integer.valueOf(1), result.get("x"));
@@ -54,7 +55,7 @@ public class TestStatics
 
     public void testStaticMethods() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new GetterBean());
         assertEquals(1, result.size());
         assertEquals(Integer.valueOf(3), result.get("x"));

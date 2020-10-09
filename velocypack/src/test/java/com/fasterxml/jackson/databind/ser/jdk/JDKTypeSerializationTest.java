@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.ser.jdk;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class JDKTypeSerializationTest
     
     public void testBigDecimalAsPlainString() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
 
         mapper.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
         Map<String, Object> map = new HashMap<String, Object>();
@@ -99,7 +100,7 @@ public class JDKTypeSerializationTest
         InetAddress input = InetAddress.getByName("google.com");
         assertEquals(quote("google.com"), com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(input)));
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(InetAddress.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.NUMBER));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));

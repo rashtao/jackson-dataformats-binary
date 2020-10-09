@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.type;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class LocalTypeTest extends BaseMapTest
 {
@@ -22,7 +23,7 @@ public class LocalTypeTest extends BaseMapTest
 
     // [databind#609]
     public void testLocalPartialType609() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         
         EntityContainer input = new EntityContainer(); 
         input.entity = new RuleForm(12);

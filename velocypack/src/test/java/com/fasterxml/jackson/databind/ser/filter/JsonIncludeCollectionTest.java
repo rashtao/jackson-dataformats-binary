@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class JsonIncludeCollectionTest extends BaseMapTest
 {
@@ -29,7 +30,7 @@ public class JsonIncludeCollectionTest extends BaseMapTest
     /**********************************************************
      */
 
-    final private ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final private ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testEnumSet() throws Exception
     {

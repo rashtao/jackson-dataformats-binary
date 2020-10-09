@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.type;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit test for verifying that {@link AnnotatedClass}
@@ -75,7 +76,7 @@ public class TestAnnotatedClass
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testFieldIntrospection()
     {

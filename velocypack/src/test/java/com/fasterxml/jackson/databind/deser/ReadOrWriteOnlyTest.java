@@ -4,6 +4,7 @@ import java.beans.ConstructorProperties;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ReadOrWriteOnlyTest extends BaseMapTest
 {
@@ -72,7 +73,7 @@ public class ReadOrWriteOnlyTest extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#935]
     public void testReadOnlyAndWriteOnly() throws Exception

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ImplicitNameMatch792Test extends BaseMapTest
 {
@@ -93,7 +94,7 @@ public class ImplicitNameMatch792Test extends BaseMapTest
     
     public void testBindingOfImplicitCreatorNames() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setAnnotationIntrospector(new ConstructorNameAI());
         String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Issue792Bean("a", "b")));
         assertEquals(aposToQuotes("{'first':'a','other':3}"), json);

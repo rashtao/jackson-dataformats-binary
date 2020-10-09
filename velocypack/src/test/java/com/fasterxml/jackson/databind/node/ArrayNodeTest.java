@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.databind.node.TreeTraversingParser;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
+
 import static java.util.Arrays.asList;
 
 /**
@@ -245,7 +243,7 @@ public class ArrayNodeTest
 
     public void testNullChecking2()
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         ArrayNode src = mapper.createArrayNode();
         ArrayNode dest = mapper.createArrayNode();
         src.add("element");

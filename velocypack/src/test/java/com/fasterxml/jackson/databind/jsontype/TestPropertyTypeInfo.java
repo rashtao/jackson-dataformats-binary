@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Testing to verify that {@link JsonTypeInfo} works
@@ -83,7 +84,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleField() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new FieldWrapperBean(new StringWrapper("foo"))));
 //System.out.println("JSON/field+object == "+json);
         FieldWrapperBean bean = mapper.readValue(json, FieldWrapperBean.class);
@@ -94,7 +95,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleMethod() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new FieldWrapperBean(new IntWrapper(37))));
 //System.out.println("JSON/method+object == "+json);
         FieldWrapperBean bean = mapper.readValue(json, FieldWrapperBean.class);
@@ -105,7 +106,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleListField() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         FieldWrapperBeanList list = new FieldWrapperBeanList();
         list.add(new FieldWrapperBean(new OtherBean()));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(list));
@@ -121,7 +122,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleListMethod() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         MethodWrapperBeanList list = new MethodWrapperBeanList();
         list.add(new MethodWrapperBean(new BooleanValue(true)));
         list.add(new MethodWrapperBean(new StringWrapper("x")));
@@ -142,7 +143,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleArrayField() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         FieldWrapperBeanArray array = new FieldWrapperBeanArray(new
                 FieldWrapperBean[] { new FieldWrapperBean(new BooleanValue(true)) });
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(array));
@@ -157,7 +158,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleArrayMethod() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         MethodWrapperBeanArray array = new MethodWrapperBeanArray(new
                 MethodWrapperBean[] { new MethodWrapperBean(new StringWrapper("A")) });
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(array));
@@ -172,7 +173,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
     
     public void testSimpleMapField() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         FieldWrapperBeanMap map = new FieldWrapperBeanMap();
         map.put("foop", new FieldWrapperBean(new IntWrapper(13)));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));
@@ -188,7 +189,7 @@ public class TestPropertyTypeInfo extends BaseMapTest
 
     public void testSimpleMapMethod() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         MethodWrapperBeanMap map = new MethodWrapperBeanMap();
         map.put("xyz", new MethodWrapperBean(new BooleanValue(true)));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(map));

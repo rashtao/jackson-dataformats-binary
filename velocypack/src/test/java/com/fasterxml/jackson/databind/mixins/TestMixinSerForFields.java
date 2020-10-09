@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestMixinSerForFields
     extends BaseMapTest
@@ -58,7 +59,7 @@ public class TestMixinSerForFields
 
     public void testFieldMixInsTopLevel() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Map<String,Object> result;
         BaseClass bean = new BaseClass("1", "2");
 
@@ -68,7 +69,7 @@ public class TestMixinSerForFields
         assertEquals("1", result.get("a"));
 
         // and then with simple mix-in
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         mapper.addMixIn(BaseClass.class, MixIn.class);
         result = writeAndMap(mapper, bean);
         assertEquals(2, result.size());
@@ -78,7 +79,7 @@ public class TestMixinSerForFields
 
     public void testMultipleFieldMixIns() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         // ordering here shouldn't matter really...
         HashMap<Class<?>,Class<?>> mixins = new HashMap<Class<?>,Class<?>>();
         mixins.put(SubClass.class, MixIn.class);

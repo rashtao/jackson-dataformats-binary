@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestTypedRootValueSerialization extends BaseMapTest
 {
@@ -25,7 +26,7 @@ public class TestTypedRootValueSerialization extends BaseMapTest
     // First ensure that basic interface-override works:
     public void testTypedSerialization() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String singleJson = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(Issue822Interface.class).writeValueAsBytes(new Issue822Impl()));
         // start with specific value case:
         assertEquals("{\"a\":3}", singleJson);
@@ -34,7 +35,7 @@ public class TestTypedRootValueSerialization extends BaseMapTest
     // [JACKSON-822]: ensure that type can be coerced
     public void testTypedArrays() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
 // Work-around when real solution not yet implemented:        
 //        mapper.enable(MapperFeature.USE_STATIC_TYPING);
         assertEquals("[{\"a\":3}]", com.fasterxml.jackson.VPackUtils.toJson( mapper.writerFor(Issue822Interface[].class).writeValueAsBytes(
@@ -44,7 +45,7 @@ public class TestTypedRootValueSerialization extends BaseMapTest
     // [JACKSON-822]: ensure that type can be coerced
     public void testTypedLists() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
      // Work-around when real solution not yet implemented:        
 //        mapper.enable(MapperFeature.USE_STATIC_TYPING);
 
@@ -57,7 +58,7 @@ public class TestTypedRootValueSerialization extends BaseMapTest
 
     public void testTypedMaps() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Map<String,Issue822Interface> map = new HashMap<String,Issue822Interface>();
         map.put("a", new Issue822Impl());
         String listJson = com.fasterxml.jackson.VPackUtils.toJson(mapper.writerFor(new TypeReference<Map<String,Issue822Interface>>(){})

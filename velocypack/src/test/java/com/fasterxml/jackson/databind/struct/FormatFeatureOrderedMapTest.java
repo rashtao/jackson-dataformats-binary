@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests for {@link JsonFormat} and specifically <code>JsonFormat.Feature</code>s.
@@ -22,7 +23,7 @@ public class FormatFeatureOrderedMapTest extends BaseMapTest
         }
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#1232]: allow forcing sorting on Map keys
     public void testOrderedMaps() throws Exception {

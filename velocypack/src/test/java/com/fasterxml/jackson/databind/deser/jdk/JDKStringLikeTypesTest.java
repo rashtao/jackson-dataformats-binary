@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.TokenBuffer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class JDKStringLikeTypesTest extends BaseMapTest
 {
@@ -88,7 +89,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
     
     public void testClass() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertSame(String.class, mapper.readValue(quote("java.lang.String"), Class.class));
 
         // then primitive types
@@ -115,7 +116,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
     public void testCurrency() throws IOException
     {
         Currency usd = Currency.getInstance("USD");
-        assertEquals(usd, new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(quote("USD"), Currency.class));
+        assertEquals(usd, new TestVelocypackMapper().readValue(quote("USD"), Currency.class));
     }
 
     public void testFile() throws Exception
@@ -227,7 +228,7 @@ public class JDKStringLikeTypesTest extends BaseMapTest
         assertEquals(StackTraceBean.NUM, bean.location.getLineNumber());
 
         // and then directly, iff registered
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(StackTraceElement.class, new MyStackTraceElementDeserializer());
         mapper.registerModule(module);

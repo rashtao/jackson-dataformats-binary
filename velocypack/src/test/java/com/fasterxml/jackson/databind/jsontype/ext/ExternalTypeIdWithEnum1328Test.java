@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ExternalTypeIdWithEnum1328Test extends BaseMapTest
 {
@@ -80,7 +81,7 @@ public class ExternalTypeIdWithEnum1328Test extends BaseMapTest
     }
 
     public void testExample() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writerWithDefaultPrettyPrinter()
                 .writeValueAsBytes(Arrays.asList(new AnimalAndType(AnimalType.Dog, new Dog()))));

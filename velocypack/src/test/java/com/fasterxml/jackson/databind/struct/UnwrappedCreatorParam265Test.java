@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class UnwrappedCreatorParam265Test extends BaseMapTest
 {
@@ -69,7 +70,7 @@ public class UnwrappedCreatorParam265Test extends BaseMapTest
     public void testUnwrappedWithUnnamedCreatorParam() throws Exception
     {
         JPersonWithoutName person = new JPersonWithoutName("MyName", new JAddress("main street", "springfield", "WA"));
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         // serialization should be fine as far as that goes
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(person));
 
@@ -87,7 +88,7 @@ public class UnwrappedCreatorParam265Test extends BaseMapTest
     public void testUnwrappedWithNamedCreatorParam() throws Exception
     {
         JPersonWithName person = new JPersonWithName("MyName", new JAddress("main street", "springfield", "WA"));
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         // serialization should be fine as far as that goes
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(person));
         try {

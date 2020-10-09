@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ExceptionSerializableTest1195 extends BaseMapTest
 {
@@ -19,7 +20,7 @@ public class ExceptionSerializableTest1195 extends BaseMapTest
         public List<ClassToRead> classesToRead;
     }
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testExceptionSerializabilitySimple() throws Exception
     {

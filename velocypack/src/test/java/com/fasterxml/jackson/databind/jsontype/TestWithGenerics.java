@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestWithGenerics extends BaseMapTest
 {
@@ -166,7 +167,7 @@ public class TestWithGenerics extends BaseMapTest
     
     public void testJackson387() throws Exception
     {
-        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper om = new TestVelocypackMapper();
         om.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.PROPERTY );
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL );
@@ -202,7 +203,7 @@ public class TestWithGenerics extends BaseMapTest
 
     public void testJackson430() throws Exception
     {
-        ObjectMapper om = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper om = new TestVelocypackMapper();
 //        om.getSerializationConfig().setSerializationInclusion( Inclusion.NON_NULL );
         om.setSerializerFactory( new CustomJsonSerializerFactory() );
         MyClass mc = new MyClass();

@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.convert;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests for {@link ObjectMapper#updateValue}.
@@ -17,7 +18,7 @@ public class UpdateValueTest extends BaseMapTest
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testMapUpdate() throws Exception
     {

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Unit test for [JACKSON-890]
 public class TestBackRefsWithPolymorphic extends BaseMapTest
@@ -205,7 +206,7 @@ public class TestBackRefsWithPolymorphic extends BaseMapTest
             +"\"p2name\":{\"@class\":\""+CLASS_NAME+"$StringPropertyImpl\",\"id\":0,"
             +"\"name\":\"p2name\",\"value\":\"p2value\"}}}";
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testDeserialize() throws IOException
     {

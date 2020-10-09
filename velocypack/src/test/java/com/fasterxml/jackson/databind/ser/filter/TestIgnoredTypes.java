@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test for type-based ignoral, both via annotations (<code>JsonIgnoreType</code>)
@@ -82,7 +83,7 @@ public class TestIgnoredTypes extends BaseMapTest
     public void testSingleWithMixins() throws Exception {
         SimpleModule module = new SimpleModule();
         module.setMixInAnnotation(Person.class, PersonMixin.class);
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(module);
         PersonWrapper input = new PersonWrapper();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
@@ -92,7 +93,7 @@ public class TestIgnoredTypes extends BaseMapTest
     public void testListWithMixins() throws Exception {
         SimpleModule module = new SimpleModule();
         module.setMixInAnnotation(Person.class, PersonMixin.class);
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(module);
         List<Person> persons = new ArrayList<Person>();
         persons.add(new Person("Bob"));

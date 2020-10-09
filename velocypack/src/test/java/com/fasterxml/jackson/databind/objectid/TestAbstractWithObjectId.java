@@ -54,7 +54,7 @@ public class TestAbstractWithObjectId extends BaseMapTest
         myList.add(two);
 
         // make an object mapper that will add class info in so deserialisation works
-        ObjectMapper om = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper om = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL, "@class")
                 .build();

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestDefaultForLists
     extends BaseMapTest
@@ -118,7 +119,7 @@ public class TestDefaultForLists
     
     public void testJackson628() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance, DefaultTyping.NON_FINAL);
         ArrayList<Foo> data = new ArrayList<Foo>();
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(data));
@@ -128,7 +129,7 @@ public class TestDefaultForLists
 
     public void testJackson667() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);

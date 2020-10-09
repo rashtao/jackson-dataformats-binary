@@ -5,6 +5,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestKeyDeserializers extends BaseMapTest
 {
@@ -31,7 +32,7 @@ public class TestKeyDeserializers extends BaseMapTest
 
     public void testKeyDeserializers() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule mod = new SimpleModule("test", Version.unknownVersion());
         mod.addKeyDeserializer(Foo.class, new FooKeyDeserializer());
         mapper.registerModule(mod);

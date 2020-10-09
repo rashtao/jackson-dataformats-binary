@@ -7,6 +7,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests to verify implementation of [databind#540]; also for
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.databind.*;
  */
 public class EmptyArrayAsNullTest extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     private final ObjectReader DEFAULT_READER = MAPPER.reader();
     private final ObjectReader READER_WITH_ARRAYS = DEFAULT_READER
             .with(DeserializationFeature.ACCEPT_EMPTY_ARRAY_AS_NULL_OBJECT);

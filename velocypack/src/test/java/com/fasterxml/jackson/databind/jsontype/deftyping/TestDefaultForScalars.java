@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.impl.StdTypeResolverBuilder;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests to verify that Java/JSON scalar values (non-structured values)
@@ -128,7 +129,7 @@ public class TestDefaultForScalars
         mapData.put("longAsField", data);
 
         // Configure Jackson to preserve types
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         StdTypeResolverBuilder resolver = new StdTypeResolverBuilder();
         resolver.init(JsonTypeInfo.Id.CLASS, null);
         resolver.inclusion(JsonTypeInfo.As.PROPERTY);

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestPOJOAsArray extends BaseMapTest
 {
@@ -132,7 +133,7 @@ public class TestPOJOAsArray extends BaseMapTest
     /*****************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
     
     /**
      * Test that verifies that property annotation works
@@ -194,7 +195,7 @@ public class TestPOJOAsArray extends BaseMapTest
      */
 
     public void testSerializeAsArrayWithSingleProperty() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new SingleBean()));
         assertEquals("\"foo\"", json);
@@ -202,7 +203,7 @@ public class TestPOJOAsArray extends BaseMapTest
 
     public void testBeanAsArrayUnwrapped() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         SingleBean result = mapper.readValue("[\"foobar\"]", SingleBean.class);
         assertNotNull(result);
@@ -221,7 +222,7 @@ public class TestPOJOAsArray extends BaseMapTest
         assertEquals("{\"value\":{\"x\":1,\"y\":2}}", com.fasterxml.jackson.VPackUtils.toJson( MAPPER.writeValueAsBytes(new A())));
 
         // but override should change it:
-        ObjectMapper mapper2 = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper2 = new TestVelocypackMapper();
         mapper2.setAnnotationIntrospector(new ForceArraysIntrospector());
         assertEquals("[[1,2]]", com.fasterxml.jackson.VPackUtils.toJson( mapper2.writeValueAsBytes(new A())));
 
@@ -251,7 +252,7 @@ public class TestPOJOAsArray extends BaseMapTest
 
     public void testWithConfigOverrides() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(NonAnnotatedXY.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.ARRAY));
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new NonAnnotatedXY(2, 3)));

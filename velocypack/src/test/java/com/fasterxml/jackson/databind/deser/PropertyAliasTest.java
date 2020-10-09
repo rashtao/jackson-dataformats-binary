@@ -133,7 +133,7 @@ public class PropertyAliasTest extends BaseMapTest
     // [databind#2669]
     public void testCaseInsensitiveAliases() throws Exception {
 
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                 .build();
 

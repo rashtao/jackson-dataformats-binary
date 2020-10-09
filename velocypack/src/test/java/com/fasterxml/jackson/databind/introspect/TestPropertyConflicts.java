@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests verifying handling of potential and actual
@@ -125,7 +126,7 @@ public class TestPropertyConflicts extends BaseMapTest
     
     public void testInferredNameConflictsWithSetters() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setAnnotationIntrospector(new InferingIntrospector());
         Infernal inf = mapper.readValue(aposToQuotes("{'stuff':'Bob'}"), Infernal.class);
         assertNotNull(inf);

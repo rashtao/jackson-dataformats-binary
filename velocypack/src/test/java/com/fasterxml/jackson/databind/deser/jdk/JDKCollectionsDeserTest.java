@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests for special collection/map types via `java.util.Collections`
@@ -27,7 +28,7 @@ public class JDKCollectionsDeserTest extends BaseMapTest
     /**********************************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
     
     // And then a round-trip test for singleton collections
     public void testSingletonCollections() throws Exception

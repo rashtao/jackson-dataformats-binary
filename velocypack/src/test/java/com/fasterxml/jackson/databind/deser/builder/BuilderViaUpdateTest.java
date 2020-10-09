@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests to ensure that use of "updateValue()" will fail with builder-based deserializers.
@@ -48,7 +49,7 @@ public class BuilderViaUpdateTest extends BaseMapTest
     /*****************************************************
      */
 
-    private final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final static ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // Tests where result value is passed as thing to update
     public void testBuilderUpdateWithValue() throws Exception

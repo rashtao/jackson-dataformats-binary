@@ -6,11 +6,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.util.StdConverter;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestMapConversions
     extends com.fasterxml.jackson.databind.BaseMapTest
 {
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     enum AB { A, B; }
 
@@ -92,7 +93,7 @@ public class TestMapConversions
     public void testIssue287() throws Exception
     {
         // use local instance to ensure no caching affects it:
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         final Request request = new Request();
         final String retString = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(request));
         assertEquals("{\"hello\":{\"value\":1}}",retString);

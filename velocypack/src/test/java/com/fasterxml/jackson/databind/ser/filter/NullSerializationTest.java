@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class NullSerializationTest
     extends BaseMapTest
@@ -88,14 +89,14 @@ public class NullSerializationTest
     {
         DefaultSerializerProvider sp = new DefaultSerializerProvider.Impl();
         sp.setNullValueSerializer(new NullSerializer());
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setSerializerProvider(sp);
         assertEquals("\"foobar\"", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(null)));
     }
 
     public void testCustomNulls() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setSerializerProvider(new MyNullProvider());
         assertEquals("{\"name\":\"foobar\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Bean1())));
         assertEquals("{\"type\":null}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(new Bean2())));
@@ -113,7 +114,7 @@ public class NullSerializationTest
         // but then we can customize it:
         DefaultSerializerProvider prov = new MyNullProvider();
         prov.setNullValueSerializer(new NullSerializer());
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setSerializerProvider(prov);
         assertEquals("{\"a\":\"foobar\"}", com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(root)));
     }

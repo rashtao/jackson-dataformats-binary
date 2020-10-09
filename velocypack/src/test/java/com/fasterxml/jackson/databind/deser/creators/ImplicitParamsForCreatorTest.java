@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class ImplicitParamsForCreatorTest extends BaseMapTest
 {
@@ -39,7 +40,7 @@ public class ImplicitParamsForCreatorTest extends BaseMapTest
 
     public void testNonSingleArgCreator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setAnnotationIntrospector(new MyParamIntrospector());
         XY value = mapper.readValue(aposToQuotes("{'paramName0':1,'paramName1':2}"), XY.class);
         assertNotNull(value);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class BuilderAdvancedTest extends BaseMapTest
 {
@@ -50,7 +51,7 @@ public class BuilderAdvancedTest extends BaseMapTest
     
     public void testWithInjectable() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setInjectableValues(new InjectableValues.Std()
             .addValue(String.class, "stuffValue")
             );

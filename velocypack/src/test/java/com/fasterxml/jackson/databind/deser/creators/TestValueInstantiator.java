@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.fasterxml.jackson.databind.introspect.AnnotatedWithParams;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test custom value instantiators.
@@ -339,7 +340,7 @@ public class TestValueInstantiator extends BaseMapTest
     
     public void testCustomBeanInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyBean.class, new MyBeanInstantiator()));
         MyBean bean = mapper.readValue("{}", MyBean.class);
         assertNotNull(bean);
@@ -348,7 +349,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testCustomListInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyList.class, new MyListInstantiator()));
         MyList result = mapper.readValue("[]", MyList.class);
         assertNotNull(result);
@@ -358,7 +359,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testCustomMapInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyMap.class, new MyMapInstantiator()));
         MyMap result = mapper.readValue("{ \"a\":\"b\" }", MyMap.class);
         assertNotNull(result);
@@ -374,7 +375,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testDelegateBeanInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyBean.class, new MyDelegateBeanInstantiator()));
         MyBean bean = mapper.readValue("123", MyBean.class);
         assertNotNull(bean);
@@ -383,7 +384,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testDelegateListInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyList.class, new MyDelegateListInstantiator()));
         MyList result = mapper.readValue("123", MyList.class);
         assertNotNull(result);
@@ -393,7 +394,7 @@ public class TestValueInstantiator extends BaseMapTest
     
     public void testDelegateMapInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyMap.class, new MyDelegateMapInstantiator()));
         MyMap result = mapper.readValue("123", MyMap.class);
         assertNotNull(result);
@@ -418,7 +419,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testPropertyBasedBeanInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(CreatorBean.class,
                 new InstantiatorBase() {
                     @Override
@@ -445,7 +446,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testPropertyBasedMapInstantiator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MyMap.class, new CreatorMapInstantiator()));
         MyMap result = mapper.readValue("{\"name\":\"bob\", \"x\":\"y\"}", MyMap.class);
         assertNotNull(result);
@@ -462,7 +463,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testBeanFromString() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MysteryBean.class,
                 new InstantiatorBase() {
                     @Override
@@ -480,7 +481,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testBeanFromInt() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MysteryBean.class,
                 new InstantiatorBase() {
                     @Override
@@ -498,7 +499,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testBeanFromLong() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MysteryBean.class,
                 new InstantiatorBase() {
                     @Override
@@ -516,7 +517,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testBeanFromDouble() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MysteryBean.class,
                 new InstantiatorBase() {
                     @Override
@@ -534,7 +535,7 @@ public class TestValueInstantiator extends BaseMapTest
 
     public void testBeanFromBoolean() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(MysteryBean.class,
                 new InstantiatorBase() {
                     @Override
@@ -562,7 +563,7 @@ public class TestValueInstantiator extends BaseMapTest
      */
     public void testPolymorphicCreatorBean() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new MyModule(PolymorphicBeanBase.class, new PolymorphicBeanInstantiator()));
         String JSON = "{\"type\":"+quote(PolymorphicBean.class.getName())+",\"name\":\"Axel\"}";
         PolymorphicBeanBase result = mapper.readValue(JSON, PolymorphicBeanBase.class);

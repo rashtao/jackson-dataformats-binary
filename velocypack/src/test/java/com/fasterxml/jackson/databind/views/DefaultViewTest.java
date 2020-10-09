@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#507], supporting default views
 public class DefaultViewTest extends BaseMapTest
@@ -30,7 +31,7 @@ public class DefaultViewTest extends BaseMapTest
     /**********************************************************
      */    
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testDeserialization() throws IOException
     {

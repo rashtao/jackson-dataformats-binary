@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class FormatFeatureAcceptSingleTest extends BaseMapTest
 {
@@ -71,7 +72,7 @@ public class FormatFeatureAcceptSingleTest extends BaseMapTest
         public String Name;
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /*
     /**********************************************************
@@ -88,7 +89,7 @@ public class FormatFeatureAcceptSingleTest extends BaseMapTest
         assertEquals("first", result.values[0]);
 
         // and then without annotation, but with global override
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(String[].class).setFormat(JsonFormat.Value.empty()
                 .withFeature(JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY));
         StringArrayNotAnnoted result2 = mapper.readValue(json, StringArrayNotAnnoted.class);

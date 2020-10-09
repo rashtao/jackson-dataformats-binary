@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -121,7 +122,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testBeanUpdate() throws Exception
     {
@@ -191,7 +192,7 @@ public class TestUpdateViaObjectReader extends BaseMapTest
     // [databind#744]
     public void testIssue744() throws IOException
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule();
         module.addDeserializer(DataA.class, new DataADeserializer());
         mapper.registerModule(module);

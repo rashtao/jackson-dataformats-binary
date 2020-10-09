@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.deser.creators;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test(s) for [Issue#113], problems with polymorphic types, JsonCreator.
@@ -52,7 +53,7 @@ public class TestCreatorWithPolymorphic113 extends BaseMapTest
 
     public void testSubtypes() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String id = "nice dogy";
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new AnimalWrapper(new Dog(id))));
 //System.err.println("JSON = "+json);

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestJsonSerialize3 extends BaseMapTest
 {
@@ -35,7 +36,7 @@ public class TestJsonSerialize3 extends BaseMapTest
     
     public void testCustomContentSerializer() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         MyObject object = new MyObject();
         object.list = Arrays.asList("foo");
         String json = com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(object));

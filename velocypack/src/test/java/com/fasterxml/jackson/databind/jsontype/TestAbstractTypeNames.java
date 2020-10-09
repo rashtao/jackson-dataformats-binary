@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for checking how combination of interfaces, implementation
@@ -98,7 +99,7 @@ public class TestAbstractTypeNames  extends BaseMapTest
 
     public void testEmptyCollection() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         List<User>friends = new ArrayList<User>();
         friends.add(new DefaultUser("Joe Hildebrandt", null));
@@ -110,7 +111,7 @@ public class TestAbstractTypeNames  extends BaseMapTest
         /* 24-Feb-2011, tatu: For now let's simply require registration of
          *   concrete subtypes; can't think of a way to avoid that for now
          */
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         mapper.registerSubtypes(DefaultEmployee.class);
         mapper.registerSubtypes(DefaultUser.class);
         

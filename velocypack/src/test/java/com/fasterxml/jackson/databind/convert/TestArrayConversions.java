@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestArrayConversions
     extends com.fasterxml.jackson.databind.BaseMapTest
@@ -17,7 +18,7 @@ public class TestArrayConversions
     final static String OVERFLOW_MSG_INT = "out of range of int";
     final static String OVERFLOW_MSG_LONG = "out of range of long";
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testNullXform() throws Exception
     {

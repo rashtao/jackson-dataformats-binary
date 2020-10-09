@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#1807]
 public class MapDeserializerCachingTest extends BaseMapTest
@@ -33,7 +34,7 @@ public class MapDeserializerCachingTest extends BaseMapTest
      */
 
     public void testCachedSerialize() throws IOException {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         String json = aposToQuotes("{'data':{'1st':'onedata','2nd':'twodata'}}");
 
         // Do deserialization with non-annotated map property
@@ -41,7 +42,7 @@ public class MapDeserializerCachingTest extends BaseMapTest
         assertTrue(ignored.data.containsKey("1st"));
         assertTrue(ignored.data.containsKey("2nd"));
 
-//mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+//mapper = new com.fasterxml.jackson.dataformat.velocypack.TestVelocyPackMapper();
         
         MapHolder model2 = mapper.readValue(json, MapHolder.class);
         if (!model2.data.containsKey("1st (CUSTOM)")

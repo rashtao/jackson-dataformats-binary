@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.deser.std.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.util.StdConverter;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test to check that customizations work as expected.
@@ -361,7 +362,7 @@ public class TestCustomDeserializers
     // [Issue#87]: delegating deserializer
     public void testDelegating() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(Immutable.class,
             new StdDelegatingDeserializer<Immutable>(
@@ -385,7 +386,7 @@ public class TestCustomDeserializers
     // [databind#623]
     public void testJsonNodeDelegating() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(Immutable.class,
             new StdNodeBasedDeserializer<Immutable>(Immutable.class) {
@@ -415,7 +416,7 @@ public class TestCustomDeserializers
     // [#337]: convenience methods for custom deserializers to use
     public void testContextReadValue() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(Bean375Outer.class, new Bean375OuterDeserializer());
         module.addDeserializer(Bean375Inner.class, new Bean375InnerDeserializer());
@@ -443,7 +444,7 @@ public class TestCustomDeserializers
 
     public void testCustomStringDeser() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().registerModule(
+        ObjectMapper mapper = new TestVelocypackMapper().registerModule(
                 new SimpleModule().addDeserializer(String.class, new UCStringDeserializer())
                 );
         assertEquals("FOO", mapper.readValue(quote("foo"), String.class));
@@ -454,7 +455,7 @@ public class TestCustomDeserializers
 
     public void testDelegatingDeserializer() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().registerModule(
+        ObjectMapper mapper = new TestVelocypackMapper().registerModule(
                 new DelegatingModuleImpl());
         String str = mapper.readValue(quote("foo"), String.class);
         assertEquals("MY:foo", str);

@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.ext;
 import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.xml.sax.InputSource;
 import org.w3c.dom.*;
 
@@ -15,7 +16,7 @@ public class TestDOM extends com.fasterxml.jackson.databind.BaseMapTest
     final static String SIMPLE_XML_NS =
         "<root ns:attr='abc' xmlns:ns='http://foo' />";
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testSerializeSimpleNonNS() throws Exception
     {

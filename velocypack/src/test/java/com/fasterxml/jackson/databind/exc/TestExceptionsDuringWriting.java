@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.testutil.BrokenStringWriter;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit test for verifying that exceptions are properly handled (caught,
@@ -49,7 +50,7 @@ public class TestExceptionsDuringWriting
     public void testCatchAndRethrow()
         throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test-exceptions", Version.unknownVersion());
         module.addSerializer(Bean.class, new SerializerWithErrors());
         mapper.registerModule(module);
@@ -78,7 +79,7 @@ public class TestExceptionsDuringWriting
     public void testExceptionWithMapperAndGenerator()
         throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JsonFactory f = new MappingJsonFactory();
         BrokenStringWriter sw = new BrokenStringWriter("TEST");
         JsonGenerator jg = f.createGenerator(sw);

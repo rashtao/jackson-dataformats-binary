@@ -4,12 +4,12 @@ import java.io.*;
 import java.util.*;
 
 import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("resource")
 public class ReadValuesTest extends BaseMapTest
@@ -41,7 +41,7 @@ public class ReadValuesTest extends BaseMapTest
         ;
     }
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     private <T> MappingIterator<T> _iterator(ObjectReader r,
             String json,

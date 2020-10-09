@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.*;
 import com.fasterxml.jackson.databind.util.StdConverter;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#795]
 public class ConvertingAbstractSerializer795Test extends BaseMapTest
@@ -71,7 +72,7 @@ public class ConvertingAbstractSerializer795Test extends BaseMapTest
     /**********************************************************
      */
 
-    private static final ObjectMapper JSON_MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private static final ObjectMapper JSON_MAPPER = new TestVelocypackMapper();
 
     public void testAbstractTypeDeserialization() throws Exception {
         String test="{\"customField\": \"customString\"}";

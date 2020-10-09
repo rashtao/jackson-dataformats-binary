@@ -1,6 +1,7 @@
 package com.fasterxml.jackson.databind.introspect;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Tests for [databind#653]
 public class BeanNamingTest extends BaseMapTest
@@ -19,7 +20,7 @@ public class BeanNamingTest extends BaseMapTest
     
     public void testSimple() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertFalse(mapper.isEnabled(MapperFeature.USE_STD_BEAN_NAMING));
         assertEquals(aposToQuotes("{'url':'http://foo'}"), com.fasterxml.jackson.VPackUtils.toJson(
                 mapper.writeValueAsBytes(new URLBean())));

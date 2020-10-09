@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.node;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tries to verify that JsonNode-based trees
@@ -47,7 +48,7 @@ public class TestTreeDeserialization
     public void testReadFromString() throws Exception
     {
         String json = "{\"field\":\"{\\\"name\\\":\\\"John Smith\\\"}\"}";
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JsonNode jNode = mapper.readValue(json, JsonNode.class);
 
         String generated = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes( jNode));  //back slashes are gone

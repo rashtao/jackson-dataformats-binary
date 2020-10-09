@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.NoClass;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests related to specialized handling of "default implementation"
@@ -146,7 +147,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testDeserializationWithObject() throws Exception
     {
@@ -198,7 +199,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
     // [databind#148]
     public void testBadTypeAsNull() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE);
         Object ob = mapper.readValue("{}", MysteryPolymorphic.class);
         assertNull(ob);
@@ -249,7 +250,7 @@ public class TestPolymorphicWithDefaultImpl extends BaseMapTest
 
     public void testUnknownClassAsSubtype() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false);
         BaseWrapper w = mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes
                         ("{'value':{'clazz':'com.foobar.Nothing'}}")),

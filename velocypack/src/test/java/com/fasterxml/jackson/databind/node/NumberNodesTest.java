@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.arangodb.velocypack.VPackBuilder;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Basic tests for {@link JsonNode} implementations that
@@ -342,7 +342,7 @@ public class NumberNodesTest extends NodeTestBase
         n = BigIntegerNode.valueOf(maxLong);
         assertEquals(Long.MAX_VALUE, n.longValue());
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JsonNode n2 = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes(maxLong.toString()));
         assertEquals(Long.MAX_VALUE, n2.longValue());
 

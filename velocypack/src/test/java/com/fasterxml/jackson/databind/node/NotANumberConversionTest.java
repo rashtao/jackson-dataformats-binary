@@ -3,10 +3,11 @@ package com.fasterxml.jackson.databind.node;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class NotANumberConversionTest extends BaseMapTest
 {
-    private final ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper m = new TestVelocypackMapper();
     {
         m.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
     }

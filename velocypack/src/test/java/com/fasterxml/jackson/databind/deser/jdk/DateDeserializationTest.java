@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.OptBoolean;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class DateDeserializationTest
     extends BaseMapTest
@@ -494,7 +495,7 @@ public class DateDeserializationTest
 
     public void testCustom() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("PST"));
         mapper.setDateFormat(df);
@@ -628,7 +629,7 @@ public class DateDeserializationTest
     
         // Mapper with timezone GMT-2
         // note: must construct new one, not share
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         mapper.setTimeZone(TimeZone.getTimeZone("GMT-2"));
         Date dateGMT1 = mapper.readValue(json, Date.class);  // 1970-01-01T00:00:00.000-02:00
     
@@ -692,7 +693,7 @@ public class DateDeserializationTest
     
     public void testCalendarArrayUnwrap() throws Exception
     {
-        ObjectReader reader = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectReader reader = new TestVelocypackMapper()
                 .readerFor(CalendarBean.class)
                 .without(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         final String inputDate = "1972-12-28T00:00:00.000+0000";
@@ -747,7 +748,7 @@ public class DateDeserializationTest
 
     public void testLenientJDKDateTypesViaTypeOverride() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(java.util.Date.class)
             .setFormat(JsonFormat.Value.forLeniency(Boolean.FALSE));
         try {
@@ -770,7 +771,7 @@ public class DateDeserializationTest
         assertEquals(2, value.get(Calendar.DAY_OF_MONTH));
 
         // but not so if default leniency disabled
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setDefaultLeniency(false);
         try {
             mapper.readValue(JSON, java.util.Date.class);
@@ -782,7 +783,7 @@ public class DateDeserializationTest
         }
     
         // Unless we actually had per-type override too
-        mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        mapper = new TestVelocypackMapper();
         mapper.configOverride(Calendar.class)
             .setFormat(JsonFormat.Value.forLeniency(Boolean.TRUE));
         mapper.setDefaultLeniency(false);

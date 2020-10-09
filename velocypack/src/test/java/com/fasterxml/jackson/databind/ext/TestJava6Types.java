@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.NavigableSet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Tests to ensure that we can handle 1.6-only types, even if
@@ -14,7 +15,7 @@ public class TestJava6Types extends com.fasterxml.jackson.databind.BaseMapTest
     // for [databind#216]
     public void test16Types() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         Deque<?> dq = mapper.readValue("[1]", Deque.class);
         assertNotNull(dq);
         assertEquals(1, dq.size());

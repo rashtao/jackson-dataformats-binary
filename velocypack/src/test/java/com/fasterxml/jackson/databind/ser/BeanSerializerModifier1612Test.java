@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.BeanSerializerBuilder;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class BeanSerializerModifier1612Test extends BaseMapTest
 {
@@ -53,7 +51,7 @@ public class BeanSerializerModifier1612Test extends BaseMapTest
     {
         SimpleModule mod = new SimpleModule();
         mod.setSerializerModifier(new Modifier1612());
-        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper objectMapper = new TestVelocypackMapper()
                 .registerModule(mod);
         try {
             objectMapper.writeValueAsBytes(new Bean1612(0, 1, 2d));

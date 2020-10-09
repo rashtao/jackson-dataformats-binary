@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that feature requested
@@ -50,7 +51,7 @@ public class TestSetterlessProperties
     public void testSimpleSetterlessCollectionOk()
         throws Exception
     {
-        CollectionBean result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue
+        CollectionBean result = new TestVelocypackMapper().readValue
             ("{\"values\":[ \"abc\", \"def\" ]}", CollectionBean.class);
         List<String> l = result._values;
         assertEquals(2, l.size());
@@ -65,7 +66,7 @@ public class TestSetterlessProperties
     public void testSimpleSetterlessCollectionFailure()
         throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // by default, it should be enabled
         assertTrue(m.isEnabled(MapperFeature.USE_GETTERS_AS_SETTERS));
         m = jsonMapperBuilder()
@@ -89,7 +90,7 @@ public class TestSetterlessProperties
     public void testSimpleSetterlessMapOk()
         throws Exception
     {
-        MapBean result = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue
+        MapBean result = new TestVelocypackMapper().readValue
             ("{\"values\":{ \"a\": 15, \"b\" : -3 }}", MapBean.class);
         Map<String,Integer> m = result._values;
         assertEquals(2, m.size());

@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.convert;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying handling of update value on polymorphic
@@ -30,7 +31,7 @@ public class TestPolymorphicUpdateValue extends BaseMapTest
     /********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testPolymorphicTest() throws Exception
     {

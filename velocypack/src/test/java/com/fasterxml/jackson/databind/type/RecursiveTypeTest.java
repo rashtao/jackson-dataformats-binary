@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.type;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class RecursiveTypeTest extends BaseMapTest
 {
@@ -69,7 +70,7 @@ public class RecursiveTypeTest extends BaseMapTest
         public String type;
     }
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#938]
     public void testRecursivePair() throws Exception

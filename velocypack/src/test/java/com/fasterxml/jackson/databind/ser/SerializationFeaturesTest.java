@@ -1,12 +1,10 @@
 package com.fasterxml.jackson.databind.ser;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -45,7 +43,7 @@ public class SerializationFeaturesTest
     @SuppressWarnings("resource")
     public void testCloseCloseable() throws IOException
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // default should be disabled:
         CloseableBean bean = new CloseableBean(); com.fasterxml.jackson.VPackUtils.toJson(
         m.writeValueAsBytes(bean));
@@ -67,7 +65,7 @@ public class SerializationFeaturesTest
     public void testCharArrays() throws IOException
     {
         char[] chars = new char[] { 'a','b','c' };
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // default: serialize as Strings
         assertEquals(quote("abc"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(chars)));
         

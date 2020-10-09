@@ -6,6 +6,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite that tests use of {@link JsonCreator}
@@ -70,7 +71,7 @@ public class TestConstructFromMap
 
     public void testViaConstructor() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         ConstructorFromMap result = m.readValue
             (com.fasterxml.jackson.VPackUtils.toBytes("{ \"x\":1, \"y\" : \"abc\" }"), ConstructorFromMap.class);
         assertEquals(1, result._x);
@@ -79,7 +80,7 @@ public class TestConstructFromMap
 
     public void testViaFactory() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         FactoryFromPoint result = m.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{ \"x\" : 3, \"y\" : 4 }"), FactoryFromPoint.class);
         assertEquals(3, result._x);
         assertEquals(4, result._y);
@@ -87,7 +88,7 @@ public class TestConstructFromMap
 
     public void testViaFactoryUsingString() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         FactoryFromDecimalString result = m.readValue(com.fasterxml.jackson.VPackUtils.toBytes("\"12.57\""), FactoryFromDecimalString.class);
         assertNotNull(result);
         assertEquals(12, result._value);

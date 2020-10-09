@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
 // Unit tests for [databind#1868], [databind#1880], [databind#2265]
 public class UtilCollectionsTypesTest extends BaseMapTest
 {
-   private final ObjectMapper DEFAULT_MAPPER = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+   private final ObjectMapper DEFAULT_MAPPER = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
            .activateDefaultTyping(NoCheckSubTypeValidator.instance,
                    ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY)
            .build();

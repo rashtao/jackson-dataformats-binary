@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.jsontype.TypeIdResolver;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // for [databind#2221]
 public class ProblemHandlerUnknownTypeId2221Test extends BaseMapTest
@@ -84,7 +85,7 @@ public class ProblemHandlerUnknownTypeId2221Test extends BaseMapTest
 );
 
     public void testWithDeserializationProblemHandler() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance);
         mapper.addHandler(new DeserializationProblemHandler() {
             @Override
@@ -99,7 +100,7 @@ public class ProblemHandlerUnknownTypeId2221Test extends BaseMapTest
     }
 
     public void testWithDisabledFAIL_ON_INVALID_SUBTYPE() throws Exception {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
                 .disable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE)
                 .activateDefaultTyping(NoCheckSubTypeValidator.instance)
         ;

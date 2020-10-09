@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tests use of Annotations for
@@ -74,7 +75,7 @@ public class TestAnnotationInheritance
 
     public void testSimpleGetterInheritance() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new PojoSubclass());
         assertEquals(2, result.size());
         assertEquals(Integer.valueOf(7), result.get("length"));
@@ -83,7 +84,7 @@ public class TestAnnotationInheritance
 
     public void testSimpleGetterInterfaceImpl() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         Map<String,Object> result = writeAndMap(m, new PojoImpl());
         // should get 2 from interface, and one more from impl itself
         assertEquals(3, result.size());

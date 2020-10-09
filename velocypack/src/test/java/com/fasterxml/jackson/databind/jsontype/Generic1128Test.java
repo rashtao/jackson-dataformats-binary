@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class Generic1128Test extends BaseMapTest
 {
@@ -48,7 +49,7 @@ public class Generic1128Test extends BaseMapTest
 
     public void testIssue1128() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
 
         final DevMContainer devMContainer1 = new DevMContainer();

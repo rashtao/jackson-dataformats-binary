@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.jsontype;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.io.IOException;
 import java.util.*;
@@ -76,7 +77,7 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
      * deserialization will fail at complex type.
      */
     public void testDeSerFail() throws IOException {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
 
         MapContainer deserMapBad = createDeSerMapContainer(originMap, mapper);
         assertEquals(originMap, deserMapBad);
@@ -85,7 +86,7 @@ public class TestPolymorphicDeserialization676 extends BaseMapTest
     }
 
     public void testDeSerCorrect() throws IOException {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("1", 1);

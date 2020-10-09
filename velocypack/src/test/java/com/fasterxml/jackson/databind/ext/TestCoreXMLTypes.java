@@ -4,8 +4,8 @@ import javax.xml.datatype.*;
 import javax.xml.namespace.QName;
 
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.ext.CoreXMLDeserializers;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Core XML types (javax.xml) are considered "external" (or more precisely "optional")
@@ -46,7 +46,7 @@ public class TestCoreXMLTypes
         /* Due to [JACKSON-308], 1.6 will use configurable Date serialization;
          * and it defaults to using timestamp. So let's try couple of combinations.
          */
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         long timestamp = cal.toGregorianCalendar().getTimeInMillis();
         String numStr = String.valueOf(timestamp);
         assertEquals(numStr, com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(cal)));
@@ -97,7 +97,7 @@ public class TestCoreXMLTypes
     {
         QName qn = new QName("http://abc", "tag", "prefix");
         String qstr = qn.toString();
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertEquals("Should deserialize to equal QName (exp serialization: '"+qstr+"')",
                      qn, mapper.readValue(quote(qstr), QName.class));
     }
@@ -109,7 +109,7 @@ public class TestCoreXMLTypes
             (1974, 10, 10, 18, 15, 17, 123, 0);
         String exp = cal.toXMLFormat();
         assertEquals("Should deserialize to equal XMLGregorianCalendar ('"+exp+"')", cal,
-                new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(quote(exp), XMLGregorianCalendar.class));
+                new TestVelocypackMapper().readValue(quote(exp), XMLGregorianCalendar.class));
     }
 
     public void testDurationDeser() throws Exception
@@ -119,6 +119,6 @@ public class TestCoreXMLTypes
         Duration dur = dtf.newDurationDayTime(true, 27, 5, 15, 59);
         String exp = dur.toString();
         assertEquals("Should deserialize to equal Duration ('"+exp+"')", dur,
-                new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(quote(exp), Duration.class));
+                new TestVelocypackMapper().readValue(quote(exp), Duration.class));
     }
 }

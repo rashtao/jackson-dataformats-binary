@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +21,7 @@ import java.util.Set;
 
 public class ObjectReaderTest extends BaseMapTest
 {
-    final VelocypackMapper MAPPER = VelocypackMapper.builder().build();
+    final VelocypackMapper MAPPER = TestVelocypackMapper.testBuilder().build();
 
     static class POJO {
         public Map<String, Object> name;
@@ -344,7 +345,7 @@ public class ObjectReaderTest extends BaseMapTest
     // For [databind#2297]
     public void testUnknownFields() throws Exception
     {
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder().addHandler(new DeserializationProblemHandler() {
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder().addHandler(new DeserializationProblemHandler() {
             @Override
             public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser p, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException {
                 p.readValueAsTree();

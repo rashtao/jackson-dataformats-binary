@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class MapDeserializationTest
@@ -88,7 +89,7 @@ public class MapDeserializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testBigUntypedMap() throws Exception
     {
@@ -189,7 +190,7 @@ public class MapDeserializationTest
     // [JACKSON-620]: allow "" to mean 'null' for Maps
     public void testFromEmptyString() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         Map<?,?> result = m.readValue(quote(""), Map.class);
         assertNull(result);
@@ -334,7 +335,7 @@ public class MapDeserializationTest
 
     public void testEnumPolymorphicSerializationTest() throws Exception 
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         List<ITestType> testTypesList = new ArrayList<ITestType>();
         testTypesList.add(ConcreteType.ONE);
         testTypesList.add(ConcreteType.TWO);

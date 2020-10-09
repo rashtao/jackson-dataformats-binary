@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Test cases to verify that it is possible to define deserializers
@@ -182,7 +182,7 @@ public class TestContextualDeserialization extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper ANNOTATED_CTXT_MAPPER = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+    private final ObjectMapper ANNOTATED_CTXT_MAPPER = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
             .addModule(new SimpleModule("test", Version.unknownVersion())
                     .addDeserializer(StringValue.class, new AnnotatedContextualDeserializer()
             ))
@@ -190,7 +190,7 @@ public class TestContextualDeserialization extends BaseMapTest
     
     public void testSimple() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         SimpleModule module = new SimpleModule("test", Version.unknownVersion());
         module.addDeserializer(StringValue.class, new MyContextualDeserializer());
         mapper.registerModule(module);
@@ -290,7 +290,7 @@ public class TestContextualDeserialization extends BaseMapTest
 
     // for [databind#165]
     public void testContextualType() throws Exception {
-        GenericBean bean = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper().readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'stuff':{'1':'b'}}")),
+        GenericBean bean = new TestVelocypackMapper().readValue(com.fasterxml.jackson.VPackUtils.toBytes(aposToQuotes("{'stuff':{'1':'b'}}")),
                 GenericBean.class);
         assertNotNull(bean.stuff);
         assertEquals(1, bean.stuff.size());

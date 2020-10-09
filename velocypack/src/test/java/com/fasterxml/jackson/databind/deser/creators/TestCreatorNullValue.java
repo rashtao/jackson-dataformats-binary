@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestCreatorNullValue extends BaseMapTest
 {
@@ -95,7 +96,7 @@ public class TestCreatorNullValue extends BaseMapTest
      */
 
     public void testUsesDeserializersNullValue() throws Exception {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.registerModule(new TestModule());
         Container container = mapper.readValue("{}", Container.class);
         assertEquals(NULL_CONTAINED, container.contained);
@@ -103,7 +104,7 @@ public class TestCreatorNullValue extends BaseMapTest
 
     // [databind#597]: ensure that a useful exception is thrown
     public void testCreatorReturningNull() throws IOException {
-        ObjectMapper objectMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper objectMapper = new TestVelocypackMapper();
         String json = "{ \"type\" : \"     \", \"id\" : \"000c0ffb-a0d6-4d2e-a379-4aeaaf283599\" }";
         try {
             objectMapper.readValue(json, JsonEntity.class);

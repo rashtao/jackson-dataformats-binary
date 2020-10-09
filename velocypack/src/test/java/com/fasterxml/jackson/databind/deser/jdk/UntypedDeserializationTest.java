@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying "raw" (or "untyped") data binding from JSON to JDK objects;
@@ -127,7 +128,7 @@ public class UntypedDeserializationTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     @SuppressWarnings("unchecked")
     public void testSampleDoc() throws Exception
@@ -227,7 +228,7 @@ public class UntypedDeserializationTest
         SimpleModule m = new SimpleModule("test-module");
         m.addDeserializer(String.class, new UCStringDeserializer());
         m.addDeserializer(Number.class, new CustomNumberDeserializer(13));
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
             .registerModule(m);
 
         Object ob = mapper.readValue("{\"a\":\"b\", \"nr\":1 }", Object.class);
@@ -248,7 +249,7 @@ public class UntypedDeserializationTest
     {
         SimpleModule m = new SimpleModule("test-module");
         m.addDeserializer(String.class, new UCStringDeserializer());
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
             .registerModule(m);
 
         // Also: since this is now non-vanilla variant, try more alternatives
@@ -303,7 +304,7 @@ public class UntypedDeserializationTest
     {
         SimpleModule m = new SimpleModule("test-module");
         m.addDeserializer(List.class, new ListDeserializer());
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
             .registerModule(m);
 
         // And then list...
@@ -320,7 +321,7 @@ public class UntypedDeserializationTest
     {
         SimpleModule m = new SimpleModule("test-module");
         m.addDeserializer(Map.class, new YMapDeserializer());
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        final ObjectMapper mapper = new TestVelocypackMapper()
             .registerModule(m);
 
         // And then list...

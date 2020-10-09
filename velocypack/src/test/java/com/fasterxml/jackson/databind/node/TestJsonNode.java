@@ -1,12 +1,10 @@
 package com.fasterxml.jackson.databind.node;
 
-import com.arangodb.velocypack.VPackSlice;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
-import com.fasterxml.jackson.databind.util.RawValue;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.util.Comparator;
 
@@ -170,7 +168,7 @@ public class TestJsonNode extends NodeTestBase
     // [databind#793]
     public void testArrayWithDefaultTyping() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper mapper = new TestVelocypackMapper()
             .activateDefaultTyping(NoCheckSubTypeValidator.instance);
 
         JsonNode array = mapper.readTree(com.fasterxml.jackson.VPackUtils.toBytes("[ 1, 2 ]"));

@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.Array;
 import java.util.List;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Assert;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -118,7 +119,7 @@ public class JDKScalarsTest
         public Void value;
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /*
     /**********************************************************
@@ -282,7 +283,7 @@ public class JDKScalarsTest
         assertEquals(0, array[0]);
         
         // [databind#381]
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         try {
             mapper.readValue("{\"v\":[3]}", IntBean.class);
@@ -345,7 +346,7 @@ public class JDKScalarsTest
         assertEquals(0, array[0]);
         
         // [databind#381]
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         try {
             mapper.readValue(com.fasterxml.jackson.VPackUtils.toBytes("{\"v\":[3]}"), LongBean.class);
@@ -466,7 +467,7 @@ public class JDKScalarsTest
 
     public void testDoubleAsArray() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.disable(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS);
         final double value = 0.016;
         try {

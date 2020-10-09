@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.deser.creators;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class DelegatingExternalProperty1003Test extends BaseMapTest
 {
@@ -44,7 +45,7 @@ public class DelegatingExternalProperty1003Test extends BaseMapTest
 
     public void testExtrnalPropertyDelegatingCreator() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
 
         final String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new HeroBattle(new Superman())));
 

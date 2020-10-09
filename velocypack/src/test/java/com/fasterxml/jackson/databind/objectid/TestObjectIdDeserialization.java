@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.deser.UnresolvedForwardReference;
 import com.fasterxml.jackson.databind.deser.UnresolvedId;
 import com.fasterxml.jackson.databind.objectid.TestObjectId.Company;
 import com.fasterxml.jackson.databind.objectid.TestObjectId.Employee;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit test to verify handling of Object Id deserialization
@@ -188,7 +189,7 @@ public class TestObjectIdDeserialization extends BaseMapTest
     /*****************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     private final static String EXP_SIMPLE_INT_CLASS = "{\"id\":1,\"value\":13,\"next\":1}";
 

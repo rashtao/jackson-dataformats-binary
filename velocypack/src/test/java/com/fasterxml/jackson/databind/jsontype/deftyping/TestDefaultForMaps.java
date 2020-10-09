@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeResolverBuilder;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeNameIdResolver;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestDefaultForMaps 
     extends BaseMapTest
@@ -71,7 +72,7 @@ public class TestDefaultForMaps
     
     public void testJackson428() throws Exception
     {
-        ObjectMapper serMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper serMapper = new TestVelocypackMapper();
 
         TypeResolverBuilder<?> serializerTyper = ObjectMapper.DefaultTypeResolverBuilder.construct(
                 ObjectMapper.DefaultTyping.NON_FINAL, serMapper.getPolymorphicTypeValidator());
@@ -88,7 +89,7 @@ public class TestDefaultForMaps
         String json = com.fasterxml.jackson.VPackUtils.toJson( serMapper.writeValueAsBytes(holder));
 
         // Then deserialize: need separate mapper to initialize type id resolver appropriately
-        ObjectMapper deserMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper deserMapper = new TestVelocypackMapper();
         TypeResolverBuilder<?> deserializerTyper = ObjectMapper.DefaultTypeResolverBuilder.construct(
                 ObjectMapper.DefaultTyping.NON_FINAL, serMapper.getPolymorphicTypeValidator());
 
@@ -117,14 +118,14 @@ public class TestDefaultForMaps
         subtypes.add(new NamedType(MapHolder.class, "mapHolder"));
         subtypes.add(new NamedType(ArrayList.class, "AList"));
         subtypes.add(new NamedType(HashMap.class, "HMap"));
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         return TypeNameIdResolver.construct(mapper.getDeserializationConfig(),
                 TypeFactory.defaultInstance().constructType(Object.class), subtypes, forSerialization, !forSerialization);
     }
 
     public void testList() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, JsonTypeInfo.As.PROPERTY);
         ItemList child = new ItemList();
@@ -141,7 +142,7 @@ public class TestDefaultForMaps
 
     public void testMap() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.activateDefaultTyping(NoCheckSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE, JsonTypeInfo.As.PROPERTY);
         ItemMap child = new ItemMap();

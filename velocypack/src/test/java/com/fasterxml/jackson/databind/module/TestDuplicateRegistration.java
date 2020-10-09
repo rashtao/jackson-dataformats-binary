@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.module;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestDuplicateRegistration extends BaseMapTest
 {
@@ -31,7 +32,7 @@ public class TestDuplicateRegistration extends BaseMapTest
     public void testDuplicateRegistration() throws Exception
     {
         // by default, duplicate registration should be prevented
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         assertTrue(mapper.isEnabled(MapperFeature.IGNORE_DUPLICATE_MODULE_REGISTRATIONS));
         MyModule module = new MyModule();
         mapper.registerModule(module);

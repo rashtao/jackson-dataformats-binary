@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // For [databind#1501], [databind#1502], [databind#1503]; mostly to
 // test that for non-static inner classes constructors are ignored
@@ -52,7 +53,7 @@ public class InnerClassCreatorTest extends BaseMapTest
         }
     }
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     {
         MAPPER.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }

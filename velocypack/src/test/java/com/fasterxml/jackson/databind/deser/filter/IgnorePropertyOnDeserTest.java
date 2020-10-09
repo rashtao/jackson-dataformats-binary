@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class IgnorePropertyOnDeserTest extends BaseMapTest
 {
@@ -67,7 +68,7 @@ public class IgnorePropertyOnDeserTest extends BaseMapTest
 
     public void testIgnoreViaConfigOverride1217() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Point.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("y"));
         Point p = mapper.readValue(aposToQuotes("{'x':1,'y':2}"), Point.class);
@@ -79,7 +80,7 @@ public class IgnorePropertyOnDeserTest extends BaseMapTest
     // [databind#1595]
     public void testIgnoreGetterNotSetter1595() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Simple1595 config = new Simple1595();
         config.setId(123);
         config.setName("jack");

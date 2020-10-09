@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class IgnorePropsForSerTest
     extends BaseMapTest
@@ -143,7 +144,7 @@ public class IgnorePropsForSerTest
 
     public void testIgnoreViaConfigOverride() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Point.class)
             .setIgnorals(JsonIgnoreProperties.Value.forIgnoredProperties("x"));
         assertEquals("{\"y\":3}", com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(new Point(2, 3))));

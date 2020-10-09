@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.fasterxml.jackson.databind.introspect.TestNamingStrategyCustom.PersonBean;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests to verify functioning of standard {@link PropertyNamingStrategy}
@@ -178,7 +179,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void setUp() throws Exception
     {
         super.setUp();
-        _lcWithUndescoreMapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        _lcWithUndescoreMapper = new TestVelocypackMapper();
         _lcWithUndescoreMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
     }
     
@@ -282,7 +283,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     // [databind#428]
     public void testIssue428PascalWithOverrides() throws Exception
     {
-        String json = com.fasterxml.jackson.VPackUtils.toJson( new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        String json = com.fasterxml.jackson.VPackUtils.toJson( new TestVelocypackMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE)
                 .writeValueAsBytes(new Bean428()));
         if (!json.contains(quote("fooBar"))) {
@@ -329,7 +330,7 @@ public class TestNamingStrategyStd extends BaseMapTest
     public void testSimpleKebabCase() throws Exception
     {
         final FirstNameBean input = new FirstNameBean("Bob");
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper m = new TestVelocypackMapper()
                 .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
         assertEquals(aposToQuotes("{'first-name':'Bob'}"), com.fasterxml.jackson.VPackUtils.toJson( m.writeValueAsBytes(input)));
@@ -383,7 +384,7 @@ public class TestNamingStrategyStd extends BaseMapTest
      */
     public void testNamingWithObjectNode() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper()
+        ObjectMapper m = new TestVelocypackMapper()
             .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CASE);
         ClassWithObjectNodeField result =
             m.readValue(

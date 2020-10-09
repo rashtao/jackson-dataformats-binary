@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that types that serialize as JSON Arrays
@@ -70,7 +71,7 @@ public class TestTypedArraySerialization
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testListWithPolymorphic() throws Exception
     {
@@ -126,7 +127,7 @@ public class TestTypedArraySerialization
 
     public void testIntArray() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.addMixIn(int[].class, WrapperMixIn.class);
         int[] input = new int[] { 1, 2, 3 };
         String clsName = int[].class.getName();

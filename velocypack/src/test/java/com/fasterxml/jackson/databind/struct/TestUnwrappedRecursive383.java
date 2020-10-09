@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.struct;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 // Problem with recursive definition of unwrapping
 public class TestUnwrappedRecursive383 extends BaseMapTest
@@ -20,7 +21,7 @@ public class TestUnwrappedRecursive383 extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testRecursiveUsage() throws Exception
     {

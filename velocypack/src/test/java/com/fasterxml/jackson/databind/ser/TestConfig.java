@@ -1,14 +1,13 @@
 package com.fasterxml.jackson.databind.ser;
 
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.introspect.ClassIntrospector;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for checking handling of SerializationConfig.
@@ -48,7 +47,7 @@ public class TestConfig
     /**********************************************************
      */
 
-    final static ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final static ObjectMapper MAPPER = new TestVelocypackMapper();
 
     /* Test to verify that we don't overflow number of features; if we
      * hit the limit, need to change implementation -- this test just
@@ -101,7 +100,7 @@ public class TestConfig
 
     public void testMisc()
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setDateFormat(null); // just to execute the code path
         assertNotNull(m.getSerializationConfig().toString()); // ditto
     }
@@ -125,7 +124,7 @@ public class TestConfig
      */
     public void testProviderConfig() throws Exception   
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         DefaultSerializerProvider prov = (DefaultSerializerProvider) mapper.getSerializerProvider();
         assertEquals(0, prov.cachedSerializersCount());
         // and then should get one constructed for:
@@ -158,7 +157,7 @@ public class TestConfig
 
     public void testDateFormatConfig() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         TimeZone tz1 = TimeZone.getTimeZone("America/Los_Angeles");
         TimeZone tz2 = TimeZone.getTimeZone("Central Standard Time");
 

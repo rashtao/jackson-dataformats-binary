@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.ser;
 import com.fasterxml.jackson.core.Base64Variants;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.text.DecimalFormat;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertArrayEquals;
 public class TestSimpleTypes
     extends BaseMapTest
 {
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testBoolean() throws Exception
     {

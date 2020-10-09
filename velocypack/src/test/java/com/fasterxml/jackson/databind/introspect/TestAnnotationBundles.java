@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyName;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /* Tests mostly for [JACKSON-754]: ability to create "annotation bundles"
  */
@@ -115,7 +116,7 @@ public class TestAnnotationBundles extends com.fasterxml.jackson.databind.BaseMa
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testKeepAnnotationBundle() throws Exception
     {

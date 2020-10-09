@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Testing for NPE due to race condition.
@@ -75,7 +76,7 @@ public class TestConcurrency extends BaseMapTest
         final String JSON = "{\"value\":42}";
         
         for (int i = 0; i < 5; ++i) {
-            final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+            final ObjectMapper mapper = new TestVelocypackMapper();
             Runnable r = new Runnable() {
                 @Override
                 public void run() {

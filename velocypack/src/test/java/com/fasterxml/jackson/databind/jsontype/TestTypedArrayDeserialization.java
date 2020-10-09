@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestTypedArrayDeserialization
     extends BaseMapTest
@@ -47,7 +48,7 @@ public class TestTypedArrayDeserialization
     
     public void testIntList() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // uses WRAPPER_OBJECT inclusion
         String JSON = "{\""+TypedListAsWrapper.class.getName()+"\":[4,5, 6]}";
         JavaType type = TypeFactory.defaultInstance().constructCollectionType(TypedListAsWrapper.class, Integer.class);        
@@ -66,7 +67,7 @@ public class TestTypedArrayDeserialization
      */
     public void testBooleanListAsProp() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // tries to use PROPERTY inclusion; but for ARRAYS (and scalars) will become ARRAY_WRAPPER
         String JSON = "[\""+TypedListAsProp.class.getName()+"\",[true, false]]";
         JavaType type = TypeFactory.defaultInstance().constructCollectionType(TypedListAsProp.class, Boolean.class);        
@@ -79,7 +80,7 @@ public class TestTypedArrayDeserialization
 
     public void testLongListAsWrapper() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // uses OBJECT_ARRAY, works just fine
         
         String JSON = "{\""+TypedListAsWrapper.class.getName()+"\":[1, 3]}";
@@ -102,7 +103,7 @@ public class TestTypedArrayDeserialization
 
     public void testLongArray() throws Exception
     {
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         // use class name, WRAPPER_OBJECT
         m.addMixIn(long[].class, WrapperMixIn.class);
         String JSON = "{\""+long[].class.getName()+"\":[5, 6, 7]}";

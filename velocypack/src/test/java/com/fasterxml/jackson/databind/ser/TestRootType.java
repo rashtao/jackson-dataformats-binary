@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying functioning of [JACKSON-195], ability to
@@ -70,7 +71,7 @@ public class TestRootType
     /**********************************************************
      */
 
-    final ObjectMapper WRAP_ROOT_MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper WRAP_ROOT_MAPPER = new TestVelocypackMapper();
     {
         WRAP_ROOT_MAPPER.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
     }

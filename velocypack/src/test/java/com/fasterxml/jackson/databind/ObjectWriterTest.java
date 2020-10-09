@@ -3,7 +3,6 @@ package com.fasterxml.jackson.databind;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,6 +12,7 @@ import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import static com.fasterxml.jackson.VPackUtils.toJson;
 
@@ -35,7 +35,7 @@ public class ObjectWriterTest
         }
     }
 
-    final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
     static class PolyBase {

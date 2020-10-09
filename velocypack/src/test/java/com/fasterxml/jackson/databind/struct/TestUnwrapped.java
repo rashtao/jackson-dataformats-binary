@@ -3,6 +3,7 @@ package com.fasterxml.jackson.databind.struct;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * Unit tests for verifying that basic {@link JsonUnwrapped} annotation
@@ -145,7 +146,7 @@ public class TestUnwrapped extends BaseMapTest
     /**********************************************************
      */
 
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testSimpleUnwrappingSerialize() throws Exception {
         assertEquals("{\"name\":\"Tatu\",\"x\":1,\"y\":2}", com.fasterxml.jackson.VPackUtils.toJson(

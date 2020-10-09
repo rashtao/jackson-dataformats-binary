@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
@@ -65,7 +66,7 @@ public class DateDeserializationTZTest
         // Create an ObjectMapper with its timezone set to something other than the default (UTC).
         // This way we can verify that serialization and deserialization actually consider the time
         // zone set on the mapper.
-        ObjectMapper m = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper m = new TestVelocypackMapper();
         m.setTimeZone(TimeZone.getTimeZone(LOCAL_TZ));
         MAPPER = m;
         
@@ -449,7 +450,7 @@ public class DateDeserializationTZTest
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss");
             df.setTimeZone( TimeZone.getTimeZone("GMT+4") );    // TZ different from mapper's default
             
-            ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+            ObjectMapper mapper = new TestVelocypackMapper();
             mapper.setTimeZone( TimeZone.getTimeZone(LOCAL_TZ) );
             mapper.setDateFormat(df);
             
@@ -465,7 +466,7 @@ public class DateDeserializationTZTest
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ss");
             df.setTimeZone( TimeZone.getTimeZone("GMT+4") );    // TZ different from mapper's default
             
-            ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+            ObjectMapper mapper = new TestVelocypackMapper();
             mapper.setDateFormat(df);
             
             // FIXME mapper's default TZ should have been used
@@ -480,7 +481,7 @@ public class DateDeserializationTZTest
      */
     public void testDateUtil_customDateFormat_withTZ() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'X'HH:mm:ssZ");
         df.setTimeZone(TimeZone.getTimeZone("GMT+4"));    // use a timezone different than the ObjectMapper and the system default
         mapper.setDateFormat(df);

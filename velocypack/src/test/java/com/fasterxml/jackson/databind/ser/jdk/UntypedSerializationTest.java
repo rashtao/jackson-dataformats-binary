@@ -5,6 +5,7 @@ import java.util.*;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 /**
  * This unit test suite tries verify simplest aspects of
@@ -26,7 +27,7 @@ public class UntypedSerializationTest
         doc.add(struct);
         doc.add(Boolean.FALSE);
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         JsonFactory f =  new JsonFactory();
 
         // loop more than once, just to ensure caching works ok (during second round)
@@ -74,7 +75,7 @@ public class UntypedSerializationTest
         doc.put("int", Integer.valueOf(137));
         doc.put("foo bar", Long.valueOf(1234567890L));
 
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         for (int i = 0; i < 3; ++i) {
             String str = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(doc));
             JsonParser jp = f.createParser(str);

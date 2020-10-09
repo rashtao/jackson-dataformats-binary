@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class IgnoredCreatorProperty1572Test extends BaseMapTest
 {
@@ -58,7 +59,7 @@ public class IgnoredCreatorProperty1572Test extends BaseMapTest
     // [databind#1572]
     public void testIgnoredCtorParam() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         mapper.setAnnotationIntrospector(new ImplicitNames());
         String JSON = aposToQuotes("{'innerTest': {\n"
                 +"'str':'str',\n"

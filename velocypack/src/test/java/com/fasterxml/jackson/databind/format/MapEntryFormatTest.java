@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class MapEntryFormatTest extends BaseMapTest
 {
@@ -169,7 +170,7 @@ public class MapEntryFormatTest extends BaseMapTest
     // [databind#1895]
     public void testDefaultShapeOverride() throws Exception
     {
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         mapper.configOverride(Map.Entry.class)
             .setFormat(JsonFormat.Value.forShape(JsonFormat.Shape.OBJECT));
         Map.Entry<String,String> input = new BeanWithMapEntry("foo", "bar").entry;

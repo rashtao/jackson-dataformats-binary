@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.deser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestInnerClass extends BaseMapTest
 {
@@ -35,7 +36,7 @@ public class TestInnerClass extends BaseMapTest
     public void testSimpleNonStaticInner() throws Exception
     {
         // Let's actually verify by first serializing, then deserializing back
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Dog input = new Dog("Smurf", true);
         String json = com.fasterxml.jackson.VPackUtils.toJson( mapper.writeValueAsBytes(input));
         Dog output = mapper.readValue(json, Dog.class);

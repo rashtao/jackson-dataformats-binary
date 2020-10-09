@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.BaseMapTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ObjectIdReordering1388Test extends BaseMapTest
 
     public void testDeserializationFinalClassJSOG() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
         final UUID id = UUID.fromString("a59aa02c-fe3c-43f8-9b5a-5fe01878a818");
         final NamedThing thing = new NamedThing(id, "Hello");
 

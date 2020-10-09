@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.testutil.NoCheckSubTypeValidator;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 @SuppressWarnings("serial")
 public class EnumMapDeserializationTest extends BaseMapTest
@@ -100,7 +100,7 @@ public class EnumMapDeserializationTest extends BaseMapTest
     /**********************************************************
      */
 
-    protected final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    protected final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     public void testEnumMaps() throws Exception
     {
@@ -176,14 +176,14 @@ public class EnumMapDeserializationTest extends BaseMapTest
         enumMap.put(Enum1859.B, "stuff");
         Pojo1859 input = new Pojo1859(enumMap);
 
-        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.builder()
+        ObjectMapper mapper = com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper.testBuilder()
                 .activateDefaultTypingAsProperty(NoCheckSubTypeValidator.instance,
                         ObjectMapper.DefaultTyping.NON_FINAL, "@type")
                 .build();
 
         // 05-Mar-2018, tatu: Original issue had this; should not make difference:
          /*
-        TypeResolverBuilder<?> mapTyperAsPropertyType = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL);
+        TypeResolverBuilder<?> mapTyperAsPropertyType = new com.fasterxml.jackson.dataformat.velocypack.TestVelocyPackMapper.DefaultTypeResolverBuilder(ObjectMapper.DefaultTyping.NON_FINAL);
         mapTyperAsPropertyType.init(JsonTypeInfo.Id.CLASS, null);
         mapTyperAsPropertyType.inclusion(JsonTypeInfo.As.PROPERTY);
         mapper.setDefaultTyping(mapTyperAsPropertyType);

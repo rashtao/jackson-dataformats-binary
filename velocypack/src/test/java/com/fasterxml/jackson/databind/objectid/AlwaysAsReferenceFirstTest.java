@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.objectid;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class AlwaysAsReferenceFirstTest extends BaseMapTest
 {
@@ -60,7 +61,7 @@ public class AlwaysAsReferenceFirstTest extends BaseMapTest
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
 
     // [databind#1255]
     public void testIssue1255() throws Exception

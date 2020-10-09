@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.*;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class BuilderInfiniteLoop1978Test extends BaseMapTest
 {
@@ -88,7 +89,7 @@ public class BuilderInfiniteLoop1978Test extends BaseMapTest
     public void testInfiniteLoop1978() throws Exception
     {
         String json = "{\"sub.el1\":34,\"sub.el2\":\"some text\"}";
-        ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        ObjectMapper mapper = new TestVelocypackMapper();
         Bean bean = mapper.readValue( json, Bean.class );
         assertNotNull(bean);
     }

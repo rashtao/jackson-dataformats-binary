@@ -2,6 +2,7 @@ package com.fasterxml.jackson.databind.type;
 
 import static org.mockito.Mockito.*;
 
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -36,7 +37,7 @@ public class TestTypeFactoryWithClassLoader {
   
   @Before
   public void before() {
-      mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+      mapper = new TestVelocypackMapper();
   }
 
   @After

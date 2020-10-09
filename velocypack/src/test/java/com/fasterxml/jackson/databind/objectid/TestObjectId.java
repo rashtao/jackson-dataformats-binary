@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.dataformat.velocypack.TestVelocypackMapper;
 
 public class TestObjectId extends BaseMapTest
 {
@@ -124,7 +125,7 @@ public class TestObjectId extends BaseMapTest
     /**********************************************************
      */
     
-    private final ObjectMapper MAPPER = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+    private final ObjectMapper MAPPER = new TestVelocypackMapper();
     
     public void testColumnMetadata() throws Exception
     {
@@ -167,7 +168,7 @@ public class TestObjectId extends BaseMapTest
 
     public void testObjectAndTypeId() throws Exception
     {
-        final ObjectMapper mapper = new com.fasterxml.jackson.dataformat.velocypack.VelocypackMapper();
+        final ObjectMapper mapper = new TestVelocypackMapper();
 
         Bar inputRoot = new Bar();
         Foo inputChild = new Foo();
